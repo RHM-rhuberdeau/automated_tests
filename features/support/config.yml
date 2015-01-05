@@ -1,0 +1,11 @@
+qa:
+  healthcentral:
+    base_url: http://qa.healthcentral.choicemedia.com
+  asset_host: qa.choicemedia.healthcentral.
+
+prod:
+  healthcentral:
+    base_url: http://www.healthcentral.com
+  berkley:
+    base_url: http://www.berkeleywellness.com
+  asset_host: healthcentral.com
