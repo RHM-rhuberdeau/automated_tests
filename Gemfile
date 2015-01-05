@@ -30,9 +30,11 @@ group :test do
   gem 'cucumber-rails', require: false
   gem 'rspec-rails'
   gem 'capybara'
+  gem 'browsermob-proxy'
 end
 
 gem "selenium-webdriver"
+gem "httparty"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
