@@ -9,3 +9,7 @@ prod:
   berkley:
     base_url: http://www.berkeleywellness.com
   asset_host: healthcentral.com
+
+alpha:
+  healthcentral:
+    base_url: http://alpha.healthcentral.choicemedia.com

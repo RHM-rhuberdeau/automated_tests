@@ -23,3 +23,8 @@ Scenario: Namspace.js should load
   Given I have a list of pages
   Then I should see the "/sites/all/modules/custom/assets_pipeline/public/js/namespace.js" file load for each page
 
+@new
+Scenario: Questions without expert answers should have a ugc value of y
+  Given I have a list of questions without expert answers
+  Then I should see a ugc value of y when I visit those questions
+

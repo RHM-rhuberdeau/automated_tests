@@ -1,0 +1,21 @@
+qa:
+  asset_host: qa.choicemedia.healthcentral.
+  collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
+  healthcentral:
+    base_url: http://qa.healthcentral.choicemedia.com
+    drupal_url: http://qa.healthcentral.choicemedia.com
+
+prod:
+  asset_host: healthcentral.com
+  healthcentral:
+    base_url: http://www.healthcentral.com
+    drupal_url: http://march:madness@d-www.healthcentral.com
+  berkley:
+    base_url: http://www.berkeleywellness.com
+  medtronic:
+    base_url: https://secure.healthcentral.com
+
+alpha:
+  healthcentral:
+    base_url: http://alpha.healthcentral.choicemedia.com
+    drupal_url: http://alpha.healthcentral.choicemedia.com
