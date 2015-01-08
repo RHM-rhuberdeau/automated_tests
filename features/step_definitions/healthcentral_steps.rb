@@ -184,3 +184,7 @@ Then(/^I should see the "(.*?)" file load for each page$/) do |asset_url|
     expect(page.source.include?(asset_url)).to eq(true)
   end
 end
+
+Then(/^I should see a ugc value of y when I visit those questions$/) do
+  pending # express the regexp above with the code you wish you had
+end
