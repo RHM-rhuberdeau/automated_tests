@@ -15,6 +15,7 @@ COLLECTION_URL = Configuration["collection_url"]
 
 def firefox
   @driver = Selenium::WebDriver.for :firefox
+  @driver.manage.window.maximize
 end
 
 def firefox_with_proxy
@@ -81,6 +82,10 @@ def visit(url)
   	@driver.execute_script "window.stop()"
   end
   wait_for_page_to_load
+end
+
+def evaluate_script(script)
+  @driver.execute_script "return #{script}"
 end
 
 def wrong_asset_host
