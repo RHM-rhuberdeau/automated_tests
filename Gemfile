@@ -5,15 +5,12 @@ source 'https://rubygems.org'
 gem 'rails', '4.1.1'
 
 group :test do 
-  gem 'cucumber-rails', require: false
-  gem 'rspec-rails'
-  gem 'capybara'
   gem 'browsermob-proxy'
   gem 'minitest'
   gem 'shoulda-context'
+  gem "selenium-webdriver"
 end
 
-gem "selenium-webdriver"
 gem "httparty"
 
 # Use ActiveModel has_secure_password
