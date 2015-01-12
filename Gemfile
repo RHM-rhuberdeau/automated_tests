@@ -8,7 +8,7 @@ group :test do
   gem 'browsermob-proxy'
   gem 'minitest'
   gem 'shoulda-context'
-  gem "selenium-webdriver"
+  gem 'selenium-webdriver', '2.44.0'
 end
 
 gem "httparty"
