@@ -59,7 +59,7 @@ class SponsoredTopicTest < MiniTest::Test
 
 	  	@driver.switch_to.window second_window
 	  	omniture_text = @driver.find_element(:css, 'td#request_list_cell').text
-	  	assert_equal(true, omniture_text.include?("eVar21 ST_#{sponsor_name}_#{sponsor_condition}"), "#{omniture_text}")
+	  	assert_equal(true, omniture_text.include?("eVar21 ST_#{sponsor_name}_#{sponsor_condition}"), "omniture_text: #{omniture_text}")
 	  end
 	end#understanding-migraines
   end#a sponsored collection
