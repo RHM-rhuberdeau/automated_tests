@@ -38,6 +38,10 @@ def fire_fox_with_secure_proxy
   @driver.manage.window.maximize
 end
 
+def phantomjs
+  @driver = Selenium::WebDriver.for :remote, url: 'http://localhost:8001'
+end
+
 def wait_for_page_to_load
   begin
     Timeout::timeout(3) do
@@ -58,9 +62,32 @@ def finished_loading?
   end
 end
 
+def wait_for_immersive_to_load
+  begin
+    Timeout::timeout(8) do
+      loop until immersive_loaded?
+    end
+  rescue Timeout::Error
+    @driver.execute_script "window.stop()"
+  end
+end
+
+def immersive_loaded?
+  sleep 0.5
+  begin
+    if @driver.find_element(:css, "#loader")
+      false
+    else
+      true
+    end
+  rescue Selenium::WebDriver::Error::NoSuchElementError
+    true
+  end
+end
+
 def wait_for_ajax
   begin
-    Timeout::timeout(3) do
+    Timeout::timeout(4) do
       loop until finished_all_ajax_requests?
     end
   rescue Timeout::Error
@@ -69,8 +96,35 @@ def wait_for_ajax
 end
 
 def finished_all_ajax_requests?
-  @driver.execute_script('return jQuery.active').zero?
+  begin
+    Timeout::timeout(3) do
+      loop until jquery_is_defined?
+    end
+  rescue Timeout::Error
+    @driver.execute_script("window.stop();")
+  end
+
+  begin
+    Timeout::timeout(3) do
+      loop until zero_ajax_requests?
+    end
+  rescue Timeout::Error
+    @driver.execute_script("window.stop();")
+  end
+end
+
+def jquery_is_defined?
   sleep 0.5
+  @driver.execute_script("return jQuery !== 'undefined'")
+end
+
+def zero_ajax_requests?
+  sleep 0.5
+  if @driver.execute_script("return jQuery !== 'undefined'") == true
+    @driver.execute_script('return jQuery.active').zero?
+  else
+    false
+  end
 end
 
 def visit(url)
@@ -90,4 +144,18 @@ end
 
 def wrong_asset_host
   (["qa.healthcentral.", "www.healthcentral.com", "alpha.healthcentral"] - [ASSET_HOST]).to_s
+end
+
+def page_has_ad(ad_url)
+  ads = []
+  @proxy.har.entries.each do |entry|
+    if entry.request.url.include?(ad_url)
+      ads << entry.request.url
+    end
+  end
+  if ads.compact.length >= 1
+    true
+  else
+    false
+  end
 end
