@@ -24,10 +24,8 @@ class BerkleyslideShowPage
   end
 
   def ads_on_page
-  	puts "old_ad_calls: #{old_ad_calls}"
   	all_ads = all_ad_calls
   	current_ad_calls = all_ads - old_ad_calls
-  	puts "current_ad_calls: #{current_ad_calls}"
   	old_ad_calls = all_ads
   	current_ad_calls
   end
@@ -39,7 +37,6 @@ class BerkleyslideShowPage
   	  	all_ad_calls << entry.request.url
   	  end
   	end
-  	puts "all_ad_calls: #{all_ad_calls}"
   	all_ad_calls
   end
 end
