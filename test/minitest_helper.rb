@@ -26,7 +26,7 @@ def firefox_with_proxy
 	@profile = Selenium::WebDriver::Firefox::Profile.new
 	@profile.proxy = @proxy.selenium_proxy
 	@driver = Selenium::WebDriver.for :firefox, :profile => @profile
-  @driver.manage.window.maximize
+  @driver.manage.window.resize_to(1024,728)
 end
 
 def fire_fox_with_secure_proxy
@@ -36,7 +36,7 @@ def fire_fox_with_secure_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
-  @driver.manage.window.maximize
+  @driver.manage.window.resize_to(1024,728)
 end
 
 def phantomjs
