@@ -29,9 +29,11 @@ def firefox_with_proxy
 	@profile.proxy = @proxy.selenium_proxy
 	@driver = Selenium::WebDriver.for :firefox, :profile => @profile
   @driver.manage.window.resize_to(1024,728)
+  @driver.manage.timeouts.implicit_wait = 5
 end
 
 def fire_fox_with_secure_proxy
+  proxy_location = Settings.location
   server = BrowserMob::Proxy::Server.new(proxy_location)
   server.start
   @proxy = server.create_proxy
@@ -39,6 +41,7 @@ def fire_fox_with_secure_proxy
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
   @driver.manage.window.resize_to(1024,728)
+  @driver.manage.timeouts.implicit_wait = 5
 end
 
 def phantomjs
