@@ -45,7 +45,6 @@ class ImmersivePage
         chapter_ads << entry.request.url
       end
     end
-    puts "ads #{chapter_ads}"
     chapter_ads.compact.length
   end
 end
