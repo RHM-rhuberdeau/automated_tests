@@ -1,5 +1,6 @@
 require File.dirname(__FILE__) + '/automation_config';
 require File.dirname(__FILE__) + '/support/collection_sync';
+require File.dirname(__FILE__) + '/config/proxy/settings';
 require 'minitest/autorun' 
 require 'shoulda/context' 
 require 'selenium-webdriver' 
@@ -20,7 +21,8 @@ def firefox
 end
 
 def firefox_with_proxy
-	server = BrowserMob::Proxy::Server.new('/Users/rhuberdeau/Downloads/browsermob-proxy-2.0-beta-9/bin/browsermob-proxy')
+  proxy_location = Settings.location
+	server = BrowserMob::Proxy::Server.new(proxy_location)
 	server.start
 	@proxy = server.create_proxy
 	@profile = Selenium::WebDriver::Firefox::Profile.new
@@ -30,7 +32,7 @@ def firefox_with_proxy
 end
 
 def fire_fox_with_secure_proxy
-  server = BrowserMob::Proxy::Server.new('/Users/rhuberdeau/Downloads/browsermob-proxy-2.0-beta-9/bin/browsermob-proxy')
+  server = BrowserMob::Proxy::Server.new(proxy_location)
   server.start
   @proxy = server.create_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
