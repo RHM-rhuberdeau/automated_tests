@@ -16,6 +16,7 @@ COLLECTION_URL = Configuration["collection_url"]
 def firefox
   @driver = Selenium::WebDriver.for :firefox
   @driver.manage.window.maximize
+  @driver.manage.timeouts.implicit_wait = 5
 end
 
 def firefox_with_proxy

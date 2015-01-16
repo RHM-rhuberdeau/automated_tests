@@ -13,7 +13,8 @@ class HCSearchTest < MiniTest::Test
       button = @driver.find_element(:css, ".icon-search")
       button.click
       wait_for_page_to_load
-      assert_equal("Search Results", (@driver.find_element(:css, 'h1')).text)
+      assert_equal("Search Results", (@driver.find_element(:css, 'div.page div.body.portal div.content.results h1')).text)
+      assert_equal(true, (@driver.find_elements(:css, "div.page div.body.portal div.content.results ul.results li h3 a").length) >= 1)
     end
   end#a search query
 

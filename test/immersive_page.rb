@@ -22,8 +22,9 @@ class ImmersivePage
 
   def go_to_chapter(chapter)
     chapter = chapter.to_i
-    link = driver.find_elements(:css, ".chapter-title")[chapter]
-    link.click
+    links = driver.find_elements(:css, "span.chapter")
+    link = links.select {|link| link.text.include?("CHAPTER #{chapter}")}
+    link.first.click
     sleep 2
   end
 
