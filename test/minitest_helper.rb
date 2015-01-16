@@ -15,7 +15,7 @@ COLLECTION_URL = Configuration["collection_url"]
 
 def firefox
   @driver = Selenium::WebDriver.for :firefox
-  @driver.manage.window.maximize
+  @driver.manage.window.resize_to(1024,728)
   @driver.manage.timeouts.implicit_wait = 5
 end
 
