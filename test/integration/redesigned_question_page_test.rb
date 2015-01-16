@@ -10,7 +10,7 @@ class RedesignedQuestionPageTest< MiniTest::Test
 
     context "without an expert answer" do
       setup do
-        visit "#{HC_BASE_URL}/heart-disease/c/question/295822/173882"
+        visit "#{HC_BASE_URL}/erectile-dysfunction/c/question/277738/167616"
         @page = ::RedesignQuestionPage.new(@driver, @proxy)
       end
       should "load the correct analytics file" do

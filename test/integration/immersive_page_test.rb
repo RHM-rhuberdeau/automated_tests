@@ -19,7 +19,7 @@ class ImmersivePageTest < MiniTest::Test
         wait_for_immersive_to_load
         sleep 0.5
         @page.show_side_nav
-        @page.go_to_chapter(0)
+        @page.go_to_chapter(1)
         @page.go_through_chapter
         assert_equal(1, @page.ad_for_chapter('chapter1'))
     	end
@@ -55,35 +55,35 @@ class ImmersivePageTest < MiniTest::Test
     	end
     end#living-with-psoriasis
     context "that is flat" do
-      setup do
-        visit "http://immersive.healthcentral.com/skin-care/d/LBLN/dtalbert-living-with-psoriasis/flat/"
-      end
+      # setup do
+      #   visit "http://immersive.healthcentral.com/skin-care/d/LBLN/dtalbert-living-with-psoriasis/flat/"
+      # end
 
-      should "have chapters" do
-        chapter_links = @driver.find_elements(:css, ".chapterPages ul li a").length - 1
-        assert_equal(true, chapter_links >= 1)
-      end
+      # should "have chapters" do
+      #   chapter_links = @driver.find_elements(:css, ".chapterPages ul li a").length - 1
+      #   assert_equal(true, chapter_links >= 1)
+      # end
 
-      should "have an ad on chapter 1" do
-        chapter1_link = @driver.find_elements(:css, ".chapterPages ul li a")[1]
-        chapter1_link.click
-        wait_for_page_to_load
-        assert_equal(true, page_has_ad("ad.doubleclick.net/N3965/adj/cm.ver.lblnskin/immersive/ps2_chapter1"))
-      end
+      # should "have an ad on chapter 1" do
+      #   chapter1_link = @driver.find_elements(:css, ".chapterPages ul li a")[1]
+      #   chapter1_link.click
+      #   wait_for_page_to_load
+      #   assert_equal(true, page_has_ad("ad.doubleclick.net/N3965/adj/cm.ver.lblnskin/immersive/ps2_chapter1"))
+      # end
 
-      should "have an ad on chapter 2" do
-        chapter1_link = @driver.find_elements(:css, ".chapterPages ul li a")[2]
-        chapter1_link.click
-        wait_for_page_to_load
-        assert_equal(true, page_has_ad("ad.doubleclick.net/N3965/adj/cm.ver.lblnskin/immersive/ps2_chapter2"))
-      end
+      # should "have an ad on chapter 2" do
+      #   chapter1_link = @driver.find_elements(:css, ".chapterPages ul li a")[2]
+      #   chapter1_link.click
+      #   wait_for_page_to_load
+      #   assert_equal(true, page_has_ad("ad.doubleclick.net/N3965/adj/cm.ver.lblnskin/immersive/ps2_chapter2"))
+      # end
 
-      should "have an ad on chapter 3" do
-        chapter1_link = @driver.find_elements(:css, ".chapterPages ul li a")[3]
-        chapter1_link.click
-        wait_for_page_to_load
-        assert_equal(true, page_has_ad("ad.doubleclick.net/N3965/adj/cm.ver.lblnskin/immersive/ps2_chapter3"))
-      end
+      # should "have an ad on chapter 3" do
+      #   chapter1_link = @driver.find_elements(:css, ".chapterPages ul li a")[3]
+      #   chapter1_link.click
+      #   wait_for_page_to_load
+      #   assert_equal(true, page_has_ad("ad.doubleclick.net/N3965/adj/cm.ver.lblnskin/immersive/ps2_chapter3"))
+      # end
     end 
   end#an Immersive
 

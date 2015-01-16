@@ -9,7 +9,7 @@ prod:
   asset_host: healthcentral.com
   healthcentral:
     base_url: http://www.healthcentral.com
-    drupal_url: http://march:madness@d-www.healthcentral.com
+    drupal_url: http://www.healthcentral.com
   berkley:
     base_url: http://www.berkeleywellness.com
   medtronic:
