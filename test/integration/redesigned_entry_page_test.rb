@@ -1,11 +1,12 @@
 require_relative '../minitest_helper' 
-require_relative '../redesign_entry_page'
+require_relative '../pages/redesign_entry_page'
 
 class RedesignedEntryPageTest < MiniTest::Test
   context "a redesigned Shareposts Entry page" do 
   	setup do
-  	  firefox
-  	  @page = ::RedesignEntryPage.new(@driver)
+  	  fire_fox_remote_proxy
+      @proxy.new_har
+  	  @page = ::RedesignEntryPage.new(@driver, @proxy)
   	end
 
   	context "from an expert" do
@@ -34,6 +35,7 @@ class RedesignedEntryPageTest < MiniTest::Test
   end#a redesigned Shareposts Entry page
 
   def teardown  
-    @driver.quit  
+    @driver.quit 
+    @proxy.close 
   end  
 end

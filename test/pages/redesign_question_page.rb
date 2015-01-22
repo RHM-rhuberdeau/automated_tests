@@ -7,7 +7,13 @@ class RedesignQuestionPage
   end
 
   def analytics_file
-  	driver.page_source.include?("/sites/all/modules/custom/assets_pipeline/public/js/namespace.js")
+  	has_file = false
+    proxy.har.entries.each do |entry|
+      if entry.request.url.include?('/sites/all/modules/custom/assets_pipeline/public/js/namespace.js')
+        has_file = true
+      end
+    end
+    has_file
   end
 
   def pharma_safe?

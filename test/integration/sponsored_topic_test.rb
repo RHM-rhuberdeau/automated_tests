@@ -3,7 +3,7 @@ require_relative '../minitest_helper'
 class SponsoredTopicTest < MiniTest::Test
   context "a sponsored collection" do 
   	setup do
-  	  firefox
+  	  fire_fox_remote
   	end
 
   	context "merck" do

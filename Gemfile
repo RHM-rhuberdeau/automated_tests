@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '4.1.1'
+gem "httparty"
 
 group :test do 
   gem 'browsermob-proxy'
@@ -10,8 +10,6 @@ group :test do
   gem 'shoulda-context'
   gem 'selenium-webdriver', '2.44.0'
 end
-
-gem "httparty"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'

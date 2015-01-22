@@ -1,10 +1,10 @@
 require_relative '../minitest_helper' 
-require_relative '../redesign_question_page'
+require_relative '../pages/redesign_question_page'
 
 class RedesignedQuestionPageTest< MiniTest::Test
   context "a redesigned Shareposts Question page" do 
   	setup do
-  	  firefox_with_proxy
+  	  fire_fox_remote_proxy
       @proxy.new_har
   	end
 

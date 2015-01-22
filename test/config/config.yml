@@ -4,8 +4,12 @@ qa:
   healthcentral:
     base_url: http://qa.healthcentral.choicemedia.com
     drupal_url: http://qa.healthcentral.choicemedia.com
+  berkley:
+    base_url: http://qa.berkeleywellness.choicemedia.com
+  medtronic:
+    base_url: https://secure.healthcentral.com
 
-prod:
+production:
   asset_host: healthcentral.com
   healthcentral:
     base_url: http://www.healthcentral.com
@@ -19,3 +23,17 @@ alpha:
   healthcentral:
     base_url: http://alpha.healthcentral.choicemedia.com
     drupal_url: http://alpha.healthcentral.choicemedia.com
+  berkley:
+    base_url: http://www.berkeleywellness.com
+  medtronic:
+    base_url: https://secure.healthcentral.com
+
+staging:
+  asset_host: stage.healthcentral.com
+  healthcentral:
+    base_url: http://stage.healthcentral.com
+    drupal_url: http://stage.healthcentral.com
+  berkley:
+    base_url: http://www.berkeleywellness.com
+  medtronic:
+    base_url: https://secure.healthcentral.com
