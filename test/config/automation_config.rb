@@ -3,7 +3,7 @@ require 'yaml'
 class Configuration
   def self.new name
     @config = nil
-    io = File.open( File.dirname(__FILE__) + "/config/config.yml" )
+    io = File.open( File.dirname(__FILE__) + "/config.yml" )
     YAML::load_documents(io) { |doc| @config = doc[name] }
     raise "Could not locate a configuration named \"#{name}\"" unless @config
     @time = Time.now.strftime("%a-%b-%e-%Y-%k%M").downcase

@@ -1,9 +1,12 @@
 require 'selenium-webdriver'
 require 'rspec-expectations'
+require 'browsermob/proxy'
 include RSpec::Matchers
 
 def setup
-  @driver = Selenium::WebDriver.for :remote, url: 'http://localhost:8001'
+  @driver = Selenium::WebDriver.for :firefox
+  @driver.manage.window.resize_to(1024,728)
+  @driver.manage.timeouts.implicit_wait = 5
 end
 
 def teardown
@@ -18,5 +21,5 @@ end
 
 run do
   @driver.get 'http://the-internet.herokuapp.com'
-  @driver.title.include?('The Internet').should be_true
+  expect(@driver.title).to eq('The Internet')
 end

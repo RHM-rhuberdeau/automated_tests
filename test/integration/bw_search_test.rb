@@ -3,7 +3,7 @@ require_relative '../minitest_helper'
 class BWSearchTest < MiniTest::Test
   context "a search query" do 
     setup do 
-      firefox
+      fire_fox_remote
       visit "#{BW_BASE_URL}"
     end
 

@@ -3,7 +3,7 @@ require_relative '../minitest_helper'
 class ClinicalTrialPageTest< MiniTest::Test
   context "a Clinical Trial page" do 
   	setup do
-      fire_fox_with_secure_proxy
+      fire_fox_remote_proxy
       @proxy.new_har
       visit "#{HC_BASE_URL}/clinical-trial/survey-ui/index.html"
   	end
@@ -21,6 +21,7 @@ class ClinicalTrialPageTest< MiniTest::Test
         end
       end
 
+      assert_equal(true, @proxy.har.entries.length >= 1, "no entries in proxy")
       assert_equal(true, wrong_assets.compact.empty?, "qa assets were loaded: #{wrong_assets}")
       assert_equal(false, right_assets.compact.empty?, "missing correct assets")
     end
@@ -31,6 +32,7 @@ class ClinicalTrialPageTest< MiniTest::Test
         entry.request.url.split('.com').first.include?(HC_BASE_URL) && entry.response.status != 200
       end
 
+      assert_equal(true, @proxy.har.entries.length >= 1, "no entries in proxy")
       assert_equal(unloaded_assets.compact.empty?, true)
     end
 
@@ -44,6 +46,7 @@ class ClinicalTrialPageTest< MiniTest::Test
         end
       end
 
+      assert_equal(true, @proxy.har.entries.length >= 1, "no entries in proxy")
       assert_equal(true, broken_images.compact.empty?)
     end
 
