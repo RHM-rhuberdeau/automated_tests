@@ -1,5 +1,4 @@
 require File.dirname(__FILE__) + '/config/automation_config';
-require File.dirname(__FILE__) + '/support/collection_sync';
 require File.dirname(__FILE__) + '/config/proxy/settings';
 require 'minitest/autorun' 
 require 'shoulda/context' 
@@ -56,7 +55,7 @@ def fire_fox_remote_proxy
   )
   @driver = Selenium::WebDriver.for(
     :remote,
-    url: 'http://localhost:4444/wd/hub',
+    url: 'http://jenkins.choicemedia.com:4444//wd/hub',
     desired_capabilities: caps) 
   @driver.manage.window.resize_to(1024,900)
   @driver.manage.timeouts.implicit_wait = 5
@@ -65,7 +64,7 @@ end
 def fire_fox_remote
   @driver = Selenium::WebDriver.for(
     :remote,
-    url: 'http://localhost:4444/wd/hub',
+    url: 'http://jenkins.choicemedia.com:4444//wd/hub',
     desired_capabilities: :firefox)
   @driver.manage.window.resize_to(1024,900)
   @driver.manage.timeouts.implicit_wait = 5
