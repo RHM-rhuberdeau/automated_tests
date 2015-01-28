@@ -14,7 +14,8 @@ MED_BASE_URL = Configuration["medtronic"]["base_url"]
 COLLECTION_URL = Configuration["collection_url"]
 
 def firefox
-  Selenium::WebDriver::Firefox::Binary.path= '/opt/firefox'
+  Selenium::WebDriver::Firefox::Binary.path= '/opt/firefox/firefox'
+  # Selenium::WebDriver::Firefox::Binary.path= '/Applications/Firefox.app/Contents/MacOS/firefox'
   @driver = Selenium::WebDriver.for :firefox
   @driver.manage.window.resize_to(1024,728)
   @driver.manage.timeouts.implicit_wait = 5
