@@ -4,7 +4,7 @@ require_relative '../pages/berkley_slide_show_page'
 class BerkleySlideShowTest < MiniTest::Test
   context "A Berkley slide show page" do 
   	setup do
-  	  fire_fox_remote_proxy
+  	  fire_fox_with_secure_proxy
       @proxy.new_har
       visit "#{BW_BASE_URL}/healthy-eating/food/slideshow/can-food-cause-body-odor"
       @page = ::BerkleyslideShowPage.new(@driver, @proxy)

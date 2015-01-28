@@ -4,7 +4,7 @@ require_relative '../pages/redesign_entry_page'
 class RedesignedEntryPageTest < MiniTest::Test
   context "a redesigned Shareposts Entry page" do 
   	setup do
-  	  fire_fox_remote_proxy
+  	  fire_fox_with_secure_proxy
       @proxy.new_har
   	  @page = ::RedesignEntryPage.new(@driver, @proxy)
   	end
@@ -17,6 +17,10 @@ class RedesignedEntryPageTest < MiniTest::Test
   	  should "be pharma safe" do
   	    assert_equal(true, @page.pharma_safe?)
   	  end
+
+      should "load the correct analytics file" do
+        assert_equal(@page.analytics_file, true)
+      end
   	end#from an expert
 
   	context "from a community member" do

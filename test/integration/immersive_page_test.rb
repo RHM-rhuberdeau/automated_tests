@@ -4,7 +4,7 @@ require_relative '../pages/immersive_page'
 class ImmersivePageTest < MiniTest::Test
   context "an Immersive" do 
     setup do
-      fire_fox_remote_proxy
+      fire_fox_with_secure_proxy
       @proxy.new_har
     end
 
