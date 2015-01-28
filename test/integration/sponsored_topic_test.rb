@@ -3,7 +3,7 @@ require_relative '../minitest_helper'
 class SponsoredTopicTest < MiniTest::Test
   context "a sponsored collection" do 
   	setup do
-  	  fire_fox_remote
+  	  firefox
   	end
 
   	context "merck" do
@@ -27,6 +27,8 @@ class SponsoredTopicTest < MiniTest::Test
 	  	second_window = @driver.window_handles.last
 	  	sponsor_name = evaluate_script("rhm.vars.pageData.sponsor_name")
 	  	sponsor_condition = evaluate_script("rhm.vars.pageData.sponsor_condition")
+      assert_equal(false, sponsor_name.nil?)
+      assert_equal(false, sponsor_condition.nil?)
 	  	sleep 2
 
 	  	@driver.switch_to.window second_window
@@ -55,6 +57,8 @@ class SponsoredTopicTest < MiniTest::Test
 	  	second_window = @driver.window_handles.last
 	  	sponsor_name = evaluate_script("rhm.vars.pageData.sponsor_name")
 	  	sponsor_condition = evaluate_script("rhm.vars.pageData.sponsor_condition")
+      assert_equal(false, sponsor_name.nil?)
+      assert_equal(false, sponsor_condition.nil?)
 	  	sleep 2
 
 	  	@driver.switch_to.window second_window

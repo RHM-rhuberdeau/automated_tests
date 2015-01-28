@@ -1,9 +1,9 @@
 require_relative '../minitest_helper' 
 
-class ClinicalTrialPageTest< MiniTest::Test
+class ClinicalTrialPageTest < MiniTest::Test
   context "a Clinical Trial page" do 
   	setup do
-      fire_fox_remote_proxy
+      fire_fox_with_secure_proxy
       @proxy.new_har
       visit "#{HC_BASE_URL}/clinical-trial/survey-ui/index.html"
   	end

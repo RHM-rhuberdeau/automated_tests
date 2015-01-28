@@ -3,7 +3,7 @@ require_relative '../minitest_helper'
 class MedtronicPageTest< MiniTest::Test
   context "a Medtronic page" do 
   	setup do
-      fire_fox_remote_proxy
+      fire_fox_with_secure_proxy
       @proxy.new_har
       visit "#{MED_BASE_URL}/cecs/cf/medtronic"
   	end
