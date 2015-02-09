@@ -1,4 +1,6 @@
-class RedesignEntryPage
+require_relative './healthcentral_page'
+
+class RedesignEntryPage < HealthCentralPage
   attr_reader :driver, :proxy
 
   def initialize(driver,proxy)
