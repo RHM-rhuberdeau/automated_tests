@@ -176,10 +176,6 @@ def evaluate_script(script)
   @driver.execute_script "return #{script}"
 end
 
-def wrong_asset_host
-  (["qa.healthcentral.", "www.healthcentral.com", "alpha.healthcentral"] - [ASSET_HOST]).to_s
-end
-
 def page_has_ad(ad_url)
   ads = []
   @proxy.har.entries.each do |entry|

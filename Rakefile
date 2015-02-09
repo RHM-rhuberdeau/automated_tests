@@ -7,5 +7,13 @@
 task :default => :test
 
 task :test do
-  Dir.glob('./test/integration/*_test.rb').each { |file| require file}
+    files = Dir[File.join('./test/integration', '**', '*.{rb}')].each do |file| 
+      require file      
+  end
+end
+
+task :healthcentral do 
+  files = Dir[File.join('./test/integration/healthcentral', '**', '*.{rb}')].each do |file| 
+      require file      
+  end
 end
