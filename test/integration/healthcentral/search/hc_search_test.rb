@@ -1,4 +1,4 @@
-require_relative '../minitest_helper' 
+require_relative '../../../minitest_helper' 
   
 class HCSearchTest < MiniTest::Test
   context "a search query" do 

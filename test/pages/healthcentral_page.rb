@@ -39,7 +39,7 @@ class HealthCentralPage
   def has_correct_title?
     title = driver.title 
     if title
-      title.split('-').compact.length >= 2
+      title.split('-').map {|x| x.gsub(' ', '')}.select { |x| x.length > 0 }.compact.length >= 2
     else
       false
     end
@@ -119,12 +119,12 @@ class HealthCentralPage
 
   def ads_on_page(range=nil)
     all_ads = get_all_ads
-    if all_ads.length ==3
-      all_ads
+    if all_ads.length == 3
+      all_ads = all_ads
     elsif all_ads.length > 3
-      all_ads[-3, range]
+      all_ads = all_ads[-3, range]
     elsif all_ads.length < 3
-      all_ads
+      all_ads = all_ads
     end
   end
 

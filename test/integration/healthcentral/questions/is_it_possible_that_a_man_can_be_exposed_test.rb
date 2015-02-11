@@ -34,6 +34,20 @@ class QuestionPageTest < MiniTest::Test
     should "have a ugc value of y" do
       assert_equal(true, (@page.ugc == "[\"y\"]"), "#{@page.ugc.inspect}")
     end
+
+    should "have unique ads" do 
+      ads1 = @page.ads_on_page
+      visit "#{@driver.current_url}"
+      sleep 0.5
+      ads2 = @page.ads_on_page
+
+      ord_values_1 = ads1.collect(&:ord).uniq
+      ord_values_2 = ads2.collect(&:ord).uniq
+
+      assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
+      assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
+      assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
+    end
   end
 
   def teardown  

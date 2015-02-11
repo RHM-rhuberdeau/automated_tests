@@ -4,6 +4,19 @@ qa:
   healthcentral:
     base_url: http://qa.healthcentral.choicemedia.com
     drupal_url: http://qa.healthcentral.choicemedia.com
+    immersive: http://immersiveqa.healthcentral.choicemedia.com
+  berkley:
+    base_url: http://qa.berkeleywellness.choicemedia.com
+  medtronic:
+    base_url: https://secure.healthcentral.com
+
+qa3:
+  asset_host: qa3.healthcentral.
+  collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
+  healthcentral:
+    base_url: http://qa3.healthcentral.com
+    drupal_url: http://qa3.healthcentral.com
+    immersive: http://immersiveqa.healthcentral.choicemedia.com
   berkley:
     base_url: http://qa.berkeleywellness.choicemedia.com
   medtronic:
@@ -13,7 +26,8 @@ production:
   asset_host: healthcentral.com
   healthcentral:
     base_url: http://www.healthcentral.com
-    drupal_url: http://www.healthcentral.com
+    drupal_url: http://march:madness@d-www.healthcentral.com
+    immersive: http://immersive.healthcentral.com
   berkley:
     base_url: http://www.berkeleywellness.com
   medtronic:
@@ -23,6 +37,7 @@ alpha:
   healthcentral:
     base_url: http://alpha.healthcentral.choicemedia.com
     drupal_url: http://alpha.healthcentral.choicemedia.com
+    immersive: http://immersiveqa.healthcentral.choicemedia.com
   berkley:
     base_url: http://www.berkeleywellness.com
   medtronic:
@@ -32,7 +47,8 @@ staging:
   asset_host: stage.healthcentral.com
   healthcentral:
     base_url: http://stage.healthcentral.com
-    drupal_url: http://stage.healthcentral.com
+    drupal_url: http://drupal.stage.healthcentral.com
+    immersive: http://immersiveqa.healthcentral.choicemedia.com
   berkley:
     base_url: http://www.berkeleywellness.com
   medtronic:
