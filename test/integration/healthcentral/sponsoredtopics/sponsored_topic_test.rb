@@ -1,4 +1,4 @@
-require_relative '../minitest_helper' 
+require_relative '../../../minitest_helper' 
 
 class SponsoredTopicTest < MiniTest::Test
   context "a sponsored collection" do 
@@ -8,7 +8,7 @@ class SponsoredTopicTest < MiniTest::Test
 
   	context "merck" do
   	  setup do
-  	  	visit "#{HC_BASE_URL}/skin-cancer/d/treatment/stage-iv-melanoma?ic=recch"
+  	  	visit "#{HC_DRUPAL_URL}/skin-cancer/d/treatment/stage-iv-melanoma?ic=recch"
   	  end
 
 	  should "have an adsite value of cm.own.tcc" do
@@ -38,7 +38,7 @@ class SponsoredTopicTest < MiniTest::Test
 	end#merck
 	context "understanding-migraines" do
 	  setup do
-	  	visit "#{HC_BASE_URL}/migraine/d/understanding-migraines/taking-control"
+	  	visit "#{HC_DRUPAL_URL}/migraine/d/understanding-migraines/taking-control"
 	  end
 
 	  should "have an adsite value of cm.own.tcc" do

@@ -6,6 +6,33 @@ class RedesignQuestionPage < HealthCentralPage
   def initialize(driver, proxy)
   	@driver = driver
   	@proxy	= proxy
+    @ads  = []
+  end
+
+  def ads_on_page
+    all_ads = get_all_ads
+    if all_ads.length > 3
+      all_ads = all_ads[-3, 3]
+    end
+
+    ads = create_ads(all_ads)
+    ads
+  end
+
+  def get_all_ads
+    ad_calls = proxy.har.entries.map do |entry|
+      if entry.request.url.include?('ad.doubleclick.net/N3965')
+        entry.request.url
+      end
+    end
+    ad_calls.compact
+  end
+
+  def create_ads(ads)
+    new_ads = ads.map do |ad|
+      HealthCentralAds.new(ad)
+    end
+    new_ads
   end
 
   def analytics_file

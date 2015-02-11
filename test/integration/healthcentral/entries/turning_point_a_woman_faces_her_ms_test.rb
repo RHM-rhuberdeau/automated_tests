@@ -31,7 +31,7 @@ class EntryPageTest < MiniTest::Test
       assert_equal(false, @page.right_assets.empty?, "right assets empty: #{@page.right_assets}")
     end
 
-    should 
+    
   end
 
   def teardown  
