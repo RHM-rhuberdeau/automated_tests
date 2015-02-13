@@ -16,7 +16,7 @@ class LBLN < MiniTest::Test
     end
 
     should "have ad_categories value of ('', '', '')" do 
-      expected_ad_categories = ["", "", ""]
+      expected_ad_categories = ["mymoment", "", ""]
       actual_ad_categories   = evaluate_script("AD_CATEGORIES")
       assert_equal(true, (actual_ad_categories == expected_ad_categories), "ad_categories was #{actual_ad_categories} not #{expected_ad_categories}")
     end
@@ -57,6 +57,7 @@ class LBLN < MiniTest::Test
       visit "#{IMMERSIVE_URL}/epilepsy/d/LBLN/living-with-epilepsy/flat/?ic=hero"
     end
 
+    # Immersive pages themselves are not a problem. This only needs to be run in production
     should "have an adsite value of cm.ver.epilepsy" do 
       ad_site = evaluate_script("AD_SITE")
       assert_equal(true, (ad_site == "cm.ver.epilepsy"), "ad_site was #{ad_site} not cm.ver.epilepsy")

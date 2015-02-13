@@ -1,5 +1,5 @@
-require_relative '../minitest_helper' 
-require_relative '../pages/berkley_slide_show_page'
+require_relative '../../minitest_helper' 
+require_relative '../../pages/berkley_slide_show_page'
 
 class BerkleySlideShowTest < MiniTest::Test
   context "A Berkley slide show page" do 

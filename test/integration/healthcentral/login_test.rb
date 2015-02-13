@@ -10,6 +10,7 @@ class LoginTest < MiniTest::Test
     should "show the user display name" do
       login_link = @driver.find_element(:css, "a.hcnLogin")
       login_link.click
+      gigya = @driver.find_element(:css, ".gigya-visible")
       Selenium::WebDriver::Wait.new { @driver.find_element(:css, "div.gigya-screen-dialog-inner") }
       email    = @driver.find_elements(:css, ".gigya-composite-control-textbox.gigya-input-wrapper .gigya-input-text").select { |element| element.displayed? }.first
       password = @driver.find_elements(:css, ".gigya-input-password").select { |element| element.displayed? }.first
@@ -18,13 +19,18 @@ class LoginTest < MiniTest::Test
       email.click
       email.send_keys("rhuberdeau@remedyhealthmedia.com")
       password.click
-      password.send_keys("aaaaaa")
+      password.send_keys("aaaaaa") 
       submit.click
-      gigya_box = @driver.find_element(:css, "div.gigya-screen-dialog-inner")
-      modal     = @driver.find_element(:css, "div.gigya-overlay")
-      Selenium::WebDriver::Wait.new { !gigya_box.displayed? }
-      Selenium::WebDriver::Wait.new { !modal.displayed? }
-      sleep 1
+
+      # modal     = @driver.find_element(:css, "div.gigya-overlay")
+      # gigya_box = @driver.find_element(:css, "div.gigya-screen-dialog-inner")
+      # overlay   = @driver.find_element(:css, ".gigya-overlay") 
+
+      # Selenium::WebDriver::Wait.new { !gigya_box.displayed? }
+      # Selenium::WebDriver::Wait.new { !modal.displayed? }
+      # Selenium::WebDriver::Wait.new(:timeout => 5) { !overlay.displayed? }
+
+      sleep 5
 
       Selenium::WebDriver::Wait.new { @driver.find_element(:css, "div.HC-header-registration") }
       login    = @driver.find_element(:css, "div#HCN-display-name")

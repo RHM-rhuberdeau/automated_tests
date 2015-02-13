@@ -1,36 +1,42 @@
-require 'rubygems'
-require 'minitest/autorun'
-require 'selenium-webdriver'
+ENV['SAUCE_USERNAME'] = 'rhuberdeau2'
+ENV['SAUCE_API_KEY']  = '6e4a81ea-50c2-40ba-a009-00e113f99e7a'
 
-class GoogleTest < MiniTest::Test
-  USERNAME = ENV['BS_USERNAME']
-  BROWSERSTACK_ACCESS_KEY = ENV['BS_AUTHKEY']
-  
-  def setup
-    if USERNAME == ''
-      puts "Please add username & key as parameters while running rake task"
-      exit
+require 'selenium-webdriver'
+require 'rspec/expectations'
+
+def setup(browser_name, browser_version)
+  caps = Selenium::WebDriver::Remote::Capabilities.send(browser_name.to_sym)
+  caps.platform = 'Windows XP'
+  caps.version = browser_version.to_s
+
+  Thread.current[:driver] = Selenium::WebDriver.for(
+    :remote,
+    url: "http://#{ENV['SAUCE_USERNAME']}:#{ENV['SAUCE_API_KEY']}@ondemand.saucelabs.com:80/wd/hub",
+    desired_capabilities: caps)
+end
+
+def teardown
+  Thread.current[:driver].quit
+end
+
+
+BROWSERS = { firefox: '27',
+             chrome: '32',
+             internet_explorer: '8' }
+
+def run
+  threads = []
+  BROWSERS.each_pair do |browser, browser_version|
+    threads << Thread.new do
+      setup(browser, browser_version)
+      yield
+      teardown
     end
-    url = "http://#{USERNAME}:#{BROWSERSTACK_ACCESS_KEY}@hub.browserstack.com/wd/hub"
-    capabilities = Selenium::WebDriver::Remote::Capabilities.new
-    capabilities['os'] = ENV['BS_AUTOMATE_OS']
-    capabilities['os_version'] = ENV['BS_AUTOMATE_OS_VERSION']
-    capabilities['browser'] = ENV['SELENIUM_BROWSER']
-    capabilities['browser_version'] = ENV['SELENIUM_VERSION']
-    @driver = Selenium::WebDriver.for(:remote,
-                                      :url => url,
-                                      :desired_capabilities => capabilities)
   end
- 
-  def test_post
-    @driver.navigate.to "http://www.google.com"
-    element = @driver.find_element(:name, 'q')
-    element.send_keys "BrowserStack"
-    element.submit
-    assert_equal(@driver.title, "BrowserStack - Google Search")
-  end
- 
-  def teardown
-    @driver.quit
-  end
+  threads.each { |thread| thread.join }
+end
+
+run do
+  Thread.current[:driver].get 'http://qa1.healthcentral.com'
+  Thread.current[:driver].title.should == 'HealthCentral.com - Trusted, Reliable and Up To Date Health Information'
 end
