@@ -44,7 +44,7 @@ class AssetsTest < MiniTest::Test
       wrong_assets = []
       right_assets = []
       @proxy.har.entries.find do |entry|
-        if entry.request.url.include?(wrong_asset_host)
+        if entry.request.url.include?((["qa.healthcentral.", "qa1.healthcentral","qa2.healthcentral.","qa3.healthcentral.", "www.healthcentral.com", "alpha.healthcentral", "stage.healthcentral."] - [ASSET_HOST]).to_s)
           wrong_assets << entry.request.url
         end
         if entry.request.url.include?(ASSET_HOST)

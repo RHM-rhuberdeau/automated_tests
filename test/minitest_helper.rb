@@ -18,7 +18,7 @@ def firefox
   # Selenium::WebDriver::Firefox::Binary.path= '/opt/firefox/firefox'
   # Selenium::WebDriver::Firefox::Binary.path= '/Applications/Firefox.app/Contents/MacOS/firefox'
   @driver = Selenium::WebDriver.for :firefox
-  @driver.manage.window.resize_to(1024,1000)
+  @driver.manage.window.resize_to(1224,1000)
   @driver.manage.timeouts.implicit_wait = 5
 end
 
@@ -30,7 +30,7 @@ def firefox_with_proxy
 	@profile = Selenium::WebDriver::Firefox::Profile.new
 	@profile.proxy = @proxy.selenium_proxy
 	@driver = Selenium::WebDriver.for :firefox, :profile => @profile
-  @driver.manage.window.resize_to(1024,1000)
+  @driver.manage.window.resize_to(1224,1000)
   @driver.manage.timeouts.implicit_wait = 5
 end
 
@@ -42,7 +42,7 @@ def fire_fox_with_secure_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
-  @driver.manage.window.resize_to(1024,1000)
+  @driver.manage.window.resize_to(1224,1000)
   @driver.manage.timeouts.implicit_wait = 5
 end
 
@@ -60,7 +60,7 @@ def fire_fox_remote_proxy
     :remote,
     url: 'http://jenkins.choicemedia.com:4444//wd/hub',
     desired_capabilities: caps) 
-  @driver.manage.window.resize_to(1024,1000)
+  @driver.manage.window.resize_to(1224,1000)
   @driver.manage.timeouts.implicit_wait = 5
 end
 
@@ -69,7 +69,7 @@ def fire_fox_remote
     :remote,
     url: 'http://jenkins.choicemedia.com:4444//wd/hub',
     desired_capabilities: :firefox)
-  @driver.manage.window.resize_to(1024,1000)
+  @driver.manage.window.resize_to(1224,1000)
   @driver.manage.timeouts.implicit_wait = 5
 end
 

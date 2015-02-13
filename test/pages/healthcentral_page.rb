@@ -78,7 +78,7 @@ class HealthCentralPage
   end
 
   def wrong_asset_host
-    (["qa.healthcentral.", "www.healthcentral.com", "alpha.healthcentral", "stage.healthcentral."] - [ASSET_HOST]).to_s
+    (["qa.healthcentral.", "qa1.healthcentral","qa2.healthcentral.","qa3.healthcentral.", "www.healthcentral.com", "alpha.healthcentral", "stage.healthcentral."] - [ASSET_HOST]).to_s
   end
 
   def go_through_slide_show

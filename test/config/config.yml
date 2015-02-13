@@ -10,6 +10,30 @@ qa:
   medtronic:
     base_url: https://secure.healthcentral.com
 
+qa1:
+  asset_host: qa1.healthcentral.
+  collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
+  healthcentral:
+    base_url: http://qa1.healthcentral.com
+    drupal_url: http://qa1.healthcentral.com
+    immersive: http://immersiveqa.healthcentral.choicemedia.com
+  berkley:
+    base_url: http://qa.berkeleywellness.choicemedia.com
+  medtronic:
+    base_url: https://secure.healthcentral.com
+
+qa2:
+  asset_host: qa2.healthcentral.
+  collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
+  healthcentral:
+    base_url: http://qa2.healthcentral.com
+    drupal_url: http://qa2.healthcentral.com
+    immersive: http://immersiveqa.healthcentral.choicemedia.com
+  berkley:
+    base_url: http://qa.berkeleywellness.choicemedia.com
+  medtronic:
+    base_url: https://secure.healthcentral.com
+
 qa3:
   asset_host: qa3.healthcentral.
   collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
