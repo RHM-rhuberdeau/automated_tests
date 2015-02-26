@@ -1,42 +1,83 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/redesign_entry_page'
+require_relative '../../../pages/redesign_question_page'
 
-class EntryPageTest < MiniTest::Test
-  context "an expert entry" do 
+class HeartDiseaseQuestionPageTest < MiniTest::Test
+  context "a Question with an expert answer" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/entries.yml')
-      entry_fixture = YAML::load_documents(io)
-      @entry_fixture = OpenStruct.new(entry_fixture[0][172231])
-      @page = ::RedesignEntryPage.new(@driver, @proxy, @entry_fixture)
-      visit "#{HC_BASE_URL}/multiple-sclerosis/c/255251/172231/turning-embrace"
+      io = File.open('test/fixtures/healthcentral/questions.yml')
+      question_fixture = YAML::load_documents(io)
+      @question_fixture = OpenStruct.new(question_fixture[0][132860])
+      @page = ::RedesignQuestionPage.new(@driver, @proxy, @question_fixture)
+      visit "#{HC_BASE_URL}/heart-disease/c/question/67255/40783"
     end
 
     context "when functioning properly" do 
-      should "have the publish date" do 
-        publish_date = @driver.find_element(:css, "span.Page-info-publish-date").text
-        expected_date = "October 14, 2014"
-        assert_equal(expected_date, publish_date, "publish date was #{publish_date} not #{expected_date}")
+      should "have an expert answer section" do 
+        expert_section = @driver.find_element(:css, ".CommentList--qa.QA-experts-container li")
+        assert_equal(true, !expert_section.nil?, "Expert section did not appear on the page")
       end
 
-      should "include the authors name in the byline" do 
-        author_name = @driver.find_element(:css, ".Page-info-publish-author a").text
-        expected_name = "JHo"
-        assert_equal(expected_name, author_name, "author name was #{author_name} not #{expected_name}")
+      should "not expose the community answers until after view more answers is clicked" do 
+        exposed_answers = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").select {|x| x.displayed? }
+        assert_equal(0, exposed_answers.length, "Only #{exposed_answers.length} answers were exposed")
       end
 
-      should "include the author's role" do  
-        role = @driver.find_element(:css, "span.Page-info-publish-badge").text
-        expected_role = "Editor"
-        assert_equal(expected_role, role, "role was #{role} not #{expected_role}")
+      should "display the full content of the experts answer" do 
+        expert_answer = @driver.find_elements(:css, ".CommentList--qa.QA-experts-container li .CommentBox-secondary-content").select { |x| x.displayed?}.first
+        expected_answer = "DaddysGirl,Thanksforyourquestion.Ihavehad3or4patientsthroughtheyearswhodevelopedasternalwoundinfection,andrequiredtheremovalofthesternum.Theyallhadafollow-upprocedureinwhichaflapwasplacedoverthesternum,containingabdominalwallmuscle,andsometimesunderlyingomentum.Thisservestoprotectthechestcavityfromminorcontactwithpeopleandobjects,thatmostpeoplewouldencounterindailyliving.Youmaynoticethatwhenyourfatherbreathesin,hischest/ribswillballoonoutabit,whiletheflapretractsinabit.Theoppositeoccurswhenhebreathesout.Whenliftingheavyobjects,peopleusuallytakeabreath,thenholditandexertheavypressurebycontractingtheirabdominalmuscles.Thisshouldbeavoidedbyyourfatherasthiswouldputextrapressureontheflap.Thewallsofthecavity(ribs)willsmoothoutwithtimeandshouldnotbeanissueforanothertear.Inaddition,themusclesoftheflapwillhelppreventthisalso.Youwillneedtodiscussallofyourquestionswiththesurgeon,especiallyhisfuturerestrictionsandprecautions.Wearingavestfordailyactivitiesshouldnotbenecessary.Youshouldalsoknowthatallofmypatientslivedforseveralyears,withnofurtherproblemsrelatedtotheremovaloftheirsternums.Bestwishes.MartinCane,M.D."
+        assert_equal(expected_answer, expert_answer.text.gsub(" ", '').gsub("\n", ''), "Answer was #{expert_answer} not #{expected_answer}")
       end
-      
-      should "include the author's profile image which links to the author's profile" do 
-        profile_img = @driver.find_element(:css, "a.Page-info-visual img")
-        assert_equal(true, !profile_img.nil?)
-        profile_img.click
-        assert_equal(true, (@driver.current_url == "#{HC_BASE_URL}/profiles/c/255251"))
+
+      should "display the expert's avatar which links to the expert's profile" do 
+        avatar_link  = @driver.find_element(:css, ".CommentList--qa.QA-experts-container .AuthorInfo--qa a.AuthorInfo-avatar--qa")
+        avatar_image = @driver.find_element(:css, "img.Page-info-visual-image")
+
+        avatar_link.click
+        sleep 1
+        assert_equal("#{HC_BASE_URL}/profiles/c/89278", @driver.current_url, "Avatar linked to #{@driver.current_url} not #{HC_BASE_URL}/profiles/c/89278")
+      end
+
+      should "display the expert's name which links to the expert's profile" do 
+        expert_name  = @driver.find_element(:css, ".AuthorInfo--qa .AuthorInfo-name--answer a")
+
+        assert_equal(true, "Martin Cane, M.D." == expert_name.text, "Expert name did not appear on the page")
+        expert_name.click
+        sleep 1
+        assert_equal("#{HC_BASE_URL}/profiles/c/89278", @driver.current_url, "Avatar linked to #{@driver.current_url} not #{HC_BASE_URL}/profiles/c/89278")
+      end
+
+      should "display the date the expert answer was published" do 
+        date = @driver.find_element(:css, "span.AuthorInfo-created").text
+        assert_equal("September 14, 2008", date, "Date was #{date} not September 14, 2008")
+      end
+
+      should "not display the community answers until View More Answers is clicked" do 
+        exposed_answers = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").select {|x| x.displayed? }
+        assert_equal(0, exposed_answers.length, "#{exposed_answers.length} answers were exposed")
+
+        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
+        view_more_answers.click
+        wait_for { @driver.find_element(css: '.QA-community .CommentBox-secondary-content').displayed? }
+
+        exposed_answers = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").select {|x| x.displayed? }
+        assert_equal(3, exposed_answers.length, "3 answers were not exposed. #{exposed_answers.length} answers were exposed")
+      end
+
+      should "not be pharma_safe after the user clicks view more answers" do 
+        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
+        view_more_answers.click
+
+        assert_equal(false, @page.pharma_safe?)
+      end
+    end
+
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO" do 
+      should "have the correct title" do 
+        assert_equal(true, @page.has_correct_title?)
       end
     end
 
@@ -50,35 +91,30 @@ class EntryPageTest < MiniTest::Test
       end
     end
 
-    ##################################################################
-    ################### SEO ##########################################
-    context "SEO" do 
-      should "have the correct title" do 
-        assert_equal(true, @page.has_correct_title?)
-      end
-    end
-
-
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
-    context "ads, analytics, omniture" do
-      should "be pharma safe" do
-        assert_equal(true, @page.pharma_safe?)
-      end
-      
+    context "ads, analytics, omniture" do 
       should "load the correct analytics file" do
         assert_equal(@page.analytics_file, true)
       end
 
+      should "be pharma safe" do
+        assert_equal(true, @page.pharma_safe?)
+      end
+
+      should "have a ugc value of n" do
+        assert_equal(true, (@page.ugc == "[\"n\"]"), "#{@page.ugc.inspect}")
+      end
+
       should "have unique ads" do 
-        ads1 = @page.ads_on_page(3)
+        ads1 = @page.ads_on_page
         @driver.navigate.refresh
         sleep 1
-        ads2 = @page.ads_on_page(3)
-  
+        ads2 = @page.ads_on_page
+
         ord_values_1 = ads1.collect(&:ord).uniq
         ord_values_2 = ads2.collect(&:ord).uniq
-    
+
         assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
         assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
         assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
@@ -93,7 +129,7 @@ class EntryPageTest < MiniTest::Test
 
     ##################################################################
     ################### GLOBAL SITE TESTS ############################
-    context "Global Site tests" do 
+    context "Global site requirements" do 
       should "display the healthcentral logo" do 
         assert_equal(true, @page.logo_present?)
       end
@@ -144,11 +180,11 @@ class EntryPageTest < MiniTest::Test
         assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/ibd/",)
       end
 
-      should "have a Ask a Question button that links to the multiple sclerosis ask a question page" do 
+      should "have a Ask a Question button that links to the heart disease ask a question page" do 
         button = @driver.find_element(:css, ".Button--Ask")
         button.click
         wait_for { @driver.find_element(css: '.titlebar').displayed? }
-        assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/multiple-sclerosis/c/question", "Ask a Question linked to #{@driver.current_url} not /multiple-sclerosis/c/question")
+        assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/profiles/c/question/home?ic=ask", "Ask a Question linked to #{@driver.current_url} not /profiles/c/question/home?ic=ask")
       end
 
       should "have a follow us Facebook icon that links to the HealthCentral facebook page" do 
@@ -188,9 +224,11 @@ class EntryPageTest < MiniTest::Test
       should "have a subcategory navigation" do 
         subnav = @driver.find_element(:css, "div.Page-category.Page-sub-category.js-page-category")
         title_link = @driver.find_element(:css, ".Page-category-titleLink")
-        sub_category_links = @driver.find_element(:link, "Chronic Pain")
-        sub_category_links = @driver.find_element(:link, "Depression")
-        sub_category_links = @driver.find_element(:link, "Rheumatoid Arthritis")
+        sub_category_links = @driver.find_element(:link, "High Blood Pressure")
+        sub_category_links = @driver.find_element(:link, "Cholesterol")
+        sub_category_links = @driver.find_element(:link, "Diabetes")
+        sub_category_links = @driver.find_element(:link, "Menopause")
+        sub_category_links = @driver.find_element(:link, "Obesity")
       end
 
       should "have options to share on multiple social networks" do 

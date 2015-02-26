@@ -1,24 +1,17 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral_page'
 
-class QuizTest < MiniTest::Test
-  context "a drupal slideshow" do 
+class UnderstandingMigrainesTest < MiniTest::Test
+  context "understanding-migraines sponsored topic" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/quizes.yml')
-      quiz_fixture = YAML::load_documents(io)
-      @quiz_fixture = OpenStruct.new(quiz_fixture[0]['managepain'])
-      @page = ::HealthCentralPage.new(@driver, @proxy, @quiz_fixture)
-      visit "#{HC_BASE_URL}/rheumatoid-arthritis/d/quizzes/do-you-know-how-manage-your-pain"
-    end
-
-    context "when functioning properly" do
-      should "update the ads between each slides" do 
-        @page.go_through_quiz
-        assert_equal(true, @page.has_unique_ads?)
-      end
-    end
+      io = File.open('test/fixtures/healthcentral/sponsoredtopics.yml')
+      topic_fixture = YAML::load_documents(io)
+      @topic_fixture = OpenStruct.new(topic_fixture[0]['migraines'])
+      @page = ::HealthCentralPage.new(@driver, @proxy, @topic_fixture)
+      visit "#{HC_DRUPAL_URL}/migraine/d/understanding-migraines/taking-control"
+    end 
 
     ##################################################################
     ################### ASSETS #######################################
@@ -34,21 +27,20 @@ class QuizTest < MiniTest::Test
     # ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal(true, (@driver.title == "Living with Rheumatoid Arthritis: Success despite difficulties with RA - Rheumatoid Arthritis"), "Page title was: #{@page.driver.title}")
+        assert_equal(true, (@driver.title == "Chronic Migraine Control and Maintenance - Migraine"), "Page title was: #{@page.driver.title}")
       end
     end
 
     # #########################################################################
     # ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics and omniture" do 
-      should "have an adsite value of cm.ver.chronicpain" do 
-        expected_ad_site = "cm.ver.lblnra"
-        ad_site          = evaluate_script("AD_SITE")
-        assert_equal(true, (ad_site == expected_ad_site), "ad_site was #{ad_site} not #{expected_ad_site}")
+      should "have an adsite value of cm.own.tcc" do
+        ad_site = evaluate_script("AD_SITE")
+        assert_equal(true, (ad_site == "cm.own.tcc"))
       end
 
-      should "have ad_categories value of ['home', '', '']" do 
-        expected_ad_categories = ["quiz", "doyouknowh", ""]
+      should "have ad_categories value of ['zecuity', '', '']" do 
+        expected_ad_categories = ["zecuity", "", ""]
         actual_ad_categories   = evaluate_script("AD_CATEGORIES")
         assert_equal(true, (actual_ad_categories == expected_ad_categories), "ad_categories was #{actual_ad_categories} not #{expected_ad_categories}")
       end
@@ -74,7 +66,7 @@ class QuizTest < MiniTest::Test
       end
     end
   end
-
+  
   def teardown  
     @driver.quit  
     @proxy.close

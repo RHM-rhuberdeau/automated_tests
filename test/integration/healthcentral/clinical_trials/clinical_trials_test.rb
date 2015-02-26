@@ -39,17 +39,19 @@ class LBLN < MiniTest::Test
       assert_equal(true, @page.has_correct_title?, "Page title was: #{@page.driver.title}")
     end
 
-    should "not have unloaded assets" do 
-      assert_equal(false, @page.has_unloaded_assets?, "#{@page.unloaded_assets}")
-    end
-
-    should "load assets from the correct environment" do 
-      assert_equal(true, @page.wrong_assets.empty?, "wrong assets: #{@page.wrong_assets}")
-      assert_equal(false, @page.right_assets.empty?, "right assets empty: #{@page.right_assets}")
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
     end
   end
 
   def teardown  
     @driver.quit  
+    @proxy.close
   end 
 end
