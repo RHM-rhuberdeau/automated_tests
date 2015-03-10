@@ -3,7 +3,7 @@ require_relative './healthcentral_page'
 class MyMomentPage < HealthCentralPage
   attr_reader :driver, :proxy
 
-  def initialize(driver, proxy)
+  def initialize(driver, proxy, fixture=nil)
     @driver = driver
     @proxy  = proxy
     @ads  = []

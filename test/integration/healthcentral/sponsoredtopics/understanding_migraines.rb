@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral_page'
+require_relative '../../../pages/redesign_entry_page'
 
 class UnderstandingMigrainesTest < MiniTest::Test
   context "understanding-migraines sponsored topic" do 
@@ -9,9 +9,21 @@ class UnderstandingMigrainesTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/sponsoredtopics.yml')
       topic_fixture = YAML::load_documents(io)
       @topic_fixture = OpenStruct.new(topic_fixture[0]['migraines'])
-      @page = ::HealthCentralPage.new(@driver, @proxy, @topic_fixture)
-      visit "#{HC_DRUPAL_URL}/migraine/d/understanding-migraines/taking-control"
+      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @topic_fixture)
+      visit "#{HC_BASE_URL}/migraine/d/understanding-migraines/taking-control"
     end 
+
+    context "when functioning properly" do 
+      should "have relatlive links in the header" do 
+        links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link unless link.include?("twitter")
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end
+    end
 
     ##################################################################
     ################### ASSETS #######################################

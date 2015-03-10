@@ -13,81 +13,102 @@ class DietExerciseQuestionPageTest < MiniTest::Test
       visit "#{HC_BASE_URL}/diet-exercise/c/question/748553/132860/"
     end
 
-    # context "when functioning properly" do 
-    #   should "not have an expert answer section" do 
-    #     begin
-    #       expert_section = @driver.find_element(:css, ".CommentList--qa.QA-experts-container li")
-    #     rescue Selenium::WebDriver::Error::NoSuchElementError
-    #       expert_section = nil
-    #     end
-    #     assert_equal(true, expert_section.nil?, "Expert section did not appear on the page")
-    #   end
+    context "when functioning properly" do 
+      should "not have an expert answer section" do 
+        begin
+          expert_section = @driver.find_element(:css, ".CommentList--qa.QA-experts-container li")
+        rescue Selenium::WebDriver::Error::NoSuchElementError
+          expert_section = nil
+        end
+        assert_equal(true, expert_section.nil?, "Expert section did not appear on the page")
+      end
 
-    #   should "have a message that the question has not been answered by an expert" do
-    #     expected_message = "This question has not been answered by one of our experts yet."
-    #     no_expert_message = @driver.find_element(:css, ".QA-experts-no-answer").text
-    #     assert_equal(true, no_expert_message == expected_message, "#{expected_message} did not appearon the page, #{no_expert_message} did") 
-    #   end
+      should "have a message that the question has not been answered by an expert" do
+        expected_message = "This question has not been answered by one of our experts yet."
+        no_expert_message = @driver.find_element(:css, ".QA-experts-no-answer").text
+        assert_equal(true, no_expert_message == expected_message, "#{expected_message} did not appearon the page, #{no_expert_message} did") 
+      end
 
-    #   should "expose the community answers if there are no expert answers" do 
-    #     exposed_answers = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").select {|x| x.displayed? }
-    #     assert_equal(3, exposed_answers.length, "3 answers were not exposed. #{exposed_answers.length} answers were exposed")
-    #   end
-    # end
+      should "expose the community answers if there are no expert answers" do 
+        exposed_answers = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").select {|x| x.displayed? }
+        assert_equal(3, exposed_answers.length, "3 answers were not exposed. #{exposed_answers.length} answers were exposed")
+      end
+      
+      should "have relatlive links in the header" do 
+        links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link unless link.include?("twitter")
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end
+
+      should "have relative links in the right rail" do 
+        wait_for { @driver.find_element(:css, ".MostPopular-container").displayed? }
+        links = (@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link 
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end
+    end
 
      ##################################################################
      ################### SEO ##########################################
-     # context "SEO" do 
-     #   should "have the correct title" do 
-     #     assert_equal(true, @page.has_correct_title?)
-     #   end
-     # end
+     context "SEO" do 
+       should "have the correct title" do 
+         assert_equal(true, @page.has_correct_title?)
+       end
+     end
 
      ##################################################################
      ################### ASSETS #######################################
-     # context "assets" do 
-     #   should "have valid assets" do 
-     #     assets = @page.assets
-     #     assets.validate
-     #     assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
-     #   end
-     # end
+     context "assets" do 
+       should "have valid assets" do 
+         assets = @page.assets
+         assets.validate
+         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+       end
+     end
 
      #########################################################################
      ################### ADS, ANALYTICS, OMNITURE ############################
-     # context "ads, analytics, omniture" do 
-     #   should "load the correct analytics file" do
-     #     assert_equal(@page.analytics_file, true)
-     #   end
+     context "ads, analytics, omniture" do 
+       should "load the correct analytics file" do
+         assert_equal(@page.analytics_file, true)
+       end
 
-     #   should "not be pharma safe" do
-     #     assert_equal(false, @page.pharma_safe?)
-     #   end
+       should "not be pharma safe" do
+         assert_equal(false, @page.pharma_safe?)
+       end
 
-     #   should "have a ugc value of y" do
-     #     assert_equal(true, (@page.ugc == "[\"y\"]"), "#{@page.ugc.inspect}")
-     #   end
+       should "have a ugc value of y" do
+         assert_equal(true, (@page.ugc == "[\"y\"]"), "#{@page.ugc.inspect}")
+       end
 
-     #   should "have unique ads" do 
-     #     ads1 = @page.ads_on_page
-     #     @driver.navigate.refresh
-     #     sleep 1
-     #     ads2 = @page.ads_on_page
+       should "have unique ads" do 
+         ads1 = @page.ads_on_page
+         @driver.navigate.refresh
+         sleep 1
+         ads2 = @page.ads_on_page
 
-     #     ord_values_1 = ads1.collect(&:ord).uniq
-     #     ord_values_2 = ads2.collect(&:ord).uniq
+         ord_values_1 = ads1.collect(&:ord).uniq
+         ord_values_2 = ads2.collect(&:ord).uniq
 
-     #     assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
-     #     assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
-     #     assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
-     #   end
+         assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
+         assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
+         assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
+       end
 
-     #   should "have valid omniture values" do 
-     #     omniture = @page.omniture
-     #     omniture.validate
-     #     assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
-     #   end
-     # end
+       should "have valid omniture values" do 
+         omniture = @page.omniture
+         omniture.validate
+         assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
+       end
+     end
 
      ##################################################################
      ################### GLOBAL SITE TESTS ############################

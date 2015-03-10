@@ -84,7 +84,33 @@ class ImmersivePageTest < MiniTest::Test
         wait_for_page_to_load
         assert_equal(true, page_has_ad("ad.doubleclick.net/N3965/adj/cm.ver.lblnskin/immersive/ps2_chapter3"))
       end
-    end 
+    end
+
+    context "landing page" do 
+      setup do 
+        visit "#{HC_BASE_URL}/skin-care/d/immersive/living-psoriasis-diane-talbert"
+        @page = ::ImmersivePage.new(@driver, @proxy)
+      end
+      should "have relatlive links in the header" do 
+        links = (@driver.find_elements(:css, ".Page-supercollection-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link unless link.include?("twitter")
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end
+
+      should "have relative links in the content" do 
+        links = (@driver.find_elements(:css, ".Node-content-primary")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link unless link.include?("twitter")
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end 
+    end
   end#an Immersive
 
   def teardown  

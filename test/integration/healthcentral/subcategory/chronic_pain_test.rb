@@ -73,6 +73,27 @@ class SubCategory < MiniTest::Test
           assert_equal(true, (text == "Slideshows" || text == "Medications" || text == "Videos" || text == "Questions" || text == "Topics A-Z" || text == "Quizzes and Assessments" || text == "Blogposts"), "#{text} did not appear in more resources")
         end
       end 
+
+      should "have relatlive links in the header" do 
+        links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link unless link.include?("twitter")
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end
+
+      should "have relative links in the right rail" do 
+        wait_for { @driver.find_element(:css, ".MostPopular-container").displayed? }
+        links = (@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link 
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end
     end
 
     ##################################################################

@@ -1,5 +1,5 @@
 qa:
-  asset_host: qa.choicemedia.healthcentral.
+  asset_host: http://qa.choicemedia.healthcentral.
   collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
   healthcentral:
     base_url: http://qa.healthcentral.choicemedia.com
@@ -14,7 +14,7 @@ qa:
     name: medtronic
 
 qa1:
-  asset_host: qa1.healthcentral.
+  asset_host: http://qa1.healthcentral.
   collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
   healthcentral:
     base_url: http://qa1.healthcentral.com
@@ -29,7 +29,7 @@ qa1:
     name: medtronic
 
 qa2:
-  asset_host: qa2.healthcentral.
+  asset_host: http://qa2.healthcentral.
   collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
   healthcentral:
     base_url: http://qa2.healthcentral.com
@@ -44,7 +44,7 @@ qa2:
     name: medtronic
 
 qa3:
-  asset_host: qa3.healthcentral.
+  asset_host: http://qa3.healthcentral.
   collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
   healthcentral:
     base_url: http://qa3.healthcentral.com
@@ -58,8 +58,23 @@ qa3:
     base_url: https://secure.healthcentral.com
     name: medtronic
 
+qa4:
+  asset_host: http://qa4.healthcentral.
+  collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
+  healthcentral:
+    base_url: http://qa4.healthcentral.com
+    name: healthcentral
+    drupal_url: http://qa4.healthcentral.com
+    immersive: http://immersiveqa.healthcentral.choicemedia.com
+  berkley:
+    base_url: http://qa.berkeleywellness.choicemedia.com
+    name: berkleywellness
+  medtronic:
+    base_url: https://secure.healthcentral.com
+    name: medtronic
+
 production:
-  asset_host: www.healthcentral.com.
+  asset_host: http://www.healthcentral.
   healthcentral:
     base_url: http://www.healthcentral.com
     name: healthcentral
@@ -73,7 +88,7 @@ production:
     name: medtronic
 
 alpha:
-  asset_host: stage.healthcentral.com
+  asset_host: http://alpha.healthcentral.com
   healthcentral:
     base_url: http://alpha.healthcentral.choicemedia.com
     name: healthcentral
@@ -87,7 +102,7 @@ alpha:
     name: medtronic
 
 stage:
-  asset_host: stage.healthcentral.
+  asset_host: http://stage.healthcentral.
   healthcentral:
     base_url: http://stage.healthcentral.com
     name: healthcentral

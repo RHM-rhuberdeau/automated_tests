@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/redesign_entry_page'
 
-class EntryPageTest < MiniTest::Test
+class ItMightBeSomethingEntryPageTest < MiniTest::Test
   context "a community member entry" do 
     setup do 
       fire_fox_with_secure_proxy
@@ -9,7 +9,7 @@ class EntryPageTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/entries.yml')
       entry_fixture = YAML::load_documents(io)
       @entry_fixture = OpenStruct.new(entry_fixture[0][173745])
-      @page = ::RedesignEntryPage.new(@driver, @proxy, @entry_fixture)
+      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @entry_fixture)
       visit "#{HC_BASE_URL}/multiple-sclerosis/c/936913/173745/might-something"
     end
 
@@ -37,6 +37,27 @@ class EntryPageTest < MiniTest::Test
         assert_equal(true, !profile_img.nil?)
         profile_img.click
         assert_equal(true, (@driver.current_url == "#{HC_BASE_URL}/profiles/c/936913"))
+      end
+
+      should "have relatlive links in the header" do 
+        links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link unless link.include?("twitter")
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end
+
+      should "have relative links in the right rail" do 
+        wait_for { @driver.find_element(:css, ".MostPopular-container").displayed? }
+        links = (@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link 
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
       end
     end
 
@@ -93,118 +114,21 @@ class EntryPageTest < MiniTest::Test
     ##################################################################
     ################### GLOBAL SITE TESTS ############################
     context "Global Site tests" do 
-      should "display the healthcentral logo" do 
-        assert_equal(true, @page.logo_present?)
-      end
+      should "have passing global test cases" do 
+        global_test_cases = @page.global_test_cases
+        global_test_cases.validate
+        assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
 
-      should "have a logo that links to the homepage" do 
-        link = @driver.find_element(:css, "a.LogoHC")
-        link.click
-        sleep 1
-        assert_equal(true, (@driver.current_url == "#{HC_BASE_URL}/"), "The logo linked to #{@driver.current_url} not #{HC_BASE_URL}/")
-      end
-
-      should "have a health a-z nav that opens after clicking it" do 
-        nav = @driver.find_elements(:css, ".HC-nav")
-        if nav
-          nav = nav.select { |x| x.displayed? }
-        end
-        assert_equal(true, nav.empty?, "A-Z was on the page before clicking it #{nav}")
-        button = @driver.find_element(:css, ".Button--AZ")
-        button.click
-        az_nav = @driver.find_element(:css, ".HC-nav")
-        assert_equal(false, az_nav.nil?, "A-Z nav did not appear on the page afer clicking the Health A-Z button #{az_nav}")
-      end
-
-      should "display Body & Mind, Family Health and Healthy Living in the Health A-Z section" do 
-        button = @driver.find_element(:css, ".Button--AZ")
-        button.click
-        wait_for { @driver.find_element(css: '.js-Nav--Primary-accordion-title').displayed? }
-        titles = @driver.find_elements(:css, ".js-Nav--Primary-accordion-title").select {|x| x.displayed? }.select {|x| x.text == "BODY & MIND" || x.text == "FAMILY HEALTH" || x.text == "HEALTHY LIVING"}
-        assert_equal(3, titles.length, "Not all super categories were on the page. Present were: #{titles}")
-      end
-
-      should "not have links to the super categories in the Health A-Z menu" do 
-        button = @driver.find_element(:css, ".Button--AZ")
-        button.click
-        wait_for { @driver.find_element(css: '.js-Nav--Primary-accordion-title').displayed? }
-        links = @driver.find_elements(:css, ".Nav--Primary.js-Nav--Primary a").select { |x| x.text.downcase == "body & mind" || x.text.downcase == "family health" || x.text.downcase == "healthy living"}
-        assert_equal(true, links.empty?, "Links to the super categories were present")
-      end 
-
-      should "have a subcategory link in the Health A-Z menu" do 
-        button = @driver.find_element(:css, ".Button--AZ")
-        button.click
-        wait_for { @driver.find_element(css: '.js-Nav--Primary-accordion-title').displayed? }
-        link = @driver.find_elements(:css, ".Nav--Primary.js-Nav--Primary a").select { |x| x.text == "Digestive Health"}
-        assert_equal(false, link.nil?, "Digestive Health was missing from the subcategory links")
-        link.first.click
-        wait_for { @driver.find_element(:css, ".Phases-navigation").displayed? }
-        assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/ibd/",)
-      end
-
-      should "have a Ask a Question button that links to the multiple sclerosis ask a question page" do 
-        button = @driver.find_element(:css, ".Button--Ask")
-        button.click
-        wait_for { @driver.find_element(css: '.titlebar').displayed? }
-        assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/multiple-sclerosis/c/question", "Ask a Question linked to #{@driver.current_url} not /multiple-sclerosis/c/question")
-      end
-
-      should "have a follow us Facebook icon that links to the HealthCentral facebook page" do 
-        fb_icon = @driver.find_element(:css, ".HC-header-content span.icon-facebook")
-        fb_icon.click
-        sleep 1
-        second_window = @driver.window_handles.last
-        @driver.switch_to.window second_window
-        assert_equal(true, @driver.current_url == "https://www.facebook.com/HealthCentral?v=app_369284823108595", "Facebook icon linked to #{@driver.current_url} not https://www.facebook.com/HealthCentral?v=app_369284823108595")
-      end
-
-      should "have a follow us Twitter icon that links to the HealthCentral twitter page" do 
-        fb_icon = @driver.find_element(:css, ".HC-header-content span.icon-twitter")
-        fb_icon.click
-        sleep 1
-        second_window = @driver.window_handles.last
-        @driver.switch_to.window second_window
-        assert_equal(true, @driver.current_url == "https://twitter.com/healthcentral", "Twitter icon linked to #{@driver.current_url} not https://twitter.com/healthcentral")
-      end
-
-      should "have a follow us Pinterest icon that links to the HealthCentral pinterest page" do 
-        fb_icon = @driver.find_element(:css, ".HC-header-content span.icon-pinterest")
-        fb_icon.click
-        sleep 1
-        second_window = @driver.window_handles.last
-        @driver.switch_to.window second_window
-        assert_equal(true, @driver.current_url == "https://www.pinterest.com/HealthCentral/", "Pinterest icon linked to #{@driver.current_url} not https://www.pinterest.com/HealthCentral/")
-      end
-
-      should "have a mail icon that links to the HealthCentral newsletter subscribe page" do 
-        fb_icon = @driver.find_element(:css, ".HC-header-content span.icon-mail")
-        fb_icon.click
-        sleep 1
-        assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/profiles/c/newsletters/subscribe", "Mail icon linked to #{@driver.current_url} not #{HC_BASE_URL}/profiles/c/newsletters/subscribe")
-      end
-
-      should "have a subcategory navigation" do 
         subnav = @driver.find_element(:css, "div.Page-category.Page-sub-category.js-page-category")
         title_link = @driver.find_element(:css, ".Page-category-titleLink")
         sub_category_links = @driver.find_element(:link, "Chronic Pain")
         sub_category_links = @driver.find_element(:link, "Depression")
         sub_category_links = @driver.find_element(:link, "Rheumatoid Arthritis")
-      end
 
-      should "have options to share on multiple social networks" do 
-        share1 = @driver.find_element(:css, "span.icon-facebook.icon-light.js-social--share")
-        share1 = @driver.find_element(:css, "span.icon-twitter.icon-light.js-social--share")
-        share1 = @driver.find_element(:css, "span.icon-stumbleupon.icon-light.js-social--share")
-        share1 = @driver.find_element(:css, "span.icon-mail.icon-light.js-social--share")
-      end
-
-      should "have a footer with necessary links" do 
-        footer_links = @driver.find_elements(:css, "#footer a.HC-link-row-link").select { |x| x.text == "About Us" || x.text == "Contact Us" || x.text == "Privacy Policy" || x.text == "Terms of Use" || x.text == "Security Policy" || x.text == "Advertising Policy" || x.text == "Advertise With Us" }
-        assert_equal(true, footer_links.length == 7, "Links missing from footer: #{footer_links}")
-
-        other_sites = @driver.find_elements(:css, "#footer a.HC-link-row-link").select { |x| x.text == "The Body" || x.text == "The Body Pro" || x.text == "Berkeley Wellness" || x.text == "Health Communities" || x.text == "Health After 50" || x.text == "Intelecare" || x.text == "Mood 24/7"}
-        assert_equal(true, other_sites.length == 7, "Missing links to other sites in the footer: #{other_sites.length}")
+        button = @driver.find_element(:css, ".Button--Ask")
+        button.click
+        wait_for { @driver.find_element(css: '.titlebar').displayed? }
+        assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/multiple-sclerosis/c/question", "Ask a Question linked to #{@driver.current_url} not /multiple-sclerosis/c/question")
       end
     end
   end

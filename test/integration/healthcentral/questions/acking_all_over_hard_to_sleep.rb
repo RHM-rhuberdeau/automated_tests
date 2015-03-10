@@ -28,7 +28,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
         view_more_answers.click
         wait_for { @driver.find_element(css: '.QA-community .CommentBox-secondary-content').displayed? }
         first_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '')
-        expected_answer = "YourquestionhascometotheSkinCaresiteonHealthCentralandIdon'tthinkanyonecouldansweryouaboutyoursymptomsandwhatmightbehappening.Theycan'tdiagnoseyouovertheinternet,yet.Ifyoufeelyouneedto,youshouldcallyourdoctor,call911forimmediateassistance,ororgotoyourlocalemergencyroom...READMORE"
+        expected_answer = "YourquestionhascometotheSkinCaresiteonHealthCentralandIdon'tthinkanyonecouldansweryouaboutyoursymptomsandwhatmightbehappening.Theycan'tdiagnoseyouovertheinternet,yet.Ifyoufeelyouneedto,youshouldcallyourdoctor,call911forimmediateassistance,ororgotoyourlocal...READMORE"
         assert_equal(expected_answer, first_answer, "First answer was not truncated: #{first_answer}")
       end
 
@@ -56,7 +56,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
         assert_equal(true, community_answers.length == community_avatars.length, "One or more answers is missing an avatar. Answers: #{community_answers.length} Avatars: #{community_avatars.length}")
 
         community_avatars.select { |x| x.displayed? }.first.click
-        sleep 1
+        wait_for { @driver.find_element(:css, "div#my_profile").displayed? }
         assert_equal("#{HC_BASE_URL}/profiles/c/222743", @driver.current_url, "Avatar linked to #{@driver.current_url} not #{HC_BASE_URL}/profiles/c/222743")
       end
 
@@ -74,7 +74,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
         assert_equal(true, community_answers.length == community_names.length, "Some answers were missing names: Answers #{community_answers.length} Names #{community_names.length}")
         first_user_name = profile_links.first
         first_user_name.click
-        sleep 1
+        wait_for { @driver.find_element(:css, "div#my_profile").displayed? }
         assert_equal("#{HC_BASE_URL}/profiles/c/222743", @driver.current_url, "Avatar linked to #{@driver.current_url} not #{HC_BASE_URL}/profiles/c/222743")
       end
 
@@ -89,9 +89,30 @@ class SkinCareQuestionPageTest < MiniTest::Test
         community_dates  = community_dates.select{|x| x.text.gsub(" ", '').length > 0}
 
         assert_equal(true, community_dates.length > 0, "No names appeared on the page")
-        assert_equal(true, community_dates[0].text == "February 27, 2011", "First date did not appear on the page: #{community_dates[0].text}")
+        assert_equal(true, community_dates[0].text == "February 26, 2011", "First date did not appear on the page: #{community_dates[0].text}")
         assert_equal(true, community_dates[1].text == "July 13, 2011",     "Second date did not appear on the page")
         assert_equal(true, community_dates[2].text == "January 01, 2012",  "Third date did not appear on the page")
+      end
+
+      should "have relatlive links in the header" do 
+        links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link unless link.include?("twitter")
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end
+
+      should "have relative links in the right rail" do 
+        wait_for { @driver.find_element(:css, ".MostPopular-container").displayed? }
+        links = (@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact
+        bad_links = links.map do |link|
+          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+            link 
+          end
+        end
+        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
       end
     end
 

@@ -37,6 +37,26 @@ class SlideshowTest < MiniTest::Test
       assert_equal(true, @proxy.har.entries.length >= 1, "no entries in proxy")
       assert_equal(true, broken_images.compact.empty?)
     end
+
+    should "have relatlive links in the header" do 
+      links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
+      bad_links = links.map do |link|
+        if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+          link unless link.include?("twitter")
+        end
+      end
+      assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+    end
+
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
   end
 
   def teardown  

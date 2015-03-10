@@ -172,7 +172,6 @@ class HealthCentralPage
   end 
 
   def assets
-    site_urls       = get_site_urls
     all_images      = @driver.find_elements(tag_name: 'img')
     unloaded_assets = unloaded_assets
     Assets.new(:proxy => @proxy, :imgs => all_images)
@@ -309,16 +308,7 @@ class Assets
   end
 
   def wrong_asset_hosts
-    (["qa.healthcentral.", "qa1.healthcentral","qa2.healthcentral.","qa3.healthcentral.", "qa4.healthcentral.", "www.healthcentral.com", "alpha.healthcentral", "stage.healthcentral."] - [ASSET_HOST])
-  end
-
-  def url_has_wrong_asset_host(url)
-    bad_host = wrong_asset_hosts.map do |host_url|
-      if url.index(host_url) == 0
-        true
-      end
-    end
-    bad_host.compact.length > 0
+    (["http://qa.healthcentral.", "http://qa1.healthcentral","http://qa2.healthcentral.","http://qa3.healthcentral.", "http://qa4.healthcentral.", "http://www.healthcentral.", "http://alpha.healthcentral", "http://stage.healthcentral."] - [ASSET_HOST])
   end
 
   def assets_using_correct_host
@@ -326,22 +316,6 @@ class Assets
     unless wrong_assets.empty?
       self.errors.add(:base, "there were assets loaded from the wrong environment #{wrong_assets}")
     end
-  end
-
-  def no_unloaded_assets
-    unloaded_assets = page_unloaded_assets.compact
-    if unloaded_assets.empty? == false
-      self.errors.add(:base, "there were unloaded assets #{unloaded_assets}")
-    end
-  end
-
-  def page_unloaded_assets
-    @unloaded_assets ||= @proxy.har.entries.map do |entry|
-       if (entry.request.url.split('.com').first.include?("#{HC_BASE_URL}") || entry.request.url.split('.com').first.include?("#{HC_DRUPAL_URL}") ) && entry.response.status != 200
-         entry.request.url
-      end
-    end
-    @unloaded_assets.compact
   end
 
   def page_wrong_assets
@@ -371,6 +345,31 @@ class Assets
     bad_host.compact.length > 0
   end
 
+  def no_unloaded_assets
+    unloaded_assets = page_unloaded_assets.compact
+    if unloaded_assets.empty? == false
+      self.errors.add(:base, "there were unloaded assets #{unloaded_assets}")
+    end
+  end
+
+  def page_unloaded_assets
+    @unloaded_assets ||= @proxy.har.entries.map do |entry|
+       if (entry.request.url.split('.com').first.include?("#{HC_BASE_URL}") || entry.request.url.split('.com').first.include?("#{HC_DRUPAL_URL}") ) && entry.response.status != 200
+         entry.request.url
+      end
+    end
+    @unloaded_assets.compact
+  end
+
+  def url_has_wrong_asset_host(url)
+    bad_host = wrong_asset_hosts.map do |host_url|
+      if url.index(host_url) == 0
+        true
+      end
+    end
+    bad_host.compact.length > 0
+  end
+
   def right_assets
     right_assets = @proxy.har.entries.map do |entry|
       if entry.request.url.include?(ASSET_HOST)
@@ -387,6 +386,7 @@ class Assets
         entry.request.url == img.attribute('src') && entry.response.status == 404
       end
     end
+    broken_images = broken_images.compact.collect {|x| x.request.url }
     unless broken_images.compact.empty?
       self.errors.add(:base, "broken images on the page #{broken_images}")
     end

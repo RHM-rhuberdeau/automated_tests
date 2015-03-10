@@ -1,13 +1,13 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/redesign_question_page'
+require_relative '../../../pages/redesign_entry_page'
 
 class LBLN < MiniTest::Test
   context "living with ra" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      @page = ::RedesignQuestionPage.new(@driver, @proxy)
-      visit "#{HC_DRUPAL_URL}/tools/d/clinical-trials"
+      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy)
+      visit "#{HC_BASE_URL}/tools/d/clinical-trials"
     end
 
     should "have an adsite value of cm.ver.dacprs" do 
@@ -22,6 +22,7 @@ class LBLN < MiniTest::Test
     end
 
     should "have unique ads" do 
+      sleep 5
       ads1 = @page.ads_on_page
       @driver.navigate.refresh
       sleep 1
