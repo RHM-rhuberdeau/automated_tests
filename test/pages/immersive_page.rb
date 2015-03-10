@@ -1,4 +1,6 @@
-class ImmersivePage
+require_relative './healthcentral_page'
+
+class ImmersivePage < HealthCentralPage
   attr_reader :driver, :proxy
 
   def initialize(driver, proxy)
