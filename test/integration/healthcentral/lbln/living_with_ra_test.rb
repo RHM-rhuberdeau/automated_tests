@@ -83,7 +83,6 @@ class LBLN < MiniTest::Test
         # assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
 
         subnav = @driver.find_element(:css, ".Logo-supercollection img")
-        logo_image         = @driver.find_element(:css, ".Page-category-titleLink")
         sub_category_links = @driver.find_element(:link, "more on Rheumatoid Arthritis »")
 
         button = @driver.find_element(:css, ".Button--Ask")

@@ -111,7 +111,11 @@ class LBLN < MiniTest::Test
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      @page = ::MyMomentPage.new(@driver, @proxy)
+      io = File.open('test/fixtures/healthcentral/mm.yml')
+      mm_fixture = YAML::load_documents(io)
+      @mm_fixture = OpenStruct.new(mm_fixture[0]['epilepsy'])
+      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @mm_fixture)
+
       visit "#{IMMERSIVE_URL}/epilepsy/d/LBLN/living-with-epilepsy/flat/?ic=hero"
     end
 
@@ -146,15 +150,6 @@ class LBLN < MiniTest::Test
       assert_equal(true, @page.has_correct_title?)
     end
 
-    should "not have unloaded assets" do 
-      assert_equal(false, @page.has_unloaded_assets?, "#{@page.unloaded_assets}")
-    end
-
-    should "load assets from the correct environment" do 
-      assert_equal(true, @page.wrong_assets.empty?, "wrong assets: #{@page.wrong_assets}")
-      assert_equal(false, @page.right_assets.empty?, "right assets empty: #{@page.right_assets}")
-    end
-
     should "have relatlive links in the header" do 
       links = (@driver.find_elements(:css, ".Page-supercollection-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
       bad_links = links.map do |link|
@@ -184,6 +179,16 @@ class LBLN < MiniTest::Test
       end
       assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
     end 
+
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
   end#taking control of epilepsy immersive
 
   def teardown  

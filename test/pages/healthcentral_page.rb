@@ -86,11 +86,13 @@ class HealthCentralPage
     slides = driver.find_elements(:css, ".Slide-content-slide-container")
     slides.each_with_index do |slide, index|
       unless index == (slides.length - 1)
+        ads = ads_on_page(3)
+        @slides << HealthCentralSlide.new(:ads => ads)
         @driver.find_element(:css, ".Slideshow-controls-next-button-label").click
         wait_for_ajax
-        @slides << HealthCentralSlide.new(:ads => ads_on_page(3))
       end
     end
+    @slides << HealthCentralSlide.new(:ads => ads_on_page(3))
   end 
 
   def go_through_quiz
@@ -194,16 +196,9 @@ end
 class HealthCentralSlide
   attr_reader :text, :ads
 
-  def initialize(text=nil, ads)
+  def initialize(args)
     @text = text
-    @ads  = []
-    create_ads(ads[:ads])
-  end
-
-  def create_ads(ads)
-    ads.each do |ad|
-      @ads << HealthCentralAds.new(ad)
-    end
+    @ads  = args[:ads]
   end
 
   def ord_values
@@ -308,7 +303,7 @@ class Assets
   end
 
   def wrong_asset_hosts
-    (["http://qa.healthcentral.", "http://qa1.healthcentral","http://qa2.healthcentral.","http://qa3.healthcentral.", "http://qa4.healthcentral.", "http://www.healthcentral.", "http://alpha.healthcentral", "http://stage.healthcentral."] - [ASSET_HOST])
+    (["http://qa.healthcentral.", "http://qa1.healthcentral.","http://qa2.healthcentral.","http://qa3.healthcentral.", "http://qa4.healthcentral.", "http://www.healthcentral.", "http://alpha.healthcentral.", "http://stage.healthcentral."] - [ASSET_HOST])
   end
 
   def assets_using_correct_host

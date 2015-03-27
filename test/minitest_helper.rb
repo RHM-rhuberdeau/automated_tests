@@ -37,7 +37,10 @@ end
 def fire_fox_with_secure_proxy
   proxy_location = Settings.location
   server = BrowserMob::Proxy::Server.new(proxy_location)
-  server.start
+  begin
+    server.start
+  rescue
+  end
   @proxy = server.create_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
