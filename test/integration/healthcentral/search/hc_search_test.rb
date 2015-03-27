@@ -42,34 +42,15 @@ class HCSearchTest < MiniTest::Test
       assert_equal(true, @page.has_correct_title?, "Page title was: #{@page.driver.title}")
     end
 
-    should "not have unloaded assets" do 
-      visit "#{HC_BASE_URL}/query?q=exercise"
-      assert_equal(false, @page.has_unloaded_assets?, "#{@page.unloaded_assets}")
-    end
-
-    should "load assets from the correct environment" do 
-      visit "#{HC_BASE_URL}/query?q=exercise"
-      assert_equal(true, @page.wrong_assets.empty?, "wrong assets: #{@page.wrong_assets}")
-      assert_equal(false, @page.right_assets.empty?, "right assets empty: #{@page.right_assets}")
-    end
-
-    should "not have any broken images" do
-      visit "#{HC_BASE_URL}/query?q=exercise"
-
-      all_images = @driver.find_elements(tag_name: 'img')
-
-      broken_images = []
-      all_images.each do |img|
-        broken_images << @proxy.har.entries.find do |entry|
-          entry.request.url == img.attribute('src') && entry.response.status == 404
-        end
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
-
-      assert_equal(true, @proxy.har.entries.length >= 1, "no entries in proxy")
-      assert_equal(true, broken_images.compact.empty?)
     end
-
-
   end#a search query
 
   def teardown  

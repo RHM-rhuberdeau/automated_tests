@@ -10,7 +10,7 @@ qa:
     base_url: http://qa.berkeleywellness.choicemedia.com
     name: berkleywellness
   medtronic:
-    base_url: https://secure.healthcentral.com
+    base_url: https://concrete5.qa1.healthcentral.com
     name: medtronic
 
 qa1:
@@ -88,7 +88,7 @@ production:
     name: medtronic
 
 alpha:
-  asset_host: http://alpha.healthcentral.com
+  asset_host: http://alpha.healthcentral.
   healthcentral:
     base_url: http://alpha.healthcentral.choicemedia.com
     name: healthcentral
