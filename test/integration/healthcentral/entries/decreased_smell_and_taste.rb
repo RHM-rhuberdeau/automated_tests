@@ -52,25 +52,10 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
         assert_equal(true, links_with_no_follow.empty?, "Expert post had links with nofollow: #{links_with_no_follow}")
       end
 
-      should "have relatlive links in the header" do 
-        links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
-        bad_links = links.map do |link|
-          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
-            link unless link.include?("twitter")
-          end
-        end
-        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
-      end
-
-      should "have relative links in the right rail" do 
-        wait_for { @driver.find_element(:css, ".MostPopular-container").displayed? }
-        links = (@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact
-        bad_links = links.map do |link|
-          if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
-            link 
-          end
-        end
-        assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      should "have valid functionality" do 
+        functionality = @page.functionality_test_cases
+        functionality.validate
+        assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
       end
     end
 
@@ -105,7 +90,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
 
       should "have unique ads" do 
         ads1 = @page.ads_on_page(3)
-        @driver.navigate.refresh
+        visit "#{HC_BASE_URL}/allergy/c/3989/173667/decreased-common-bedfellows"
         sleep 1
         ads2 = @page.ads_on_page(3)
 

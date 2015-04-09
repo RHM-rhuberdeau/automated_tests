@@ -22,9 +22,8 @@ class LBLN < MiniTest::Test
     end
 
     should "have unique ads" do 
-      sleep 5
       ads1 = @page.ads_on_page
-      @driver.navigate.refresh
+      visit "#{HC_BASE_URL}/tools/d/clinical-trials"
       sleep 1
       ads2 = @page.ads_on_page
 

@@ -13,7 +13,7 @@ module RedesignEntry
     def analytics_file
       has_file = false
       proxy.har.entries.each do |entry|
-        if entry.request.url.include?('/sites/all/modules/custom/assets_pipeline/public/js/namespace.js')
+        if entry.request.url.include?('/assets/namespace.js')
           has_file = true
         end
       end
@@ -26,6 +26,47 @@ module RedesignEntry
 
     def global_test_cases
       RedesignEntry::GlobalTestCases.new(@driver, @proxy)
+    end
+
+    def functionality_test_cases
+      RedesignEntry::FunctionalityTestCases.new(@driver, @proxy)
+    end
+  end
+
+  class FunctionalityTestCases
+    include ::ActiveModel::Validations
+
+    validate :relative_header_links
+    validate :relative_right_rail_links
+
+    def initialize(driver, proxy)
+      @driver = driver
+      @proxy  = proxy
+    end
+    
+    def relative_header_links
+      links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
+      bad_links = links.map do |link|
+        if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+          link unless link.include?("twitter")
+        end
+      end
+      unless bad_links.compact.length == 0
+        self.errors.add(:base, "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end
+    end 
+
+    def relative_right_rail_links
+      wait_for { @driver.find_element(:css, ".MostPopular-container").displayed? }
+      links = (@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact
+      bad_links = links.map do |link|
+        if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
+          link 
+        end
+      end
+      unless bad_links.compact.length == 0
+        self.errors.add(:base, "There were links in the header that did not use relative paths: #{bad_links.compact}")
+      end
     end
   end
 

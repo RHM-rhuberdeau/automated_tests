@@ -48,7 +48,7 @@ class HealthCentralPage
   def analytics_file
     has_file = false
     proxy.har.entries.each do |entry|
-      if entry.request.url.include?('/sites/all/modules/custom/assets_pipeline/public/js/namespace.js')
+      if entry.request.url.include?('namespace.js')
         has_file = true
       end
     end
@@ -381,7 +381,9 @@ class Assets
         entry.request.url == img.attribute('src') && entry.response.status == 404
       end
     end
-    broken_images = broken_images.compact.collect {|x| x.request.url }
+    broken_images = broken_images.compact.collect do |x| 
+      x.request.url if (!x.request.url.include?("avatars") && (ENV['TEST_ENV'] != "production")) 
+    end
     unless broken_images.compact.empty?
       self.errors.add(:base, "broken images on the page #{broken_images}")
     end

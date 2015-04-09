@@ -13,7 +13,7 @@ task :test do
 end
 
 task :healthcentral do 
-  files = Dir[File.join('./test/integration/healthcentral', '**', '*.{rb}')].each do |file| 
+  files = Dir[File.join('./test/integration/healthcentral/sponsoredtopics', '**', '*.{rb}')].each do |file| 
       require file      
   end
 end

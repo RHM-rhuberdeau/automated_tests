@@ -16,7 +16,7 @@
   prop17: Community Member
   eVar17: D=oid
   prop22: /chronic-pain/c/question/515205/125351
-  prop29: desktop_large
+  prop29: desktop
   prop30: Landscape
   prop37: 3
   prop38: 125351
@@ -48,7 +48,7 @@
   eVar17:  D=oid
   prop18:  8
   prop22:  /skin-care/c/question/550423/132858
-  prop29:  desktop_large
+  prop29:  desktop
   prop30:  Landscape
   prop38:  132858
   prop39:  Skin Care
@@ -77,7 +77,7 @@
   eVar17:     "D=oid"
   prop18:     "2"
   prop22:     "/diet-exercise/c/question/748553/132860/"
-  prop29:     "desktop_large"
+  prop29:     "desktop"
   prop30:     "Landscape"
   prop38:     "132860"
   prop39:     "Diet & Exercise"
@@ -107,7 +107,7 @@
   eVar17:    "D=oid"
   prop18:    "4"
   prop22:    "/heart-disease/c/question/67255/40783"
-  prop29:    "desktop_large"
+  prop29:    "desktop"
   prop30:    "Landscape"
   prop38:    "40783"
   prop39:    "Heart Disease"

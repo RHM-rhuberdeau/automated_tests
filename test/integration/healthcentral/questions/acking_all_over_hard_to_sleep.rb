@@ -106,7 +106,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
 
       should "have relative links in the right rail" do 
         wait_for { @driver.find_element(:css, ".MostPopular-container").displayed? }
-        links = (@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact
+        links = (@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact - @driver.find_elements(:css, "span.RightrailbuttonpromoItem-title a").collect{|x| x.attribute('href')}.compact
         bad_links = links.map do |link|
           if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
             link 
@@ -151,7 +151,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
 
       should "have unique ads" do 
         ads1 = @page.ads_on_page
-        @driver.navigate.refresh
+        visit "#{HC_BASE_URL}/skin-care/c/question/550423/132858"
         sleep 1
         ads2 = @page.ads_on_page
 

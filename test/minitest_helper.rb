@@ -45,7 +45,7 @@ def fire_fox_with_secure_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
-  @driver.manage.window.resize_to(1400,1000)
+  @driver.manage.window.resize_to(1224,1000)
   @driver.manage.timeouts.implicit_wait = 5
 end
 
@@ -94,7 +94,7 @@ end
 def wait_for
   begin
     Selenium::WebDriver::Wait.new(:timeout => 3).until { yield }
-  rescue Selenium::WebDriver::Error::NoSuchElementError
+  rescue Selenium::WebDriver::Error::NoSuchElementError, Selenium::WebDriver::Error::TimeOutError
     false
   end
 end
