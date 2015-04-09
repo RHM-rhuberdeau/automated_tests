@@ -55,7 +55,7 @@ class QuizTest < MiniTest::Test
 
       should "have unique ads" do 
         ads1 = @page.ads_on_page
-        @driver.navigate.refresh
+        visit "#{HC_BASE_URL}/bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-disorder"
         sleep 1
         ads2 = @page.ads_on_page
 

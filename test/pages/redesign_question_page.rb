@@ -40,7 +40,7 @@ module RedesignQuestion
     def analytics_file
     	has_file = false
       proxy.har.entries.each do |entry|
-        if entry.request.url.include?('/sites/all/modules/custom/assets_pipeline/public/js/namespace.js')
+        if entry.request.url.include?('namespace.js')
           has_file = true
         end
       end
@@ -144,7 +144,7 @@ module RedesignQuestion
       ibd = @driver.find_elements(:css, ".Nav--Primary.js-Nav--Primary a").select { |x| x.text == "Digestive Health"}.first
       ibd.click
       wait_for { @driver.find_element(:css, ".Phases-navigation").displayed? }
-      unless @driver.current_url == "#{HC_BASE_URL}/ibd/"
+      unless (@driver.current_url == "#{HC_BASE_URL}/ibd/" || @driver.current_url == "#{HC_BASE_URL}/ibd")
         self.errors.add(:base, "IBD linked to #{@driver.current_url} not #{HC_BASE_URL}/ibd/")
       end
       @driver.navigate.back

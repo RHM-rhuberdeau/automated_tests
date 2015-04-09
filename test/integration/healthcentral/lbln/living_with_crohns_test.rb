@@ -23,7 +23,7 @@ class LBLN < MiniTest::Test
 
     should "have unique ads" do 
       ads1 = @page.ads_on_page
-      @driver.navigate.refresh
+      visit "#{HC_DRUPAL_URL}/ibd/d/immersive/living-crohns-disease-update/?ic=herothirds"
       sleep 1
       ads2 = @page.ads_on_page
 

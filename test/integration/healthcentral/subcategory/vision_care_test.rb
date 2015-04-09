@@ -92,7 +92,7 @@ class SubCategory < MiniTest::Test
 
       should "have relative links in the right rail" do 
         wait_for { @driver.find_element(:css, ".MostPopular-container").displayed? }
-        links = (@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact
+        links = ((@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact) - @driver.find_elements(:css, "span.RightrailbuttonpromoItem-title a").collect{|x| x.attribute('href')}.compact
         bad_links = links.map do |link|
           if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
             link 
@@ -120,8 +120,8 @@ class SubCategory < MiniTest::Test
       end
     end
 
-    # #########################################################################
-    # ################### ADS, ANALYTICS, OMNITURE ############################
+    #########################################################################
+    ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics and omniture" do 
       should "have an adsite value of cm.ver.vision" do 
         expected_ad_site = "cm.ver.vision"
@@ -135,9 +135,14 @@ class SubCategory < MiniTest::Test
         assert_equal(true, (actual_ad_categories == expected_ad_categories), "ad_categories was #{actual_ad_categories} not #{expected_ad_categories}")
       end
 
-      should "have unique ads" do 
+      should "have unique ads" do     
+        wait_for { @driver.find_element(:css, ".Page-category-title").displayed? }
+        sleep 1
         ads1 = @page.ads_on_page
-        @driver.navigate.refresh
+
+        visit "#{HC_DRUPAL_URL}/vision-care"
+        
+        wait_for { @driver.find_element(:css, ".Page-category-title").displayed? }
         sleep 1
         ads2 = @page.ads_on_page
 
