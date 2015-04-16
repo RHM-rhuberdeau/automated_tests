@@ -246,7 +246,12 @@ module TheBody
       end
 
       def topics_in_header
-        header = @driver.find_element(:css, "")
+        header = @driver.find_element(:css, ".Nav-listGroup-list--General li.Nav-listGroup-list-title")
+        header_text = header.text
+
+        unless header_text == "TOPICS IN HIV/AIDS"
+          self.errors.add(:base, "TOPICS IN HIV/AIDS was missing from the nav")
+        end
       end
     end
   end
