@@ -243,6 +243,7 @@ class Omniture
 
   attr_accessor *attr_list
   validate :values_match_fixture
+  validate :correct_report_suite
 
   def initialize(omniture_string, fixture)
     @fixture  = fixture
@@ -251,6 +252,15 @@ class Omniture
     range     = array.length - index
     new_array = array[index, range]
     omniture_from_array(new_array)
+    get_report_suite(array)
+  end
+
+  def get_report_suite(array)
+    array.each do |line_of_omniture|
+      if line_of_omniture.include?('Report Suite ID(s)')
+        @report_suite = line_of_omniture.split(' ').pop.strip
+      end
+    end
   end
 
   def omniture_from_array(array_from_omniture_debugger)
@@ -286,6 +296,12 @@ class Omniture
       if @fixture.send(attribute).to_s != self.send(attribute).to_s
         self.errors.add(:base, "#{attribute} was #{self.send(attribute)} not #{@fixture.send(attribute)}")
       end
+    end
+  end
+
+  def correct_report_suite
+    unless @report_suite == "cmi-choicemediacomdev"
+      self.errors.add(:base, "Omniture report suite being used is: #{@report_suite}")
     end
   end
 end
