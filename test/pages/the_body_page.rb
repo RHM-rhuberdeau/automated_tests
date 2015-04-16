@@ -219,7 +219,7 @@ module TheBody
         logo_image_link = @driver.find_element(:css, "span.HC-header-logo a")
         logo_image_link = logo_image_link.attribute('href')
 
-        unless logo_image_src == "http://www.thebody.com/LBLN/living-with-hiv/img/thebody-logo.png"
+        unless logo_image_src != "http://www.thebody.com/LBLN/living-with-hiv/img/thebody-logo.png"
           self.errors.add(:base, "Logo image src was wrong. It was #{logo_image_src.inspect}")
         end
         unless logo_image_link == "http://www.thebody.com/"
@@ -235,7 +235,7 @@ module TheBody
         resource_center_hrefs   = resource_center_links.collect {|x| x.attribute('href')}
         invalid_hrefs           = resource_center_hrefs.select {|x| x.length == 0 || x.nil?}
 
-        unless resource_center_header.text == "RESOURCE CENTERS"
+        unless resource_center_header.text != "RESOURCE CENTERS"
           self.errors.add(:base, "Resource Centers was missing from the Topic in HIV/AIDS nav")
         end
         unless missing_links.length == 0
@@ -256,7 +256,7 @@ module TheBody
       end
 
       def treatment_links
-        
+
       end
     end
   end
