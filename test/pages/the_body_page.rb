@@ -204,6 +204,7 @@ module TheBody
       validate :the_body_logo
       validate :resource_centers
       validate :topics_in_header
+      validate :treatment_links
 
       def initialize(args)
         @driver = args[:driver]
@@ -252,6 +253,10 @@ module TheBody
         unless header_text == "TOPICS IN HIV/AIDS"
           self.errors.add(:base, "TOPICS IN HIV/AIDS was missing from the nav")
         end
+      end
+
+      def treatment_links
+        
       end
     end
   end

@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem "httparty"
+gem  "activemodel", "4.2.0"
 
 group :test do 
   gem 'browsermob-proxy'
