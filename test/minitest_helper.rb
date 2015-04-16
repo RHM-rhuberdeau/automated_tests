@@ -86,7 +86,6 @@ def wait_for_page_to_load
       loop until finished_loading?
     end
   rescue Timeout::Error
-    @driver.execute_script "window.stop()"
   end
   sleep 0.5
 end
@@ -187,8 +186,7 @@ def visit(url)
     Timeout::timeout(5) do
       @driver.navigate.to url 
     end
-  rescue Timeout::Error
-  	@driver.execute_script "window.stop()"
+  rescue Timeout::Error, Net::ReadTimeout
   end
   wait_for_page_to_load
 end
