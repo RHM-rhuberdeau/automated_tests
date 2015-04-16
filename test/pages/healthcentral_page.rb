@@ -300,8 +300,13 @@ class Omniture
   end
 
   def correct_report_suite
-    unless @report_suite == "cmi-choicemediacomdev"
-      self.errors.add(:base, "Omniture report suite being used is: #{@report_suite}")
+    if ENV['TEST_ENV'] != 'production'
+      suite = "cmi-choicemediacomdev"
+    else
+      suite = "cmi-choicemediacom"
+    end
+    unless @report_suite == suite
+      self.errors.add(:base, "Omniture report suite being used is: #{@report_suite} not #{suite}")
     end
   end
 end
