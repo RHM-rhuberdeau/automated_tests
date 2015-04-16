@@ -12,6 +12,9 @@ qa:
   medtronic:
     base_url: https://concrete5.qa1.healthcentral.com
     name: medtronic
+  thebody:
+    base_url: http://uat.thebody.com
+    asset_host: http://uat.thebody.
 
 qa1:
   asset_host: http://qa1.healthcentral.

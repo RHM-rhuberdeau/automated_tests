@@ -7,20 +7,26 @@
 task :default => :test
 
 task :test do
-    files = Dir[File.join('./test/integration', '**', '*.{rb}')].each do |file| 
-      require file      
+  files = Dir[File.join('./test/integration', '**', '*.{rb}')].each do |file| 
+    require file      
   end
 end
 
 task :healthcentral do 
-  files = Dir[File.join('./test/integration/healthcentral/sponsoredtopics', '**', '*.{rb}')].each do |file| 
-      require file      
+  files = Dir[File.join('./test/integration/healthcentral/subcategory', '**', '*.{rb}')].each do |file| 
+    require file      
   end
 end
 
 task :berkley do 
   files = Dir[File.join('./test/integration/berkley_wellness', '**', '*.{rb}')].each do |file| 
-      require file      
+    require file      
+  end
+end
+
+task :the_body do 
+  files = Dir[File.join('./test/integration/the_body', '**', '*.{rb}')].each do |file| 
+    require file      
   end
 end
 
