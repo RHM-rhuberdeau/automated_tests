@@ -13,7 +13,7 @@ module RedesignEntry
     def analytics_file
       has_file = false
       proxy.har.entries.each do |entry|
-        if entry.request.url.include?('/assets/namespace.js')
+        if entry.request.url.include?('namespace.js')
           has_file = true
         end
       end

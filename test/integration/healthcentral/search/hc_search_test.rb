@@ -22,7 +22,7 @@ class HCSearchTest < MiniTest::Test
     end
 
     should "have unique ads" do 
-      visit "#{HC_BASE_URL}/query?q=exercise"
+      visit "http://search.healthcentral.com/query?q=exercise"
 
       ads1 = @page.ads_on_page
       @driver.navigate.refresh
@@ -38,7 +38,7 @@ class HCSearchTest < MiniTest::Test
     end
 
     should "have the correct title" do 
-      visit "#{HC_BASE_URL}/query?q=exercise"
+      visit "http://search.healthcentral.com/query?q=exercise"
       assert_equal(true, @page.has_correct_title?, "Page title was: #{@page.driver.title}")
     end
 

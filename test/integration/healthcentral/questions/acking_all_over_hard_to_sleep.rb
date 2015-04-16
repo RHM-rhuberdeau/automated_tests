@@ -28,7 +28,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
         view_more_answers.click
         wait_for { @driver.find_element(css: '.QA-community .CommentBox-secondary-content').displayed? }
         first_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '')
-        expected_answer = "YourquestionhascometotheSkinCaresiteonHealthCentralandIdon'tthinkanyonecouldansweryouaboutyoursymptomsandwhatmightbehappening.Theycan'tdiagnoseyouovertheinternet,yet.Ifyoufeelyouneedto,youshouldcallyourdoctor,call911forimmediateassistance,ororgotoyourlocal...READMORE"
+        expected_answer = "YourquestionhascometotheSkinCaresiteonHealthCentralandIdon'tthinkanyonecouldansweryouaboutyoursymptomsandwhatmightbehappening.Theycan'tdiagnoseyouovertheinternet,yet.Ifyoufeelyouneedto,youshouldcallyourdoctor,call911forimmediateassistance,ororgotoyourlocalemergencyroom...READMORE"
         assert_equal(expected_answer, first_answer, "First answer was not truncated: #{first_answer}")
       end
 
