@@ -67,6 +67,22 @@ def fire_fox_remote_proxy
   @driver.manage.timeouts.implicit_wait = 5
 end
 
+def mobile_fire_fox_with_secure_proxy
+  proxy_location = Settings.location
+  server = BrowserMob::Proxy::Server.new(proxy_location)
+  begin
+    server.start
+  rescue
+  end
+  @proxy = server.create_proxy
+  @profile = Selenium::WebDriver::Firefox::Profile.new
+  @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
+  # @profile['general.useragent.override'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25'
+  @driver = Selenium::WebDriver.for :firefox, :profile => @profile
+  @driver.manage.window.resize_to(425,960)
+  @driver.manage.timeouts.implicit_wait = 5
+end
+
 def fire_fox_remote
   @driver = Selenium::WebDriver.for(
     :remote,
