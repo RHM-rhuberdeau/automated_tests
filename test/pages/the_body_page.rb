@@ -121,6 +121,9 @@ module TheBody
         element  = elements.first
         text     = element.text
 
+        unless element.displayed? == true
+          self.errors.add(:base, "Ask the Experts was not displayed on the page.")
+        end
         unless text.strip == "ASK THE EXPERTS"
           self.errors.add(:base, "Ask The Experts missing from the page.Found this instead: #{text}")
         end
@@ -132,6 +135,7 @@ module TheBody
         link_texts          = links.collect {|link| link.attribute('text')}
         invalid_hrefs       = hrefs.select {|href| href.length == 0 }
         invalid_link_texts  = link_texts.select {|text| text.length == 0}
+        undisplayed_links   = links.select { |link| link.displayed? == false }
 
         unless hrefs.compact.length > 0
           self.errors.add(:base, "Missing continued links")
@@ -144,6 +148,9 @@ module TheBody
         end
         unless invalid_link_texts.compact.length == 0
           self.errors.add(:base, "One of the continued links was missing link text.")
+        end
+        unless undisplayed_links.length == 0 
+          self.errors.add(:base, "Some of the continue links were not displayed on the page")
         end
       end
 
@@ -167,6 +174,9 @@ module TheBody
         unless read_mores.length == article_links.length
           self.errors.add(:base, "One of the articles in the articles section was missing the Read More link: #{read_mores.inspect}")
         end
+        unless section_header.first.displayed? == true
+          self.errors.add(:base, "Articles section header was not displayed on the page")
+        end
       end
 
       def connect_with_others
@@ -175,6 +185,9 @@ module TheBody
         unless section_header.length == 1
           self.errors.add(:base, "Missing the 'CONNECT WITH OTHERS' section header")
         end 
+        unless section_header.first.displayed? == true
+          self.errors.add(:base, "Connect with others section header was not displayed on the page.")
+        end
       end
 
       def related_topics
@@ -208,8 +221,6 @@ module TheBody
 
       def initialize(args)
         @driver = args[:driver]
-        button = @driver.find_element(:css, "#HC-menu")
-        button.click
         @resource_center_links = ["African Americans", "Aging", "Gay Men", "Latinos", "Women", "Newly Diagnosed", "Starting Treatment", "Keeping Up With Your HIV Meds"]
       end
 
@@ -219,7 +230,10 @@ module TheBody
         logo_image_link = @driver.find_element(:css, "span.HC-header-logo a")
         logo_image_link = logo_image_link.attribute('href')
 
-        unless logo_image_src != "http://www.thebody.com/LBLN/living-with-hiv/img/thebody-logo.png"
+        unless logo_image.displayed? == true
+          self.errors.add(:base, "Logo was not displayed")
+        end
+        unless logo_image_src == "http://www.thebody.com/LBLN/living-with-hiv/img/thebody-logo.png"
           self.errors.add(:base, "Logo image src was wrong. It was #{logo_image_src.inspect}")
         end
         unless logo_image_link == "http://www.thebody.com/"
@@ -235,7 +249,10 @@ module TheBody
         resource_center_hrefs   = resource_center_links.collect {|x| x.attribute('href')}
         invalid_hrefs           = resource_center_hrefs.select {|x| x.length == 0 || x.nil?}
 
-        unless resource_center_header.text != "RESOURCE CENTERS"
+        unless resource_center_header.displayed? == true
+          self.errors.add(:base, "Resource Centers link not displayed")
+        end
+        unless resource_center_header.text == "RESOURCE CENTERS"
           self.errors.add(:base, "Resource Centers was missing from the Topic in HIV/AIDS nav")
         end
         unless missing_links.length == 0
