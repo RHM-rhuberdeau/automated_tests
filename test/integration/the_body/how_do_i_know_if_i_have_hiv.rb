@@ -10,7 +10,7 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
       body_fixture = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['how-do-i-know-if-i-have-HIV'])
       @page = ::TheBody::TheBodyPage.new(@driver, @proxy, @body_fixture)
-      visit "#{BODY_BASE_URL}/h/how-do-i-know-if-i-have-HIV.html"
+      visit "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html"
     end
 
 
@@ -47,7 +47,7 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
     context "ads, analytics, omniture" do
       should "have unique ads" do 
         ads1 = @page.ads_on_page(3)
-        visit "#{BODY_BASE_URL}/h/how-do-i-know-if-i-have-HIV.html"
+        visit "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html"
         sleep 1
         ads2 = @page.ads_on_page(3)
 
