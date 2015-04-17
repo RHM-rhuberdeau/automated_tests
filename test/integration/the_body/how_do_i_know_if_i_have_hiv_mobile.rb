@@ -14,57 +14,62 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
     end
 
 
-    # ##################################################################
-    # ################ FUNCTIONALITY ###################################
-    # context "when functioning properly" do 
-    #   should "not have any errors" do 
-    #     functionality = @page.functionality
-    #     functionality.validate
-    #     assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
-    #   end
-    # end
+    ##################################################################
+    ################ FUNCTIONALITY ###################################
+    context "when functioning properly" do 
+      should "not have any errors" do 
+        functionality = @page.functionality
+        functionality.validate
+        assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
+      end
+    end
 
-    # ##################################################################
-    # ################### ASSETS #######################################
-    # context "assets" do 
-    #   should "have valid assets" do 
-    #     assets = @page.assets
-    #     assets.validate
-    #     assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
-    #   end
-    # end
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
 
-    # ##################################################################
-    # ################### SEO ##########################################
-    # context "SEO" do 
-    #   should "have the correct title" do 
-    #     assert_equal(true, @page.has_correct_title?)
-    #   end
-    # end
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO" do 
+      should "have the correct title" do 
+        assert_equal(true, @page.has_correct_title?)
+      end
+    end
 
-    # #########################################################################
-    # ################### ADS, ANALYTICS, OMNITURE ############################
-    # context "ads, analytics, omniture" do
-    #   should "have unique ads" do 
-    #     ads1 = @page.ads_on_page(3)
-    #     visit "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html"
-    #     sleep 1
-    #     ads2 = @page.ads_on_page(3)
+    #########################################################################
+    ################### ADS, ANALYTICS, OMNITURE ############################
+    context "ads, analytics, omniture" do
+      should "have unique ads" do 
+        @driver.execute_script "window.scrollBy(0, 4000)"
+        sleep 1
+        # page.ads_on_page(3), 3 because we expect 3 ads on the page
+        ads1 = @page.ads_on_page(3)
+        visit "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html"
+        sleep 1
+        @driver.execute_script "window.scrollBy(0, 4000)"
+        sleep 1
+        ads2 = @page.ads_on_page(3)
 
-    #     ord_values_1 = ads1.collect(&:ord).uniq
-    #     ord_values_2 = ads2.collect(&:ord).uniq
+        ord_values_1 = ads1.collect(&:ord).uniq
+        ord_values_2 = ads2.collect(&:ord).uniq
     
-    #     assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
-    #     assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
-    #     assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
-    #   end
+        assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
+        assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
+        assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
+      end
 
-    #   should "have valid omniture values" do 
-    #     omniture = @page.omniture
-    #     omniture.validate
-    #     assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
-    #   end
-    # end
+      should "have valid omniture values" do 
+        omniture = @page.omniture
+        omniture.validate
+        assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
+      end
+    end
 
     ##################################################################
     ################### GLOBAL SITE TESTS ############################

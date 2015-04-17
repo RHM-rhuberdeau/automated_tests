@@ -1,4 +1,5 @@
 require_relative './the_body_page'
+require_relative './healthcentral_page'
 
 module TheBody
   class TheBodyMobilePage < TheBody::TheBodyPage
@@ -9,6 +10,19 @@ module TheBody
 
     def global_test_cases
       GlobalTestCases.new(:driver => @driver)
+    end
+
+    class Omniture < HealthCentralPage::Omniture
+      def correct_report_suite
+        if ENV['TEST_ENV'] != 'production'
+          suite = "cmi-choicemediacom-thebody"
+        else
+          suite = "cmi-choicemediacom-thebody"
+        end
+        unless @report_suite == suite
+          self.errors.add(:base, "Omniture report suite being used is: #{@report_suite} not #{suite}")
+        end
+      end
     end
 
     class Assets
