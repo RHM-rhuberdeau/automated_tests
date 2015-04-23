@@ -1,9 +1,9 @@
-require_relative '../../../minitest_helper' 
+require_relative '../../../minitest_helper'
 require_relative '../../../pages/redesign_question_page'
 
 class SubCategory < MiniTest::Test
-  context "incontinence" do 
-    setup do 
+  context "incontinence" do
+    setup do
       fire_fox_with_secure_proxy
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/subcategories.yml')
@@ -13,8 +13,8 @@ class SubCategory < MiniTest::Test
       visit "#{HC_DRUPAL_URL}/incontinence"
     end
 
-    context "when functioning properly" do 
-      should "have a title in each latest post" do 
+    context "when functioning properly" do
+      should "have a title in each latest post" do
         sleep 3
         latest_post_titles = @driver.find_elements(:css, "span.Teaser-title")
         assert_equal(true, (latest_post_titles.length > 0), "No Latest posts")
@@ -26,7 +26,7 @@ class SubCategory < MiniTest::Test
         end
       end
 
-      should "have a hero post" do 
+      should "have a hero post" do
         hero_image = @driver.find_element(:css, "div.HeroBox a img")
         hero_link  = @driver.find_elements(:css, "div.HeroBox a").last
         hero_link_text = hero_link.text
@@ -35,7 +35,7 @@ class SubCategory < MiniTest::Test
         assert_equal(true, hero_link_text.length > 0, "No hero post text: #{hero_link_text}")
       end
 
-      should "have a we recommend section with 3 posts" do 
+      should "have a we recommend section with 3 posts" do
         we_recommend_text = @driver.find_element(:css, "h4").text
         posts = @driver.find_elements(:css, "ul.CollectionListBoxes-list")
         post_images = @driver.find_elements(:css, "ul.CollectionListBoxes-list li a img")
@@ -50,13 +50,13 @@ class SubCategory < MiniTest::Test
         end
       end
 
-      should "show up to 15 more latest posts" do 
-        2.times do 
+      should "show up to 15 more latest posts" do
+        2.times do
           wait_for { @driver.find_element(:css, ".js-CollectionEditorsPicks-view-more").displayed? }
           button = @driver.find_element(:css, ".js-CollectionEditorsPicks-view-more")
           button.click
           wait_for { !@driver.find_element(:css, ".spinner-container").displayed? }
-          sleep 0.5
+          sleep 1
         end
         editor_picks = @driver.find_elements(:css, ".Editor-picks-item")
         begin
@@ -67,7 +67,7 @@ class SubCategory < MiniTest::Test
         assert_equal(true, ((editor_picks.length - sponsored_picks.length) >= 15), "#{editor_picks.length} appeared, not 15")
       end
 
-      should "have a more resources section" do 
+      should "have a more resources section" do
         text  = @driver.find_element(:css, ".Moreresources h1.Block-title").text
         links = @driver.find_elements(:css, ".Moreresources-container ul li a")
         links_text = links.collect(&:text)
@@ -77,9 +77,9 @@ class SubCategory < MiniTest::Test
         links_text.each do |text|
           assert_equal(true, (text == "Slideshows" || text == "Medications" || text == "Videos" || text == "Questions" || text == "Topics A-Z" || text == "Quizzes and Assessments" || text == "Blogposts"), "#{text} did not appear in more resources")
         end
-      end 
+      end
 
-      should "have relatlive links in the header" do 
+      should "have relatlive links in the header" do
         links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
         bad_links = links.map do |link|
           if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
@@ -89,12 +89,12 @@ class SubCategory < MiniTest::Test
         assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
       end
 
-      should "have relative links in the right rail" do 
+      should "have relative links in the right rail" do
         wait_for { @driver.find_element(:css, ".MostPopular-container").displayed? }
         links = ((@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact) - @driver.find_elements(:css, "span.RightrailbuttonpromoItem-title a").collect{|x| x.attribute('href')}.compact
         bad_links = links.map do |link|
           if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
-            link 
+            link
           end
         end
         assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
@@ -103,8 +103,8 @@ class SubCategory < MiniTest::Test
 
     ##################################################################
     ################### ASSETS #######################################
-    context "assets" do 
-      should "have valid assets" do 
+    context "assets" do
+      should "have valid assets" do
         assets = @page.assets
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
@@ -113,33 +113,33 @@ class SubCategory < MiniTest::Test
 
     ##################################################################
     ################### SEO ##########################################
-    context "SEO" do 
-      should "have the correct title" do 
+    context "SEO" do
+      should "have the correct title" do
         assert_equal(true, (@driver.title == "Urinary Incontinence: Stress, Urge, Female, Male, Causes, Treatment | www.healthcentral.com"), "Page title was: #{@page.driver.title}")
       end
     end
 
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
-    context "ads, analytics and omniture" do 
-      should "have an adsite value of cm.ver.incontinence" do 
+    context "ads, analytics and omniture" do
+      should "have an adsite value of cm.ver.incontinence" do
         ad_site = evaluate_script("AD_SITE")
         assert_equal(true, (ad_site == "cm.ver.incontinence"), "ad_site was #{ad_site} not cm.ver.incontinence")
       end
 
-      should "have ad_categories value of ['home', '', '']" do 
+      should "have ad_categories value of ['home', '', '']" do
         expected_ad_categories = ["home", "", ""]
         actual_ad_categories   = evaluate_script("AD_CATEGORIES")
         assert_equal(true, (actual_ad_categories == expected_ad_categories), "ad_categories was #{actual_ad_categories} not #{expected_ad_categories}")
       end
 
-      should "have unique ads" do     
+      should "have unique ads" do
         wait_for { @driver.find_element(:css, ".Page-category-title").displayed? }
         sleep 1
         ads1 = @page.ads_on_page
 
         visit "#{HC_DRUPAL_URL}/vision-care"
-        
+
         wait_for { @driver.find_element(:css, ".Page-category-title").displayed? }
         sleep 1
         ads2 = @page.ads_on_page
@@ -152,7 +152,7 @@ class SubCategory < MiniTest::Test
         assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
       end
 
-      should "have valid omniture values" do 
+      should "have valid omniture values" do
         omniture = @page.omniture
         omniture.validate
         assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
@@ -162,7 +162,7 @@ class SubCategory < MiniTest::Test
     #################################################################
     ################## GLOBAL SITE TESTS ############################
     context "global site requirements" do
-      should "have a promo item in the right rail" do 
+      should "have a promo item in the right rail" do
         wait_for { @driver.find_element(:css, ".RightrailbuttonpromoItem").displayed? }
         promo_img = @driver.find_element(:css, ".RightrailbuttonpromoItem a img")
         promo_text = @driver.find_elements(:css, ".RightrailbuttonpromoItem a").last.text
@@ -173,8 +173,8 @@ class SubCategory < MiniTest::Test
     end
   end
 
-  def teardown  
-    @driver.quit  
+  def teardown
+    @driver.quit
     @proxy.close
-  end 
+  end
 end
