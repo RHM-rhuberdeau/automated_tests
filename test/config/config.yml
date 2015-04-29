@@ -28,8 +28,11 @@ qa1:
     base_url: http://qa.berkeleywellness.choicemedia.com
     name: berkleywellness
   medtronic:
-    base_url: https://secure.healthcentral.com
+    base_url: https://concrete5.qa1.healthcentral.com
     name: medtronic
+  thebody:
+    base_url: http://qa1.thebody.com
+    asset_host: http://www.thebody.
 
 qa2:
   asset_host: http://qa2.healthcentral.
@@ -60,6 +63,9 @@ qa3:
   medtronic:
     base_url: https://secure.healthcentral.com
     name: medtronic
+  thebody:
+    base_url: http://uat.thebody.com
+    asset_host: http://uat.thebody.
 
 qa4:
   asset_host: http://qa4.healthcentral.
@@ -89,6 +95,9 @@ production:
   medtronic:
     base_url: https://secure.healthcentral.com
     name: medtronic
+  thebody:
+    base_url: http://www.thebody.com
+    asset_host: http://www.thebody.
 
 alpha:
   asset_host: http://alpha.healthcentral.
