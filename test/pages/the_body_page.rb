@@ -11,6 +11,33 @@ module TheBody
       GlobalTestCases.new(:driver => @driver)
     end
 
+    def assets
+      all_images      = @driver.find_elements(tag_name: 'img')
+      Assets.new(:proxy => @proxy, :imgs => all_images)
+    end
+
+    def omniture
+      @driver.execute_script "javascript:void(window.open(\"\",\"dp_debugger\",\"width=600,height=600,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1\").document.write(\"<script language='JavaScript' id=dbg src='https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js'></\"+\"script>\"))"
+      sleep 1
+      second_window = @driver.window_handles.last
+      @driver.switch_to.window second_window
+      omniture_text = @driver.find_element(:css, 'td#request_list_cell').text
+      omniture = Omniture.new(omniture_text, @fixture)
+    end 
+
+    class Omniture < HealthCentralPage::Omniture
+      def correct_report_suite
+        if ENV['TEST_ENV'] != 'production'
+          suite = "cmi-choicemediacom-thebody"
+        else
+          suite = "cmi-choicemediacom-thebody"
+        end
+        unless @report_suite == suite
+          self.errors.add(:base, "Omniture report suite being used is: #{@report_suite} not #{suite}")
+        end
+      end
+    end
+
     class Assets
       include ::ActiveModel::Validations
 
@@ -24,7 +51,7 @@ module TheBody
       end
 
       def wrong_asset_hosts
-        (["http://uat.thebody.", "http://qa.thebody.", "http://qa1.thebody.","http://qa2.thebody.","http://qa3.thebody.", "http://qa4.thebody.", "http://www.thebody.", "http://alpha.thebody.", "http://stage.thebody."] - [Configuration["berkley"]["asset_host"], ASSET_HOST])
+        (["http://uat.thebody.", "http://qa.thebody.", "http://qa1.thebody.","http://qa2.thebody.","http://qa3.thebody.", "http://qa4.thebody.", "http://www.thebody.", "http://alpha.thebody.", "http://stage.thebody."] - [Configuration["thebody"]["asset_host"], ASSET_HOST])
       end
 
       def assets_using_correct_host

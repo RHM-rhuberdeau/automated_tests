@@ -38,11 +38,12 @@ class HealthCentralPage
                     "Sleep Disorders"]
 
   def initialize(driver, proxy, fixture=nil)
-    @driver  = driver
-    @proxy   = proxy
-    @slides  = []
-    @ords    = {}
-    @fixture = fixture
+    @driver       = driver
+    @proxy        = proxy
+    @slides       = []
+    @ords         = {}
+    @fixture      = fixture
+    @report_suite = nil
   end
 
   def analytics_file

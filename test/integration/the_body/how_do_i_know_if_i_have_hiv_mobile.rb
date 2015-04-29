@@ -84,7 +84,7 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
         assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
       end
     end
-  end#A TheBody desktop page
+  end#A TheBody mobile page
 
   def teardown  
     @driver.quit  
