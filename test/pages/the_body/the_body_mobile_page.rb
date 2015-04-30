@@ -1,7 +1,16 @@
-require_relative './healthcentral_page'
+require_relative './the_body_page'
+require_relative './../healthcentral/healthcentral_page'
+require_relative './concerns/mobile_ad_test_cases'
 
 module TheBody
-  class TheBodyPage < HealthCentralPage
+  class TheBodyMobilePage < TheBody::TheBodyPage
+    include TheBodyMobileAds
+
+    def initialize(args)
+      @driver  = args[:driver]
+      @proxy   = args[:proxy]
+      @fixture = args[:fixture]
+    end
 
     def functionality
       Functionality.new(:driver => @driver)
@@ -9,6 +18,10 @@ module TheBody
 
     def global_test_cases
       GlobalTestCases.new(:driver => @driver)
+    end
+
+    def ads
+      TheBodyMobileAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy)
     end
 
     def assets
@@ -129,126 +142,20 @@ module TheBody
       end
     end#Assets
 
-    class Functionality
-      include ::ActiveModel::Validations
-
-      validate :ask_the_experts
-      validate :continued_links
-      validate :articles_section
-      validate :connect_with_others
-      validate :related_topics
-
-      def initialize(args)
-        @driver  = args[:driver]
-        @headers = @driver.find_elements(:css, ".wsModHead")
-      end
-
-      def ask_the_experts
-        elements = @driver.find_elements(:css, "div.wsModHead")
-        element  = elements.first
-        text     = element.text
-
-        unless element.displayed? == true
-          self.errors.add(:base, "Ask the Experts was not displayed on the page.")
-        end
-        unless text.strip == "ASK THE EXPERTS"
-          self.errors.add(:base, "Ask The Experts missing from the page.Found this instead: #{text}")
-        end
-      end
-
-      def continued_links
-        links               = @driver.find_elements(:css, ".wsEntrySectQ a")
-        hrefs               = links.collect {|link| link.attribute('href')}
-        link_texts          = links.collect {|link| link.attribute('text')}
-        invalid_hrefs       = hrefs.select {|href| href.length == 0 }
-        invalid_link_texts  = link_texts.select {|text| text.length == 0}
-        undisplayed_links   = links.select { |link| link.displayed? == false }
-
-        unless hrefs.compact.length > 0
-          self.errors.add(:base, "Missing continued links")
-        end
-        unless link_texts.compact.length == hrefs.length
-          self.errors.add(:base, "One of the continued links did not have link text.")
-        end
-        unless invalid_hrefs.compact.length == 0
-          self.errors.add(:base, "One of the continued links had an invalid href.")
-        end
-        unless invalid_link_texts.compact.length == 0
-          self.errors.add(:base, "One of the continued links was missing link text.")
-        end
-        unless undisplayed_links.length == 0 
-          self.errors.add(:base, "Some of the continue links were not displayed on the page")
-        end
-      end
-
-      def articles_section
-        section_header  = @headers.select {|x| x.text == "ARTICLES"}
-        article_images  = @driver.find_elements(:css, ".wsEntryImage")
-        article_images  = article_images.drop(1) #first one is not in the articles section
-        article_links   = @driver.find_elements(:css, ".wsEntryAlign h4 a")
-        read_mores      = @driver.find_elements(:css, ".wsEntryAlign a ")
-        read_mores      = read_mores.select { |link| link.text == "Read more »"}
-
-        unless section_header.length == 1
-          self.errors.add(:base, "Missing the 'ARTICLES' section header")
-        end
-        unless article_images.length >= 4
-          self.errors.add(:base, "There were not at least 4 articles in the article section")
-        end
-        unless article_links.length >= 4
-          self.errors.add(:base, "There were not at least 4 article links in the article section")
-        end
-        unless read_mores.length == article_links.length
-          self.errors.add(:base, "One of the articles in the articles section was missing the Read More link: #{read_mores.inspect}")
-        end
-        unless section_header.first.displayed? == true
-          self.errors.add(:base, "Articles section header was not displayed on the page")
-        end
-      end
-
-      def connect_with_others
-        section_header  = @headers.select {|x| x.text == "CONNECT WITH OTHERS"}
-
-        unless section_header.length == 1
-          self.errors.add(:base, "Missing the 'CONNECT WITH OTHERS' section header")
-        end 
-        unless section_header.first.displayed? == true
-          self.errors.add(:base, "Connect with others section header was not displayed on the page.")
-        end
-      end
-
-      def related_topics
-        section_header      = @headers.select {|x| x.text == "RELATED TOPICS"}
-        related_links       = @driver.find_elements(:css, "ul.wsSideBoxList li a")
-        links_without_text  = related_links.select { |link| link.text.nil? || link.text == '' || link.text.length == 0}
-        links_without_href  = related_links.select { |link| link.attribute('href').nil? || link.attribute('href').length == 0 || link.attribute('href').length == 0}
-
-        unless section_header.length == 1
-          self.errors.add(:base, "Missing the 'RELATED TOPICS' section header")
-        end 
-        unless related_links.length >= 5
-          self.errors.add(:base, "There were less than 5 related topics links")
-        end
-        unless links_without_href.length == 0
-          self.errors.add(:base, "There was a related link without text")
-        end
-        unless links_without_href.length == 0
-          self.errors.add(:base, "There were links with an invalid href")
-        end
-      end
-    end#Functionality
-
-    class GlobalTestCases
+    class GlobalTestCases 
       include ::ActiveModel::Validations
 
       validate :the_body_logo
       validate :resource_centers
       validate :topics_in_header
-      validate :treatment_links
+      validate :the_body_links
+      validate :ask_the_experts
 
       def initialize(args)
         @driver = args[:driver]
-        @resource_center_links = ["African Americans", "Aging", "Gay Men", "Latinos", "Women", "Newly Diagnosed", "Starting Treatment", "Keeping Up With Your HIV Meds"]
+        @resource_center_links  = ["African Americans", "Aging", "Gay Men", "Latinos", "Women", "Newly Diagnosed", "Starting Treatment", "Keeping Up With Your HIV Meds"]
+        @treatment_center_links = ["Treatment", "HIV Medications", "Hepatitis C Coinfection", "GI Issues", "Other Side Effects & Coinfections", "Drug Resistance", "Switching & Stopping Treatment", "Pediatric HIV Treatment", "Prevention", "HIV/AID Basics", "HIV Prevention", "HIV Testing", "Safer Sex", "Other Sexually Transmitted Diseases", "Myths About HIV/AIDS", "History of the AIDS Epidemic", "Immune System Basics", "Helping Friends With HIV/AIDS", "Living With HIV", "Getting Good Care", "Healthy Living With HIV", "Arts, Media & HIV/AIDS", "Diet, Nutrition & HIV/AIDS", "HIV Stigma", "Relationships, Sexuality & HIV/AIDS", "Vitamins, Minerals & Supplements", "HIV and Financial Issues", "HIV and Legal Issues", "Personal Stories", "HIV Blog Central", "Stories About Men", "Stories About Women", "Stories About Transgender People", "Stories About Young People", "Stories About Older People", "Stories About Families and Loved Ones"]
+        @tool_links             = []
       end
 
       def the_body_logo
@@ -269,8 +176,11 @@ module TheBody
       end
 
       def resource_centers
-        resource_center_header  = @driver.find_element(:css, "ul.Nav-listGroup-list--Featured li.js-Nav--Primary-accordion-title.Nav-listGroup-list-title")
-        resource_center_links   = @driver.find_elements(:css, "ul.Nav-listGroup-list--Featured li.js-Nav--Primary-accordion-panel.Nav-listGroupSub ul.Nav-listGroupSub-list li a")
+        resource_center_header  = @driver.find_element(:css, ".Nav--Primary.js-Nav--Primary ul.Nav-list ul.Nav-listGroup-list--Featured li.js-Nav--Primary-accordion-title")
+        wait_for { resource_center_header.displayed? }
+        resource_center_header.click
+        wait_for { @driver.find_element(:link_text, "Keeping Up With Your HIV Meds").displayed? }
+        resource_center_links   = @driver.find_elements(:css, "ul.Nav-listGroup-list--Featured a")
         link_texts              = resource_center_links.collect(&:text)
         missing_links           = @resource_center_links - link_texts
         resource_center_hrefs   = resource_center_links.collect {|x| x.attribute('href')}
@@ -291,16 +201,70 @@ module TheBody
       end
 
       def topics_in_header
-        header = @driver.find_element(:css, ".Nav-listGroup-list--General li.Nav-listGroup-list-title")
-        header_text = header.text
+        treatment_header  = @driver.find_element(:css, ".Nav--Primary.js-Nav--Primary ul.Nav-list ul.Nav-listGroup-list--General  li.js-Nav--Primary-accordion-title")
+        wait_for { treatment_header.displayed? }
+        treatment_header.click
+        wait_for { @driver.find_element(:link_text, "Stories About Families and Loved Ones").displayed? }
+        treatment_links   = @driver.find_elements(:css, ".Nav-listGroup-list--General a")
+        link_texts        = treatment_links.collect(&:text)
+        missing_links     = @treatment_center_links - link_texts
+        header_text       = treatment_header.text
+        treatment_hrefs   = treatment_links.collect {|x| x.attribute('href')}
+        invalid_hrefs     = treatment_hrefs.select {|x| x.length == 0 || x.nil?}
 
+        unless treatment_header.displayed? == true
+          self.errors.add(:base, "TOPICS IN HIV/AIDS nav link not displayed")
+        end
         unless header_text == "TOPICS IN HIV/AIDS"
           self.errors.add(:base, "TOPICS IN HIV/AIDS was missing from the nav")
         end
+        unless missing_links.empty?
+          self.errors.add(:base, "Missing the following links under Topics In Hiv/Aids: #{missing_links}")
+        end
+        unless invalid_hrefs.length == 0
+          self.errors.add(:base, "Some links under TOPICS IN HIV/AIDS were missing hrefs.")
+        end
       end
 
-      def treatment_links
+      def the_body_links
+        the_body_tools_header = @driver.find_element(:css, ".Nav-listGroup-list--HealthTools")
+        wait_for { the_body_tools_header.displayed? }
+        the_body_tools_header.click
+        wait_for { @driver.find_element(:link_text, "ASOFinder.com").displayed? }
+        tool_links            = @driver.find_elements(:css, ".Nav-listGroup-list--HealthTools a")
+        link_texts            = tool_links.collect(&:text)
+        missing_links         = @tool_links - link_texts
+        header_text           = the_body_tools_header.text
+        the_body_hrefs        = tool_links.collect {|x| x.attribute('href')}
+        invalid_hrefs         = the_body_hrefs.select {|x| x.length == 0 || x.nil?}
 
+        unless the_body_tools_header.displayed? == true
+          self.errors.add(:base, "THEBODY.COM was not displayed")
+        end
+        unless header_text == "THEBODY.COM"
+          self.errors.add(:base, "THEBODY.COM missing from the nav")
+        end
+        unless missing_links.empty?
+          self.errors.add(:base, "Missing the following links under THEBODY.COM: #{missing_links}")
+        end
+        unless invalid_hrefs.length == 0
+          self.errors.add(:base, "Some links under THEBODY.COM were missing hrefs.")
+        end
+      end
+
+      def ask_the_experts
+        ask_experts_header = @driver.find_element(:css, ".Nav-listGroup-list--Ask-a-question")
+        ask_experts_link   = @driver.find_element(:css, ".Nav-listGroup-list--Ask-a-question a")
+
+        unless ask_experts_link.displayed? == true
+          self.errors.add(:base, "Ask Expert Link not displayed")
+        end
+        unless ask_experts_link.text == "ASK THE EXPERTS"
+          self.errors.add(:base, "Ask Expert link missing from header.")
+        end
+        unless ask_experts_link.attribute('href').length > 0
+          self.errors.add(:base, "Invalid href on the Ask The Experts link")
+        end
       end
     end
   end

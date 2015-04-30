@@ -1,28 +1,23 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral_page'
+require_relative '../../../pages/healthcentral/slideshow'
 
 class SlideshowTest < MiniTest::Test
-  context "a drupal slideshow" do 
+  context "a slideshow in a collection" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      @page = ::HealthCentralPage.new(@driver, @proxy)
+      @page = ::HealthCentral::SlideshowPage.new(@driver, @proxy)
       visit "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd"
     end
 
-    should "update the ads between each slide" do 
-      @page.go_through_slide_show
-      assert_equal(true, @page.has_unique_ads?)
-    end
-
-    should "have relatlive links in the header" do 
-      links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
-      bad_links = links.map do |link|
-        if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
-          link unless link.include?("twitter")
-        end
+    ##################################################################
+    ################ FUNCTIONALITY ###################################
+    context "when functioning properly" do 
+      should "not have any errors" do 
+        functionality = @page.functionality
+        functionality.validate
+        assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
       end
-      assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
     end
 
     ##################################################################
