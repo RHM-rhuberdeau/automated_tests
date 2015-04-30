@@ -126,3 +126,6 @@ stage:
   medtronic:
     base_url: https://secure.healthcentral.com
     name: medtronic
+  thebody:
+    base_url: http://stage.thebody.com
+    asset_host: http://stage.thebody.
