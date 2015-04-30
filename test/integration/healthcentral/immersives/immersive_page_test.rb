@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/immersive_page'
+require_relative '../../../pages/healthcentral/immersive_page'
   
 class ImmersivePageTest < MiniTest::Test
   context "an Immersive" do 
