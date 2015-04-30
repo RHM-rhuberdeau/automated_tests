@@ -36,13 +36,14 @@ class LBLN < MiniTest::Test
     context "ads, analytics, omniture" do
       should "not have any errors" do 
         ad_site                 = evaluate_script("AD_SITE")
+        expected_ad_site        = "cm.ver.dacprs"
         expected_ad_categories  = ["", "", ""]
         actual_ad_categories    = evaluate_script("AD_CATEGORIES")
         ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
                                                                      :url => "#{HC_BASE_URL}/tools/d/clinical-trials",
                                                                      :ad_site => ad_site,
-                                                                     :expected_ad_site => "cm.ver.dacprs",
+                                                                     :expected_ad_site => expected_ad_site,
                                                                      :ad_categories => actual_ad_categories,
                                                                      :expected_ad_categories => expected_ad_categories) 
         ads.validate
