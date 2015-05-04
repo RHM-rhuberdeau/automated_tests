@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/redesign_question_page'
+require_relative '../../../pages/healthcentral/redesign_question_page'
 
 class SkinCareQuestionPageTest < MiniTest::Test
   context "a question with lots of community answers" do 
