@@ -34,7 +34,12 @@ module HealthCentral
       ads = go_through_slides
       unique_ads = slides_have_unique_ads?
       unless unique_ads == true
-        self.errors.add(:base, @ads.inspect)
+        self.errors.add(:base, "One of the slides had multiple ord values.")
+      end
+      @slides.each_with_index do |slide, index|
+        unless slide.ads.length == 3
+          self.errors.add(:base, "Slide #{index} had the wrong number of ads. It had #{slide.ads.length} ads")
+        end
       end
     end
 
