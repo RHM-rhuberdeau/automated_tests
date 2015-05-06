@@ -4,12 +4,14 @@ require_relative './concerns/assets'
 require_relative './concerns/ads'
 require_relative './concerns/slide'
 require_relative './concerns/ads_test_cases'
+require_relative './concerns/header'
 
 class HealthCentralPage
   attr_reader :driver, :proxy, :slides, :ords
   include HealthCentralOmniture 
   include HealthCentralAssets 
   include HealthCentralAds 
+  include HealthCentralHeader
 
   SUB_CATEGORIES = ["Acid Reflux",
                     "ADHD",
@@ -44,84 +46,6 @@ class HealthCentralPage
                     "Skin Cancer",
                     "Skin Care",
                     "Sleep Disorders"]
-
-  # def initialize(driver, proxy, fixture=nil)
-  #   @driver       = driver
-  #   @proxy        = proxy
-  #   @slides       = []
-  #   @ords         = {}
-  #   @fixture      = fixture
-  #   @report_suite = nil
-  # end
-
-  # def analytics_file
-  #   has_file = false
-  #   proxy.har.entries.each do |entry|
-  #     if entry.request.url.include?('namespace.js')
-  #       has_file = true
-  #     end
-  #   end
-  #   has_file
-  # end
-
-  # def pharma_safe?
-  #   (driver.execute_script("return EXCLUSION_CAT") != 'community')
-  # end
-
-  # def ugc
-  #   ad_calls   = []
-  #   ugc_values   =  []
-
-  #   proxy.har.entries.find do |entry|
-  #   if entry.request.url.include?('ad.doubleclick.net/N3965')
-  #     ad_calls   << entry.request.url
-  #     ugc_values << entry.request.url.split('ugc=').last.split(';').first
-  #   end
-  #   end
-
-  #   ugc_values.uniq.to_s
-  # end
-
-  # def has_correct_title?
-  #   title = driver.title 
-  #   if title
-  #     title.split('-').map {|x| x.gsub(' ', '')}.select { |x| x.length > 0 }.compact.length >= 2
-  #   else
-  #     false
-  #   end
-  # end
-
-  # def go_through_slide_show
-  #   slides = driver.find_elements(:css, ".Slide-content-slide-container")
-  #   slides.each_with_index do |slide, index|
-  #     unless index == (slides.length - 1)
-  #       ads = ads_on_page(3)
-  #       @slides << HealthCentralSlide.new(:ads => ads)
-  #       @driver.find_element(:css, ".Slideshow-controls-next-button-label").click
-  #       wait_for_ajax
-  #     end
-  #   end
-  #   @slides << HealthCentralSlide.new(:ads => ads_on_page(3))
-  # end 
-
-  # def go_through_quiz
-  #   questions = driver.find_elements(:css, ".answering-form")
-  #   questions.each_with_index do |question, index|
-  #     @slides << HealthCentralSlide.new(:ads => ads_on_page(3))
-  #     unless index == (questions.length - 1)
-  #       questions_on_page = driver.find_elements(:css, "label.option").select { |q| q.displayed? }
-  #       questions_on_page.first.click
-  #       wait_for_ajax
-  #       # if index < 3
-  #       #   check_for_modal(".modalCloseImg")
-  #       # end
-  #       next_buttons = driver.find_elements(:css, "span.Quiz-controls-next-button-label")
-  #       next_button = next_buttons.select {|button| button.displayed?}.first
-  #       next_button.click
-  #       wait_for_ajax
-  #     end
-  #   end
-  # end
 
   def logo_present?
     logo_1 = @driver.find_element(:css, "span.LogoHC-part1")

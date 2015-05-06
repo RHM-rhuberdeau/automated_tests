@@ -4,37 +4,33 @@ module RedesignQuestion
   class RedesignQuestionPage < HealthCentralPage
     attr_reader :driver, :proxy
 
-    def initialize(driver, proxy, fixture=nil)
-    	@driver = driver
-    	@proxy	= proxy
-      @fixture = fixture
+    def initialize(args)
+    	@driver = args[:driver]
+    	@proxy	= args[:proxy]
+      @fixture = args[:fixture]
       @ads  = []
     end
 
-    def ads_on_page
-      all_ads = get_all_ads
-      if all_ads.length > 3
-        all_ads = all_ads[-3, 3]
-      end
-
-      ads = create_ads(all_ads)
-      ads
+    def global_test_cases
+      RedesignQuestion::GlobalTestCases.new(@driver, @proxy)
     end
 
-    def get_all_ads
-      ad_calls = proxy.har.entries.map do |entry|
-        if entry.request.url.include?('ad.doubleclick.net/N3965')
-          entry.request.url
-        end
-      end
-      ad_calls.compact
+    def functionality
+      Functionality.new(:driver => @driver)
     end
 
-    def create_ads(ads)
-      new_ads = ads.map do |ad|
-        HealthCentralAds.new(ad)
-      end
-      new_ads
+    def assets
+      all_images = @driver.find_elements(tag_name: 'img')
+      HealthCentralAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
+    end
+
+    def omniture
+      @driver.execute_script "javascript:void(window.open(\"\",\"dp_debugger\",\"width=600,height=600,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1\").document.write(\"<script language='JavaScript' id=dbg src='https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js'></\"+\"script>\"))"
+      sleep 1
+      second_window = @driver.window_handles.last
+      @driver.switch_to.window second_window
+      omniture_text = @driver.find_element(:css, 'td#request_list_cell').text
+      omniture = HealthCentralOmniture::Omniture.new(omniture_text, @fixture)
     end
 
     def analytics_file
@@ -50,23 +46,40 @@ module RedesignQuestion
     def pharma_safe?
     	(driver.execute_script("return EXCLUSION_CAT") != 'community') && (driver.execute_script("return pharmaSafe") == true)
     end
+  end
 
-    def ugc
-    	ad_calls 	 = []
-    	ugc_values   =  []
+  class Functionality
+    include ::ActiveModel::Validations
 
-    	proxy.har.entries.find do |entry|
-  	  if entry.request.url.include?('ad.doubleclick.net/N3965')
-  	  	ad_calls   << entry.request.url
-  	  	ugc_values << entry.request.url.split('ugc=').last.split(';').first
-  	  end
-    	end
+    validate :community_answers_truncated
+    validate :display_full_community_answer
 
-    	ugc_values.uniq.to_s
+    def initialize(args)
+      @driver = args[:driver]
     end
 
-    def global_test_cases
-      RedesignQuestion::GlobalTestCases.new(@driver, @proxy)
+    def community_answers_truncated
+      view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
+      view_more_answers.click
+      wait_for { @driver.find_element(css: '.QA-community .CommentBox-secondary-content').displayed? }
+      first_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '').gsub("READ MORE", '')
+      unless first_answer.length == 280
+        self.errors.add(:base, "Community answer was not truncated")
+      end
+    end
+
+    def display_full_community_answer
+      view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
+      view_more_answers.click
+      wait_for { @driver.find_element(css: '.QA-community .CommentBox-secondary-content').displayed? }
+      truncated_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '')
+      read_more = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content .js-read-more").select { |x| x.displayed? }.first
+      read_more.click
+      sleep 0.5
+      full_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '')
+      unless truncated_answer != full_answer
+        self.errors.add(:base, "Full answer was the same as the truncated answer")
+      end
     end
   end
 

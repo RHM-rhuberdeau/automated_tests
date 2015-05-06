@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/redesign_entry_page'
+require_relative '../../../pages/healthcentral/redesign_entry_page'
 
 class LBLN < MiniTest::Test
   context "living with ra" do 
