@@ -5,6 +5,8 @@ module HealthCentralAds
     validate :unique_ads_per_page_view
     validate :correct_ad_site
     validate :correct_ad_categories
+    validate :pharma_safe
+    validate :ugc
 
     def initialize(args)
       @driver                 = args[:driver]
@@ -14,6 +16,8 @@ module HealthCentralAds
       @expected_ad_site       = args[:expected_ad_site]
       @ad_categories          = args[:ad_categories]
       @expected_ad_categories = args[:expected_ad_categories]
+      @pharma_safe            = args[:pharma_safe]
+      @ugc                    = args[:ugc]
     end
 
     def unique_ads_per_page_view
@@ -51,6 +55,35 @@ module HealthCentralAds
     def correct_ad_categories
       unless @ad_categories == @expected_ad_categories
         self.errors.add(:base, "ad_categories was #{@ad_categories} not #{@expected_ad_categories}")
+      end
+    end
+
+    def pharma_safe
+      if @pharma_safe
+        pharma_safe = @driver.execute_script("return EXCLUSION_CAT") != 'community'
+        unless pharma_safe == @pharma_safe
+          self.errors.add(:base, "Expected pharma_safe to be #{@pharma_safe}")
+        end
+      end
+    end
+
+    def ugc
+      has_file    = false
+      ugc_values  =  []
+
+      @proxy.har.entries.each do |entry|
+        if entry.request.url.include?('ad.doubleclick.net/N3965')
+          ugc_values << entry.request.url.split('ugc=').last.split(';').first
+        end
+        has_file = true if entry.request.url.include?('namespace.js')
+      end
+
+      ugc_values = ugc_values.uniq.to_s
+      unless ugc_values == @ugc
+        self.errors.add(:base, "ugc was #{ugc_values} not #{@ugc}")
+      end
+      unless has_file == true
+        self.errors.add(:base, "namespace.js was not loaded")
       end
     end
   end
