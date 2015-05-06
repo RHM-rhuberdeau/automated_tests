@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/redesign_entry_page'
+require_relative '../../../pages/healthcentral/redesign_entry_page'
 
 class UnderstandingMigrainesTest < MiniTest::Test
   context "understanding-migraines sponsored topic" do 
@@ -35,16 +35,16 @@ class UnderstandingMigrainesTest < MiniTest::Test
       end
     end
 
-    # ##################################################################
-    # ################### SEO ##########################################
+    ###################################################################
+    #################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal(true, (@driver.title == "Chronic Migraine Control and Maintenance - Migraine"), "Page title was: #{@page.driver.title}")
+        assert_equal(true, (@driver.title == "Taking Control of Chronic Migraine - Migraine"), "Page title was: #{@driver.title}")
       end
     end
 
-    # #########################################################################
-    # ################### ADS, ANALYTICS, OMNITURE ############################
+    ##########################################################################
+    #################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics and omniture" do 
       should "have an adsite value of cm.own.tcc" do
         ad_site = evaluate_script("AD_SITE")
@@ -75,6 +75,35 @@ class UnderstandingMigrainesTest < MiniTest::Test
         omniture = @page.omniture
         omniture.validate
         assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
+      end
+    end
+
+    #########################################################################
+    ################### ADS, ANALYTICS, OMNITURE ############################
+    context "ads, analytics, omniture" do
+      should "not have any errors" do 
+        pharma_safe             = evaluate_script("EXCLUSION_CAT")
+        pharma_safe             = pharma_safe == ""
+        has_file                = @page.analytics_file
+        ad_site                 = evaluate_script("AD_SITE")
+        expected_ad_site        = "cm.own.tcc"
+        expected_ad_categories  = ["zecuity", "", ""]
+        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
+        ads                     = RedesignEntry::RedesignEntryPage::AdsTestCases.new(:driver => @driver,
+                                                                     :proxy => @proxy, 
+                                                                     :url => "#{HC_BASE_URL}/migraine/d/understanding-migraines/taking-control",
+                                                                     :ad_site => ad_site,
+                                                                     :expected_ad_site => expected_ad_site,
+                                                                     :ad_categories => actual_ad_categories,
+                                                                     :expected_ad_categories => expected_ad_categories,
+                                                                     :pharma_safe => pharma_safe,
+                                                                     :expected_pharma_safe => true,
+                                                                     :ugc => "[\"n\"]") 
+        ads.validate
+
+        omniture = @page.omniture
+        omniture.validate
+        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
   end
