@@ -327,8 +327,8 @@ module RedesignEntry
       first_window  = @driver.window_handles.first
       second_window = @driver.window_handles.last
       @driver.switch_to.window second_window
-      unless @driver.current_url == "https://www.facebook.com/HealthCentral?v=app_369284823108595"
-        self.errors.add(:base, "Facebook icon linked to #{@driver.current_url} not https://www.facebook.com/HealthCentral?v=app_369284823108595")
+      unless @driver.current_url == "https://www.facebook.com/HealthCentral"
+        self.errors.add(:base, "Facebook icon linked to #{@driver.current_url} not https://www.facebook.com/HealthCentral")
       end
       @driver.close
       @driver.switch_to.window first_window

@@ -45,7 +45,8 @@ class LBLN < MiniTest::Test
                                                                      :ad_site => ad_site,
                                                                      :expected_ad_site => expected_ad_site,
                                                                      :ad_categories => actual_ad_categories,
-                                                                     :expected_ad_categories => expected_ad_categories) 
+                                                                     :expected_ad_categories => expected_ad_categories,
+                                                                     :ugc => "[\"n\"]") 
         ads.validate
 
         omniture = @page.omniture

@@ -9,7 +9,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/entries.yml')
       entry_fixture = YAML::load_documents(io)
       @entry_fixture = OpenStruct.new(entry_fixture[0][173667])
-      @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver, :proxy => @proxy, :fixuture => @entry_fixture)
+      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @entry_fixture)
       visit "#{HC_BASE_URL}/allergy/c/3989/173667/decreased-common-bedfellows"
     end
 
