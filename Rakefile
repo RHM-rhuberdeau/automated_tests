@@ -13,7 +13,8 @@ task :test do
 end
 
 task :healthcentral do 
-  files = Dir[File.join('./test/integration/healthcentral/subcategory', '**', '*.{rb}')].each do |file| 
+  files = Dir[File.join('./test/integration/healthcentral', '**', '*.{rb}')] - Dir[File.join('./test/integration/healthcentral/immersives', '**', '*.{rb}')]
+  files.each do |file| 
     require file      
   end
 end
@@ -39,6 +40,12 @@ end
 
 task :slideshows do 
   files = Dir[File.join('./test/integration/healthcentral/slideshows', '**', '*.{rb}')].each do |file|
+    require file
+  end
+end
+
+task :sponsoredtopics do 
+  files = Dir[File.join('./test/integration/healthcentral/sponsoredtopics', '**', '*.{rb}')].each do |file|
     require file
   end
 end

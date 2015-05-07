@@ -41,11 +41,12 @@ class LBLN < MiniTest::Test
         actual_ad_categories    = evaluate_script("AD_CATEGORIES")
         ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
-                                                                     :url => "#{HC_DRUPAL_URL}/ibd/d/immersive/living-crohns-disease-update/?ic=herothirds",
+                                                                     :url => "#{HC_DRUPAL_URL}/rheumatoid-arthritis/d/immersive/living-ra-update/?ic=herothirds",
                                                                      :ad_site => ad_site,
                                                                      :expected_ad_site => expected_ad_site,
                                                                      :ad_categories => actual_ad_categories,
-                                                                     :expected_ad_categories => expected_ad_categories) 
+                                                                     :expected_ad_categories => expected_ad_categories,
+                                                                     :ugc => "[\"n\"]") 
         ads.validate
 
         omniture = @page.omniture

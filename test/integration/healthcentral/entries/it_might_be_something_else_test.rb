@@ -60,7 +60,8 @@ class ItMightBeSomethingEntryPageTest < MiniTest::Test
                                                                      :ad_categories => actual_ad_categories,
                                                                      :expected_ad_categories => expected_ad_categories,
                                                                      :pharma_safe => pharma_safe,
-                                                                     :expected_pharma_safe => false) 
+                                                                     :expected_pharma_safe => false,
+                                                                     :ugc => "[\"y\"]") 
         ads.validate
 
         omniture = @page.omniture

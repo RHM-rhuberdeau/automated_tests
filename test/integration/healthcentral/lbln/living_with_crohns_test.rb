@@ -13,23 +13,23 @@ class LBLN < MiniTest::Test
       visit "#{HC_DRUPAL_URL}/ibd/d/immersive/living-crohns-disease-update/?ic=herothirds"
     end
 
-    # ##################################################################
-    # ################### ASSETS #######################################
-    # context "assets" do 
-    #   should "have valid assets" do 
-    #     assets = @page.assets
-    #     assets.validate
-    #     assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
-    #   end
-    # end
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
 
-    # #################################################################
-    # ################## SEO ##########################################
-    # context "SEO" do 
-    #   should "have the correct title" do 
-    #     assert_equal(true, @page.has_correct_title?)
-    #   end
-    # end
+    #################################################################
+    ################## SEO ##########################################
+    context "SEO" do 
+      should "have the correct title" do 
+        assert_equal(true, @page.has_correct_title?)
+      end
+    end
 
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
@@ -45,7 +45,8 @@ class LBLN < MiniTest::Test
                                                                      :ad_site => ad_site,
                                                                      :expected_ad_site => expected_ad_site,
                                                                      :ad_categories => actual_ad_categories,
-                                                                     :expected_ad_categories => expected_ad_categories) 
+                                                                     :expected_ad_categories => expected_ad_categories,
+                                                                     :ugc => "[\"n\"]") 
         ads.validate
 
         omniture = @page.omniture

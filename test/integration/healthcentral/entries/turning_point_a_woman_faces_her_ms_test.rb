@@ -60,7 +60,8 @@ class TurningPointEntryPageTest < MiniTest::Test
                                                                      :ad_categories => actual_ad_categories,
                                                                      :expected_ad_categories => expected_ad_categories,
                                                                      :pharma_safe => pharma_safe,
-                                                                     :expected_pharma_safe => true) 
+                                                                     :expected_pharma_safe => true,
+                                                                     :ugc => "[\"n\"]") 
         ads.validate
 
         omniture = @page.omniture
