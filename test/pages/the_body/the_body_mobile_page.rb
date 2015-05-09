@@ -1,8 +1,16 @@
 require_relative './the_body_page'
-require_relative './healthcentral_page'
+require_relative './../healthcentral/healthcentral_page'
+require_relative './concerns/mobile_ad_test_cases'
 
 module TheBody
   class TheBodyMobilePage < TheBody::TheBodyPage
+    include TheBodyMobileAds
+
+    def initialize(args)
+      @driver  = args[:driver]
+      @proxy   = args[:proxy]
+      @fixture = args[:fixture]
+    end
 
     def functionality
       Functionality.new(:driver => @driver)
@@ -11,6 +19,24 @@ module TheBody
     def global_test_cases
       GlobalTestCases.new(:driver => @driver)
     end
+
+    def ads
+      TheBodyMobileAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy)
+    end
+
+    def assets
+      all_images      = @driver.find_elements(tag_name: 'img')
+      Assets.new(:proxy => @proxy, :imgs => all_images)
+    end
+
+    def omniture
+      @driver.execute_script "javascript:void(window.open(\"\",\"dp_debugger\",\"width=600,height=600,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1\").document.write(\"<script language='JavaScript' id=dbg src='https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js'></\"+\"script>\"))"
+      sleep 1
+      second_window = @driver.window_handles.last
+      @driver.switch_to.window second_window
+      omniture_text = @driver.find_element(:css, 'td#request_list_cell').text
+      omniture = Omniture.new(omniture_text, @fixture)
+    end 
 
     class Omniture < HealthCentralPage::Omniture
       def correct_report_suite
@@ -38,7 +64,7 @@ module TheBody
       end
 
       def wrong_asset_hosts
-        (["http://uat.thebody.", "http://qa.thebody.", "http://qa1.thebody.","http://qa2.thebody.","http://qa3.thebody.", "http://qa4.thebody.", "http://www.thebody.", "http://alpha.thebody.", "http://stage.thebody."] - [Configuration["berkley"]["asset_host"], ASSET_HOST])
+        (["http://uat.thebody.", "http://qa.thebody.", "http://qa1.thebody.","http://qa2.thebody.","http://qa3.thebody.", "http://qa4.thebody.", "http://www.thebody.", "http://alpha.thebody.", "http://stage.thebody."] - [Configuration["thebody"]["asset_host"], ASSET_HOST])
       end
 
       def assets_using_correct_host

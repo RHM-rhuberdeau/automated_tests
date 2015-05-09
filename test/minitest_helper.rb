@@ -13,6 +13,7 @@ ASSET_HOST     = Configuration["asset_host"]
 MED_BASE_URL   = Configuration["medtronic"]["base_url"]
 COLLECTION_URL = Configuration["collection_url"]
 IMMERSIVE_URL  = Configuration["healthcentral"]["immersive"]
+BODY_URL       = Configuration["thebody"]["base_url"]
 
 def firefox
   # Selenium::WebDriver::Firefox::Binary.path= '/opt/firefox/firefox'

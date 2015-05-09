@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/redesign_question_page'
+require_relative '../../../pages/healthcentral/redesign_question_page'
 
 class SkinCareQuestionPageTest < MiniTest::Test
   context "a question with lots of community answers" do 
@@ -9,20 +9,13 @@ class SkinCareQuestionPageTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/questions.yml')
       question_fixture = YAML::load_documents(io)
       @question_fixture = OpenStruct.new(question_fixture[0][132858])
-      @page = ::RedesignQuestion::RedesignQuestionPage.new(@driver, @proxy, @question_fixture)
+      @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture)
       visit "#{HC_BASE_URL}/skin-care/c/question/550423/132858"
     end
 
+    ##################################################################
+    ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
-      should "have an expert answer section" do 
-        begin
-          expert_section = @driver.find_element(:css, ".CommentList--qa.QA-experts-container li")
-        rescue Selenium::WebDriver::Error::NoSuchElementError
-          expert_section = nil
-        end
-        assert_equal(true, !expert_section.nil?, "Expert section did not appear on the page")
-      end
-
       should "truncate the community answers to 7 lines" do 
         view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
         view_more_answers.click
@@ -136,37 +129,28 @@ class SkinCareQuestionPageTest < MiniTest::Test
 
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
-    context "ads, analytics, omniture" do 
-      should "load the correct analytics file" do
-        assert_equal(@page.analytics_file, true)
-      end
+    context "ads, analytics, omniture" do
+      should "not have any errors" do 
+        pharma_safe             = true
+        has_file                = @page.analytics_file
+        ad_site                 = evaluate_script("AD_SITE")
+        expected_ad_site        = "cm.ver.skin"
+        expected_ad_categories  = ["skinhealth","acne",""]
+        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
+        ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                                     :proxy => @proxy, 
+                                                                     :url => "#{HC_DRUPAL_URL}/skin-care/c/question/550423/132858",
+                                                                     :ad_site => ad_site,
+                                                                     :expected_ad_site => expected_ad_site,
+                                                                     :ad_categories => actual_ad_categories,
+                                                                     :expected_ad_categories => expected_ad_categories,
+                                                                     :pharma_safe => true,
+                                                                     :ugc => "[\"n\"]") 
+        ads.validate
 
-      should "be pharma safe" do
-        assert_equal(true, @page.pharma_safe?)
-      end
-
-      should "have a ugc value of n" do
-        assert_equal(true, (@page.ugc == "[\"n\"]"), "#{@page.ugc.inspect}")
-      end
-
-      should "have unique ads" do 
-        ads1 = @page.ads_on_page
-        visit "#{HC_BASE_URL}/skin-care/c/question/550423/132858"
-        sleep 1
-        ads2 = @page.ads_on_page
-
-        ord_values_1 = ads1.collect(&:ord).uniq
-        ord_values_2 = ads2.collect(&:ord).uniq
-
-        assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
-        assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
-        assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
-      end
-
-      should "have valid omniture values" do 
         omniture = @page.omniture
         omniture.validate
-        assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
+        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
 
