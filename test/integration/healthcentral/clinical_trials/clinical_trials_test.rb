@@ -1,42 +1,16 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/redesign_entry_page'
+require_relative '../../../pages/healthcentral/redesign_entry_page'
 
 class LBLN < MiniTest::Test
   context "living with ra" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy)
+      io = File.open('test/fixtures/healthcentral/clinical_trials.yml')
+      trial_fixture = YAML::load_documents(io)
+      @trial_fixture = OpenStruct.new(trial_fixture[0]['clinical_trials'])
+      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @trial_fixture)
       visit "#{HC_BASE_URL}/tools/d/clinical-trials"
-    end
-
-    should "have an adsite value of cm.ver.dacprs" do 
-      ad_site = evaluate_script("AD_SITE")
-      assert_equal(true, (ad_site == "cm.ver.dacprs"), "ad_site was #{ad_site} not cm.ver.dacprs")
-    end
-
-    should "have ad_categories value of ['', '', '']" do 
-      expected_ad_categories = ["", "", ""]
-      actual_ad_categories   = evaluate_script("AD_CATEGORIES")
-      assert_equal(true, (actual_ad_categories == expected_ad_categories), "ad_categories was #{actual_ad_categories} not #{expected_ad_categories}")
-    end
-
-    should "have unique ads" do 
-      ads1 = @page.ads_on_page
-      visit "#{HC_BASE_URL}/tools/d/clinical-trials"
-      sleep 1
-      ads2 = @page.ads_on_page
-
-      ord_values_1 = ads1.collect(&:ord).uniq
-      ord_values_2 = ads2.collect(&:ord).uniq
-
-      assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
-      assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
-      assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
-    end
-
-    should "have the correct title" do 
-      assert_equal(true, @page.has_correct_title?, "Page title was: #{@page.driver.title}")
     end
 
     ##################################################################
@@ -46,6 +20,51 @@ class LBLN < MiniTest::Test
         assets = @page.assets
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO" do 
+      should "have the correct title" do 
+        assert_equal(true, @page.has_correct_title?)
+      end
+    end
+
+    #########################################################################
+    ################### ADS, ANALYTICS, OMNITURE ############################
+    context "ads, analytics, omniture" do
+      should "not have any errors" do 
+        ad_site                 = evaluate_script("AD_SITE")
+        expected_ad_site        = "cm.ver.dacprs"
+        expected_ad_categories  = ["", "", ""]
+        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
+        ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                                     :proxy => @proxy, 
+                                                                     :url => "#{HC_BASE_URL}/tools/d/clinical-trials",
+                                                                     :ad_site => ad_site,
+                                                                     :expected_ad_site => expected_ad_site,
+                                                                     :ad_categories => actual_ad_categories,
+                                                                     :expected_ad_categories => expected_ad_categories,
+                                                                     :ugc => "[\"n\"]") 
+        ads.validate
+
+        omniture = @page.omniture
+        omniture.validate
+        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
+      end
+    end
+
+    ##################################################################
+    ################### GLOBAL SITE TESTS ############################
+    context "Global Site tests" do 
+      should "have passing global test cases" do 
+        button = @driver.find_element(:css, "#HC-menu")
+        button.click
+        
+        global_test_cases = @page.global_test_cases
+        global_test_cases.validate
+        assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
       end
     end
   end

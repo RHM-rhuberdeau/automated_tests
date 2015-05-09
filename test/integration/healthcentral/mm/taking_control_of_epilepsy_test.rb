@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/redesign_entry_page'
+require_relative '../../../pages/healthcentral/redesign_entry_page'
 
 class LBLN < MiniTest::Test
   context "taking control of epilepsy landing page" do 
@@ -66,43 +66,29 @@ class LBLN < MiniTest::Test
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
-      should "be pharma safe" do
-        assert_equal(true, @page.pharma_safe?)
-      end
+      should "not have any errors" do 
+        pharma_safe             = evaluate_script("EXCLUSION_CAT")
+        pharma_safe             = pharma_safe == ""
+        has_file                = @page.analytics_file
+        ad_site                 = evaluate_script("AD_SITE")
+        expected_ad_site        = "cm.ver.epilepsy"
+        expected_ad_categories  = ["mymoment", "", ""]
+        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
+        ads                     = RedesignEntry::RedesignEntryPage::AdsTestCases.new(:driver => @driver,
+                                                                     :proxy => @proxy, 
+                                                                     :url => "#{HC_BASE_URL}/epilepsy/d/living-with/taking-control",
+                                                                     :ad_site => ad_site,
+                                                                     :expected_ad_site => expected_ad_site,
+                                                                     :ad_categories => actual_ad_categories,
+                                                                     :expected_ad_categories => expected_ad_categories,
+                                                                     :pharma_safe => pharma_safe,
+                                                                     :expected_pharma_safe => true,
+                                                                     :ugc => "[\"n\"]") 
+        ads.validate
 
-      should "load the correct analytics file" do
-        assert_equal(@page.analytics_file, true)
-      end
-
-      should "have an adsite value of cm.ver.epilepsy" do 
-        ad_site = evaluate_script("AD_SITE")
-        assert_equal(true, (ad_site == "cm.ver.epilepsy"), "ad_site was #{ad_site} not cm.ver.epilepsy")
-      end
-
-      should "have ad_categories value of ('', '', '')" do 
-        expected_ad_categories = ["mymoment", "", ""]
-        actual_ad_categories   = evaluate_script("AD_CATEGORIES")
-        assert_equal(true, (actual_ad_categories == expected_ad_categories), "ad_categories was #{actual_ad_categories} not #{expected_ad_categories}")
-      end
-
-      should "have unique ads" do 
-        ads1 = @page.ads_on_page(3)
-        visit "#{HC_BASE_URL}/epilepsy/d/living-with/taking-control"
-        sleep 1
-        ads2 = @page.ads_on_page(3)
-
-        ord_values_1 = ads1.collect(&:ord).uniq
-        ord_values_2 = ads2.collect(&:ord).uniq
-    
-        assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
-        assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
-        assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
-      end
-
-      should "have valid omniture values" do 
         omniture = @page.omniture
         omniture.validate
-        assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
+        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
   end#taking control of epilepsy landing page

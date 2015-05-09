@@ -1,5 +1,5 @@
 require_relative '../../minitest_helper' 
-require_relative '../../pages/the_body_page'
+require_relative '../../pages/the_body/the_body_page'
 
 class HowDoIKnowIfIHaveHiv < MiniTest::Test
   context "A TheBody desktop page" do 
@@ -9,7 +9,7 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
       io = File.open('test/fixtures/the_body/articles.yml')
       body_fixture = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['how-do-i-know-if-i-have-HIV'])
-      @page = ::TheBody::TheBodyPage.new(@driver, @proxy, @body_fixture)
+      @page = ::TheBody::TheBodyPage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
       visit "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html"
     end
 
@@ -45,24 +45,13 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
-      should "have unique ads" do 
-        ads1 = @page.ads_on_page(3)
-        visit "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html"
-        sleep 1
-        ads2 = @page.ads_on_page(3)
+      should "not have any errors" do 
+        ads = HealthCentralAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html", :ugc => "[\"n\"]") 
+        ads.validate
 
-        ord_values_1 = ads1.collect(&:ord).uniq
-        ord_values_2 = ads2.collect(&:ord).uniq
-    
-        assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
-        assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
-        assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
-      end
-
-      should "have valid omniture values" do 
         omniture = @page.omniture
         omniture.validate
-        assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
+        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
 

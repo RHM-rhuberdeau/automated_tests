@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral_page'
+require_relative '../../../pages/healthcentral/healthcentral_page'
   
 class HCSearchTest < MiniTest::Test
   context "a search query" do 

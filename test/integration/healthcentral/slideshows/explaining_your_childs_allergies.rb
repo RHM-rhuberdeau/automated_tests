@@ -2,12 +2,12 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/slideshow'
 
 class SlideshowTest < MiniTest::Test
-  context "a slideshow in a collection, coping with copd" do 
+  context "a drupal slideshow, explaining your childs allergies" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
       @page = ::HealthCentral::SlideshowPage.new(@driver, @proxy)
-      visit "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd"
+      visit "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others"
     end
 
     ##################################################################

@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/redesign_entry_page'
+require_relative '../../../pages/healthcentral/redesign_entry_page'
 
 class TurningPointEntryPageTest < MiniTest::Test
   context "an expert entry" do 
@@ -13,34 +13,11 @@ class TurningPointEntryPageTest < MiniTest::Test
       visit "#{HC_BASE_URL}/multiple-sclerosis/c/255251/172231/turning-embrace"
     end
 
+    ##################################################################
+    ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
-      should "have the publish date" do 
-        publish_date = @driver.find_element(:css, "span.Page-info-publish-date").text
-        expected_date = "October 14, 2014"
-        assert_equal(expected_date, publish_date, "publish date was #{publish_date} not #{expected_date}")
-      end
-
-      should "include the authors name in the byline" do 
-        author_name = @driver.find_element(:css, ".Page-info-publish-author a").text
-        expected_name = "JHo"
-        assert_equal(expected_name, author_name, "author name was #{author_name} not #{expected_name}")
-      end
-
-      should "include the author's role" do  
-        role = @driver.find_element(:css, "span.Page-info-publish-badge").text
-        expected_role = "Editor"
-        assert_equal(expected_role, role, "role was #{role} not #{expected_role}")
-      end
-      
-      should "include the author's profile image which links to the author's profile" do 
-        profile_img = @driver.find_element(:css, "a.Page-info-visual img")
-        assert_equal(true, !profile_img.nil?)
-        profile_img.click
-        assert_equal(true, (@driver.current_url == "#{HC_BASE_URL}/profiles/c/255251"))
-      end
-
-      should "have valid functionality" do 
-        functionality = @page.functionality_test_cases
+      should "not have any errors" do 
+        functionality = @page.functionality(:author_name => "JHo", :author_role => "Editor", :nofollow_author_links => true, :profile_link => "#{HC_BASE_URL}/profiles/c/255251")
         functionality.validate
         assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
       end
@@ -64,36 +41,32 @@ class TurningPointEntryPageTest < MiniTest::Test
       end
     end
 
-
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
-      should "be pharma safe" do
-        assert_equal(true, @page.pharma_safe?)
-      end
-      
-      should "load the correct analytics file" do
-        assert_equal(@page.analytics_file, true)
-      end
+      should "not have any errors" do 
+        pharma_safe             = evaluate_script("EXCLUSION_CAT")
+        pharma_safe             = pharma_safe == ""
+        has_file                = @page.analytics_file
+        ad_site                 = evaluate_script("AD_SITE")
+        expected_ad_site        = "cm.ver.ms"
+        expected_ad_categories  = ['multiplesclerosis','neurology','']
+        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
+        ads                     = RedesignEntry::RedesignEntryPage::AdsTestCases.new(:driver => @driver,
+                                                                     :proxy => @proxy, 
+                                                                     :url => "#{HC_BASE_URL}/multiple-sclerosis/c/255251/172231/turning-embrace",
+                                                                     :ad_site => ad_site,
+                                                                     :expected_ad_site => expected_ad_site,
+                                                                     :ad_categories => actual_ad_categories,
+                                                                     :expected_ad_categories => expected_ad_categories,
+                                                                     :pharma_safe => pharma_safe,
+                                                                     :expected_pharma_safe => true,
+                                                                     :ugc => "[\"n\"]") 
+        ads.validate
 
-      should "have unique ads" do 
-        ads1 = @page.ads_on_page(3)
-        visit "#{HC_BASE_URL}/multiple-sclerosis/c/255251/172231/turning-embrace"
-        sleep 1
-        ads2 = @page.ads_on_page(3)
-  
-        ord_values_1 = ads1.collect(&:ord).uniq
-        ord_values_2 = ads2.collect(&:ord).uniq
-    
-        assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
-        assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
-        assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
-      end
-
-      should "have valid omniture values" do 
         omniture = @page.omniture
         omniture.validate
-        assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
+        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
 
