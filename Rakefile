@@ -56,8 +56,8 @@ task :subcategory do
   end
 end
 
-task :berkley do 
-  files = Dir[File.join('./test/integration/berkley_wellness', '**', '*.{rb}')].each do |file| 
+task :berkeley do 
+  files = Dir[File.join('./test/integration/berkeley_wellness', '**', '*.{rb}')].each do |file| 
     require file      
   end
 end

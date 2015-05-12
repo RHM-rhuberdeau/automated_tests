@@ -14,6 +14,7 @@ module BerkeleyAssets
       @good_assets      = []
       @bad_assets       = []
       @unloaded_assets  = []
+      
       @proxy.har.entries.each do |entry|
         if ( entry.request.url.index(BW_ASSET_HOST) == 0 && entry.response.status == 200 )
           @good_assets << entry.request.url
