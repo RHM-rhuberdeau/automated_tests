@@ -2,10 +2,12 @@ require_relative './healthcentral_page'
 
 module HealthCentral
   class SlideshowPage < HealthCentralPage
-    def initialize(driver, proxy, fixture=nil)
-      @driver       = driver
-      @proxy        = proxy
-      @fixture      = fixture
+    def initialize(args)
+      @driver           = args[:driver]
+      @proxy            = args[:proxy]
+      @fixture          = args[:fixture]
+      @head_navigation  = args[:head_navigation]
+      @footer           = args[:footer]
     end
 
     def assets
@@ -16,6 +18,10 @@ module HealthCentral
     def functionality
       Functionality.new(:driver => @driver, :proxy => @proxy)
     end
+
+    def global_test_cases
+      GlobalTestCases.new(:driver => @driver, :head_navigation => @head_navigation, :footer => @footer)
+    end
   end
 
   class Functionality
@@ -23,6 +29,8 @@ module HealthCentral
 
     validate :updates_the_ads_between_slides
     validate :relative_links_in_the_header
+    validate :includes_publish_date
+    validate :includes_updated_date
 
     def initialize(args)
       @driver = args[:driver]
@@ -55,6 +63,27 @@ module HealthCentral
       end
     end
 
+    def includes_publish_date
+      publish_date = @driver.find_element(:css, "span.Page-info-publish-date").text
+      unless publish_date
+        self.errors.add(:base, "Page was missing a publish date")
+      end
+      unless publish_date.scan(/\w+\s\d+,\s\d+/).length == 1
+        self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
+      end
+    end
+
+    def includes_updated_date
+      publish_date = @driver.find_element(:css, "span.Page-info-publish-updated").text
+      unless publish_date
+        self.errors.add(:base, "Page was missing a publish date")
+      end
+      date = publish_date.gsub("updated", '').strip if publish_date
+      unless date.scan(/\w+\s\d+,\s\d+/).length == 1
+        self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
+      end
+    end
+
     def go_through_slides
       @ads = {}
       slideshow_slides = @driver.find_elements(:css, ".Slide-content-slide-container")
@@ -84,6 +113,32 @@ module HealthCentral
       ord_values = @slides.map { |slide| slide.ord_values}
       ord_values = ord_values.compact.uniq
       (ord_values.length == @slides.length && ord_values.length > 0)
+    end
+  end
+
+  class GlobalTestCases
+    include ::ActiveModel::Validations
+
+    validate :head_navigation
+    validate :footer
+
+    def initialize(args)
+      @head_navigation = args[:head_navigation]
+      @footer          = args[:footer]
+    end
+
+    def head_navigation
+      @head_navigation.validate
+      unless @head_navigation.errors.empty?
+        self.errors.add(:head_navigation, @head_navigation.errors.values.first)
+      end
+    end
+
+    def footer
+      @footer.validate
+      unless @footer.errors.empty?
+        self.errors.add(:footer, @footer.errors.values.first)
+      end
     end
   end
 end

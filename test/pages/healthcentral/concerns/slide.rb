@@ -3,7 +3,7 @@ module HealthCentralSlide
     attr_reader :text, :ads
 
     def initialize(args)
-      @text = text
+      @text = args[:text]
       @ads  = args[:ads]
     end
 

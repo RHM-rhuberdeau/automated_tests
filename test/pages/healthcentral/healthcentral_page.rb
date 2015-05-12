@@ -5,6 +5,7 @@ require_relative './concerns/ads'
 require_relative './concerns/slide'
 require_relative './concerns/ads_test_cases'
 require_relative './concerns/header'
+require_relative './concerns/footer'
 
 class HealthCentralPage
   attr_reader :driver, :proxy, :slides, :ords
