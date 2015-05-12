@@ -1,6 +1,6 @@
 require_relative '../../minitest_helper' 
   
-class BWSearchTest < MiniTest::Test
+class BerkeleySearchTest < MiniTest::Test
   context "a search query" do 
     setup do 
       firefox

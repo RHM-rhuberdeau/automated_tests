@@ -8,7 +8,8 @@ require 'timeout'
 
 HC_BASE_URL    = Configuration["healthcentral"]["base_url"]
 HC_DRUPAL_URL  = Configuration["healthcentral"]["drupal_url"]
-BW_BASE_URL    = Configuration["berkley"]["base_url"]
+BW_BASE_URL    = Configuration["berkeley"]["base_url"]
+BW_ASSET_HOST  = Configuration["berkeley"]["asset_host"]
 ASSET_HOST     = Configuration["asset_host"]
 MED_BASE_URL   = Configuration["medtronic"]["base_url"]
 COLLECTION_URL = Configuration["collection_url"]

@@ -12,7 +12,7 @@ module HealthCentralAssets
     end
 
     def wrong_asset_hosts
-      (["http://qa.healthcentral.", "http://qa1.healthcentral.","http://qa2.healthcentral.","http://qa3.healthcentral.", "http://qa4.healthcentral.", "http://www.healthcentral.", "http://alpha.healthcentral.", "http://stage.healthcentral."] - [ASSET_HOST])
+      (SITE_HOSTS - [ASSET_HOST])
     end
 
     def assets_using_correct_host
