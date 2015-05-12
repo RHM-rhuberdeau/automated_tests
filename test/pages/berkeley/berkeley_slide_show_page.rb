@@ -1,10 +1,17 @@
-class BerkleyslideShowPage
+require_relative './berkeley_page'
+
+class BerkeleySlideShowPage < BerkeleyPage
   attr_reader :driver, :proxy
 
-  def initialize(driver, proxy)
-  	@driver = driver
-  	@proxy	= proxy
+  def initialize(args)
+  	@driver = args[:driver]
+  	@proxy	= args[:proxy]
   	@old_ad_calls = []
+  end
+
+  def assets
+    all_images = @driver.find_elements(tag_name: 'img')
+    BerkeleyAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
   end
 
   def old_ad_calls

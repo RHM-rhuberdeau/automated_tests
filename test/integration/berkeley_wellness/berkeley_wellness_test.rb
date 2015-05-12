@@ -17,20 +17,18 @@ class BerkleyWellnessTest < MiniTest::Test
       no_index = @driver.find_elements(:css, "meta[name='robots']")
       assert_equal(true, no_index.empty?, "noindex tag found: #{no_index.inspect}")
     end
-
  end#context Berkley Wellness
 
  context "Popular article listing" do 
-  setup do 
-    firefox
-    visit "#{BW_BASE_URL}/popular-article-listing"
-  end
+   setup do 
+     firefox
+     visit "#{BW_BASE_URL}/popular-article-listing"
+   end
 
-  should "have a noindex tag" do 
-    no_index = @driver.find_elements(:css, "meta[name='robots']")
-    assert_equal(false, no_index.empty?, "noindex tag not found: #{no_index.inspect}")
-  end
-
+   should "have a noindex tag" do 
+     no_index = @driver.find_elements(:css, "meta[name='robots']")
+     assert_equal(false, no_index.empty?, "noindex tag not found: #{no_index.inspect}")
+   end
  end#Popular article listing
 
   def teardown
