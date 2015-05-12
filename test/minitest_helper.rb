@@ -115,12 +115,17 @@ def wait_for
   end
 end
 
-def find(args)
+#Find an element by css 
+#If the element.diplayed? == true then return the element
+#Otherwise return nil
+def find(css)
   begin
-    node = @driver.find_element(:css, ".CommentList--qa.QA-experts-container li")
+    node = @driver.find_element(:css, css)
+    node = nil if ( node.displayed? == false )
   rescue Selenium::WebDriver::Error::NoSuchElementError
     node = nil
   end
+  node
 end
 
 def finished_loading?
