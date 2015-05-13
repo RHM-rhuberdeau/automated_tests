@@ -32,6 +32,7 @@ module HealthCentral
     validate :ads_are_lazy_loaded
     validate :includes_publish_date
     validate :includes_updated_date
+    validate :loads_next_slideshow
 
     def initialize(args)
       @driver           = args[:driver]
@@ -52,7 +53,7 @@ module HealthCentral
 
     def ads_are_lazy_loaded
       wait_for { @driver.find_elements(:css, "div.SlideList-item").first.displayed? }
-      @driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
+      scroll_to_bottom_of_page
       sleep 1
       slides = @driver.find_elements(:css, "div.SlideList-item")
       all_ads = HealthCentralPage.get_all_ads(@proxy)
@@ -85,6 +86,26 @@ module HealthCentral
       unless date.scan(/\w+\s\d+,\s\d+/).length == 1
         self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
       end
+    end
+
+    def loads_next_slideshow
+      #next slideshow is loaded after the user scrolls to the bottom
+      #the tests have already scrolled to the bottom to test lazy loading ads
+      #So all we need to do at this point is count the number of slideshows
+      wait_for { @driver.find_element(:css, ".js-infiniteContent_0.js-Node--slideshow").displayed? }
+      first_slideshow   = find ".js-infiniteContent_0.js-Node--slideshow"
+      second_slideshow  = find ".js-infiniteContent_1.js-Node--slideshow"
+
+      if first_slideshow
+        self.errors.add(:base, "First slideshow disappared from the page after the second was loaded")
+      end
+      if second_slideshow
+        self.errors.add(:base, "Second slideshow was not loaded")
+      end
+    end
+
+    def scroll_to_bottom_of_page
+      @driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
     end
 
     # def relative_links_in_the_header

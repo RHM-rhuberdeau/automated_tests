@@ -15,15 +15,15 @@ class SlideshowTest < MiniTest::Test
       visit "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd"
     end
 
-    # ##################################################################
-    # ################ FUNCTIONALITY ###################################
-    # context "when functioning properly" do 
-    #   should "not have any errors" do 
-    #     functionality = @page.functionality
-    #     functionality.validate
-    #     assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
-    #   end
-    # end
+    ##################################################################
+    ################ FUNCTIONALITY ###################################
+    context "when functioning properly" do 
+      should "not have any errors" do 
+        functionality = @page.functionality
+        functionality.validate
+        assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
+      end
+    end
 
     # ##################################################################
     # ################### ASSETS #######################################
@@ -35,15 +35,15 @@ class SlideshowTest < MiniTest::Test
     #   end
     # end
 
-    ##################################################################
-    ################### GLOBAL SITE TESTS ############################
-    context "Global Site tests" do 
-      should "have passing global test cases" do 
-        global_test_cases = @page.global_test_cases
-        global_test_cases.validate
-        assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
-      end
-    end
+    # ##################################################################
+    # ################### GLOBAL SITE TESTS ############################
+    # context "Global Site tests" do 
+    #   should "have passing global test cases" do 
+    #     global_test_cases = @page.global_test_cases
+    #     global_test_cases.validate
+    #     assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
+    #   end
+    # end
   end
 
   def teardown  
