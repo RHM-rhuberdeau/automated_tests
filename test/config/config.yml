@@ -13,6 +13,7 @@ qa:
   medtronic:
     base_url: https://concrete5.qa1.healthcentral.com
     name: medtronic
+    asset_host: https://secure.healthcentral.
   thebody:
     base_url: http://uat.thebody.com
     asset_host: http://uat.thebody.
@@ -32,6 +33,7 @@ qa1:
   medtronic:
     base_url: https://concrete5.qa1.healthcentral.com
     name: medtronic
+    asset_host: https://secure.healthcentral.
   thebody:
     base_url: http://qa1.thebody.com
     asset_host: http://www.thebody.
@@ -51,6 +53,7 @@ qa2:
   medtronic:
     base_url: https://secure.healthcentral.com
     name: medtronic
+    asset_host: https://secure.healthcentral.
 
 qa3:
   asset_host: http://qa3.healthcentral.
@@ -67,6 +70,7 @@ qa3:
   medtronic:
     base_url: https://secure.healthcentral.com
     name: medtronic
+    asset_host: https://secure.healthcentral.
   thebody:
     base_url: http://uat.thebody.com
     asset_host: http://uat.thebody.
@@ -86,6 +90,7 @@ qa4:
   medtronic:
     base_url: https://secure.healthcentral.com
     name: medtronic
+    asset_host: https://secure.healthcentral.
 
 production:
   asset_host: http://www.healthcentral.
@@ -101,24 +106,10 @@ production:
   medtronic:
     base_url: https://secure.healthcentral.com
     name: medtronic
+    asset_host: https://secure.healthcentral.
   thebody:
     base_url: http://www.thebody.com
     asset_host: http://www.thebody.
-
-alpha:
-  asset_host: http://alpha.healthcentral.
-  healthcentral:
-    base_url: http://alpha.healthcentral.choicemedia.com
-    name: healthcentral
-    drupal_url: http://alpha.healthcentral.choicemedia.com
-    immersive: http://immersiveqa.healthcentral.choicemedia.com
-  berkeley:
-    base_url: http://www.berkeleywellness.com
-    name: berkeleywellness
-    asset_host: http://alpha.berkeleywellness.
-  medtronic:
-    base_url: https://secure.healthcentral.com
-    name: medtronic
 
 stage:
   asset_host: http://stage.healthcentral.
@@ -134,6 +125,7 @@ stage:
   medtronic:
     base_url: https://secure.healthcentral.com
     name: medtronic
+    asset_host: https://secure.healthcentral.
   thebody:
     base_url: http://stage.thebody.com
     asset_host: http://stage.thebody.

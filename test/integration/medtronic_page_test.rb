@@ -1,12 +1,12 @@
 require_relative '../minitest_helper' 
-require_relative '../pages/concrete5_page'
+require_relative '../pages/healthcentral/concrete5_page'
 
 class MedtronicPageTest< MiniTest::Test
   context "a Medtronic page" do 
   	setup do
       fire_fox_with_secure_proxy
       @proxy.new_har
-      @page = ::Concrete5::Concrete5Page.new(@driver, @proxy)
+      @page = ::Concrete5::Concrete5Page.new(:driver =>@driver, :proxy => @proxy)
       visit "#{MED_BASE_URL}/cecs/cf/medtronic"
   	end
 
