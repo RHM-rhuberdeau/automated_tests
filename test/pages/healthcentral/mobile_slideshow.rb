@@ -1,6 +1,6 @@
 require_relative './healthcentral_page'
 
-module HealthCentral
+module HealthCentralMobileSlideshow
   class MobileSlideshowPage < HealthCentralPage
     def initialize(args)
       @driver           = args[:driver]
@@ -29,9 +29,10 @@ module HealthCentral
 
     # validate :relative_links_in_the_header
     validate :page_has_slides
-    validate :ads_are_lazy_loaded
+    validate :more_on_this_topic
     validate :includes_publish_date
     validate :includes_updated_date
+    validate :ads_are_lazy_loaded
     validate :loads_next_slideshow
 
     def initialize(args)
@@ -85,6 +86,28 @@ module HealthCentral
       date = publish_date.gsub("updated", '').strip if publish_date
       unless date.scan(/\w+\s\d+,\s\d+/).length == 1
         self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
+      end
+    end
+
+    def more_on_this_topic
+      more_on_header = find "h2.CollectionListTopic-title"
+
+      if @collection == true
+        unless more_on_header
+          self.errors.add(:base, "More on this topic did not appear on the page")
+        end
+        if more_on_header
+          text = more_on_header.text
+          unless text == "More on this topic"
+            self.errors.add(:base, "More on this topic header was: #{text} not: More on this topic")
+          end
+        end
+      end
+
+      if @collection == false
+        if more_on_header
+          self.errors.add(:base, "More on this topic appeared on a noncollection slideshow")
+        end
       end
     end
 

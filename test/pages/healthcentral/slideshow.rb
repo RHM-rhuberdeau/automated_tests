@@ -1,6 +1,6 @@
 require_relative './healthcentral_page'
 
-module HealthCentral
+module HealthCentralSlideshow
   class SlideshowPage < HealthCentralPage
     def initialize(args)
       @driver           = args[:driver]
@@ -35,11 +35,19 @@ module HealthCentral
     def initialize(args)
       @driver = args[:driver]
       @proxy  = args[:proxy]
-      @slides = []
+    end
+
+    def slides
+      @slides
+    end
+
+    def slides=(value)
+      @slides = value
     end
 
     def updates_the_ads_between_slides
-      ads = go_through_slides
+      self.slides = Array.new
+      ads = self.go_through_slides
       unique_ads = slides_have_unique_ads?
       unless unique_ads == true
         self.errors.add(:base, "One of the slides had multiple ord values.")
@@ -97,7 +105,7 @@ module HealthCentral
           end
 
           ads     = @ads[index].map { |ad| HealthCentralAds::Ads.new(ad) }
-          @slides << HealthCentralSlide::Slide.new(:ads => ads)
+          self.slides << HealthCentralSlide::Slide.new(:ads => ads)
           @driver.find_element(:css, ".Slideshow-controls-next-button-label").click
           wait_for_ajax
         end
@@ -106,7 +114,7 @@ module HealthCentral
       all_ads                           = HealthCentralPage.get_all_ads(@proxy)
       @ads[slideshow_slides.length - 1] = all_ads - @ads.flatten(2)
       ads                               = @ads[slideshow_slides.length - 1].map { |ad| HealthCentralAds::Ads.new(ad) }
-      @slides                           << HealthCentralSlide::Slide.new(:ads => ads)
+      self.slides                           << HealthCentralSlide::Slide.new(:ads => ads)
     end
 
     def slides_have_unique_ads?

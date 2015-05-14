@@ -6,7 +6,12 @@ class SlideshowTest < MiniTest::Test
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      @page = ::HealthCentral::SlideshowPage.new(@driver, @proxy)
+      head_navigation = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :sub_category => "ADHD",
+                                   :related => ['Depression', 'Anxiety', 'Autism'],
+                                   :driver => @driver)
+      footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
+      @page = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver,:proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
       visit "#{HC_BASE_URL}/adhd/cf/slideshows/6-facts-on-adjunctive-adhd-therapy-in-children"
     end
 
@@ -27,6 +32,16 @@ class SlideshowTest < MiniTest::Test
         assets = @page.assets
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    ##################################################################
+    ################### GLOBAL SITE TESTS ############################
+    context "Global Site tests" do 
+      should "have passing global test cases" do 
+        global_test_cases = @page.global_test_cases
+        global_test_cases.validate
+        assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
       end
     end
   end
