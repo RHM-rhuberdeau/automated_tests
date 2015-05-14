@@ -8,11 +8,22 @@ module HealthCentralSlideshow
       @fixture          = args[:fixture]
       @head_navigation  = args[:head_navigation]
       @footer           = args[:footer]
+      @fixture          = args[:fixture]
     end
 
     def assets
       all_images = @driver.find_elements(tag_name: 'img')
       HealthCentralAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
+    end
+
+    def ads_test_cases(args)
+      AdsTestCases.new(:driver => @driver, :ad_site => args[:ad_site], :ad_categories => args[:ad_categories])
+    end
+
+    def omniture
+      open_omniture_debugger
+      omniture_text = get_omniture_from_debugger
+      omniture = HealthCentralOmniture::Omniture.new(omniture_text, @fixture)
     end
 
     def functionality
@@ -125,6 +136,33 @@ module HealthCentralSlideshow
       ord_values = @slides.map { |slide| slide.ord_values}
       ord_values = ord_values.compact.uniq
       (ord_values.length == @slides.length && ord_values.length > 0)
+    end
+  end
+
+  class AdsTestCases
+    include ::ActiveModel::Validations
+
+    validate :correct_ad_site
+    validate :correct_ad_categories
+
+    def initialize(args)
+      @driver                 = args[:driver]
+      @expected_ad_categories = args[:ad_categories]
+      @expected_ad_site       = args[:ad_site]
+    end
+
+    def correct_ad_site
+      ad_site = evaluate_script("AD_SITE")
+      unless ad_site == @expected_ad_site
+        self.errors.add(:ad_tags, "ad_site was #{ad_site} not #{@expected_ad_site}")
+      end
+    end
+
+    def correct_ad_categories
+      ad_categories = evaluate_script("AD_CATEGORIES")
+      unless ad_categories == @expected_ad_categories
+        self.errors.add(:ad_tags, "ad_categories was #{ad_categories} not #{@expected_ad_categories}")
+      end
     end
   end
 
