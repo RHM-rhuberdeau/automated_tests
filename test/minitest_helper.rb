@@ -154,6 +154,7 @@ def get_omniture_from_debugger
   omniture_text = omniture_node.text if omniture_node
   if omniture_text == nil
     sleep 1
+    wait_for { @driver.find_element(:css, 'td#request_list_cell').displayed? }
     omniture_node = find 'td#request_list_cell'
     omniture_text = omniture_node.text
   end
