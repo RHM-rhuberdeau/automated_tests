@@ -72,23 +72,27 @@ module HealthCentralSlideshow
     end
 
     def includes_publish_date
-      publish_date = @driver.find_element(:css, "span.Page-info-publish-date").text
+      publish_date = find  "span.Page-info-publish-date"
       unless publish_date
         self.errors.add(:base, "Page was missing a publish date")
       end
-      unless publish_date.scan(/\w+\s\d+,\s\d+/).length == 1
-        self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
+      if published_date
+        unless publish_date.text.scan(/\w+\s\d+,\s\d+/).length == 1
+          self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
+        end
       end
     end
 
     def includes_updated_date
-      publish_date = @driver.find_element(:css, "span.Page-info-publish-updated").text
-      unless publish_date
+      updated_date = find "span.Page-info-publish-updated"
+      unless updated_date
         self.errors.add(:base, "Page was missing a publish date")
       end
-      date = publish_date.gsub("updated", '').strip if publish_date
-      unless date.scan(/\w+\s\d+,\s\d+/).length == 1
-        self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
+      if updated_date
+        date = updated_date.text.gsub("updated", '').strip if updated_date
+        unless date.scan(/\w+\s\d+,\s\d+/).length == 1
+          self.errors.add(:base, "Publish date was in the wrong format: #{updated_date}")
+        end
       end
     end
 
