@@ -25,25 +25,25 @@ class SlideshowTest < MiniTest::Test
       end
     end
 
-    # ##################################################################
-    # ################### ASSETS #######################################
-    # context "assets" do 
-    #   should "have valid assets" do 
-    #     assets = @page.assets
-    #     assets.validate
-    #     assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
-    #   end
-    # end
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
 
-    # ##################################################################
-    # ################### GLOBAL SITE TESTS ############################
-    # context "Global Site tests" do 
-    #   should "have passing global test cases" do 
-    #     global_test_cases = @page.global_test_cases
-    #     global_test_cases.validate
-    #     assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
-    #   end
-    # end
+    ##################################################################
+    ################### GLOBAL SITE TESTS ############################
+    context "Global Site tests" do 
+      should "have passing global test cases" do 
+        global_test_cases = @page.global_test_cases
+        global_test_cases.validate
+        assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
+      end
+    end
   end
 
   def teardown  
