@@ -6,12 +6,15 @@ class SlideshowTest < MiniTest::Test
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      head_navigation = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+      io                = File.open('test/fixtures/healthcentral/slideshows.yml')
+      slideshow_fixture = YAML::load_documents(io)
+      @fixture          = OpenStruct.new(slideshow_fixture[0]['allergies'])
+      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Allergy",
                                    :related => ['Asthma', 'Cold & Flu', 'Skin Care'],
                                    :driver => @driver)
-      footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver,:proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
+      @page             = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
       visit "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others"
     end
 
@@ -32,6 +35,21 @@ class SlideshowTest < MiniTest::Test
         assets = @page.assets
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    #########################################################################
+    ################### ADS, ANALYTICS, OMNITURE ############################
+    context "omniture" do
+      should "not have any errors" do 
+        ad_site        = "cm.ver.allergy"
+        ad_categories  = ["slideshow", "explaining", '']
+        ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
+        omniture       = @page.omniture
+
+        ads_test_cases.validate
+        omniture.validate
+        assert_equal(true, (ads_test_cases.errors.empty? && omniture.errors.empty?), "#{ads_test_cases.errors.messages} #{omniture.errors.messages}")
       end
     end
 
