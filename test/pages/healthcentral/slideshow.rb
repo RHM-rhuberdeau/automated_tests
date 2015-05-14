@@ -76,7 +76,7 @@ module HealthCentralSlideshow
       unless publish_date
         self.errors.add(:base, "Page was missing a publish date")
       end
-      if published_date
+      if publish_date
         unless publish_date.text.scan(/\w+\s\d+,\s\d+/).length == 1
           self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
         end
@@ -86,7 +86,7 @@ module HealthCentralSlideshow
     def includes_updated_date
       updated_date = find "span.Page-info-publish-updated"
       unless updated_date
-        self.errors.add(:base, "Page was missing a publish date")
+        self.errors.add(:base, "Page was missing an updated date")
       end
       if updated_date
         date = updated_date.text.gsub("updated", '').strip if updated_date
