@@ -139,69 +139,27 @@ def finished_loading?
   end
 end
 
-def wait_for_immersive_to_load
-  begin
-    Timeout::timeout(8) do
-      loop until immersive_loaded?
-    end
-  rescue Timeout::Error
-    @driver.execute_script "window.stop()"
-  end
+def open_omniture_debugger
+  @driver.execute_script "javascript:void(window.open(\"\",\"dp_debugger\",\"width=600,height=600,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1\").document.write(\"<script language='JavaScript' id=dbg src='https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js'></\"+\"script>\"))"
+  sleep 1
 end
 
-def immersive_loaded?
-  sleep 0.5
-  begin
-    if @driver.find_element(:css, "#loader")
-      false
-    else
-      true
-    end
-  rescue Selenium::WebDriver::Error::NoSuchElementError
-    true
-  end
-end
+def get_omniture_from_debugger
+  original_window = @driver.window_handles.first
+  second_window   = @driver.window_handles.last
 
-def wait_for_ajax
-  begin
-    Timeout::timeout(4) do
-      loop until finished_all_ajax_requests?
-    end
-  rescue Timeout::Error
-    @driver.execute_script("window.stop();")
-  end
-end
-
-def finished_all_ajax_requests?
-  begin
-    Timeout::timeout(3) do
-      loop until jquery_is_defined?
-    end
-  rescue Timeout::Error
-    @driver.execute_script("window.stop();")
+  @driver.switch_to.window second_window
+  wait_for { @driver.find_element(:css, 'td#request_list_cell').displayed? }
+  omniture_node = find 'td#request_list_cell'
+  omniture_text = omniture_node.text if omniture_node
+  if omniture_text == nil
+    sleep 1
+    omniture_node = find 'td#request_list_cell'
+    omniture_text = omniture_node.text
   end
 
-  begin
-    Timeout::timeout(3) do
-      loop until zero_ajax_requests?
-    end
-  rescue Timeout::Error
-    @driver.execute_script("window.stop();")
-  end
-end
-
-def jquery_is_defined?
-  sleep 0.5
-  @driver.execute_script("return jQuery !== 'undefined'")
-end
-
-def zero_ajax_requests?
-  sleep 0.5
-  if @driver.execute_script("return jQuery !== 'undefined'") == true
-    @driver.execute_script('return jQuery.active').zero?
-  else
-    false
-  end
+  @driver.switch_to.window original_window
+  omniture_text
 end
 
 def visit(url)
@@ -215,7 +173,11 @@ def visit(url)
 end
 
 def evaluate_script(script)
-  @driver.execute_script "return #{script}"
+  begin
+    @driver.execute_script "return #{script}"
+  rescue Selenium::WebDriver::Error::JavascriptError
+    "javascript error"
+  end
 end
 
 def page_has_ad(ad_url)

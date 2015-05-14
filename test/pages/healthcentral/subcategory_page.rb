@@ -18,11 +18,8 @@ module HealthCentral
     end
 
     def omniture
-      @driver.execute_script "javascript:void(window.open(\"\",\"dp_debugger\",\"width=600,height=600,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1\").document.write(\"<script language='JavaScript' id=dbg src='https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js'></\"+\"script>\"))"
-      sleep 1
-      second_window = @driver.window_handles.last
-      @driver.switch_to.window second_window
-      omniture_text = @driver.find_element(:css, 'td#request_list_cell').text
+      open_omniture_debugger
+      omniture_text = get_omniture_from_debugger
       omniture = HealthCentralOmniture::Omniture.new(omniture_text, @fixture)
     end
   end
