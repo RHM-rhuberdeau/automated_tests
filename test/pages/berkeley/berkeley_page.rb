@@ -9,7 +9,7 @@ require_relative './concerns/footer'
 
 class BerkeleyPage
 
-  SITE_HOSTS = ["http://qa.berkeleywellness.", "http://qa1.berkeleywellness.","http://qa2.berkeleywellness.","http://qa3.berkeleywellness.", "http://qa4.berkeleywellness.", "http://www.berkeleywellness.", "http://alpha.berkeleywellness.", "http://stage.berkeleywellness."]
+  SITE_HOSTS = ["http://bw3.hcaws.", "http://qa1.berkeleywellness.","http://qa2.berkeleywellness.","http://qa3.berkeleywellness.", "http://qa4.berkeleywellness.", "http://www.berkeleywellness.", "http://alpha.berkeleywellness.", "http://stage.berkeleywellness."]
 
   def omniture
     raise NotImplementedError

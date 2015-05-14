@@ -12,7 +12,7 @@ module HealthCentralAssets
     end
 
     def wrong_asset_hosts
-      (SITE_HOSTS - [ASSET_HOST])
+      (HealthCentralPage::SITE_HOSTS - [ASSET_HOST])
     end
 
     def assets_using_correct_host

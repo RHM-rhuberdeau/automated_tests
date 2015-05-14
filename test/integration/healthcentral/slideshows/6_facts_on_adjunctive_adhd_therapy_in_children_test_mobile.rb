@@ -1,20 +1,15 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral/slideshow'
+require_relative '../../../pages/healthcentral/mobile_slideshow'
 
 class SlideshowTest < MiniTest::Test
-  context "a slideshow in a collection, coping with copd" do 
+  context "a mobile slideshow, 6 facts on adjunctive adhd therapy in children" do 
     setup do 
-      fire_fox_with_secure_proxy
+      mobile_fire_fox_with_secure_proxy
       @proxy.new_har
-      head_navigation = HealthCentralHeader::LBLNDesktop.new(:logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", 
-                                   :title_link => "Living Well with COPD",
-                                   :more_on_link => "more on COPD »",
-                                   :sub_category => "Multiple Sclerosis",
-                                   :related => ['Chronic Pain', 'Depression', 'Rheumatoid Arthritis'],
-                                   :driver => @driver)
+      head_navigation = HealthCentralHeader::MobileRedesignHeader.new(:driver => @driver, :sub_category => "ADHD", :related_links => ['Depression', 'Anxiety', 'Autism'])
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::HealthCentralSlideshow::SlideshowPage.new(:driver =>@driver,:proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => true)
-      visit "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd"
+      @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      visit "#{HC_BASE_URL}/adhd/cf/slideshows/6-facts-on-adjunctive-adhd-therapy-in-children"
     end
 
     ##################################################################

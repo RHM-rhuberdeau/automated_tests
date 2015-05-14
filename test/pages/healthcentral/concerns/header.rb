@@ -1,11 +1,12 @@
 module HealthCentralHeader
-  class RedesignHeader
+  class DesktopHeader
     include ::ActiveModel::Validations
 
     validate :health_logo
     validate :health_az_menu
     validate :social_icons
     validate :social_icons_in_header
+    validate :subcategory_navigation
 
     def health_logo
       logo_1 = @driver.find_element(:css, "span.LogoHC-part1")
@@ -97,7 +98,7 @@ module HealthCentralHeader
       second_window = @driver.window_handles.last
       @driver.switch_to.window second_window
       @driver.switch_to.window second_window
-      unless @driver.current_url == "https://twitter.com/healthcentral"
+      unless @driver.current_url == "https://twitter.com/#!/healthcentral"
         self.errors.add(:base, "Twitter icon linked to #{@driver.current_url} not https://twitter.com/healthcentral")
       end
       @driver.close
@@ -141,24 +142,85 @@ module HealthCentralHeader
     end
 
     def subcategory_navigation
-      subcategory   = @driver.find_element(:css, "a.Page-category-titleLink")
-      related_links = @driver.find_elements(:css, "ul.Page-category-related-list a")
+      subcategory   = find "a.Page-category-titleLink"
+      related_links = find "ul.Page-category-related-list a"
 
-      unless subcategory
-        self.errors.add(:base, "#{@subcategory} did not appear in the header")
-      end
-      unless related_links
-        self.errors.add(:base, "#{@related} did not appear in the header")
-      end
-      if subcategory
-        unless subcategory.text == @subcategory
+      if @collection == false
+        unless subcategory
           self.errors.add(:base, "#{@subcategory} did not appear in the header")
         end
-      end
-      if related_links
-        unless related_links.collect {|x| x.text } == @related
+        unless related_links
           self.errors.add(:base, "#{@related} did not appear in the header")
         end
+        if subcategory
+          unless subcategory.text == @subcategory
+            self.errors.add(:base, "#{@subcategory} did not appear in the header")
+          end
+        end
+        if related_links
+          unless related_links.collect {|x| x.text } == @related
+            self.errors.add(:base, "#{@related} did not appear in the header")
+          end
+        end
+      end
+
+      if @collection == true
+        if subcategory
+          self.errors.add(:base, "#{@subcategory} appeared in the header on a collection page")
+        end
+        if related_links
+          self.errors.add(:base, "#{@related} appeared in the header on a collection page")
+        end
+      end
+    end
+  end
+
+  class RedesignHeader < DesktopHeader
+    def initialize(args)
+      @driver       =args[:driver]
+      @logo         = args[:logo]
+      @subcategory  = args[:sub_category]
+      @related      = args[:related]
+    end
+  end
+
+  class LBLNDesktop < DesktopHeader
+    include ::ActiveModel::Validations
+
+    validate :logo
+    validate :title_link
+    validate :more_on_link
+
+    def initialize(args)
+      @driver       =args[:driver]
+      @logo         = args[:logo]
+      @title_link   = args[:title_link]
+      @more_on_link = args[:more_on_link]
+      @subcategory  = args[:sub_category]
+      @related      = args[:related]
+    end
+
+    def logo
+      logo = find ".Logo-supercollection img"
+      logo_img = logo.attribute('src') if logo
+      unless logo_img == @logo
+        self.errors.add(:base, "Logo image src was #{logo_img} not #{@logo}")
+      end
+    end
+
+    def title_link
+      title_link = find "a.title-supercollection"
+      title_text = title_link.text if title_link
+      unless title_text == @title_link
+        self.errors.add(:base, "Title link was #{title_text} not #{@title_link}")
+      end
+    end
+
+    def more_on_link
+      more_on_link = find "span.more-supercollection"
+      link         = more_on_link.text if more_on_link
+      unless link == @more_on_link
+        self.errors.add(:base, "More on link was #{link} not #{@more_on_link}")
       end
     end
   end
@@ -169,9 +231,11 @@ module HealthCentralHeader
     validate :hamburger_menu
     validate :resources_submenu
     validate :body_and_mind_submenu
+    validate :family_health
 
     def hamburger_menu
       #Is the hamburger menu on the page?
+      wait_for {@driver.find_element(:css, "i.icon-menu.js-icon-menu").displayed? }
       hamburger_menu = find "i.icon-menu.js-icon-menu"
       unless hamburger_menu
         self.errors.add(:base, "hamburger menu did not appear in the header")
@@ -249,47 +313,61 @@ module HealthCentralHeader
           end
         end
       end
+
+      def family_health
+        missing_links = []
+        family_health = find "ul.Nav-listGroup-list--Featured li.js-Nav--Primary-accordion-title"
+        if family_health
+          family_health.click
+          wait_for { @driver.find_elements(:css, "ul.Nav-listGroup-list--Featured  li.Nav-listGroupSub-list-item a").length == 2 }
+          family_links = @driver.find_elements(:css, "ul.Nav-listGroup-list--Featured  li.Nav-listGroupSub-list-item a")
+          unless family_links
+            self.errors.add(:base, "Missing family health links")
+          end
+          if family_links
+            link_texts = family_links.collect { |x| x.text }
+            missing_links = ['Menopause', 'Prostate'] - link_texts
+            unless missing_links.length == 0
+              self.errors.add(:base, "MIssing from Family Health submenu: #{missing_links}")
+            end
+          end
+        end
+      end
     end
   end
 
-  class LBLNDesktop < RedesignHeader
+  class MobileRedesignHeader < MobileHeader
     include ::ActiveModel::Validations
 
-    validate :logo
-    validate :title_link
-    validate :more_on_link
+    validate :subcategory_navigation
 
     def initialize(args)
-      @driver       =args[:driver]
-      @logo         = args[:logo]
-      @title_link   = args[:title_link]
-      @more_on_link = args[:more_on_link]
-      @subcategory  = args[:sub_category]
-      @related      = args[:related]
+      @driver = args[:driver]
+      @sub_category = args[:sub_category]
+      @related_links = args[:related_links]
     end
 
-    def logo
-      logo = @driver.find_element(:css, ".Logo-supercollection img")
-      logo_img = logo.attribute('src') if logo
-      unless logo_img == @logo
-        self.errors.add(:base, "Logo image src was #{logo_img} not #{@logo}")
-      end
-    end
+    def subcategory_navigation
+      subcategory   = find "a.Page-category-titleLink"
+      related_links = @driver.find_elements(:css, "ul.Page-category-related-list a")
 
-    def title_link
-      title_link = @driver.find_element(:css, "a.title-supercollection")
-      title_text = title_link.text if title_link
-      unless title_text == @title_link
-        self.errors.add(:base, "Title link was #{title_text} not #{@title_link}")
+      unless subcategory
+        self.errors.add(:base, "#{@subcategory} did not appear in the header")
       end
-    end
+      unless related_links
+        self.errors.add(:base, "#{@related} did not appear in the header")
+      end
+      if subcategory
+        unless subcategory.text == @sub_category
+          self.errors.add(:base, "#{@sub_category} did not appear in the header")
+        end
+      end
+      if related_links
+        unless related_links.collect {|x| x.text } == @related_links
+          self.errors.add(:base, "#{@related_links} did not appear in the header")
+        end
+      end
 
-    def more_on_link
-      more_on_link = @driver.find_element(:css, "span.more-supercollection")
-      link         = more_on_link.text if more_on_link
-      unless link == @more_on_link
-        self.errors.add(:base, "More on link was #{link} not #{@more_on_link}")
-      end
     end
   end
 
@@ -310,7 +388,7 @@ module HealthCentralHeader
     end
 
     def logo
-      logo = @driver.find_element(:css, ".Logo-supercollection img")
+      logo = find ".Logo-supercollection img"
       logo_img = logo.attribute('src') if logo
       unless logo_img == @logo
         self.errors.add(:base, "Logo image src was #{logo_img} not #{@logo}")
@@ -318,7 +396,7 @@ module HealthCentralHeader
     end
 
     def title_link
-      title_link = @driver.find_element(:css, "a.title-supercollection")
+      title_link = find "a.title-supercollection"
       title_text = title_link.text if title_link
       unless title_text == @title_link
         self.errors.add(:base, "Title link was #{title_text} not #{@title_link}")
@@ -326,7 +404,7 @@ module HealthCentralHeader
     end
 
     def more_on_link
-      more_on_link = @driver.find_element(:css, "span.more-supercollection")
+      more_on_link = find "span.more-supercollection"
       link         = more_on_link.text if more_on_link
       unless link == @more_on_link
         self.errors.add(:base, "More on link was #{link} not #{@more_on_link}")
