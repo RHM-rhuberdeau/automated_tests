@@ -122,7 +122,7 @@ module HealthCentralSlideshow
           ads     = @ads[index].map { |ad| HealthCentralAds::Ads.new(ad) }
           self.slides << HealthCentralSlide::Slide.new(:ads => ads)
           @driver.find_element(:css, ".Slideshow-controls-next-button-label").click
-          wait_for_ajax
+          sleep 0.25
         end
       end
 
