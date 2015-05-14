@@ -6,12 +6,15 @@ class SlideshowTest < MiniTest::Test
     setup do 
       mobile_fire_fox_with_secure_proxy
       @proxy.new_har
+      io = File.open('test/fixtures/healthcentral/slideshows.yml')
+      slideshow_fixture = YAML::load_documents(io)
+      @fixture = OpenStruct.new(slideshow_fixture[0]['copd_mobile'])
       head_navigation = HealthCentralHeader::LBLNMobile.new(:logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :title_link => "Living Well with COPD",
                                    :more_on_link => "more on COPD »",
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => true)
+      @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => true)
       visit "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd"
     end
 
@@ -32,6 +35,21 @@ class SlideshowTest < MiniTest::Test
         assets = @page.assets
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    #########################################################################
+    ################### ADS, ANALYTICS, OMNITURE ############################
+    context "omniture" do
+      should "not have any errors" do 
+        ad_site        = "cm.ver.lblnstopsmoking"
+        ad_categories  = ["slideshow", "copingwithcopd", ""]
+        ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
+        omniture       = @page.omniture
+
+        ads_test_cases.validate
+        omniture.validate
+        assert_equal(true, (ads_test_cases.errors.empty? && omniture.errors.empty?), "#{ads_test_cases.errors.messages} #{omniture.errors.messages}")
       end
     end
 
