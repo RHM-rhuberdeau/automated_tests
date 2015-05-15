@@ -68,7 +68,7 @@ module HealthCentral
         next_buttons  = @driver.find_elements(:css, "span.Quiz-controls-next-button-label")
         next_button   = next_buttons.select {|button| button.displayed?}.first
         next_button.click
-        wait_for_ajax
+        sleep 0.25
       end
       all_ads                           = HealthCentralPage.get_all_ads(@proxy)
       @ads[questions.length - 1]        = all_ads - @ads.flatten(2)
