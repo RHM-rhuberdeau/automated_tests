@@ -9,7 +9,12 @@ class ItMightBeSomethingEntryPageTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/entries.yml')
       entry_fixture = YAML::load_documents(io)
       @entry_fixture = OpenStruct.new(entry_fixture[0][173745])
-      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @entry_fixture)
+      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :sub_category => "Multiple Sclerosis",
+                                   :related => ['Chronic Pain', 'Depression', 'Rhematoid Arthritis'],
+                                   :driver => @driver)
+      footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
+      @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       visit "#{HC_BASE_URL}/multiple-sclerosis/c/936913/173745/might-something"
     end
 

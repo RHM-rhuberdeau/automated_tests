@@ -1,12 +1,12 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral/healthcentral_page'
+require_relative '../../../pages/healthcentral/subcategory_page'
   
 class HCSearchTest < MiniTest::Test
   context "a search query" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      @page = ::HealthCentralPage.new(@driver, @proxy)
+      @page = ::HealthCentral::SubcategoryPage.new(:driver => @driver,:proxy => @proxy)
     end
 
     should "produce results" do
@@ -21,25 +21,38 @@ class HCSearchTest < MiniTest::Test
       assert_equal(true, (@driver.find_elements(:css, "div.page div.body.portal div.content.results ul.results li h3 a").length) >= 1)
     end
 
-    should "have unique ads" do 
-      visit "http://search.healthcentral.com/query?q=exercise"
-
-      ads1 = @page.ads_on_page
-      @driver.navigate.refresh
-      sleep 1
-      ads2 = @page.ads_on_page
-
-      ord_values_1 = ads1.collect(&:ord).uniq
-      ord_values_2 = ads2.collect(&:ord).uniq
-
-      assert_equal(1, ord_values_1.length, "Ads on the first view had multiple ord values: #{ord_values_1}")
-      assert_equal(1, ord_values_2.length, "Ads on the second view had multiple ord values: #{ord_values_2}")
-      assert_equal(true, (ord_values_1[0] != ord_values_2[0]), "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
+    ###################################################################
+    #################### SEO ##########################################
+    context "SEO" do 
+      should "have the correct title" do 
+        assert_equal(true, (@driver.title == "Healthcentral Search Results"), "Page title was: #{@page.driver.title}")
+      end
     end
 
-    should "have the correct title" do 
-      visit "http://search.healthcentral.com/query?q=exercise"
-      assert_equal(true, @page.has_correct_title?, "Page title was: #{@page.driver.title}")
+    #########################################################################
+    ################### ADS, ANALYTICS, OMNITURE ############################
+    context "ads, analytics, omniture" do
+      should "not have any errors" do 
+        pharma_safe             = evaluate_script("EXCLUSION_CAT")
+        pharma_safe             = pharma_safe == ""
+        ad_site                 = evaluate_script("AD_SITE")
+        expected_ad_site        = "cm.own.healthcentral"
+        expected_ad_categories  = ['generalhealth','','']
+        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
+        ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                                     :proxy => @proxy, 
+                                                                     :url => "#{HC_BASE_URL}/chronic-pain/",
+                                                                     :ad_site => ad_site,
+                                                                     :expected_ad_site => expected_ad_site,
+                                                                     :ad_categories => actual_ad_categories,
+                                                                     :expected_ad_categories => expected_ad_categories,
+                                                                     :pharma_safe => pharma_safe,
+                                                                     :expected_pharma_safe => true,
+                                                                     :ugc => "[\"n\"]") 
+        ads.validate
+
+        assert_equal(true, (ads.errors.empty?), "#{ads.errors.messages}")
+      end
     end
 
     ##################################################################
@@ -55,5 +68,6 @@ class HCSearchTest < MiniTest::Test
 
   def teardown  
     @driver.quit 
+    @proxy.close
   end 
 end
