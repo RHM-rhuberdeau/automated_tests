@@ -9,7 +9,7 @@ class MerckTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/sponsoredtopics.yml')
       topic_fixture = YAML::load_documents(io)
       @topic_fixture = OpenStruct.new(topic_fixture[0]['merck'])
-      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @topic_fixture)
+      @page = ::RedesignEntry::RedesignEntryPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @topic_fixture)
       visit "#{HC_BASE_URL}/skin-cancer/d/treatment/stage-iv-melanoma?ic=recch"
     end 
 

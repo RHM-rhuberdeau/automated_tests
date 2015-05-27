@@ -6,15 +6,21 @@ require 'selenium-webdriver'
 require 'browsermob/proxy'
 require 'timeout'
 
+#### HEALTHCENTRAL
 HC_BASE_URL    = Configuration["healthcentral"]["base_url"]
 HC_DRUPAL_URL  = Configuration["healthcentral"]["drupal_url"]
-BW_BASE_URL    = Configuration["berkeley"]["base_url"]
-BW_ASSET_HOST  = Configuration["berkeley"]["asset_host"]
+IMMERSIVE_URL  = Configuration["healthcentral"]["immersive"]
+COLLECTION_URL = Configuration["collection_url"]
 ASSET_HOST     = Configuration["asset_host"]
 MED_BASE_URL   = Configuration["medtronic"]["base_url"]
-COLLECTION_URL = Configuration["collection_url"]
-IMMERSIVE_URL  = Configuration["healthcentral"]["immersive"]
-BODY_URL       = Configuration["thebody"]["base_url"]
+
+#### BERKELEY WELLNESS
+BW_BASE_URL    = Configuration["berkeley"]["base_url"]
+BW_ASSET_HOST  = Configuration["berkeley"]["asset_host"]
+
+#### THE BODY
+BODY_URL            = Configuration["thebody"]["base_url"]
+THE_BODY_ASSET_HOST = Configuration["thebody"]["asset_host"]
 
 def firefox
   # Selenium::WebDriver::Firefox::Binary.path= '/opt/firefox/firefox'

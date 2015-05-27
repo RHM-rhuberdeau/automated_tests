@@ -9,7 +9,7 @@ class UnderstandingMigrainesTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/sponsoredtopics.yml')
       topic_fixture = YAML::load_documents(io)
       @topic_fixture = OpenStruct.new(topic_fixture[0]['migraines'])
-      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @topic_fixture)
+      @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @topic_fixture)
       visit "#{HC_BASE_URL}/migraine/d/understanding-migraines/taking-control"
     end 
 
