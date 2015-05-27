@@ -16,7 +16,7 @@ class ImmersivePageTest < MiniTest::Test
 
     	should "have an ad at the end of chapter 1" do
         @page.start_immersive
-        wait_for_immersive_to_load
+        sleep 5
         sleep 0.5
         @page.show_side_nav
         @page.go_to_chapter(1)
@@ -26,7 +26,7 @@ class ImmersivePageTest < MiniTest::Test
 
     	should "have an ad at the end of chapter 2" do
         @page.start_immersive
-        wait_for_immersive_to_load
+        sleep 5
         sleep 0.5
         @page.show_side_nav
         @page.go_to_chapter(2)
@@ -36,7 +36,7 @@ class ImmersivePageTest < MiniTest::Test
 
     	should "have an ad at the end of chapter 3" do
         @page.start_immersive
-        wait_for_immersive_to_load
+        sleep 5
         sleep 0.5
         @page.show_side_nav
         @page.go_to_chapter(3)
@@ -46,7 +46,7 @@ class ImmersivePageTest < MiniTest::Test
 
     	should "have an ad at the end of chapter 4" do
     	  @page.start_immersive
-    	  wait_for_immersive_to_load
+    	  sleep 5
         sleep 0.5
         @page.show_side_nav
     	  @page.go_to_chapter(4)

@@ -45,3 +45,15 @@ how-do-i-know-if-i-have-HIV-mobile:
   prop44:    "The Body"
   prop45:    "cm.own.body"
   prop50:    "D=User-Agent"
+
+raise_funds:
+  pageName:  "The Body > Policy > 31 Community"
+  channel:   "The Body"
+  events:    "event4"
+  prop1:     "Policy"
+  prop2:     "walks"
+  prop4:     "AIDS Foundation of Chicago"
+  prop5:     "31 CommunityDirect Partners to Raise Funds Through 2014 AIDS Run & Walk Chicago"
+  prop6:     "Article"
+  prop10:    "/content/74692/31-communitydirect-partners-to-raise-funds-through.html"
+  prop16:    "View Article without Comments"

@@ -63,7 +63,7 @@ class SubCategory < MiniTest::Test
       end
 
       should "have a more resources section" do 
-        text  = @driver.find_element(:css, ".Moreresources h1.Block-title").text
+        text  = @driver.find_element(:css, ".Moreresources h4.Block-title").text
         links = @driver.find_elements(:css, ".Moreresources-container ul li a")
         links_text = links.collect(&:text)
 
@@ -146,8 +146,8 @@ class SubCategory < MiniTest::Test
     ################### GLOBAL SITE TESTS ############################
     context "global site requirements" do
       should "have a promo item in the right rail" do 
-        wait_for { @driver.find_element(:css, ".RightrailbuttonpromoItem").displayed? }
-        promo_img = @driver.find_element(:css, ".RightrailbuttonpromoItem a img")
+        wait_for { @driver.find_element(:css, ".RightrailbuttonpromoItem a img").displayed? }
+        promo_img = find ".RightrailbuttonpromoItem a img"
         promo_text = @driver.find_elements(:css, ".RightrailbuttonpromoItem a").last.text
 
         assert_equal(true, !promo_img.nil?, "promo image did not appear on the page")

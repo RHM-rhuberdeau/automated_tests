@@ -34,7 +34,6 @@ class ImmersivePage < HealthCentralPage
     articles = driver.find_elements(:css, "article").length + driver.find_elements(:css, ".galleryModule audio").length - 1
     articles.times do
       driver.find_element(:css, ".overlay").click
-      wait_for_ajax
       wait_for_page_to_load
       sleep 2
     end
