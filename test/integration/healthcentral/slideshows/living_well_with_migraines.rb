@@ -2,7 +2,7 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/slideshow'
 
 class SlideshowTest < MiniTest::Test
-  context "a slideshow in a collection, coping with copd" do 
+  context "a sponsored topic slideshow, living well with migraines" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har

@@ -46,7 +46,6 @@ module HealthCentralMobileSlideshow
     validate :ads_are_lazy_loaded
     validate :loads_next_slideshow
     validate :no_routing_error
-    validate :slides_not_blank
 
     def initialize(args)
       @driver           = args[:driver]
@@ -154,8 +153,10 @@ module HealthCentralMobileSlideshow
       #HCR-4676
       second_slideshow = find "div.js-infiniteContent_0"
       slideshow_text   = second_slideshow.text if second_slideshow
-      unless slideshow_text && !slideshow_text.include?("Routing Error")
-        self.errors.add(:functionality, "There was a Routing Error when the second slideshow was loaded")
+      if second_slideshow 
+        unless !slideshow_text.include?("Routing Error")
+          self.errors.add(:functionality, "There was a Routing Error when the second slideshow was loaded")
+        end
       end
     end
 
