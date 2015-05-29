@@ -225,6 +225,27 @@ module HealthCentralHeader
     end
   end
 
+  class SPDesktop <DesktopHeader
+    include ::ActiveModel::Validations
+
+    # validate :logo
+    validate :title_link
+    # validate :more_on_link
+
+    def initialize(args)
+      @driver       =args[:driver]
+      @title_link   = args[:title_link]
+    end
+
+    def title_link
+      title_link = find "a.title-supercollection"
+      title_text = title_link.text if title_link
+      unless title_text == @title_link
+        self.errors.add(:base, "Title link was #{title_text} not #{@title_link}")
+      end
+    end
+  end
+
   class MobileHeader
     include ::ActiveModel::Validations
 

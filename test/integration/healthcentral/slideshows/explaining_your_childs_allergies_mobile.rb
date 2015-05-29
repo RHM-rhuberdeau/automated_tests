@@ -39,8 +39,8 @@ class SlideshowTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "omniture" do
       should "not have any errors" do 
-        ad_site        = "cm.ver.allergy"
-        ad_categories  = ["slideshow", "explaining", '']
+        ad_site        = "cm.ver.lblnallergy"
+        ad_categories  = ["slideshow", 'explaining', '']
         ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
         omniture       = @page.omniture
 
