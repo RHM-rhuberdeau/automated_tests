@@ -2,20 +2,19 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/slideshow'
 
 class SlideshowTest < MiniTest::Test
-  context "a drupal slideshow, explaining your childs allergies" do 
+  context "a slideshow in a collection, coping with copd" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      io                = File.open('test/fixtures/healthcentral/slideshows.yml')
+      io = File.open('test/fixtures/healthcentral/slideshows.yml')
       slideshow_fixture = YAML::load_documents(io)
-      @fixture          = OpenStruct.new(slideshow_fixture[0]['allergies'])
-      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
-                                   :sub_category => "Allergy",
-                                   :related => ['Asthma', 'Cold & Flu', 'Skin Care'],
+      @fixture = OpenStruct.new(slideshow_fixture[0]['living_well'])
+      head_navigation = HealthCentralHeader::SPDesktop.new(:logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :title_link => "Taking Control of Chronic Migraine",
                                    :driver => @driver)
-      footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others"
+      footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
+      @page = ::HealthCentralSlideshow::SlideshowPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => true)
+      visit "#{HC_BASE_URL}/migraine/cf/slideshows/12-tips-for-living-well-with-migraines?ic=recc"
     end
 
     ##################################################################
@@ -42,8 +41,8 @@ class SlideshowTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "omniture" do
       should "not have any errors" do 
-        ad_site        = "cm.ver.lblnallergy"
-        ad_categories  = ["slideshow", "explaining", '']
+        ad_site        = "cm.own.tcc"
+        ad_categories  = ["zecuity", "", ""]
         ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
         omniture       = @page.omniture
 

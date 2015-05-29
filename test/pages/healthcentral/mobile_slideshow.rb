@@ -39,11 +39,14 @@ module HealthCentralMobileSlideshow
 
     # validate :relative_links_in_the_header
     validate :page_has_slides
+    validate :each_slide_has_content
     validate :more_on_this_topic
     validate :includes_publish_date
     validate :includes_updated_date
     validate :ads_are_lazy_loaded
     validate :loads_next_slideshow
+    validate :no_routing_error
+    validate :slides_not_blank
 
     def initialize(args)
       @driver           = args[:driver]
@@ -59,6 +62,16 @@ module HealthCentralMobileSlideshow
       end
       unless slides.length >= 1
         self.errors.add(:base, "There were only #{slides.length} slides on the page")
+      end
+    end
+
+    def each_slide_has_content
+      #HCR-4687
+      slides = @driver.find_elements(:css, ".SlideList-slide.Slide.Slide--thumb")
+      slides.each_with_index do |slide|
+        unless slide.displayed? == true && slide.text.length > 0
+          self.errors.add(:functionality, "Slide #{index + 1} did not have content")
+        end
       end
     end
 
@@ -83,7 +96,7 @@ module HealthCentralMobileSlideshow
       unless publish_date
         self.errors.add(:base, "Page was missing a publish date")
       end
-      unless publish_date.scan(/\w+\s\d+,\s\d+/).length == 1
+      unless publish_date.scan(/\w+\s\d+\w*,\s\d+/).length == 1
         self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
       end
     end
@@ -94,7 +107,7 @@ module HealthCentralMobileSlideshow
         self.errors.add(:base, "Page was missing a publish date")
       end
       date = publish_date.gsub("updated", '').strip if publish_date
-      unless date.scan(/\w+\s\d+,\s\d+/).length == 1
+      unless date.scan(/\w+\s\d+\w*,\s\d+/).length == 1
         self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
       end
     end
@@ -125,15 +138,24 @@ module HealthCentralMobileSlideshow
       #next slideshow is loaded after the user scrolls to the bottom
       #the tests have already scrolled to the bottom to test lazy loading ads
       #So all we need to do at this point is count the number of slideshows
-      wait_for { @driver.find_element(:css, ".js-infiniteContent_0.js-Node--slideshow").displayed? }
-      first_slideshow   = find ".js-infiniteContent_0.js-Node--slideshow"
-      second_slideshow  = find ".js-infiniteContent_1.js-Node--slideshow"
+      wait_for { @driver.find_element(:css, "div.js-infiniteContent_0").displayed? }
+      first_slideshow   = find ".Node.Node--slideshow"
+      second_slideshow  = find "div.js-infiniteContent_0"
 
-      if first_slideshow
+      unless first_slideshow
         self.errors.add(:base, "First slideshow disappared from the page after the second was loaded")
       end
-      if second_slideshow
+      unless second_slideshow
         self.errors.add(:base, "Second slideshow was not loaded")
+      end
+    end
+
+    def no_routing_error
+      #HCR-4676
+      second_slideshow = find "div.js-infiniteContent_0"
+      slideshow_text   = second_slideshow.text if second_slideshow
+      unless slideshow_text && !slideshow_text.include?("Routing Error")
+        self.errors.add(:functionality, "There was a Routing Error when the second slideshow was loaded")
       end
     end
 
