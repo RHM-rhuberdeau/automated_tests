@@ -184,6 +184,25 @@ module HealthCentralHeader
     end
   end
 
+  class ClinicalTrialHeader < DesktopHeader
+    include ::ActiveModel::Validations
+
+    validate :clinical_trial_text
+
+    def initialize(args)
+      @driver  =args[:driver]
+      @logo    = "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png"
+    end
+
+    def clinical_trial_text
+      span = find ".Title-supercollection-ct span"
+      span_text = span.text if span
+      unless span_text == "Clinical Trials"
+        self.errrors.add(:head_navigation, "Missing 'Clinical Trials' in the header")
+      end
+    end
+  end
+
   class LBLNDesktop < DesktopHeader
     include ::ActiveModel::Validations
 
