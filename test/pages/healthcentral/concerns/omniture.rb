@@ -62,7 +62,7 @@ module HealthCentralOmniture
       end
       Omniture.attr_list.each do |attribute|
         if @fixture.send(attribute).to_s != self.send(attribute).to_s
-          self.errors.add(:omniture, "#{attribute} was #{self.send(attribute)} not #{@fixture.send(attribute)}")
+          self.errors.add(:omniture, "#{attribute || nil} was #{self.send(attribute)} not #{@fixture.send(attribute)}")
         end
       end
     end
