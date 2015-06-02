@@ -1,6 +1,6 @@
 module HealthCentralOmniture
   class OmnitureIsBlank < Exception; end
-  
+
   class Omniture
     include ::ActiveModel::Validations
 
