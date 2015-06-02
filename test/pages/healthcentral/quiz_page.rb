@@ -16,12 +16,6 @@ module HealthCentral
       all_images = @driver.find_elements(tag_name: 'img')
       HealthCentralAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
     end
-
-    def omniture
-      open_omniture_debugger
-      omniture_text = get_omniture_from_debugger
-      omniture = HealthCentralOmniture::Omniture.new(omniture_text, @fixture)
-    end
   end
 
   class Functionality

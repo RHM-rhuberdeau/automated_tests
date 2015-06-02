@@ -26,12 +26,6 @@ module RedesignEntry
       HealthCentralAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
     end
 
-    def omniture
-      open_omniture_debugger
-      omniture_text = get_omniture_from_debugger
-      omniture = HealthCentralOmniture::Omniture.new(omniture_text, @fixture)
-    end
-
     def global_test_cases
       RedesignEntry::GlobalTestCases.new(:driver => @driver, :head_navigation => @head_navigation, :footer => @footer)
     end
