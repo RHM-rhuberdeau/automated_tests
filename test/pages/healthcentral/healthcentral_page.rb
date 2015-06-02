@@ -110,9 +110,9 @@ class HealthCentralPage
     omniture_text = get_omniture_from_debugger
     begin
       omniture = HealthCentralOmniture::Omniture.new(omniture_text, @fixture)
-      omniture.validate
     rescue HealthCentralOmniture::OmnitureIsBlank
-      omniture = OpenStruct.new(:errors => OpenStruct.new(:messages => {:omniture => "Omniture was blank"}))
+      puts "omniture was blank"
+      omniture = OpenStruct.new(:errors => OpenStruct.new(:messages => {:omniture => "Omniture was blank"}), :validate => '')
     end
   end
 

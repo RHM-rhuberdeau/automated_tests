@@ -48,7 +48,7 @@ class SlideshowTest < MiniTest::Test
         ad_categories  = ["slideshow", "copingwithcopd", ""]
         ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
         omniture       = @page.omniture
-
+        
         ads_test_cases.validate
         omniture.validate
         assert_equal(true, (ads_test_cases.errors.empty? && omniture.errors.empty?), "#{ads_test_cases.errors.messages} #{omniture.errors.messages}")

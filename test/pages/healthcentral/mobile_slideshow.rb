@@ -19,12 +19,6 @@ module HealthCentralMobileSlideshow
       AdsTestCases.new(:driver => @driver, :ad_site => args[:ad_site], :ad_categories => args[:ad_categories])
     end
 
-    def omniture
-      open_omniture_debugger
-      omniture_text = get_omniture_from_debugger
-      omniture = HealthCentralOmniture::Omniture.new(omniture_text, @fixture)
-    end
-
     def functionality
       Functionality.new(:driver => @driver, :proxy => @proxy)
     end
