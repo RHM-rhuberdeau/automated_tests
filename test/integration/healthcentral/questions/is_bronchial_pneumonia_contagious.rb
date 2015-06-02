@@ -84,21 +84,21 @@ class ChronicPainQuestionPageTest < MiniTest::Test
      ################### ADS, ANALYTICS, OMNITURE ############################
      context "ads, analytics, omniture" do
        should "not have any errors" do 
-         pharma_safe             = true
-         has_file                = @page.analytics_file
-         ad_site                 = evaluate_script("AD_SITE")
-         expected_ad_site        = "cm.ver.chronicpain"
-         expected_ad_categories  = ["chronicpain","basics",""]
-         actual_ad_categories    = evaluate_script("AD_CATEGORIES")
-         ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
-                                                                      :proxy => @proxy, 
-                                                                      :url => "#{HC_DRUPAL_URL}/chronic-pain/c/question/515205/125351",
-                                                                      :ad_site => ad_site,
-                                                                      :expected_ad_site => expected_ad_site,
-                                                                      :ad_categories => actual_ad_categories,
-                                                                      :expected_ad_categories => expected_ad_categories,
-                                                                      :pharma_safe => true,
-                                                                      :ugc => "[\"n\"]") 
+         pharma_safe   = true
+         has_file      = @page.analytics_file
+         ad_site       = "cm.ver.chronicpain"
+         ad_categories = ["chronicpain","basics",""]
+         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                            :proxy => @proxy, 
+                                                            :url => "#{HC_BASE_URL}/chronic-pain/c/question/515205/125351",
+                                                            :ad_site => ad_site,
+                                                            :ad_categories => ad_categories,
+                                                            :exclusion_cat => "",
+                                                            :sponsor_kw => '',
+                                                            :thcn_content_type => "Questions",
+                                                            :thcn_super_cat => "Body & Mind",
+                                                            :thcn_category => "Bones, Joints, & Muscles",
+                                                            :ugc => "[\"n\"]") 
          ads.validate
 
          omniture = @page.omniture
