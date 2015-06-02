@@ -123,22 +123,20 @@ class SubCategory < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        pharma_safe             = evaluate_script("EXCLUSION_CAT")
-        pharma_safe             = pharma_safe == ""
-        ad_site                 = evaluate_script("AD_SITE")
-        expected_ad_site        = "cm.ver.incontinence"
-        expected_ad_categories  = ["home", "", ""]
-        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
-        ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
-                                                                     :proxy => @proxy, 
-                                                                     :url => "#{HC_BASE_URL}/incontinence/",
-                                                                     :ad_site => ad_site,
-                                                                     :expected_ad_site => expected_ad_site,
-                                                                     :ad_categories => actual_ad_categories,
-                                                                     :expected_ad_categories => expected_ad_categories,
-                                                                     :pharma_safe => pharma_safe,
-                                                                     :expected_pharma_safe => true,
-                                                                     :ugc => "[\"n\"]") 
+        pharma_safe    = true
+        ad_site        = "cm.ver.incontinence"
+        ad_categories  = ["home", "", ""]
+        ads            = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                            :proxy => @proxy, 
+                                                            :url => "#{HC_BASE_URL}/incontinence/",
+                                                            :ad_site => ad_site,
+                                                            :ad_categories => ad_categories,
+                                                            :exclusion_cat => "ad_content_type",
+                                                            :sponsor_kw => '',
+                                                            :thcn_content_type => "Home Page",
+                                                            :thcn_super_cat => "Body & Mind",
+                                                            :thcn_category => "Bladder Health",
+                                                            :ugc => "[\"n\"]") 
         ads.validate
 
         omniture = @page.omniture
