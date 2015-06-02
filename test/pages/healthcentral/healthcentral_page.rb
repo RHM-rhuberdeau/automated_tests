@@ -106,8 +106,15 @@ class HealthCentralPage
   end
 
   def omniture
-    raise NotImplementedError
-  end 
+    open_omniture_debugger
+    omniture_text = get_omniture_from_debugger
+    begin
+      omniture = HealthCentralOmniture::Omniture.new(omniture_text, @fixture)
+      omniture.validate
+    rescue HealthCentralOmniture::OmnitureIsBlank
+      omniture = OpenStruct.new(:errors => OpenStruct.new(:messages => {:omniture => "Omniture was blank"}))
+    end
+  end
 
   def assets
     raise NotImplementedError

@@ -1,4 +1,6 @@
 module HealthCentralOmniture
+  class OmnitureIsBlank < Exception; end
+  
   class Omniture
     include ::ActiveModel::Validations
 
@@ -12,6 +14,7 @@ module HealthCentralOmniture
 
     def initialize(omniture_string, fixture)
       @fixture  = fixture
+      raise OmnitureIsBlank unless omniture_string
       array     = omniture_string.lines
       index     = array.index { |x| x.include?("pageName") }
       range     = array.length - index
