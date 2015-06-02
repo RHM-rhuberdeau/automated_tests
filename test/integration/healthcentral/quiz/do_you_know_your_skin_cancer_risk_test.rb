@@ -13,7 +13,7 @@ class QuizTest < MiniTest::Test
       visit "#{HC_BASE_URL}/skin-cancer/d/quizzes/do-you-know-your-skin-cancer-risk"
     end
 
-     ##################################################################
+    ###################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "not have any errors" do 
@@ -45,20 +45,20 @@ class QuizTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        pharma_safe             = true
-        ad_site                 = evaluate_script("AD_SITE")
-        expected_ad_site        = "cm.ver.skin-cancer"
-        expected_ad_categories  = ["quiz", "doyouknowy", ""]
-        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
-        ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
-                                                                     :proxy => @proxy, 
-                                                                     :url => "#{HC_DRUPAL_URL}/skin-cancer/d/quizzes/do-you-know-your-skin-cancer-risk",
-                                                                     :ad_site => ad_site,
-                                                                     :expected_ad_site => expected_ad_site,
-                                                                     :ad_categories => actual_ad_categories,
-                                                                     :expected_ad_categories => expected_ad_categories,
-                                                                     :pharma_safe => true,
-                                                                     :ugc => "[\"n\"]") 
+        pharma_safe    = true
+        ad_site        = "cm.ver.skin-cancer"
+        ad_categories  = ["quiz", "doyouknowy", ""]
+        ads            = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                            :proxy => @proxy, 
+                                                            :url => "#{HC_BASE_URL}/skin-cancer/d/quizzes/do-you-know-your-skin-cancer-risk",
+                                                            :ad_site => ad_site,
+                                                            :ad_categories => ad_categories,
+                                                            :exclusion_cat => "",
+                                                            :sponsor_kw => '',
+                                                            :thcn_content_type => "Quiz",
+                                                            :thcn_super_cat => "Body & Mind",
+                                                            :thcn_category => "Cancer",
+                                                            :ugc => "[\"n\"]")
         ads.validate
 
         omniture = @page.omniture

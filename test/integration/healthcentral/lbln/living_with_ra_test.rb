@@ -9,7 +9,7 @@ class LBLN < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/lbln.yml')
       lbln_fixture = YAML::load_documents(io)
       @lbln_fixture = OpenStruct.new(lbln_fixture[0]['ra'])
-      @page = RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @lbln_fixture)
+      @page = RedesignEntry::RedesignEntryPage.new(:driver => @driver, :proxy => @proxy, :fixture => @lbln_fixture)
       visit "#{HC_BASE_URL}/rheumatoid-arthritis/d/immersive/living-ra-update/?ic=herothirds"
     end
 

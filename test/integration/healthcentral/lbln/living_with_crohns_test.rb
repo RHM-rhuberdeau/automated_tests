@@ -9,6 +9,13 @@ class LBLN < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/lbln.yml')
       lbln_fixture = YAML::load_documents(io)
       @lbln_fixture = OpenStruct.new(lbln_fixture[0]['crohns'])
+      head_navigation = HealthCentralHeader::LBLNDesktop.new(:logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :title_link => "Living Well with COPD",
+                                   :more_on_link => "more on Digestive Health »",
+                                   :sub_category => "Multiple Sclerosis",
+                                   :related => ['Chronic Pain', 'Depression', 'Rheumatoid Arthritis'],
+                                   :driver => @driver)
+      footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @lbln_fixture)
       visit "#{HC_DRUPAL_URL}/ibd/d/immersive/living-crohns-disease-update/?ic=herothirds"
     end

@@ -33,8 +33,8 @@ class QuizTest < MiniTest::Test
       end
     end
 
-    # ##################################################################
-    # ################### SEO ##########################################
+    ###################################################################
+    #################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
         assert_equal(true, (@driver.title == "Do You Know How to Manage Your Pain? - Rheumatoid Arthritis"), "Page title was: #{@driver.title}")
@@ -45,20 +45,20 @@ class QuizTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        pharma_safe             = true
-        ad_site                 = evaluate_script("AD_SITE")
-        expected_ad_site        = "cm.ver.lblnra"
-        expected_ad_categories  = ["quiz", "doyouknowh", ""]
-        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
-        ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
-                                                                     :proxy => @proxy, 
-                                                                     :url => "#{HC_DRUPAL_URL}/rheumatoid-arthritis/d/quizzes/do-you-know-how-manage-your-pain",
-                                                                     :ad_site => ad_site,
-                                                                     :expected_ad_site => expected_ad_site,
-                                                                     :ad_categories => actual_ad_categories,
-                                                                     :expected_ad_categories => expected_ad_categories,
-                                                                     :pharma_safe => true,
-                                                                     :ugc => "[\"n\"]") 
+        pharma_safe    = true
+        ad_site        = "cm.ver.lblnra"
+        ad_categories  = ["quiz", "doyouknowh", ""]
+        ads            = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                            :proxy => @proxy, 
+                                                            :url => "#{HC_BASE_URL}/rheumatoid-arthritis/d/quizzes/do-you-know-how-manage-your-pain",
+                                                            :ad_site => ad_site,
+                                                            :ad_categories => ad_categories,
+                                                            :exclusion_cat => "",
+                                                            :sponsor_kw => 'SPONSOR_KW',
+                                                            :thcn_content_type => "Quiz",
+                                                            :thcn_super_cat => "Body & Mind",
+                                                            :thcn_category => "Bones, Joints, & Muscles",
+                                                            :ugc => "[\"n\"]") 
         ads.validate
 
         omniture = @page.omniture
