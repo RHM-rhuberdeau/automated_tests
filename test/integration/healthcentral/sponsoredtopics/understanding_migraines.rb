@@ -47,23 +47,21 @@ class UnderstandingMigrainesTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        pharma_safe             = evaluate_script("EXCLUSION_CAT")
-        pharma_safe             = pharma_safe == ""
-        has_file                = @page.analytics_file
-        ad_site                 = evaluate_script("AD_SITE")
-        expected_ad_site        = "cm.own.tcc"
-        expected_ad_categories  = ["zecuity", "", ""]
-        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
-        ads                     = RedesignEntry::RedesignEntryPage::AdsTestCases.new(:driver => @driver,
-                                                                     :proxy => @proxy, 
-                                                                     :url => "#{HC_BASE_URL}/migraine/d/understanding-migraines/taking-control",
-                                                                     :ad_site => ad_site,
-                                                                     :expected_ad_site => expected_ad_site,
-                                                                     :ad_categories => actual_ad_categories,
-                                                                     :expected_ad_categories => expected_ad_categories,
-                                                                     :pharma_safe => pharma_safe,
-                                                                     :expected_pharma_safe => true,
-                                                                     :ugc => "[\"n\"]") 
+        pharma_safe    = true
+        has_file       = @page.analytics_file
+        ad_site        = "cm.own.tcc"
+        ad_categories  = ["zecuity", "", ""]
+        ads            = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                            :proxy => @proxy, 
+                                                            :url => "#{HC_BASE_URL}/migraine/d/understanding-migraines/taking-control",
+                                                            :ad_site => ad_site,
+                                                            :ad_categories => ad_categories,
+                                                            :exclusion_cat => "",
+                                                            :sponsor_kw => '',
+                                                            :thcn_content_type => "topics",
+                                                            :thcn_super_cat => "Body & Mind",
+                                                            :thcn_category => "Brain and Nervous System",
+                                                            :ugc => "[\"n\"]") 
         ads.validate
 
         omniture = @page.omniture
