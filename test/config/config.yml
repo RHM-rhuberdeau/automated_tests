@@ -1,3 +1,23 @@
+dev2:
+  asset_host: http://dev2.hcaws.net:8020
+  collection_url: http://dev2.hcaws.net:8020
+  healthcentral:
+    base_url: http://dev2.hcaws.net:8020
+    name: healthcentral
+    drupal_url: http://dev2.hcaws.net:8020
+    immersive: http://immersiveqa.healthcentral.choicemedia.com
+  berkeley:
+    base_url: http://uat2.berkeleywellness.choicemedia.com
+    name: berkeleywellness
+    asset_host: http://uat2.berkeleywellness.
+  medtronic:
+    base_url: https://concrete5.uat2.healthcentral.com
+    name: medtronic
+    asset_host: https://secure.healthcentral.
+  thebody:
+    base_url: http://uat2.thebody.com
+    asset_host: http://www.thebody.
+
 uat2:
   asset_host: http://uat2.healthcentral.
   collection_url: http://uat2.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles

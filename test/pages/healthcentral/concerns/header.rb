@@ -185,8 +185,6 @@ module HealthCentralHeader
   end
 
   class ClinicalTrialHeader < DesktopHeader
-    include ::ActiveModel::Validations
-
     validate :clinical_trial_text
 
     def initialize(args)
@@ -200,6 +198,12 @@ module HealthCentralHeader
       unless span_text == "Clinical Trials"
         self.errrors.add(:head_navigation, "Missing 'Clinical Trials' in the header")
       end
+    end
+  end
+
+  class EncyclopediaDesktop < DesktopHeader
+    def initialize(args)
+      @driver = args[:driver]
     end
   end
 

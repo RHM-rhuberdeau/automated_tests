@@ -26,6 +26,12 @@ task :shareposts do
   end
 end
 
+task :encyclopedia do 
+  files = Dir[File.join('./test/integration/healthcentral/encyclopedia', '**', '*.{rb}')].each do |file|
+    require file
+  end
+end
+
 task :lbln do 
   files = Dir[File.join('./test/integration/healthcentral/lbln', '**', '*.{rb}')].each do |file|
     require file

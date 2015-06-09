@@ -29,13 +29,13 @@ module HealthCentralAds
 
     def unique_ads_per_page_view
       @ads = {}
-      @all_ads = HealthCentralPage.get_all_ads(@proxy)
-      @ads[1] = @all_ads
+      all_ads = HealthCentralPage.get_all_ads(@proxy)
+      @ads[1] = all_ads
 
       visit @url
-      sleep 1
-      @all_ads = HealthCentralPage.get_all_ads(@proxy)
-      @ads[2] = @all_ads - @ads.flatten(2)
+      sleep 5
+      all_ads2 = HealthCentralPage.get_all_ads(@proxy)
+      @ads[2] = all_ads2 - @ads.flatten(2)
 
       ads_from_page1 = @ads[1].map { |ad| HealthCentralAds::Ads.new(ad) }
       ads_from_page2 = @ads[2].map { |ad| HealthCentralAds::Ads.new(ad) }

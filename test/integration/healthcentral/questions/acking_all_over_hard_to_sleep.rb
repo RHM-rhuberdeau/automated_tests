@@ -142,7 +142,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",
                                                            :sponsor_kw => '',
-                                                           :thcn_content_type => "Shareposts",
+                                                           :thcn_content_type => "Questions",
                                                            :thcn_super_cat => "Body & Mind",
                                                            :thcn_category => "Skin Health",
                                                            :ugc => "[\"n\"]") 

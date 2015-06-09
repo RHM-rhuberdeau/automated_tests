@@ -92,6 +92,16 @@ class HealthCentralPage
         entry.request.url
       end
     end
+
+    if ad_calls.compact.length < 3
+      sleep 2
+      ad_calls = @proxy.har.entries.map do |entry|
+        if entry.request.url.include?('ad.doubleclick.net/N3965')
+          entry.request.url
+        end
+      end
+    end
+    
     ad_calls.compact
   end
 

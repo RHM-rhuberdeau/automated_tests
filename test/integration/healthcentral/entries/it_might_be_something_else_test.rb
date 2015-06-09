@@ -61,10 +61,10 @@ class ItMightBeSomethingEntryPageTest < MiniTest::Test
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "community",
                                                            :sponsor_kw => '',
-                                                           :thcn_content_type => "Shareposts",
+                                                           :thcn_content_type => "SharePosts",
                                                            :thcn_super_cat => "Body & Mind",
                                                            :thcn_category => "Brain and Nervous System",
-                                                           :ugc => "[\"n\"]") 
+                                                           :ugc => "[\"y\"]") 
         ads.validate
 
         omniture = @page.omniture

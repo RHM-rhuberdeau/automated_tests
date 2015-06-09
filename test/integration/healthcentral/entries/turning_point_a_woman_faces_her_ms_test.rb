@@ -59,9 +59,9 @@ class TurningPointEntryPageTest < MiniTest::Test
                                                            :url => "#{HC_BASE_URL}/multiple-sclerosis/c/255251/172231/turning-embrace",
                                                            :ad_site => ad_site,
                                                            :ad_categories => ad_categories,
-                                                           :exclusion_cat => "community",
+                                                           :exclusion_cat => "",
                                                            :sponsor_kw => '',
-                                                           :thcn_content_type => "Shareposts",
+                                                           :thcn_content_type => "SharePosts",
                                                            :thcn_super_cat => "Body & Mind",
                                                            :thcn_category => "Brain and Nervous System",
                                                            :ugc => "[\"n\"]") 

@@ -16,7 +16,7 @@ module HealthCentralFooter
       unless footer_links.length == 7
         self.errors.add(:base, "Links missing from footer: #{footer_links}")
       end
-      unless other_sites.length == 7
+      unless ((expected_sites - sites_in_footer ).empty? == true)
         self.errors.add(:base, "Missing links to other sites in the footer: #{expected_sites - sites_in_footer}")
       end
     end

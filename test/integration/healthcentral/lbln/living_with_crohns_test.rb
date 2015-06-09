@@ -16,7 +16,7 @@ class LBLN < MiniTest::Test
                                    :related => ['Chronic Pain', 'Depression', 'Rheumatoid Arthritis'],
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @lbln_fixture)
+      @page = RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @lbln_fixture)
       visit "#{HC_DRUPAL_URL}/ibd/d/immersive/living-crohns-disease-update/?ic=herothirds"
     end
 
@@ -42,17 +42,18 @@ class LBLN < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        ad_site                 = evaluate_script("AD_SITE")
-        expected_ad_site        = "cm.ver.lblnibd"
-        expected_ad_categories  = ["immersive", "livingwith", ""]
-        actual_ad_categories    = evaluate_script("AD_CATEGORIES")
+        ad_site                 = "cm.ver.lblnibd"
+        ad_categories           = ["immersive", "livingwith", ""]
         ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
                                                                      :url => "#{HC_DRUPAL_URL}/ibd/d/immersive/living-crohns-disease-update/?ic=herothirds",
                                                                      :ad_site => ad_site,
-                                                                     :expected_ad_site => expected_ad_site,
-                                                                     :ad_categories => actual_ad_categories,
-                                                                     :expected_ad_categories => expected_ad_categories,
+                                                                     :ad_categories => ad_categories,
+                                                                     :exclusion_cat => "",
+                                                                     :sponsor_kw => 'SPONSOR_KW',
+                                                                     :thcn_content_type => "Immersive",
+                                                                     :thcn_super_cat => "Body & Mind",
+                                                                     :thcn_category => "Digestive Health",
                                                                      :ugc => "[\"n\"]") 
         ads.validate
 

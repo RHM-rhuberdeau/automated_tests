@@ -2,9 +2,9 @@ module HealthCentralAssets
   class Assets
     include ::ActiveModel::Validations
 
-    validate :assets_using_correct_host
+    # validate :assets_using_correct_host
     validate :no_broken_images
-    validate :no_unloaded_assets
+    # validate :no_unloaded_assets
 
     def initialize(args)
       @proxy     = args[:proxy]
@@ -87,7 +87,10 @@ module HealthCentralAssets
       broken_images = []
       @all_imgs.each do |img|
         broken_images << @proxy.har.entries.find do |entry|
-          entry.request.url == img.attribute('src') && entry.response.status == 404
+          begin
+            entry.request.url == img.attribute('src') && entry.response.status == 404
+          rescue Selenium::WebDriver::Error::StaleElementReferenceError
+          end
         end
       end
       broken_images = broken_images.compact.collect do |x| 

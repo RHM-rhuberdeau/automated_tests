@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/redesign_question_page'
 
-class DietExerciseQuestionPageTest < MiniTest::Test
+class LupronQuestionPageTest < MiniTest::Test
   context "a question without an expert answer" do 
     setup do 
       fire_fox_with_secure_proxy
@@ -87,12 +87,12 @@ class DietExerciseQuestionPageTest < MiniTest::Test
                                                             :url => "#{HC_BASE_URL}/diet-exercise/c/question/748553/132860/",
                                                             :ad_site => ad_site,
                                                             :ad_categories => ad_categories,
-                                                            :exclusion_cat => "",
+                                                            :exclusion_cat => "community",
                                                             :sponsor_kw => '',
                                                             :thcn_content_type => "Questions",
-                                                            :thcn_super_cat => "Healty Living",
+                                                            :thcn_super_cat => "Healthy Living",
                                                             :thcn_category => "Diet and Fitness",
-                                                            :ugc => "[\"n\"]") 
+                                                            :ugc => "[\"y\"]") 
          ads.validate
 
          omniture = @page.omniture
