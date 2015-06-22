@@ -17,7 +17,7 @@ class ClinicalTrials < MiniTest::Test
 
     ##################################################################
     ################### ASSETS #######################################
-    context "assets" do 
+    context "assets safe" do 
       should "have valid assets" do 
         assets = @page.assets
         assets.validate
@@ -27,7 +27,7 @@ class ClinicalTrials < MiniTest::Test
 
     ##################################################################
     ################### SEO ##########################################
-    context "SEO" do 
+    context "SEO safe" do 
       should "have the correct title" do 
         assert_equal(true, @page.has_correct_title?)
       end

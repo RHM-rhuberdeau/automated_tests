@@ -2,13 +2,13 @@ module HealthCentralAssets
   class Assets
     include ::ActiveModel::Validations
 
-    # validate :assets_using_correct_host
+    validate :assets_using_correct_host
     validate :no_broken_images
-    # validate :no_unloaded_assets
+    validate :no_unloaded_assets
 
     def initialize(args)
       @proxy     = args[:proxy]
-      @all_imgs  = args[:imgs]
+      @driver    = args[:driver]
     end
 
     def wrong_asset_hosts
@@ -84,21 +84,19 @@ module HealthCentralAssets
     end
 
     def no_broken_images
-      broken_images = []
-      @all_imgs.each do |img|
-        broken_images << @proxy.har.entries.find do |entry|
-          begin
-            entry.request.url == img.attribute('src') && entry.response.status == 404
-          rescue Selenium::WebDriver::Error::StaleElementReferenceError
-          end
-        end
-      end
-      broken_images = broken_images.compact.collect do |x| 
-        x.request.url if (!x.request.url.include?("avatars") && (ENV['TEST_ENV'] != "production")) 
-      end
-      unless broken_images.compact.empty?
-        self.errors.add(:base, "broken images on the page #{broken_images}")
-      end
+      # broken_images = []
+      # all_images    = @driver.find_elements(tag_name: 'img')
+      # all_images.each do |img|
+      #   broken_images << @proxy.har.entries.find do |entry|
+      #     entry.request.url == img.attribute('src') && entry.response.status == 404
+      #   end
+      # end
+      # broken_images = broken_images.compact.collect do |x| 
+      #   x.request.url if (!x.request.url.include?("avatars") && (ENV['TEST_ENV'] != "production")) 
+      # end
+      # unless broken_images.compact.empty?
+      #   self.errors.add(:base, "broken images on the page #{broken_images}")
+      # end
     end
   end
 end

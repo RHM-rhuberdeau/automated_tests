@@ -1,5 +1,5 @@
-require_relative '../../minitest_helper' 
-require_relative '../../pages/the_body/the_body_mobile_page'
+require_relative '../../../minitest_helper' 
+require_relative '../../../pages/the_body/the_body_mobile_page'
 
 class HowDoIKnowIfIHaveHiv < MiniTest::Test
   context "A TheBody mobile page" do 
@@ -9,7 +9,7 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
       io = File.open('test/fixtures/the_body/articles.yml')
       body_fixture = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['how-do-i-know-if-i-have-HIV-mobile'])
-      @page = ::TheBody::TheBodyMobilePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
+      @page = TheBody::TheBodyMobilePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
       visit "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html"
     end
 

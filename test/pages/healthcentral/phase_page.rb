@@ -14,11 +14,6 @@ module Phases
       Functionality.new(:driver => @driver, :phase => args[:phase], :phase_navigation => args[:phase_navigation])
     end
 
-    def assets
-      all_images = @driver.find_elements(tag_name: 'img')
-      HealthCentralAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
-    end
-
     def global_test_cases
       GlobalTestCases.new(:driver => @driver, :head_navigation => @head_navigation, :footer => @footer)
     end

@@ -22,22 +22,20 @@ class SlideshowTest < MiniTest::Test
         condition           = find "h1.Page-info-title"
         condition           = condition.text if condition
         condition_links     = @driver.find_elements(:css, "ul.ContentList li a")
-        a_to_z_links        = @driver.find_elements(:css, ".Page-index-nav ul a")
-        assert_equal("Adam Other", condition)
-        assert_equal(319, condition_links.length)
-        assert_equal(22, a_to_z_links.length)
+        assert_equal("Other Conditions Alphabetically", condition)
+        assert_equal(21, condition_links.length)
       end
     end
 
-    # ##################################################################
-    # ################### ASSETS #######################################
-    # context "assets" do 
-    #   should "have valid assets" do 
-    #     assets = @page.assets
-    #     assets.validate
-    #     assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
-    #   end
-    # end
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
 
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
@@ -53,7 +51,7 @@ class SlideshowTest < MiniTest::Test
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",
                                                            :sponsor_kw => '',
-                                                           :thcn_content_type => "Adam",
+                                                           :thcn_content_type => "adam",
                                                            :thcn_super_cat => "",
                                                            :thcn_category => "",
                                                            :ugc => "[\"n\"]") 

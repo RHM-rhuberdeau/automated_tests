@@ -2,17 +2,15 @@ require_relative './healthcentral_page'
 
 module HealthCentralMobileSlideshow
   class MobileSlideshowPage < HealthCentralPage
+    class CollectionNotSet < Exception ; end
     def initialize(args)
       @driver           = args[:driver]
       @proxy            = args[:proxy]
       @fixture          = args[:fixture]
       @head_navigation  = args[:head_navigation]
       @footer           = args[:footer]
-    end
-
-    def assets
-      all_images = @driver.find_elements(tag_name: 'img')
-      HealthCentralAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
+      @collection       = args[:collection]
+      raise CollectionNotSet if @collection.nil?
     end
 
     def ads_test_cases(args)
@@ -71,15 +69,16 @@ module HealthCentralMobileSlideshow
     def ads_are_lazy_loaded
       wait_for { @driver.find_elements(:css, "div.SlideList-item").first.displayed? }
       scroll_to_bottom_of_page
-      sleep 1
+      wait_for { @driver.find_element(:css, ".js-infiniteContent_0 .Node--slideshow div.SlideList-item").displayed? }
       slides = @driver.find_elements(:css, "div.SlideList-item")
+      second_slideshow_slides = @driver.find_elements(:css, ".js-infiniteContent_0 .Node--slideshow div.SlideList-item")
       all_ads = HealthCentralPage.get_all_ads(@proxy)
       ads = all_ads.map { |ad| HealthCentralAds::Ads.new(ad) }
       ord_values = ads.map {|x| x.ord}.compact.uniq
       unless  ord_values.length == all_ads.length
         self.errors.add(:base, "Some of the ads shared the same ord value: #{ord_values}")
       end
-      unless ads.length == slides.length.div(2)
+      unless ads.length == (slides.length - second_slideshow_slides.length).div(2)
         self.errors.add(:base, "There were #{slides.length} slides and #{all_ads.length} ads")
       end
     end
@@ -89,7 +88,7 @@ module HealthCentralMobileSlideshow
       unless publish_date
         self.errors.add(:base, "Page was missing a publish date")
       end
-      unless publish_date.scan(/\w+\s\d+\w*,\s\d+/).length == 1
+      unless publish_date.length >= 1
         self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
       end
     end
@@ -100,8 +99,8 @@ module HealthCentralMobileSlideshow
         self.errors.add(:base, "Page was missing a publish date")
       end
       date = publish_date.gsub("updated", '').strip if publish_date
-      unless date.scan(/\w+\s\d+\w*,\s\d+/).length == 1
-        self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
+      unless date.length >= 1
+        self.errors.add(:base, "Publish date was in the wrong format: #{publish_date.text}")
       end
     end
 
@@ -136,10 +135,17 @@ module HealthCentralMobileSlideshow
       second_slideshow  = find "div.js-infiniteContent_0"
 
       unless first_slideshow
-        self.errors.add(:base, "First slideshow disappared from the page after the second was loaded")
+        self.errors.add(:functionality, "First slideshow disappared from the page after the second was loaded")
       end
-      unless second_slideshow
-        self.errors.add(:base, "Second slideshow was not loaded")
+      if @collection == false
+        unless (second_slideshow)
+          self.errors.add(:functionality, "Second slideshow was not loaded")
+        end
+      end
+      if @collection == true
+        unless (second_slideshow.nil? && @collection == true)
+          self.errors.add(:functionality, "Colleciton slideshow loaded another slideshow")
+        end
       end
     end
 

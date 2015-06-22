@@ -9,12 +9,6 @@ module Concrete5
     end
 
     SITE_HOSTS = ["http://qa.healthcentral.", "http://qa1.healthcentral.","http://qa2.healthcentral.","http://qa3.healthcentral.", "http://qa4.healthcentral.", "https://secure.healthcentral.", "http://alpha.healthcentral.", "http://stage.healthcentral."]
-
-    def assets
-      all_images      = @driver.find_elements(tag_name: 'img')
-      unloaded_assets = unloaded_assets
-      Concrete5::Assets.new(:proxy => @proxy, :imgs => all_images)
-    end
   end
 
   class Assets

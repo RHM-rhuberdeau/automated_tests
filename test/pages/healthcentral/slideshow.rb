@@ -11,11 +11,6 @@ module HealthCentralSlideshow
       @fixture          = args[:fixture]
     end
 
-    def assets
-      all_images = @driver.find_elements(tag_name: 'img')
-      HealthCentralAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
-    end
-
     def ads_test_cases(args)
       AdsTestCases.new(:driver => @driver, :ad_site => args[:ad_site], :ad_categories => args[:ad_categories])
     end
@@ -82,8 +77,8 @@ module HealthCentralSlideshow
         self.errors.add(:base, "Page was missing a publish date")
       end
       if publish_date
-        unless publish_date.text.scan(/\w+\s\d+,\s\d+/).length == 1
-          self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
+        unless publish_date.text.length >= 1
+          self.errors.add(:base, "Publish date was in the wrong format: #{publish_date.text}")
         end
       end
     end
@@ -95,8 +90,8 @@ module HealthCentralSlideshow
       end
       if updated_date
         date = updated_date.text.gsub("updated", '').strip if updated_date
-        unless date.scan(/\w+\s\d+,\s\d+/).length == 1
-          self.errors.add(:base, "Publish date was in the wrong format: #{updated_date}")
+        unless date.length >= 1
+          self.errors.add(:base, "Publish date was in the wrong format: #{updated_date.text}")
         end
       end
     end

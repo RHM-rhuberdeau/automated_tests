@@ -119,6 +119,8 @@ def wait_for
     Selenium::WebDriver::Wait.new(:timeout => 3).until { yield }
   rescue Selenium::WebDriver::Error::NoSuchElementError, Selenium::WebDriver::Error::TimeOutError
     false
+  rescue Net::ReadTimeout
+    false
   end
 end
 

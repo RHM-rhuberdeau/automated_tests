@@ -11,11 +11,6 @@ module HealthCentral
     def functionality
       Functionality.new(:driver => @driver, :proxy => @proxy)
     end
-
-    def assets
-      all_images = @driver.find_elements(tag_name: 'img')
-      HealthCentralAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
-    end
   end
 
   class Functionality

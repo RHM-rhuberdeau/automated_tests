@@ -9,7 +9,7 @@ class LBLN < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/mm.yml')
       mm_fixture = YAML::load_documents(io)
       @mm_fixture = OpenStruct.new(mm_fixture[0]['epilepsy'])
-      @page = ::RedesignEntry::RedesignEntryPage.new(@driver, @proxy, @mm_fixture)
+      @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @mm_fixture)
       visit "#{HC_BASE_URL}/epilepsy/d/living-with/taking-control"
     end
 

@@ -87,9 +87,9 @@ qa2:
     drupal_url: http://qa2.healthcentral.com
     immersive: http://immersiveqa.healthcentral.choicemedia.com
   berkeley:
-    base_url: http://qa2.berkeleywellness.com
+    base_url: qa.bw.hcaws.net
     name: berkeleywellness
-    asset_host: http://qa2.berkeleywellness.
+    asset_host: qa.bw.hcaws.
   medtronic:
     base_url: https://secure.healthcentral.com
     name: medtronic

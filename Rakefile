@@ -4,6 +4,8 @@
 # require File.expand_path('../config/application', __FILE__)
 
 # Rails.application.load_tasks
+require 'rake/testtask'
+
 task :default => :test
 
 task :test do
@@ -12,53 +14,67 @@ task :test do
   end
 end
 
-task :healthcentral do 
-  files = Dir[File.join('./test/integration/healthcentral', '**', '*.{rb}')] - Dir[File.join('./test/integration/healthcentral/immersives', '**', '*.{rb}')]
-  files.each do |file| 
-    require file      
+namespace :healthcentral do 
+  desc "Run all healthcentral tests"
+  Rake::TestTask.new("all") do |t|
+    t.pattern = "test/integration/healthcentral/**/*.rb"
   end
-end
 
-task :shareposts do 
-  files = Dir[File.join('./test/integration/healthcentral/entries', '**', '*.{rb}')] + Dir[File.join('./test/integration/healthcentral/questions', '**', '*.{rb}')]
-  files.each do |file|
-    require file
+  desc "Run all shareposts tests"
+  Rake::TestTask.new("shareposts") do |t|
+    t.pattern = "test/integration/healthcentral/shareposts/*.rb"
   end
-end
 
-task :encyclopedia do 
-  files = Dir[File.join('./test/integration/healthcentral/encyclopedia', '**', '*.{rb}')].each do |file|
-    require file
+  desc "Run all encyclopedia tests"
+  Rake::TestTask.new("encyclopedia") do |t|
+    t.pattern = "test/integration/healthcentral/encyclopedia/*.rb"
   end
-end
 
-task :lbln do 
-  files = Dir[File.join('./test/integration/healthcentral/lbln', '**', '*.{rb}')].each do |file|
-    require file
+  desc "Run all phases tests"
+  Rake::TestTask.new("phases") do |t|
+    t.pattern = "test/integration/healthcentral/phases/*.rb"
   end
-end
 
-task :quizes do 
-  files = Dir[File.join('./test/integration/healthcentral/quiz', '**', '*.{rb}')].each do |file|
-    require file
+  desc "Run all phases tests"
+  Rake::TestTask.new("topics") do |t|
+    t.pattern = "test/integration/healthcentral/topics/*.rb"
   end
-end
 
-task :slideshows do 
-  files = Dir[File.join('./test/integration/healthcentral/slideshows', '**', '*.{rb}')].each do |file|
-    require file
+  desc "Run all lbln immersive landing page tests"
+  Rake::TestTask.new("lbln") do |t|
+    t.pattern = "test/integration/healthcentral/lbln/*.rb"
   end
-end
 
-task :sponsoredtopics do 
-  files = Dir[File.join('./test/integration/healthcentral/sponsoredtopics', '**', '*.{rb}')].each do |file|
-    require file
+  desc "Run all mm immersive landing page tests"
+  Rake::TestTask.new("mm") do |t|
+    t.pattern = "test/integration/healthcentral/mm/*.rb"
   end
-end
 
-task :subcategory do 
-  files = Dir[File.join('./test/integration/healthcentral/subcategory', '**', '*.{rb}')].each do |file|
-    require file
+  desc "Run all quizes tests"
+  Rake::TestTask.new("quizzes") do |t|
+    t.pattern = "test/integration/healthcentral/quiz/*.rb"
+  end
+
+  desc "Run all slideshow tests"
+  Rake::TestTask.new("slideshows") do |t|
+    t.pattern = "test/integration/healthcentral/slideshows/*.rb"
+  end
+
+
+  desc "Run all sponsored topics tests"
+  Rake::TestTask.new("sponsored_topics") do |t|
+    t.pattern = "test/integration/healthcentral/sponsoredtopics/*.rb"
+  end
+
+
+  desc "Run all subcategory tests"
+  Rake::TestTask.new("subcategory") do |t|
+    t.pattern = "test/integration/healthcentral/subcategory/*.rb"
+  end
+
+  desc "Run all clinical trial tests"
+  Rake::TestTask.new("clinical_trials") do |t|
+    t.pattern = "test/integration/healthcentral/clinical_trials/*.rb"
   end
 end
 

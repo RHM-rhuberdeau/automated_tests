@@ -121,13 +121,12 @@ class HealthCentralPage
     begin
       omniture = HealthCentralOmniture::Omniture.new(omniture_text, @fixture)
     rescue HealthCentralOmniture::OmnitureIsBlank
-      puts "omniture was blank"
       omniture = OpenStruct.new(:errors => OpenStruct.new(:messages => {:omniture => "Omniture was blank"}), :validate => '')
     end
   end
 
   def assets
-    raise NotImplementedError
+    HealthCentralAssets::Assets.new(:proxy => @proxy, :driver => @driver)
   end
 
   def global_test_cases

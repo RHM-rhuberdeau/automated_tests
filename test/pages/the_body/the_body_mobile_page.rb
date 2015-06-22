@@ -3,7 +3,7 @@ require_relative './../healthcentral/healthcentral_page'
 require_relative './concerns/mobile_ad_test_cases'
 
 module TheBody
-  class TheBodyMobilePage < TheBody::TheBodyPage
+  class TheBodyMobilePage < TheBodyPage
     include TheBodyMobileAds
 
     def initialize(args)

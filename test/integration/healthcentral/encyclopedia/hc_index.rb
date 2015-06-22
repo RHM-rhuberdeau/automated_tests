@@ -2,7 +2,7 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/encyclopedia_page'
 
 class SlideshowTest < MiniTest::Test
-  context "The encyclopedia home page" do 
+  context "The encyclopedia index page" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
@@ -19,10 +19,8 @@ class SlideshowTest < MiniTest::Test
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "have the proper links" do 
-        a_to_z_links      = @driver.find_elements(:css, ".Page-index-nav ul a")
-        sub_cat_links     = @driver.find_elements(:css, "li.key-A a")
-        assert_equal(a_to_z_links.length, 24)
-        assert_equal(sub_cat_links.length, 57)
+        a_to_z_links      = @driver.find_elements(:css, ".ContentList.ContentList--article.js-search-content a")
+        assert_equal(a_to_z_links.length, 23)
       end
     end
 

@@ -19,7 +19,7 @@ class SlideshowTest < MiniTest::Test
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "have links to adam and ecyclopedia pages" do 
-        links = @driver.find_elements(:css, ".ContentList.ContentList--article.js-search-content a")
+        links = @driver.find_elements(:css, ".ContentList.ContentList--article a")
         ecyclopedia_link = links.select {|x| x.text == "HealthCentral Encyclopedia"}
         adam_link        = links.select {|x| x.text == "Conditions Library"}
         assert_equal(2, links.length, "Expected HealthCentral Encyclopedia and Conditions Library links to appear on the page" )

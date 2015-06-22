@@ -51,7 +51,7 @@ class SlideshowTest < MiniTest::Test
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",
                                                            :sponsor_kw => '',
-                                                           :thcn_content_type => "Adam_Encyclopedia_Index",
+                                                           :thcn_content_type => "adam",
                                                            :thcn_super_cat => "Body & Mind",
                                                            :thcn_category => "Mental Health",
                                                            :ugc => "[\"n\"]") 

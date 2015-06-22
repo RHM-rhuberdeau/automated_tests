@@ -99,7 +99,7 @@ module HealthCentralHeader
       @driver.switch_to.window second_window
       @driver.switch_to.window second_window
       unless @driver.current_url == "https://twitter.com/#!/healthcentral"
-        self.errors.add(:base, "Twitter icon linked to #{@driver.current_url} not https://twitter.com/healthcentral")
+        self.errors.add(:base, "Twitter icon linked to #{@driver.current_url} not https://twitter.com/#!/healthcentral")
       end
       @driver.close
       @driver.switch_to.window first_window

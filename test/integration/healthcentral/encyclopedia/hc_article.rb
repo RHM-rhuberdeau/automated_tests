@@ -15,18 +15,22 @@ class SlideshowTest < MiniTest::Test
       visit "#{HC_BASE_URL}/encyclopedia/hc/autologous-blood-donation-3168430"
     end
 
-    # ##################################################################
-    # ################ FUNCTIONALITY ###################################
-    # context "when functioning properly" do 
-    #   should "have the proper links" do 
-    #     condition   = find "h1.Page-info-title"
-    #     condition   = condition.text if condition
-    #     content     = find "li.ContentList-item.js-blogpost-contents"
-    #     content     = content.text if content
-    #     assert_equal("Autologous Blood Donation", condition)
-    #     assert_equal(true, content.length > 300)
-    #   end
-    # end
+    ##################################################################
+    ################ FUNCTIONALITY ###################################
+    context "when functioning properly" do 
+      should "have the proper links" do 
+        condition   = find "h1.Page-info-title"
+        condition   = condition.text if condition
+        content     = find "ul.ContentList.ContentList--article"
+        if content
+          content = content.text
+        else
+          content = ""
+        end
+        assert_equal("Autologous Blood Donation", condition)
+        assert_equal(true, content.length > 300)
+      end
+    end
 
     # ##################################################################
     # ################### ASSETS #######################################
@@ -44,7 +48,7 @@ class SlideshowTest < MiniTest::Test
       should "not have any errors" do 
         pharma_safe   = true
         ad_site       = "cm.own.healthcentral"
-        ad_categories = ["blooddisorders","encyclopedia","surgery"]
+        ad_categories = ["encyclopedia-index","encyclopedia",""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
                                                            :url => "#{HC_BASE_URL}/encyclopedia/hc/autologous-blood-donation-3168430",

@@ -19,11 +19,6 @@ module RedesignQuestion
       Functionality.new(:driver => @driver)
     end
 
-    def assets
-      all_images = @driver.find_elements(tag_name: 'img')
-      HealthCentralAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
-    end
-
     def analytics_file
     	has_file = false
       proxy.har.entries.each do |entry|
