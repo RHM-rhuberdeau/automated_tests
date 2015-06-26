@@ -1,21 +1,21 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral/topic_page'
+require_relative '../../../pages/healthcentral/phase_page'
 
 class DecreasedSmellAndTastePageTest < MiniTest::Test
-  context "ibd introduction" do 
+  context "mobile ibd introduction" do 
     setup do 
-      fire_fox_with_secure_proxy
+      mobile_fire_fox_with_secure_proxy
       @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/topics.yml')
+      io = File.open('test/fixtures/healthcentral/phases.yml')
       fixture           = YAML::load_documents(io)
-      topic_fixture     = OpenStruct.new(fixture[0]['ibd_symptoms'])
-      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+      phase_fixture     = OpenStruct.new(fixture[0]['mobile_ibd_introduction'])
+      head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Digestive Health",
                                    :related => ['Acid Refulx'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = ::Topics::TopicPage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/ibd/d/introduction/symptoms"
+      @page             = ::Phases::PhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      visit "#{HC_BASE_URL}/ibd/d/introduction"
     end
 
     ##################################################################
@@ -51,15 +51,15 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     context "ads, analytics, omniture" do
       should "not have any errors" do 
         ad_site           = 'cm.ver.ibd'
-        ad_categories     = ["introduction", "symptoms", '']
+        ad_categories     = ["", "", '']
         exclusion_cat     = ""
         sponsor_kw        = ''
         thcn_content_type = ""
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Digestive Health"
-        ads                     = Topics::TopicPage::AdsTestCases.new(:driver => @driver,
+        ads                     = Phases::PhasePage::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
-                                                                     :url => "#{HC_BASE_URL}/ibd/d/introduction/symptoms",
+                                                                     :url => "#{HC_BASE_URL}/ibd/d/introduction",
                                                                      :ad_site => ad_site,
                                                                      :ad_categories => ad_categories,
                                                                      :exclusion_cat => exclusion_cat,
@@ -71,6 +71,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
         ads.validate
 
         omniture = @page.omniture
+
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end

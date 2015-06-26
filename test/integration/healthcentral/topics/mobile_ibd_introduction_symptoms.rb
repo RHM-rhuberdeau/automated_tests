@@ -2,19 +2,19 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/topic_page'
 
 class DecreasedSmellAndTastePageTest < MiniTest::Test
-  context "ibd introduction" do 
+  context "mobile ibd introduction" do 
     setup do 
-      fire_fox_with_secure_proxy
+      mobile_fire_fox_with_secure_proxy
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/topics.yml')
       fixture           = YAML::load_documents(io)
-      topic_fixture     = OpenStruct.new(fixture[0]['ibd_symptoms'])
-      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+      topic_fixture     = OpenStruct.new(fixture[0]['mobile_ibd_symptoms'])
+      head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Digestive Health",
                                    :related => ['Acid Refulx'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = ::Topics::TopicPage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      @page             = Topics::TopicPage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       visit "#{HC_BASE_URL}/ibd/d/introduction/symptoms"
     end
 

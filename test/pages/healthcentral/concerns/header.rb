@@ -399,7 +399,7 @@ module HealthCentralHeader
         self.errors.add(:base, "#{@subcategory} did not appear in the header")
       end
       unless related_links
-        self.errors.add(:base, "#{@related} did not appear in the header")
+        self.errors.add(:base, "#{@related_links} did not appear in the header")
       end
       if subcategory
         unless subcategory.text == @sub_category
@@ -407,11 +407,11 @@ module HealthCentralHeader
         end
       end
       if related_links
-        unless related_links.collect {|x| x.text } == @related_links
-          self.errors.add(:base, "#{@related_links} did not appear in the header")
+        related_links_text = related_links.collect {|x| x.text }
+        unless related_links_text == @related_links
+          self.errors.add(:base, "expected #{@related_links} to appear in the header, not #{related_links_text}")
         end
       end
-
     end
   end
 

@@ -31,7 +31,7 @@ module HealthCentral
         self.errors.add(:base, "One of the slides had multiple ord values.")
       end
       @slides.each_with_index do |slide, index|
-        unless slide.ads.length == 3
+        unless slide.ads.length == 2
           self.errors.add(:base, "Slide #{index} had the wrong number of ads. It had #{slide.ads.length} ads")
         end
       end

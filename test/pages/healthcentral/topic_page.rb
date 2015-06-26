@@ -27,10 +27,9 @@ module Topics
     validate :social_controls
     validate :page_description
     validate :related_topics
-    # validate :we_recommend
-    # validate :latest_posts
-    # validate :pagination
-    # validate :dig_deeper
+    validate :we_recommend
+    validate :latest_posts
+    # validate :pagination- should almost never happen. As such we won't have a permanent page to test against
 
     def initialize(args)
       @driver           = args[:driver]
@@ -57,7 +56,7 @@ module Topics
       unless highlighted
         self.errors.add(:current_phase_highlighted, "None of the phases in the Phase Navigation menu were highlighted")
       end
-      unless highlighted_phase.downcase == @phase
+      unless highlighted_phase && highlighted_phase.downcase == @phase
         self.errors.add(:current_phase_highlighted, "#{highlighted_phase} was highlighted not #{@phase}")
       end
     end 
@@ -125,7 +124,7 @@ module Topics
       unless we_recommend_header
         self.errors.add(:we_recommend, "We Recommend header was missing from the page")
       end
-      unless we_recommend_header.text == "WE RECOMMEND"
+      unless we_recommend_header && we_recommend_header.text == "WE RECOMMEND"
         self.errors.add(:we_recommend, "We Recommend header was #{we_recommend_header.text} not We Recommend")
       end
       unless we_recommend_modules && we_recommend_modules.length == 3

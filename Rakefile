@@ -35,7 +35,7 @@ namespace :healthcentral do
     t.pattern = "test/integration/healthcentral/phases/*.rb"
   end
 
-  desc "Run all phases tests"
+  desc "Run all topics tests"
   Rake::TestTask.new("topics") do |t|
     t.pattern = "test/integration/healthcentral/topics/*.rb"
   end

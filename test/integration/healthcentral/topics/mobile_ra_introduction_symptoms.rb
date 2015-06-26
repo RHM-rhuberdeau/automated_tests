@@ -2,27 +2,27 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/topic_page'
 
 class DecreasedSmellAndTastePageTest < MiniTest::Test
-  context "ibd introduction" do 
+  context "mobile ra introduction symptoms" do 
     setup do 
-      fire_fox_with_secure_proxy
+      mobile_fire_fox_with_secure_proxy
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/topics.yml')
       fixture           = YAML::load_documents(io)
-      topic_fixture     = OpenStruct.new(fixture[0]['ibd_symptoms'])
-      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
-                                   :sub_category => "Digestive Health",
-                                   :related => ['Acid Refulx'],
+      topic_fixture     = OpenStruct.new(fixture[0]['mobile_ra_symptoms'])
+      head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :sub_category => "Rheumatoid Arthritis",
+                                   :related => ['Chronic Pain', 'Heart Disease', 'Osteoarthritis', 'Osteoporosis'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = ::Topics::TopicPage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/ibd/d/introduction/symptoms"
+      visit "#{HC_BASE_URL}/rheumatoid-arthritis/d/introduction/symptoms-ra"
     end
 
     ##################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "not have any errors" do 
-        functionality = @page.functionality(:driver => @driver, :phase => "introduction", :phase_navigation => ['Introduction', 'Diagnosis', '', 'Living With', 'Treatment', 'Care', 'Related Conditions'])
+        functionality = @page.functionality(:driver => @driver, :phase => "introduction", :phase_navigation => ['Introduction', 'Diagnosis', '', 'Living With', 'Treatment', 'Related Conditions'])
         functionality.validate
         assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
       end
@@ -42,7 +42,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal("Inflammatory Bowel Disease | www.healthcentral.com", @driver.title)
+        assert_equal("Rheumatoid Arthritis | www.healthcentral.com", @driver.title)
       end
     end
 
@@ -50,16 +50,16 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        ad_site           = 'cm.ver.ibd'
-        ad_categories     = ["introduction", "symptoms", '']
+        ad_site           = 'cm.ver.ra'
+        ad_categories     = ["introduction", "symptoms-ra", '']
         exclusion_cat     = ""
         sponsor_kw        = ''
         thcn_content_type = ""
         thcn_super_cat    = "Body & Mind"
-        thcn_category     = "Digestive Health"
+        thcn_category     = "Bones, Joints, & Muscles"
         ads                     = Topics::TopicPage::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
-                                                                     :url => "#{HC_BASE_URL}/ibd/d/introduction/symptoms",
+                                                                     :url => "#{HC_BASE_URL}/rheumatoid-arthritis/d/introduction/symptoms-ra",
                                                                      :ad_site => ad_site,
                                                                      :ad_categories => ad_categories,
                                                                      :exclusion_cat => exclusion_cat,
