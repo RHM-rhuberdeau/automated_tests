@@ -21,8 +21,10 @@ namespace :healthcentral do
   end
 
   desc "Run all shareposts tests"
-  Rake::TestTask.new("shareposts") do |t|
-    t.pattern = "test/integration/healthcentral/shareposts/*.rb"
+  ["entries", "questions"].each do |name|
+    Rake::TestTask.new("shareposts") do |t|
+      t.pattern = "test/integration/healthcentral/#{name}/*.rb"
+    end
   end
 
   desc "Run all encyclopedia tests"
