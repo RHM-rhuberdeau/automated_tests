@@ -5,12 +5,13 @@ module HealthCentralOmniture
     include ::ActiveModel::Validations
 
     def self.attr_list
-      [:pageName, :channel, :hier1, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop10, :prop12, :prop13, :prop16, :prop17, :prop22, :prop29, :prop30, :prop32, :prop35, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :evar6, :eVar17, :events]
+      [:pageName, :channel, :hier1, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop10, :prop16, :prop17, :prop22, :prop29, :prop30, :prop32, :prop35, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :evar6, :eVar17, :events]
     end
 
     attr_accessor *attr_list
     validate :values_match_fixture
     validate :correct_report_suite
+    validate :prop12_and_13
 
     def initialize(omniture_string, fixture)
       @fixture  = fixture
@@ -78,6 +79,17 @@ module HealthCentralOmniture
       end
       unless @report_suite == suite
         self.errors.add(:base, "Omniture report suite being used is: #{@report_suite} not #{suite}")
+      end
+    end
+
+    def prop12_and_13
+      prop12 = @fixture.send(:prop12)
+      prop13 = @fixture.send(:prop13)
+      unless prop12
+        self.errors.add(:omniture, "prop12 was blank")
+      end
+      unless prop13
+        self.errors.add(:omniture, "prop13 was blank")
       end
     end
   end
