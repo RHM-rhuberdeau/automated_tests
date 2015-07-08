@@ -24,17 +24,16 @@ module Topics
 
     validate :topic_navigation
     validate :current_phase_highlighted
-    validate :social_controls
-    validate :page_description
-    validate :related_topics
-    validate :we_recommend
-    validate :latest_posts
+    # validate :social_controls
+    # validate :page_description
+    # validate :related_topics
+    # validate :we_recommend
+    # validate :latest_posts
     # validate :pagination- should almost never happen. As such we won't have a permanent page to test against
 
     def initialize(args)
       @driver           = args[:driver]
-      @phase            = args[:phase]
-      @topic            = args[:topic]
+      @topic            = args[:phase]
     end
 
     def topic_navigation
@@ -48,6 +47,18 @@ module Topics
         self.errors.add(:topic_header, "Topic header text was #{header_text} not #{@topic}")
       end
     end 
+
+    def current_phase_highlighted
+      highlighted       = find ".PhaseTitle"
+      highlighted_phase = highlighted.text if highlighted
+      unless highlighted
+        self.errors.add(:current_phase_highlighted, "None of the phases in the Phase Navigation menu were highlighted")
+      end
+      unless highlighted_phase && highlighted_phase == @topic
+        self.errors.add(:current_phase_highlighted, "#{highlighted_phase} was highlighted not #{@topic}")
+      end
+    end 
+
 
     def social_controls
       wait_for { @driver.find_element(:css, "div.SocialButtons--Share.is-horizontal li.SocialButtons-listItem.SocialButtons-listItem-facebook").displayed? }

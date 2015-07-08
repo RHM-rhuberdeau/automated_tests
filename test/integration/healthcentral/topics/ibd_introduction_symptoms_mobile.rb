@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral/topic_page'
+require_relative '../../../pages/healthcentral/topic_mobile_page'
 
-class DecreasedSmellAndTastePageTest < MiniTest::Test
+class MobileIbdIntroductionSymptoms < MiniTest::Test
   context "mobile ibd introduction" do 
     setup do 
       mobile_fire_fox_with_secure_proxy
@@ -11,10 +11,10 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
       topic_fixture     = OpenStruct.new(fixture[0]['mobile_ibd_symptoms'])
       head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Digestive Health",
-                                   :related => ['Acid Refulx'],
+                                   :related_links => ['Acid Reflux'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = Topics::TopicPage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      @page             = Topics::TopicMobilePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       visit "#{HC_BASE_URL}/ibd/d/introduction/symptoms"
     end
 
@@ -22,7 +22,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "not have any errors" do 
-        functionality = @page.functionality(:driver => @driver, :phase => "introduction", :phase_navigation => ['Introduction', 'Diagnosis', '', 'Living With', 'Treatment', 'Care', 'Related Conditions'])
+        functionality = @page.functionality(:driver => @driver, :phase => "Symptoms")
         functionality.validate
         assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
       end
@@ -42,7 +42,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal("Inflammatory Bowel Disease | www.healthcentral.com", @driver.title)
+        assert_equal("Symptoms - Digestive Health | www.healthcentral.com", @driver.title)
       end
     end
 
@@ -54,10 +54,10 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
         ad_categories     = ["introduction", "symptoms", '']
         exclusion_cat     = ""
         sponsor_kw        = ''
-        thcn_content_type = ""
+        thcn_content_type = "topic"
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Digestive Health"
-        ads                     = Topics::TopicPage::AdsTestCases.new(:driver => @driver,
+        ads                     = Topics::TopicMobilePage::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
                                                                      :url => "#{HC_BASE_URL}/ibd/d/introduction/symptoms",
                                                                      :ad_site => ad_site,

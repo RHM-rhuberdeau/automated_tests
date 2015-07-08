@@ -56,7 +56,7 @@ module Topics
       unless highlighted
         self.errors.add(:current_phase_highlighted, "None of the phases in the Phase Navigation menu were highlighted")
       end
-      unless highlighted_phase && highlighted_phase.downcase == @phase
+      unless highlighted_phase && highlighted_phase == @phase
         self.errors.add(:current_phase_highlighted, "#{highlighted_phase} was highlighted not #{@phase}")
       end
     end 
@@ -113,6 +113,7 @@ module Topics
     def we_recommend
       we_recommend          = find ".CollectionListWeRecommend"
       we_recommend_header   = find "h4.CollectionListBoxes-titleSub"
+      recommend_header_text = we_recommend_header.text if we_recommend_header
       we_recommend_modules  = @driver.find_elements(:css, ".CollectionListWeRecommend ul.CollectionListBoxes-list li")
       we_recommend_links    = @driver.find_elements(:css, "a.CollectionListBoxes-box")
       we_recommend_titles   = @driver.find_elements(:css, ".CollectionListBoxes-box-info-title")
@@ -124,8 +125,8 @@ module Topics
       unless we_recommend_header
         self.errors.add(:we_recommend, "We Recommend header was missing from the page")
       end
-      unless we_recommend_header && we_recommend_header.text == "WE RECOMMEND"
-        self.errors.add(:we_recommend, "We Recommend header was #{we_recommend_header.text} not We Recommend")
+      unless recommend_header_text == "WE RECOMMEND"
+        self.errors.add(:we_recommend, "We Recommend header was #{recommend_header_text} not We Recommend")
       end
       unless we_recommend_modules && we_recommend_modules.length == 3
         self.errors.add(:we_recommend, "3 We Recommend modules did not appear on the page")

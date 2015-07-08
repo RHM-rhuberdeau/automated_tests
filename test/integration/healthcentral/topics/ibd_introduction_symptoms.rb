@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/topic_page'
 
-class DecreasedSmellAndTastePageTest < MiniTest::Test
+class IbdIntroductionSymptoms < MiniTest::Test
   context "ibd introduction" do 
     setup do 
       fire_fox_with_secure_proxy
@@ -42,7 +42,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal("Inflammatory Bowel Disease | www.healthcentral.com", @driver.title)
+        assert_equal("Symptoms - Digestive Health | www.healthcentral.com", @driver.title)
       end
     end
 
@@ -54,7 +54,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
         ad_categories     = ["introduction", "symptoms", '']
         exclusion_cat     = ""
         sponsor_kw        = ''
-        thcn_content_type = ""
+        thcn_content_type = "topic"
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Digestive Health"
         ads                     = Topics::TopicPage::AdsTestCases.new(:driver => @driver,
