@@ -207,6 +207,18 @@ module HealthCentralHeader
     end
   end
 
+  class DailyDoseDesktop < DesktopHeader
+    validate :week_is_displayed
+
+    def initialize(args)
+      @driver = args[:driver]
+    end
+
+    def week_is_displayed
+
+    end
+  end
+
   class LBLNDesktop < DesktopHeader
     include ::ActiveModel::Validations
 
@@ -386,9 +398,9 @@ module HealthCentralHeader
     validate :subcategory_navigation
 
     def initialize(args)
-      @driver = args[:driver]
-      @sub_category = args[:sub_category]
-      @related_links = args[:related_links]
+      @driver         = args[:driver]
+      @sub_category   = args[:sub_category]
+      @related        = args[:related_links]
     end
 
     def subcategory_navigation
@@ -408,8 +420,8 @@ module HealthCentralHeader
       end
       if related_links
         related_links_text = related_links.collect {|x| x.text }
-        unless related_links_text == @related_links
-          self.errors.add(:base, "expected #{@related_links} to appear in the header, not #{related_links_text}")
+        unless related_links_text == @related
+          self.errors.add(:base, "expected #{@related} to appear in the header, not #{related_links_text}")
         end
       end
     end
@@ -494,6 +506,18 @@ module HealthCentralHeader
       unless link == @more_on_link
         self.errors.add(:base, "More on link was #{link} not #{@more_on_link}")
       end
+    end
+  end
+
+  class DailyDoseMobile < MobileHeader
+    validate :week_is_displayed
+
+    def initialize(args)
+      @driver = args[:driver]
+    end
+
+    def week_is_displayed
+
     end
   end
 end

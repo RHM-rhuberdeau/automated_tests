@@ -42,7 +42,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal("Inflammatory Bowel Disease | www.healthcentral.com", @driver.title)
+        assert_equal("Introduction - Digestive Health | www.healthcentral.com", @driver.title)
       end
     end
 
@@ -51,10 +51,10 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     context "ads, analytics, omniture" do
       should "not have any errors" do 
         ad_site           = 'cm.ver.ibd'
-        ad_categories     = ["", "", '']
+        ad_categories     = ["introduction", "", '']
         exclusion_cat     = ""
         sponsor_kw        = ''
-        thcn_content_type = ""
+        thcn_content_type = "phase"
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Digestive Health"
         ads                     = Phases::PhasePage::AdsTestCases.new(:driver => @driver,

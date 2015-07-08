@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/phase_page'
 
-class DecreasedSmellAndTastePageTest < MiniTest::Test
+class RheumatoidArthritisLivingTest < MiniTest::Test
   context "rheumatoid arthritis" do 
     setup do 
       fire_fox_with_secure_proxy
@@ -42,7 +42,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal("Rheumatoid Arthritis | www.healthcentral.com", @driver.title)
+        assert_equal("Living With - Rheumatoid Arthritis | www.healthcentral.com", @driver.title)
       end
     end
 
@@ -51,10 +51,10 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     context "ads, analytics, omniture" do
       should "not have any errors" do 
         ad_site           = 'cm.ver.ra'
-        ad_categories     = ["", "", '']
+        ad_categories     = ["livingwith", "", '']
         exclusion_cat     = ""
         sponsor_kw        = ''
-        thcn_content_type = ""
+        thcn_content_type = "phase"
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Bones, Joints, & Muscles"
         ads                     = Phases::PhasePage::AdsTestCases.new(:driver => @driver,

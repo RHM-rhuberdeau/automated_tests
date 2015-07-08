@@ -1,20 +1,20 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral/phase_page'
+require_relative '../../../pages/healthcentral/phase_mobile_page'
 
-class DecreasedSmellAndTastePageTest < MiniTest::Test
+class MobileRheumatoidArthritisLivingTest < MiniTest::Test
   context "mobile rheumatoid arthritis" do 
     setup do 
-      fire_fox_with_secure_proxy
+      mobile_fire_fox_with_secure_proxy
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/phases.yml')
       fixture           = YAML::load_documents(io)
       phase_fixture     = OpenStruct.new(fixture[0]['mobile_ra_living'])
       head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Rheumatoid Arthritis",
-                                   :related => ['Chronic Pain', 'Heart Disease', 'Osteoarthritis', 'Osteoporosis'],
+                                   :related_links => ['Chronic Pain', 'Heart Disease', 'Osteoarthritis', 'Osteoporosis'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = ::Phases::PhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      @page             = Phases::MobilePhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       visit "#{HC_BASE_URL}/rheumatoid-arthritis/d/living"
     end
 
@@ -42,7 +42,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal("Rheumatoid Arthritis | www.healthcentral.com", @driver.title)
+        assert_equal("Living With - Rheumatoid Arthritis | www.healthcentral.com", @driver.title)
       end
     end
 
@@ -51,13 +51,13 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     context "ads, analytics, omniture" do
       should "not have any errors" do 
         ad_site           = 'cm.ver.ra'
-        ad_categories     = ["", "", '']
+        ad_categories     = ["livingwith", "", '']
         exclusion_cat     = ""
         sponsor_kw        = ''
-        thcn_content_type = ""
+        thcn_content_type = "phase"
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Bones, Joints, & Muscles"
-        ads                     = Phases::PhasePage::AdsTestCases.new(:driver => @driver,
+        ads                     = Phases::MobilePhasePage::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
                                                                      :url => "#{HC_BASE_URL}/rheumatoid-arthritis/d/living",
                                                                      :ad_site => ad_site,

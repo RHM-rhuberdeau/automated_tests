@@ -26,7 +26,8 @@ module HealthCentralAssets
           end
         end
       end
-
+      wrong_assets = wrong_assets.compact.uniq
+      
       unless wrong_assets.empty?
         self.errors.add(:base, "there were assets loaded from the wrong environment #{wrong_assets}")
       end

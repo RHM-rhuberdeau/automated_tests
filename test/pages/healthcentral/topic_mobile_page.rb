@@ -1,7 +1,7 @@
 require_relative './healthcentral_page'
 
-module Phases
-  class PhasePage < HealthCentralPage
+module Topics
+  class TopicMobilePage < HealthCentralPage
     def initialize(args)
       @driver           = args[:driver]
       @proxy            = args[:proxy]
@@ -22,51 +22,39 @@ module Phases
   class Functionality
     include ::ActiveModel::Validations
 
-    validate :phase_navigation
+    validate :topic_navigation
     validate :current_phase_highlighted
     validate :social_controls
     validate :page_description
+    validate :related_topics
     validate :we_recommend
     validate :latest_posts
-    validate :pagination
-    validate :dig_deeper
+    # validate :pagination- should almost never happen. As such we won't have a permanent page to test against
 
     def initialize(args)
       @driver           = args[:driver]
       @phase            = args[:phase]
-      @phase_navigation = args[:phase_navigation]
+      @topic            = args[:topic]
     end
 
-    def phase_navigation
-      phase_nav_menu  = find ".js-TrackingInternal--pha ul"
-      phase_nav_items = @driver.find_elements(:css, ".js-TrackingInternal--pha ul li")
-      phase_nav_text  = phase_nav_items.compact.collect { |x| x.text } if phase_nav_items
+    def topic_navigation
+      topic_header = find "h2.PhaseTitle"
+      header_text  = topic_header.text if topic_header
 
-      unless phase_nav_menu
-        self.errors.add(:phase_navigation, "Phase Navigation menu did not appear on the page")
+      unless topic_header
+        self.errors.add(:topic_header, "Topic header menu did not appear on the page")
       end
-      unless phase_nav_text == @phase_navigation
-        self.errors.add(:phase_navigation, "Phase Navigation text was #{phase_nav_text} not #{@phase_navigation}")
-      end
-    end
-
-    def current_phase_highlighted
-      highlighted       = find ".Nav-list-item.js-nav-item.is-active"
-      highlighted_phase = highlighted.text if highlighted
-      unless highlighted
-        self.errors.add(:current_phase_highlighted, "None of the phases in the Phase Navigation menu were highlighted")
-      end
-      unless highlighted_phase && highlighted_phase.downcase == @phase
-        self.errors.add(:current_phase_highlighted, "#{highlighted_phase} was highlighted not #{@phase}")
+      unless header_text == @topic
+        self.errors.add(:topic_header, "Topic header text was #{header_text} not #{@topic}")
       end
     end 
 
     def social_controls
-      wait_for { @driver.find_element(:css, "div.Page-main-content div.SocialButtons--Share ul.SocialButtons-list a.js-Social--Follow-actionable-Facebook").displayed? }
-      facebook      = find "div.Page-main-content div.SocialButtons--Share ul.SocialButtons-list a.js-Social--Follow-actionable-Facebook"
-      twitter       = find "div.Page-main-content div.SocialButtons--Share ul.SocialButtons-list a.js-Social--Follow-actionable-Twitter"
-      pinterest     = find "div.Page-main-content div.SocialButtons--Share ul.SocialButtons-list a.js-Social--Follow-actionable-Pinterest"
-      stumble_upon  = find "div.Page-main-content div.SocialButtons--Share ul.SocialButtons-list a.js-Social--Follow-actionable-Stumbleupon"
+      wait_for { @driver.find_element(:css, "div.SocialButtons--Share.is-horizontal li.SocialButtons-listItem.SocialButtons-listItem-facebook").displayed? }
+      facebook      = find "div.SocialButtons--Share.is-horizontal li.SocialButtons-listItem.SocialButtons-listItem-facebook"
+      twitter       = find "div.SocialButtons--Share.is-horizontal li.SocialButtons-listItem.SocialButtons-listItem-twitter"
+      pinterest     = find "div.SocialButtons--Share.is-horizontal li.SocialButtons-listItem.SocialButtons-listItem-pinterest"
+      stumble_upon  = find "div.SocialButtons--Share.is-horizontal li.SocialButtons-listItem.SocialButtons-listItem-stumble"
 
       unless facebook
         self.errors.add(:social_controls, "Facebook share link did not appear on the page")
@@ -94,9 +82,26 @@ module Phases
       end
     end
 
+    def related_topics
+      related_topics        = find ".TopicListInset"
+      related_topics_header = find "div.TopicListInset-header"
+      related_topics_links  = @driver.find_elements(:css, "ul.TopicListInset-topiclist a")
+
+      unless related_topics
+        self.errors.add(:related_topics, "Related Topics did not appear on the page")
+      end
+      unless related_topics_header && related_topics_header.text == "RELATED TOPICS"
+        self.errors.add(:related_topics, "Related Topics header did not appear on the page")
+      end
+      unless related_topics_links && related_topics_links.length > 0
+        self.errors.add(:related_topics, "Related Topics links did not appear on the page")
+      end
+    end
+
     def we_recommend
       we_recommend          = find ".CollectionListWeRecommend"
       we_recommend_header   = find "h4.CollectionListBoxes-titleSub"
+      recommend_header_text = we_recommend_header.text if we_recommend_header
       we_recommend_modules  = @driver.find_elements(:css, ".CollectionListWeRecommend ul.CollectionListBoxes-list li")
       we_recommend_links    = @driver.find_elements(:css, "a.CollectionListBoxes-box")
       we_recommend_titles   = @driver.find_elements(:css, ".CollectionListBoxes-box-info-title")
@@ -108,8 +113,8 @@ module Phases
       unless we_recommend_header
         self.errors.add(:we_recommend, "We Recommend header was missing from the page")
       end
-      unless we_recommend_header.text == "WE RECOMMEND"
-        self.errors.add(:we_recommend, "We Recommend header was #{we_recommend_header.text} not We Recommend")
+      unless recommend_header_text == "WE RECOMMEND"
+        self.errors.add(:we_recommend, "We Recommend header was #{recommend_header_text} not We Recommend")
       end
       unless we_recommend_modules && we_recommend_modules.length == 3
         self.errors.add(:we_recommend, "3 We Recommend modules did not appear on the page")
@@ -155,10 +160,6 @@ module Phases
       pagination_label = find "div.Custom-paginator-info"
       pagination_next  = find ".Custom-paginator-controls-next-icon.icon-right-open-big"
       pagination_prev  = find ".Custom-paginator-controls-prev-icon.icon-left-open-big"
-      page_total       = find ".Custom-paginator-label-pageTotal"
-      if page_total
-        number_of_pages = page_total.text.to_i
-      end
 
       unless pagination
         self.errors.add(:pagination, "pagination did not appear on the page")
@@ -166,7 +167,7 @@ module Phases
       unless pagination_label
         self.errors.add(:pagination, "pagination label did not appear on the page")
       end
-      unless pagination_next || ( !number_of_pages.nil? && number_of_pages <= 9 )
+      unless pagination_next
         self.errors.add(:pagination, "Next button did not appear on the page")
       end
       if pagination_prev
