@@ -160,10 +160,6 @@ module HealthCentralMobileSlideshow
       end
     end
 
-    def scroll_to_bottom_of_page
-      @driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
-    end
-
     # def relative_links_in_the_header
     #   links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
     #   bad_links = links.map do |link|
