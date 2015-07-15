@@ -24,16 +24,20 @@ module Topics
 
     validate :topic_navigation
     validate :current_phase_highlighted
-    # validate :social_controls
-    # validate :page_description
-    # validate :related_topics
-    # validate :we_recommend
-    # validate :latest_posts
+    validate :social_controls
+    validate :page_description
+    validate :related_topics
+    validate :we_recommend
+    validate :latest_posts
     # validate :pagination- should almost never happen. As such we won't have a permanent page to test against
 
     def initialize(args)
       @driver           = args[:driver]
       @topic            = args[:phase]
+    end
+
+    def phase_navigation
+
     end
 
     def topic_navigation

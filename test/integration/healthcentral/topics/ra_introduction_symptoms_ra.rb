@@ -22,7 +22,7 @@ class SymptomsOfRa < MiniTest::Test
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "not have any errors" do 
-        functionality = @page.functionality(:driver => @driver, :phase => "Introduction", :phase_navigation => ['Introduction', 'Diagnosis', '', 'Living With', 'Treatment', 'Related Conditions'])
+        functionality = @page.functionality(:driver => @driver, :phase => "Symptoms of RA", :phase_navigation => ['Introduction', 'Diagnosis', '', 'Living With', 'Treatment', 'Related Conditions'])
         functionality.validate
         assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
       end

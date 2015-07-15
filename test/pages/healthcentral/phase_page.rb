@@ -38,6 +38,7 @@ module Phases
     end
 
     def phase_navigation
+      wait_for          { @driver.find_element(:css, ".js-TrackingInternal--pha ul").displayed? }
       phase_nav_menu  = find ".js-TrackingInternal--pha ul"
       phase_nav_items = @driver.find_elements(:css, ".js-TrackingInternal--pha ul li")
       phase_nav_text  = phase_nav_items.compact.collect { |x| x.text } if phase_nav_items
