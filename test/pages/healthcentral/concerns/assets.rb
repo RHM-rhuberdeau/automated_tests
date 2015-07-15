@@ -2,7 +2,7 @@ module HealthCentralAssets
   class Assets
     include ::ActiveModel::Validations
 
-    KNOWN_PROBLEMS = ["#{ASSET_HOST}com/assets/dne.js"]
+    KNOWN_PROBLEMS = ["#{ASSET_HOST}com/assets/dne.js", "#{ASSET_HOST}com/common/survey/jquery.cookie.js"]
 
     validate :assets_using_correct_host
     validate :no_broken_images
