@@ -137,6 +137,10 @@ def find(css)
   node
 end
 
+def scroll_to_bottom_of_page
+  @driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
+end
+
 def finished_loading?
   state = @driver.execute_script "return window.document.readyState"
   sleep 0.5
@@ -159,7 +163,11 @@ def get_omniture_from_debugger
   @driver.switch_to.window second_window
   wait_for { @driver.find_element(:css, 'td#request_list_cell').displayed? }
   omniture_node = find 'td#request_list_cell'
-  omniture_text = omniture_node.text if omniture_node
+  begin
+    omniture_text = omniture_node.text if omniture_node
+  rescue Selenium::WebDriver::Error::StaleElementReferenceError
+    omniture_text = nil
+  end
   if omniture_text == nil
     sleep 1
     wait_for { @driver.find_element(:css, 'td#request_list_cell').displayed? }
