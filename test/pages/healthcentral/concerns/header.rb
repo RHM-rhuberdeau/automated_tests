@@ -355,6 +355,7 @@ module HealthCentralHeader
         if body_and_mind
           body_and_mind.click 
           wait_for { @driver.find_element(:css, "ul.Nav-listGroup-list--General li.Nav-listGroupSub-list-item a").displayed? }
+          wait_for { @driver.find_element(:link_text, "Sleep Disorders").displayed? }
           body_links = @driver.find_elements(:css, "ul.Nav-listGroup-list--General li.Nav-listGroupSub-list-item a")
           unless body_links
             self.errors.add(:base, "Body And Mind submenu links did not appear")
