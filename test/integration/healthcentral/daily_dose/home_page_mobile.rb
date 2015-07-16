@@ -79,7 +79,7 @@ class DailyDoseMobileHomePage < MiniTest::Test
         thcn_content_type = "dailydose"
         thcn_super_cat    = "HealthCentral"
         thcn_category     = ""
-        ads               = DailyDose::DailyDosePage::AdsTestCases.new(:driver => @driver,
+        ads               = DailyDose::DailyDosePage::LazyLoadedAds.new(:driver => @driver,
                                                                 :proxy => @proxy, 
                                                                 :url => "#{HC_BASE_URL}/dailydose/",
                                                                 :ad_site => ad_site,
