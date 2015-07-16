@@ -4,7 +4,7 @@ require_relative '../../../pages/healthcentral/fdb_page'
 class FdbMedicationsIndexPageTest < MiniTest::Test
   context "acid reflux" do 
     setup do 
-      
+      mobile_fire_fox_with_secure_proxy
     end
   end
 

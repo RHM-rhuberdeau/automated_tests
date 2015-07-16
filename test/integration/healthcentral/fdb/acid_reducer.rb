@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/fdb_page'
 
-class FdbMedicationsIndexPageTest < MiniTest::Test
+class FdbMedicationPageTest < MiniTest::Test
   context "acid reducer" do 
     setup do 
       
