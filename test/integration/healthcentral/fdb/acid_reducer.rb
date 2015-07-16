@@ -2,7 +2,7 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/fdb_page'
 
 class FdbMedicationsIndexPageTest < MiniTest::Test
-  context "acid reflux" do 
+  context "acid reducer" do 
     setup do 
       
     end
