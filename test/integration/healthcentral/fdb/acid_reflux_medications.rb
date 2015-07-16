@@ -22,6 +22,14 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do
+        ad_site           = 'cm.ver.acidreflux'
+        ad_categories     = ["medications", "", '']
+        exclusion_cat     = ""
+        sponsor_kw        = ''
+        thcn_content_type = "Drug"
+        thcn_super_cat    = "Body & Mind"
+        thcn_category     = "Digestive Health"
+        
         omniture = @page.omniture
         omniture.validate
         assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
