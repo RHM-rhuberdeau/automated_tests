@@ -28,10 +28,22 @@ class FdbMedicationPageTest < MiniTest::Test
         thcn_content_type = "Drug"
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Digestive Health"
+        omniture          = @page.omniture
+        ads               = FDB::FDBPage::AdsTestCases.new(:driver => @driver,
+                                                                :proxy => @proxy, 
+                                                                :url => "#{HC_BASE_URL}/dailydose/watson_supercomputer_to_guide_personalized_cancer_treatments",
+                                                                :ad_site => ad_site,
+                                                                :ad_categories => ad_categories,
+                                                                :exclusion_cat => exclusion_cat,
+                                                                :sponsor_kw  => sponsor_kw,
+                                                                :thcn_content_type => thcn_content_type,
+                                                                :thcn_super_cat => thcn_super_cat,
+                                                                :thcn_category => thcn_category,
+                                                                :ugc => "[\"n\"]") 
 
-        omniture = @page.omniture
+        ads.validate
         omniture.validate
-        assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
+        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
   end

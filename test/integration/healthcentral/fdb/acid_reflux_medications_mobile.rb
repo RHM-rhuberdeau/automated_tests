@@ -1,20 +1,20 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral/fdb_page'
+require_relative '../../../pages/healthcentral/fdb_mobile_page'
 
 class FdbMedicationsIndexPageTest < MiniTest::Test
-  context "acid reflux" do 
+  context "acid reflux mobile" do 
     setup do 
-      fire_fox_with_secure_proxy
+      mobile_fire_fox_with_secure_proxy
       @proxy.new_har
       io                = File.open('test/fixtures/healthcentral/fdb.yml')
       fixture           = YAML::load_documents(io)
-      fdb_fixture       = OpenStruct.new(fixture[0]['acid_reflux'])
-      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
-                                   :sub_category => "Acid Reflux",
-                                   :related => [''],
+      fdb_fixture       = OpenStruct.new(fixture[0]['acid_reflux_mobile'])
+      head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :sub_category => "Digestive Health",
+                                   :related_links => ['Acid Reflux'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = FDB::FDBPage.new(:driver => @driver,:proxy => @proxy,:fixture => fdb_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      @page             = FDB::FDBMobilePage.new(:driver => @driver,:proxy => @proxy,:fixture => fdb_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       visit "#{HC_BASE_URL}/acid-reflux/medications"
     end
 
@@ -29,7 +29,7 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
         thcn_content_type = "Drug"
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Digestive Health"
-        ads               = FDB::FDBPage::AdsTestCases.new(:driver => @driver,
+        ads               = FDB::FDBMobilePage::LazyLoadedAds.new(:driver => @driver,
                                                             :proxy => @proxy, 
                                                             :url => "#{HC_BASE_URL}/acid-reflux/medications",
                                                             :ad_site => ad_site,
