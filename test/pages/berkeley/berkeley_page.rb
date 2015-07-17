@@ -16,14 +16,40 @@ class BerkeleyPage
   end 
 
   def assets
-    raise NotImplementedError
+    BerkeleyAssets::Assets.new(:driver => @driver, :proxy => @proxy)
   end
 
   def global_test_cases
-    raise NotImplementedError
+    GlobalTestCases.new(:driver => @driver, :header => @header, :footer => @footer)
   end
 
   def functionality
     raise NotImplementedError
+  end
+
+  class GlobalTestCases
+    include ::ActiveModel::Validations
+
+    validate :header
+    validate :footer
+
+    def initialize(args)
+      @header = args[:header]
+      @footer = args[:footer]
+    end
+
+    def header
+      @header.validate
+      unless @header.errors.empty?
+        self.errors.add(:header, @header.errors.values.first)
+      end
+    end
+
+    def footer
+      @footer.validate
+      unless @footer.errors.empty?
+        self.errors.add(:footer, @footer.errors.values.first)
+      end
+    end
   end
 end
