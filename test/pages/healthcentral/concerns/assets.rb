@@ -7,6 +7,7 @@ module HealthCentralAssets
     validate :assets_using_correct_host
     validate :no_broken_images
     validate :no_unloaded_assets
+    validate :not_using_old_pipeline
 
     def initialize(args)
       @proxy     = args[:proxy]
@@ -39,6 +40,18 @@ module HealthCentralAssets
       unloaded_assets = page_unloaded_assets.compact
       if unloaded_assets.empty? == false
         self.errors.add(:assets, "there were unloaded assets #{unloaded_assets}")
+      end
+    end
+
+    def not_using_old_pipeline
+      bad_calls = []
+      @proxy.har.entries.map do |entry|
+        if entry.request.url.include?("healthcentral") && entry.request.url.include?("/assets_pipeline/")
+          bad_calls << entry.request.url
+        end
+      end
+      unless bad_calls.compact.empty?
+        self.errors.add(:assets, "There were calls to the old pipeline #{bad_calls}")
       end
     end
 
