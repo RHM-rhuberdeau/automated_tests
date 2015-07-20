@@ -31,6 +31,7 @@ module HealthCentralSlideshow
     validate :relative_links_in_the_header
     validate :includes_publish_date
     validate :includes_updated_date
+    validate :can_go_back_through_slideshow
 
     def initialize(args)
       @driver = args[:driver]
@@ -92,6 +93,22 @@ module HealthCentralSlideshow
         date = updated_date.text.gsub("updated", '').strip if updated_date
         unless date.length >= 1
           self.errors.add(:base, "Publish date was in the wrong format: #{updated_date.text}")
+        end
+      end
+    end
+
+    def can_go_back_through_slideshow
+      slideshow_slides = @driver.find_elements(:css, ".Slide-content-slide-container")
+      slideshow_slides = slideshow_slides.to_a.reverse
+
+      slideshow_slides.each_with_index do |slide, index|
+        unless index == (slideshow_slides.length - 1)
+          displayed_slide = @driver.find_elements(:css, ".Slide-content-slide-container").select { |x| x.displayed? }.first
+          unless displayed_slide.text == slide.text
+            self.errors.add(:functionality, "Slideshow did not update after clicking the previous button")
+          end
+          @driver.find_element(:css, ".Slideshow-controls-previous-button-label").click
+          sleep 0.5
         end
       end
     end
