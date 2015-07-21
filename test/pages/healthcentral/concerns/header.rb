@@ -175,6 +175,44 @@ module HealthCentralHeader
     end
   end
 
+  class ImmersiveFlatHeader < DesktopHeader
+    validate :title_link
+
+    def initialize(args)
+      @driver       = args[:driver]
+      @title        = args[:title]
+      @subcategory  = args[:sub_category]
+    end
+
+    def health_logo
+      logo = find ".Logo-supercollection img"
+      logo_img = logo.attribute('src') if logo
+      unless logo_img == @logo
+        self.errors.add(:base, "Logo image src was #{logo_img} not #{@logo}")
+      end
+    end
+
+    def subcategory_navigation
+      subcategory   = find "a.Page-category-titleLink"
+      related_links = find "ul.Page-category-related-list a"
+
+      if subcategory
+        self.errors.add(:base, "#{@subcategory} appeared in the header on a collection page")
+      end
+      if related_links
+        self.errors.add(:base, "#{@related} appeared in the header on a collection page")
+      end
+    end
+
+    def title_link
+      title = find "div.storyTitle a"
+      title_text = title.text if title
+      unless title_text == @title 
+        self.errors.add(:header, "Missing #{@title} in the header")
+      end
+    end
+  end
+
   class RedesignHeader < DesktopHeader
     def initialize(args)
       @driver       =args[:driver]
