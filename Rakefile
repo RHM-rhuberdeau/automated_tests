@@ -27,9 +27,19 @@ namespace :healthcentral do
     end
   end
 
+  desc "Run all FDB tests"
+  Rake::TestTask.new("fdb") do |t|
+    t.pattern = "test/integration/healthcentral/fdb/*.rb"
+  end
+
   desc "Run all encyclopedia tests"
   Rake::TestTask.new("encyclopedia") do |t|
     t.pattern = "test/integration/healthcentral/encyclopedia/*.rb"
+  end
+
+  desc "Run all daily dose tests"
+  Rake::TestTask.new("daily_dose") do |t|
+    t.pattern = "test/integration/healthcentral/daily_dose/*.rb"
   end
 
   desc "Run all phases tests"
@@ -80,9 +90,15 @@ namespace :healthcentral do
   end
 end
 
-task :berkeley do 
-  files = Dir[File.join('./test/integration/berkeley_wellness', '**', '*.{rb}')].each do |file| 
-    require file      
+namespace :berkeley do 
+  desc "Run all healthcentral tests"
+  Rake::TestTask.new("all") do |t|
+    t.pattern = "test/integration/berkeley_wellness/**/*.rb"
+  end
+
+  desc "Run all home page tests"
+  Rake::TestTask.new("home_page") do |t|
+    t.pattern = "test/integration/berkeley_wellness/home_page/*.rb"
   end
 end
 
