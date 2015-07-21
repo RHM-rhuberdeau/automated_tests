@@ -38,6 +38,7 @@ module HealthCentralMobileSlideshow
     validate :ads_are_lazy_loaded
     validate :loads_next_slideshow
     validate :no_routing_error
+    validate :view_more
 
     def initialize(args)
       @driver           = args[:driver]
@@ -160,17 +161,16 @@ module HealthCentralMobileSlideshow
       end
     end
 
-    # def relative_links_in_the_header
-    #   links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
-    #   bad_links = links.map do |link|
-    #     if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
-    #       link unless link.include?("twitter")
-    #     end
-    #   end
-    #   unless bad_links.compact.length == 0
-    #     self.errors.add(:base, "There were links in the header that did not use relative paths: #{bad_links.compact}")
-    #   end
-    # end
+    def view_more
+      collection_items = @driver.find_elements(:css, "ul.CollectionListBoxes-list li.CollectionListBoxes-list-item").select { |x| x.displayed? }
+      button = find "button.js-CollectionListTopic-view-more.view-more-all"
+      button.click if button
+      sleep 1
+      new_collection_items = @driver.find_elements(:css, "ul.CollectionListBoxes-list li.CollectionListBoxes-list-item").select { |x| x.displayed? }
+      unless new_collection_items.length > collection_items.length
+        self.errors.add(:functionality, "View more button does not work")
+      end
+    end
   end
 
   class AdsTestCases
