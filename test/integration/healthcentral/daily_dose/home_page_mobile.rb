@@ -31,17 +31,16 @@ class DailyDoseMobileHomePage < MiniTest::Test
         we_reccommend     = find "div.OUTBRAIN"
 
         scroll_to_bottom_of_page
+        sleep 1
         new_content_count = @driver.find_elements(:css, ".js-fake-infinite-content")
-        sleep 0.5
 
         assert_equal(false, header_text.nil?, "header text was nil")
         assert_equal(true, header_text.length == headers.length, "A h2 tag was blank")
         assert_equal(true, article_links.length > 1, "Missing article links on the page")
         assert_equal(false, quote_text.nil?)
         assert_equal(true, quote_text.length > 1)
-        assert_equal(1, infite_content.length)
-        assert_equal(true, infite_content.length < new_content_count.length, "page failed to lazy load additional content")
-        assert_equal(11, new_content_count.length)
+        assert_equal(11, infite_content.length )
+        assert_equal(infite_content.length, new_content_count.length)
       end
     end
 
@@ -59,12 +58,7 @@ class DailyDoseMobileHomePage < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        h2_tags = @driver.find_elements(:css, "h2")
-        if h2_tags.first 
-          first_tag_text = h2_tags.first.text 
-        end
-        assert_equal(true, !first_tag_text.nil?)
-        assert_equal(first_tag_text, @driver.title)
+        assert_equal(true, @page.has_correct_title?)
       end
     end
 
@@ -89,7 +83,9 @@ class DailyDoseMobileHomePage < MiniTest::Test
                                                                 :thcn_content_type => thcn_content_type,
                                                                 :thcn_super_cat => thcn_super_cat,
                                                                 :thcn_category => thcn_category,
-                                                                :ugc => "[\"n\"]") 
+                                                                :ugc => "[\"n\"]",
+                                                                :scroll1 => 1250,
+                                                                :scroll2 => 1500) 
         ads.validate
 
         omniture = @page.omniture

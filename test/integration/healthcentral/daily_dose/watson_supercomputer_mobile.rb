@@ -15,50 +15,52 @@ class DailyDoseHomePage < MiniTest::Test
       visit "#{HC_BASE_URL}/dailydose/watson_supercomputer_to_guide_personalized_cancer_treatments"
     end
 
-    # ##################################################################
-    # ################ FUNCTIONALITY ###################################
-    # context "when functioning properly" do 
-    #   should "not have any errors" do 
-    #     quote_of_the_day = find "p.js-fake-infinite-title-green"
-    #     quote_text       = quote_of_the_day.text if quote_of_the_day
-    #     infite_content   = @driver.find_elements(:css, ".js-fake-infinite-content") || []
-    #     if infite_content
-    #       infite_content = infite_content.select {|x| x.displayed?}
-    #     end
-    #     inside_dailydose = find "div.js-TrackingInternal--mpop h2"
-    #     inside_dd_text   = inside_dailydose.text if inside_dailydose
+    ##################################################################
+    ################ FUNCTIONALITY ###################################
+    context "when functioning properly" do 
+      should "not have any errors" do 
+        headers           = @driver.find_elements(:css, "h2")
+        header_text       = headers.collect(&:text).compact
+        article_links     = @driver.find_elements(:css, "ul.ContentList--article li.ContentList-item a") || []
+        quote_of_the_day = find "p.js-fake-infinite-title-green"
+        quote_text       = quote_of_the_day.text if quote_of_the_day
+        infite_content   = @driver.find_elements(:css, ".js-fake-infinite-content") || []
+        if infite_content
+          infite_content = infite_content.select {|x| x.displayed?}
+        end
+        we_reccommend     = find "div.OUTBRAIN"
 
-    #     scroll_to_bottom_of_page
+        scroll_to_bottom_of_page
+        sleep 1
+        new_content_count = @driver.find_elements(:css, ".js-fake-infinite-content")
 
-    #     new_content_count = @driver.find_elements(:css, ".js-fake-infinite-content")
-    #     sleep 0.5
+        assert_equal(false, header_text.nil?, "header text was nil")
+        assert_equal(true, header_text.length == headers.length, "A h2 tag was blank")
+        assert_equal(true, article_links.length > 1, "Missing article links on the page")
+        assert_equal(false, quote_text.nil?)
+        assert_equal(true, quote_text.length > 1)
+        assert_equal(11, infite_content.length )
+        assert_equal(infite_content.length, new_content_count.length)
+      end
+    end
 
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
 
-    #     assert_equal(false, quote_text.nil?)
-    #     assert_equal(true, quote_text.length > 1)
-    #     assert_equal(1, infite_content.length)
-    #     assert_equal(true, infite_content.length < new_content_count.length, "page failed to lazy load additional content")
-    #     assert_equal(11, new_content_count.length)
-    #   end
-    # end
-
-    # ##################################################################
-    # ################### ASSETS #######################################
-    # context "assets" do 
-    #   should "have valid assets" do 
-    #     assets = @page.assets
-    #     assets.validate
-    #     assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
-    #   end
-    # end
-
-    # ##################################################################
-    # ################### SEO ##########################################
-    # context "SEO" do 
-    #   should "have the correct title" do 
-    #     assert_equal("\"Watson\" supercomputer to guide personalized cancer treatments", @driver.title)
-    #   end
-    # end
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO" do 
+      should "have the correct title" do 
+        assert_equal("\"Watson\" supercomputer to guide personalized cancer treatments", @driver.title)
+      end
+    end
 
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
@@ -81,7 +83,9 @@ class DailyDoseHomePage < MiniTest::Test
                                                                         :thcn_content_type => thcn_content_type,
                                                                         :thcn_super_cat => thcn_super_cat,
                                                                         :thcn_category => thcn_category,
-                                                                        :ugc => "[\"n\"]") 
+                                                                        :ugc => "[\"n\"]",
+                                                                        :scroll1 => 1750,
+                                                                        :scroll2 => 1500) 
         ads.validate
 
         omniture = @page.omniture
@@ -90,15 +94,15 @@ class DailyDoseHomePage < MiniTest::Test
       end
     end
 
-    # ##################################################################
-    # ################### GLOBAL SITE TESTS ############################
-    # context "Global Site tests" do 
-    #   should "have passing global test cases" do 
-    #     global_test_cases = @page.global_test_cases
-    #     global_test_cases.validate
-    #     assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
-    #   end
-    # end
+    ##################################################################
+    ################### GLOBAL SITE TESTS ############################
+    context "Global Site tests" do 
+      should "have passing global test cases" do 
+        global_test_cases = @page.global_test_cases
+        global_test_cases.validate
+        assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
+      end
+    end
   end
 
   def teardown  
