@@ -28,13 +28,13 @@ module BerkeleyAssets
       end
 
       unless @good_assets.length > 0
-        self.errors.add(:base, "The page did not load any assets")
+        self.errors.add(:assets, "The page did not load any assets")
       end
       unless @bad_assets.length == 0
-        self.errors.add(:base, "There were assets loaded from the wrong environment: #{@bad_assets}")
+        self.errors.add(:assets, "There were assets loaded from the wrong environment: #{@bad_assets}")
       end
       unless @unloaded_assets.length == 0
-        self.errors.add(:base, "There were unloaded assets: #{@unloaded_assets}")
+        self.errors.add(:assets, "There were unloaded assets: #{@unloaded_assets}")
       end
     end
 
