@@ -120,7 +120,7 @@ module RedesignEntry
           if link.attribute('href') && link.attribute('href').length > 0
             @links_in_post << link.attribute('href')
           end
-          if link.attribute('rel') && link.attribute('rel') == 'nofollow'
+          if link.attribute('rel') && link.attribute('rel') == 'nofollow' && (link.attribute('href').include?("/profiles/c/newsletters/subscribe") == false)
             @links_with_no_follow << link.attribute('href')
           end
         end

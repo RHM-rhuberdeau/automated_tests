@@ -2,44 +2,62 @@ module HealthCentralAssets
   class Assets
     include ::ActiveModel::Validations
 
-    KNOWN_PROBLEMS = ["#{ASSET_HOST}com/assets/dne.js", "#{ASSET_HOST}com/common/survey/jquery.cookie.js"]
+    KNOWN_PROBLEMS = ["/assets/dne.js", "/common/survey/jquery.cookie.js", "/common/images/small-right-arrow-gray.png",
+                      "m/common/polyfills/respond_js/respond.proxy.js"]
 
     validate :assets_using_correct_host
     validate :no_broken_images
-    validate :no_unloaded_assets
     validate :not_using_old_pipeline
 
     def initialize(args)
       @proxy     = args[:proxy]
       @driver    = args[:driver]
+      @base_url  = args[:base_url]
     end
 
     def wrong_asset_hosts
       (HealthCentralPage::SITE_HOSTS - [ASSET_HOST])
     end
 
-    def assets_using_correct_host
-      wrong_assets = []
-      @proxy.har.entries.map do |entry|
-        if entry.request.url.include?("healthcentral")
-          wrong_asset_hosts.each do |wrong_host|
-            if entry.request.url.index(wrong_host) == 0
-              wrong_assets << entry.request.url
-            end
-          end
+    def has_wrong_host(url)
+      wrong_asset_hosts.each do |wrong_host|
+        if url.index(wrong_host) == 0
+          return true
         end
-      end
-      wrong_assets = wrong_assets.compact.uniq
-      
-      unless wrong_assets.empty?
-        self.errors.add(:assets, "there were assets loaded from the wrong environment #{wrong_assets}")
       end
     end
 
-    def no_unloaded_assets
-      unloaded_assets = page_unloaded_assets.compact
-      if unloaded_assets.empty? == false
-        self.errors.add(:assets, "there were unloaded assets #{unloaded_assets}")
+    def is_known_problem(url)
+      KNOWN_PROBLEMS.each do |known_issue|
+        return true if url.include?(known_issue) && ENV['TEST_ENV'] != 'production'
+      end
+    end
+
+    def assets_using_correct_host
+      @good_assets      = []
+      @bad_assets       = []
+      @unloaded_assets  = []
+      
+      @proxy.har.entries.each do |entry|
+        if ( entry.request.url.index(ASSET_HOST) == 0 && entry.response.status == 200 )
+          @good_assets << entry.request.url
+        end
+        if ( entry.request.url.index(ASSET_HOST) == 0 && entry.response.status != 200 )
+          @unloaded_assets << entry.request.url unless entry.request.url == @base_url
+        end
+        if has_wrong_host(entry.request.url) == true
+          @bad_assets << entry.request.url unless is_known_problem(entry.request.url)
+        end
+      end
+
+      unless @good_assets.length > 0
+        self.errors.add(:assets, "The page did not load any assets")
+      end
+      unless @bad_assets.length == 0
+        self.errors.add(:assets, "There were assets loaded from the wrong environment: #{@bad_assets}")
+      end
+      unless @unloaded_assets.length == 0
+        self.errors.add(:assets, "There were unloaded assets: #{@unloaded_assets}")
       end
     end
 
@@ -53,15 +71,6 @@ module HealthCentralAssets
       unless bad_calls.compact.empty?
         self.errors.add(:assets, "There were calls to the old pipeline #{bad_calls}")
       end
-    end
-
-    def page_unloaded_assets
-      unloaded_assets = @proxy.har.entries.map do |entry|
-         if entry.request.url.include?("#{ASSET_HOST}") && entry.response.status != 200
-           entry.request.url unless KNOWN_PROBLEMS.include?(entry.request.url.split('?').first)
-        end
-      end
-      unloaded_assets.compact
     end
 
     def no_broken_images

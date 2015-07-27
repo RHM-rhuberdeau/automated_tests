@@ -15,7 +15,8 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/allergy/c/3989/173667/decreased-common-bedfellows"
+      @url  = "#{HC_BASE_URL}/allergy/c/3989/173667/decreased-common-bedfellows"
+      visit @url
     end
 
     ##################################################################
@@ -32,7 +33,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
