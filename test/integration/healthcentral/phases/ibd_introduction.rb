@@ -14,8 +14,9 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
                                    :related => ['Acid Refulx'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = ::Phases::PhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/ibd/d/introduction"
+      @page             = Phases::PhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      @url              = "#{HC_BASE_URL}/ibd/d/introduction"
+      visit @url
     end
 
     ##################################################################
@@ -32,7 +33,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -57,17 +58,17 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
         thcn_content_type = "phase"
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Digestive Health"
-        ads                     = Phases::PhasePage::AdsTestCases.new(:driver => @driver,
-                                                                     :proxy => @proxy, 
-                                                                     :url => "#{HC_BASE_URL}/ibd/d/introduction",
-                                                                     :ad_site => ad_site,
-                                                                     :ad_categories => ad_categories,
-                                                                     :exclusion_cat => exclusion_cat,
-                                                                     :sponsor_kw  => sponsor_kw,
-                                                                     :thcn_content_type => thcn_content_type,
-                                                                     :thcn_super_cat => thcn_super_cat,
-                                                                     :thcn_category => thcn_category,
-                                                                     :ugc => "[\"n\"]") 
+        ads               = Phases::PhasePage::AdsTestCases.new(:driver => @driver,
+                                                                 :proxy => @proxy, 
+                                                                 :url => "#{HC_BASE_URL}/ibd/d/introduction",
+                                                                 :ad_site => ad_site,
+                                                                 :ad_categories => ad_categories,
+                                                                 :exclusion_cat => exclusion_cat,
+                                                                 :sponsor_kw  => sponsor_kw,
+                                                                 :thcn_content_type => thcn_content_type,
+                                                                 :thcn_super_cat => thcn_super_cat,
+                                                                 :thcn_category => thcn_category,
+                                                                 :ugc => "[\"n\"]") 
         ads.validate
 
         omniture = @page.omniture

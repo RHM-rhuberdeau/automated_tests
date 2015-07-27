@@ -15,7 +15,8 @@ class MobileIBDIntroductionTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = Phases::MobilePhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/ibd/d/introduction"
+      @url              = "#{HC_BASE_URL}/ibd/d/introduction"
+      visit @url
     end
 
     ##################################################################
@@ -32,7 +33,7 @@ class MobileIBDIntroductionTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
