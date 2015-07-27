@@ -12,14 +12,15 @@ class ClinicalTrials < MiniTest::Test
       head_navigation   = HealthCentralHeader::ClinicalTrialHeader.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver =>@driver, :proxy => @proxy, :fixture => @trial_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/tools/d/clinical-trials"
+      @url  = "#{HC_BASE_URL}/tools/d/clinical-trials"
+      visit @url
     end
 
     ##################################################################
     ################### ASSETS #######################################
     context "assets safe" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
