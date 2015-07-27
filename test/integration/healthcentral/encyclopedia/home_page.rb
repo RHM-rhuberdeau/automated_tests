@@ -12,7 +12,8 @@ class SlideshowTest < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/encyclopedia/home"
+      @url            = "#{HC_BASE_URL}/encyclopedia/home/"
+      visit @url
     end
 
     ##################################################################
@@ -30,7 +31,7 @@ class SlideshowTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end

@@ -15,7 +15,8 @@ class SlideshowTest < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/encyclopedia/adam/colds-and-the-flu-4021748"
+      @url            = "#{HC_BASE_URL}/cold-flu/encyclopedia/colds-and-the-flu-4021748"
+      visit @url
     end
 
     ##################################################################
@@ -38,7 +39,7 @@ class SlideshowTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -53,7 +54,7 @@ class SlideshowTest < MiniTest::Test
         ad_categories = ["flu","adam",""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
-                                                           :url => "#{HC_BASE_URL}/encyclopedia/adam/colds-and-the-flu-4021748",
+                                                           :url => "#{HC_BASE_URL}/cold-flu/encyclopedia/colds-and-the-flu-4021748",
                                                            :ad_site => ad_site,
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",

@@ -12,7 +12,8 @@ class SlideshowTest < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/encyclopedia/adam"
+      @url            = "#{HC_BASE_URL}/encyclopedia/adam/"
+      visit @url
     end
 
     ##################################################################
@@ -23,7 +24,7 @@ class SlideshowTest < MiniTest::Test
         condition           = condition.text if condition
         condition_links     = @driver.find_elements(:css, "ul.ContentList li a")
         assert_equal("Other Conditions Alphabetically", condition)
-        assert_equal(21, condition_links.length)
+        assert_equal(29, condition_links.length)
       end
     end
 
@@ -31,7 +32,7 @@ class SlideshowTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -52,7 +53,7 @@ class SlideshowTest < MiniTest::Test
                                                            :exclusion_cat => "",
                                                            :sponsor_kw => '',
                                                            :thcn_content_type => "adam",
-                                                           :thcn_super_cat => "",
+                                                           :thcn_super_cat => "HealthCentral",
                                                            :thcn_category => "",
                                                            :ugc => "[\"n\"]") 
         ads.validate

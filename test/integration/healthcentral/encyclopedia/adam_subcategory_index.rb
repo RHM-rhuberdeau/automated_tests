@@ -15,7 +15,8 @@ class SlideshowTest < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/alzheimers/encyclopedia"
+      @url            = "#{HC_BASE_URL}/alzheimers/encyclopedia/"
+      visit @url
     end
 
     ##################################################################
@@ -24,11 +25,9 @@ class SlideshowTest < MiniTest::Test
       should "have the proper links" do 
         conditions_library = find "h1.Page-info-title"
         conditions_library = conditions_library.text if conditions_library
-        pagination_links   = @driver.find_elements(:css, ".Page-index-nav a") || []
         condition_links    = @driver.find_elements(:css, "ul.ContentList li a") || []
         assert_equal("Alzheimer's Disease Index", conditions_library)
         assert_equal(14, condition_links.length)
-        assert_equal(9, pagination_links.length)
       end
     end
 
@@ -36,7 +35,7 @@ class SlideshowTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
