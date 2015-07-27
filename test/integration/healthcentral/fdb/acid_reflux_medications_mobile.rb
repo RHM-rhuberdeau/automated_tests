@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/fdb_mobile_page'
 
-class FdbMedicationsIndexPageTest < MiniTest::Test
+class FdbMedicationsMobileIndexPageTest < MiniTest::Test
   context "acid reflux mobile" do 
     setup do 
       mobile_fire_fox_with_secure_proxy
@@ -10,12 +10,31 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
       fixture           = YAML::load_documents(io)
       fdb_fixture       = OpenStruct.new(fixture[0]['acid_reflux_mobile'])
       head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
-                                   :sub_category => "Digestive Health",
-                                   :related_links => ['Acid Reflux'],
+                                   :sub_category => "Acid Reflux",
+                                   :related_links => ['Digestive Health'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = FDB::FDBMobilePage.new(:driver => @driver,:proxy => @proxy,:fixture => fdb_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/acid-reflux/medications"
+      @url              = "#{HC_BASE_URL}/acid-reflux/medications/"
+      visit @url
+    end
+
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets(:base_url => @url)
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    #################################################################
+    ################## SEO ##########################################
+    context "SEO" do 
+      should "have the correct title" do 
+        assert_equal(true, @page.has_correct_title?)
+      end
     end
 
     #########################################################################
@@ -39,12 +58,24 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
                                                             :thcn_content_type => thcn_content_type,
                                                             :thcn_super_cat => thcn_super_cat,
                                                             :thcn_category => thcn_category,
-                                                            :ugc => "[\"n\"]") 
+                                                            :ugc => "[\"n\"]",
+                                                            :scroll1 => 2500,
+                                                            :scroll2 => 3000) 
 
         ads.validate
         omniture          = @page.omniture
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
+      end
+    end
+
+    ##################################################################
+    ################### GLOBAL SITE TESTS ############################
+    context "Global Site tests" do 
+      should "have passing global test cases" do 
+        global_test_cases = @page.global_test_cases
+        global_test_cases.validate
+        assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
       end
     end
   end

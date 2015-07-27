@@ -25,6 +25,8 @@ module HealthCentralAds
       @thcn_super_cat         = args[:thcn_super_cat]
       @thcn_category          = args[:thcn_category]
       @ugc                    = args[:ugc]
+      @scroll1                = args[:scroll1] || 1500
+      @scroll2                = args[:scroll2] || 1500
     end
 
     def unique_ads_per_page_view
@@ -132,14 +134,12 @@ module HealthCentralAds
     include ::ActiveModel::Validations
 
     def unique_ads_per_page_view
-      scroll1 = 4000
-      scroll2 = 4000
       @ads = {}
-      @driver.execute_script "window.scrollBy(0, #{scroll1})"
+      @driver.execute_script "window.scrollBy(0, #{@scroll1})"
       sleep 1
       @all_ads = HealthCentralPage.get_all_ads(@proxy)
       @ads[1] = @all_ads
-      @driver.execute_script "window.scrollBy(0, #{scroll2})"
+      @driver.execute_script "window.scrollBy(0, #{@scroll2})"
       sleep 1
       @all_ads = HealthCentralPage.get_all_ads(@proxy)
       @ads[2] = @all_ads - @ads.flatten(2)

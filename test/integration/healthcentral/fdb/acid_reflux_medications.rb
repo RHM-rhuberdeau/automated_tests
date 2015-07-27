@@ -15,7 +15,26 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = FDB::FDBPage.new(:driver => @driver,:proxy => @proxy,:fixture => fdb_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/acid-reflux/medications"
+      @url              = "#{HC_BASE_URL}/acid-reflux/medications/"
+      visit @url
+    end
+
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets(:base_url => @url)
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    #################################################################
+    ################## SEO ##########################################
+    context "SEO" do 
+      should "have the correct title" do 
+        assert_equal(true, @page.has_correct_title?)
+      end
     end
 
     #########################################################################
@@ -45,6 +64,16 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
         omniture          = @page.omniture
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
+      end
+    end
+
+    ##################################################################
+    ################### GLOBAL SITE TESTS ############################
+    context "Global Site tests" do 
+      should "have passing global test cases" do 
+        global_test_cases = @page.global_test_cases
+        global_test_cases.validate
+        assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
       end
     end
   end
