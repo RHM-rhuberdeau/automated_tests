@@ -15,7 +15,8 @@ class SlideshowTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others"
+      @url              = "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others"
+      visit @url
     end
 
     ##################################################################
@@ -32,7 +33,7 @@ class SlideshowTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end

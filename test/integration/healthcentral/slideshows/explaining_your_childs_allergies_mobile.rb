@@ -9,10 +9,14 @@ class SlideshowTest < MiniTest::Test
       io                = File.open('test/fixtures/healthcentral/slideshows.yml')
       slideshow_fixture = YAML::load_documents(io)
       @fixture          = OpenStruct.new(slideshow_fixture[0]['allergies_mobile'])
-      head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:driver => @driver, :sub_category => "Allergy", :related_links => ['Asthma', 'Cold & Flu', 'Skin Care'])
+      head_navigation   = HealthCentralHeader::LBLNMobile.new(:logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :title_link => "Taking Charge of Anaphylaxis",
+                                   :more_on_link => "more on Allergy »",
+                                   :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others"
+      @url              = "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others"
+      visit @url
     end
 
     ##################################################################
@@ -29,7 +33,7 @@ class SlideshowTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end

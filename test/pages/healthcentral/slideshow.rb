@@ -31,7 +31,7 @@ module HealthCentralSlideshow
     validate :relative_links_in_the_header
     validate :includes_publish_date
     validate :includes_updated_date
-    validate :can_go_back_through_slideshow
+    # validate :can_go_back_through_slideshow
 
     def initialize(args)
       @driver = args[:driver]
@@ -100,6 +100,12 @@ module HealthCentralSlideshow
     def can_go_back_through_slideshow
       slideshow_slides = @driver.find_elements(:css, ".Slide-content-slide-container")
       slideshow_slides = slideshow_slides.to_a.reverse
+      back_button  = find ".Slideshow-controls-previous-button-label"
+
+      unless back_button
+        self.errors.add(:functionality, "Missing back button from the page")
+        return
+      end
 
       slideshow_slides.each_with_index do |slide, index|
         unless index == (slideshow_slides.length - 1)
@@ -107,7 +113,7 @@ module HealthCentralSlideshow
           unless displayed_slide.text == slide.text
             self.errors.add(:functionality, "Slideshow did not update after clicking the previous button")
           end
-          @driver.find_element(:css, ".Slideshow-controls-previous-button-label").click
+          back_button.click
           sleep 0.5
         end
       end

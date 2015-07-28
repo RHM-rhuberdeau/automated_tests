@@ -14,7 +14,8 @@ class SlideshowTest < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => true)
-      visit "#{HC_BASE_URL}/migraine/cf/slideshows/12-tips-for-living-well-with-migraines?ic=recc"
+      @url  = "#{HC_BASE_URL}/migraine/cf/slideshows/12-tips-for-living-well-with-migraines?ic=recc"
+      visit @url
     end
 
     ##################################################################
@@ -31,7 +32,7 @@ class SlideshowTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -42,7 +43,7 @@ class SlideshowTest < MiniTest::Test
     context "omniture" do
       should "not have any errors" do 
         ad_site        = "cm.own.tcc"
-        ad_categories  = ["zecuity", "", ""]
+        ad_categories  = ["zecuity", ""]
         ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
         omniture       = @page.omniture
 
