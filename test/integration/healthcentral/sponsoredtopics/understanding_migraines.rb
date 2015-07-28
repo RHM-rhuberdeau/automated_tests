@@ -10,7 +10,8 @@ class UnderstandingMigrainesTest < MiniTest::Test
       topic_fixture = YAML::load_documents(io)
       @topic_fixture = OpenStruct.new(topic_fixture[0]['migraines'])
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @topic_fixture)
-      visit "#{HC_BASE_URL}/migraine/d/understanding-migraines/taking-control"
+      @url  = "#{HC_BASE_URL}/migraine/d/understanding-migraines/taking-control"
+      visit @url
     end 
 
     context "when functioning properly" do 
@@ -29,7 +30,7 @@ class UnderstandingMigrainesTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end

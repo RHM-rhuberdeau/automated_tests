@@ -10,7 +10,8 @@ class MerckTest < MiniTest::Test
       topic_fixture = YAML::load_documents(io)
       @topic_fixture = OpenStruct.new(topic_fixture[0]['merck'])
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @topic_fixture)
-      visit "#{HC_BASE_URL}/skin-cancer/d/treatment/stage-iv-melanoma?ic=recch"
+      @url  = "#{HC_BASE_URL}/skin-cancer/d/treatment/stage-iv-melanoma?ic=recch"
+      visit @url
     end 
 
     context "when functioning properly" do 
@@ -29,7 +30,7 @@ class MerckTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
