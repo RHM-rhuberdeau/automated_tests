@@ -2,7 +2,7 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/dailydose_page'
 
 class DailyDoseSecondWeek < MiniTest::Test
-  context "daily dose second week, 2015" do 
+  context "daily dose, second week, mobile" do 
     setup do 
       mobile_fire_fox_with_secure_proxy
       @proxy.new_har
@@ -63,17 +63,17 @@ class DailyDoseSecondWeek < MiniTest::Test
         thcn_content_type = "dailydose"
         thcn_super_cat    = "HealthCentral"
         thcn_category     = ""
-        ads               = DailyDose::DailyDosePage::AdsTestCases.new(:driver => @driver,
-                                                                :proxy => @proxy, 
-                                                                :url => "#{HC_BASE_URL}/dailydose/2015/2",
-                                                                :ad_site => ad_site,
-                                                                :ad_categories => ad_categories,
-                                                                :exclusion_cat => exclusion_cat,
-                                                                :sponsor_kw  => sponsor_kw,
-                                                                :thcn_content_type => thcn_content_type,
-                                                                :thcn_super_cat => thcn_super_cat,
-                                                                :thcn_category => thcn_category,
-                                                                :ugc => "[\"n\"]") 
+        ads               = HealthCentralAds::NoAds.new(:driver => @driver,
+                                                        :proxy => @proxy, 
+                                                        :url => "#{HC_BASE_URL}/dailydose/2015/2",
+                                                        :ad_site => ad_site,
+                                                        :ad_categories => ad_categories,
+                                                        :exclusion_cat => exclusion_cat,
+                                                        :sponsor_kw  => sponsor_kw,
+                                                        :thcn_content_type => thcn_content_type,
+                                                        :thcn_super_cat => thcn_super_cat,
+                                                        :thcn_category => thcn_category,
+                                                        :ugc => "[\"n\"]") 
         ads.validate
 
         omniture = @page.omniture
