@@ -10,7 +10,8 @@ class QuizTest < MiniTest::Test
       quiz_fixture = YAML::load_documents(io)
       @quiz_fixture = OpenStruct.new(quiz_fixture[0]['managepain'])
       @page = ::HealthCentral::QuizPage.new(:driver => @driver,:proxy => @proxy,:fixture => @quiz_fixture)
-      visit "#{HC_BASE_URL}/rheumatoid-arthritis/d/quizzes/do-you-know-how-manage-your-pain"
+      @url  = "#{HC_BASE_URL}/rheumatoid-arthritis/d/quizzes/do-you-know-how-manage-your-pain"
+      visit @url
     end
 
     ##################################################################
@@ -27,7 +28,7 @@ class QuizTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
