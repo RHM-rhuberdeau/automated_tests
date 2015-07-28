@@ -171,7 +171,7 @@ module RedesignQuestion
       second_window = @driver.window_handles.last
       @driver.switch_to.window second_window
       @driver.switch_to.window second_window
-      unless @driver.current_url == "https://twitter.com/healthcentral"
+      unless @driver.current_url == "https://twitter.com/healthcentral" || @driver.current_url == "https://twitter.com/#!/healthcentral"
         self.errors.add(:base, "Twitter icon linked to #{@driver.current_url} not https://twitter.com/healthcentral")
       end
       @driver.close

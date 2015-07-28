@@ -10,7 +10,8 @@ class LupronQuestionPageTest < MiniTest::Test
       question_fixture = YAML::load_documents(io)
       @question_fixture = OpenStruct.new(question_fixture[0][132860])
       @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture)
-      visit "#{HC_BASE_URL}/diet-exercise/c/question/748553/132860/"
+      @url  =  "#{HC_BASE_URL}/diet-exercise/c/question/748553/132860/"
+      visit @url
     end
 
     context "when functioning properly" do 
@@ -68,7 +69,7 @@ class LupronQuestionPageTest < MiniTest::Test
      ################### ASSETS #######################################
      context "assets" do 
        should "have valid assets" do 
-         assets = @page.assets
+         assets = @page.assets(:base_url => @url)
          assets.validate
          assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
        end

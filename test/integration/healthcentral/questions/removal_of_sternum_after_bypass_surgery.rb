@@ -10,7 +10,8 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
       question_fixture = YAML::load_documents(io)
       @question_fixture = OpenStruct.new(question_fixture[0][40783])
       @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @question_fixture)
-      visit "#{HC_BASE_URL}/heart-disease/c/question/67255/40783"
+      @url  = "#{HC_BASE_URL}/heart-disease/c/question/67255/40783"
+      visit @url
     end
 
     context "when functioning properly" do 
@@ -106,7 +107,7 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end

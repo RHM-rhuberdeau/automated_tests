@@ -10,7 +10,8 @@ class SkinCareQuestionPageTest < MiniTest::Test
       question_fixture = YAML::load_documents(io)
       @question_fixture = OpenStruct.new(question_fixture[0][132858])
       @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture)
-      visit "#{HC_BASE_URL}/skin-care/c/question/550423/132858"
+      @url  = "#{HC_BASE_URL}/skin-care/c/question/550423/132858"
+      visit @url
     end
 
     ##################################################################
@@ -121,7 +122,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -154,19 +155,19 @@ class SkinCareQuestionPageTest < MiniTest::Test
       end
     end
 
-    ##################################################################
-    ################### GLOBAL SITE TESTS ############################
-    context "Global site requirements" do 
-      should "have passing global test cases" do 
-        global_test_cases = @page.global_test_cases
-        global_test_cases.validate
-        assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
+    # ##################################################################
+    # ################### GLOBAL SITE TESTS ############################
+    # context "Global site requirements" do 
+    #   should "have passing global test cases" do 
+    #     global_test_cases = @page.global_test_cases
+    #     global_test_cases.validate
+    #     assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
 
-        subnav = @driver.find_element(:css, "div.Page-category.Page-sub-category.js-page-category")
-        title_link = @driver.find_element(:css, ".Page-category-titleLink")
-        sub_category_links = @driver.find_element(:link, "Skin Cancer")
-      end
-    end
+    #     subnav = @driver.find_element(:css, "div.Page-category.Page-sub-category.js-page-category")
+    #     title_link = @driver.find_element(:css, ".Page-category-titleLink")
+    #     sub_category_links = @driver.find_element(:link, "Skin Cancer")
+    #   end
+    # end
   end
 
   def teardown  
