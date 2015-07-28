@@ -164,4 +164,16 @@ module HealthCentralAds
       end
     end
   end
+
+  class NoAds < AdsTestCases
+    include ::ActiveModel::Validations
+
+    def unique_ads_per_page_view
+
+    end
+
+    def ugc
+      
+    end
+  end
 end
