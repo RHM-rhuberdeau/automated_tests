@@ -15,7 +15,8 @@ class IbdIntroductionSymptoms < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = ::Topics::TopicPage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/ibd/d/introduction/symptoms"
+      @url              = "#{HC_BASE_URL}/ibd/d/introduction/symptoms"
+      visit @url
     end
 
     ##################################################################
@@ -32,7 +33,7 @@ class IbdIntroductionSymptoms < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end

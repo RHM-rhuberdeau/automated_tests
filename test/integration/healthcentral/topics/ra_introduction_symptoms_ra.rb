@@ -15,7 +15,8 @@ class SymptomsOfRa < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = ::Topics::TopicPage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      visit "#{HC_BASE_URL}/rheumatoid-arthritis/d/introduction/symptoms-ra"
+      @url              = "#{HC_BASE_URL}/rheumatoid-arthritis/d/introduction/symptoms-ra"
+      visit @url
     end
 
     ##################################################################
@@ -32,7 +33,7 @@ class SymptomsOfRa < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
