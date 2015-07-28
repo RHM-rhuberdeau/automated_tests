@@ -10,7 +10,8 @@ class SubCategory < MiniTest::Test
       subcat_fixture = YAML::load_documents(io)
       @subcat_fixture = OpenStruct.new(subcat_fixture[0]['incontinence'])
       @page = ::HealthCentral::SubcategoryPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @subcat_fixture)
-      visit "#{HC_DRUPAL_URL}/incontinence/"
+      @url  = "#{HC_DRUPAL_URL}/incontinence/"
+      visit @url
     end
 
     context "when functioning properly" do 
@@ -105,7 +106,7 @@ class SubCategory < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
