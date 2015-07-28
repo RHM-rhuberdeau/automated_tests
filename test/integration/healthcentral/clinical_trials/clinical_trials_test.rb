@@ -62,9 +62,6 @@ class ClinicalTrials < MiniTest::Test
     ################### GLOBAL SITE TESTS ############################
     context "Global Site tests" do 
       should "have passing global test cases" do 
-        button = @driver.find_element(:css, "#HC-menu")
-        button.click
-        
         global_test_cases = @page.global_test_cases
         global_test_cases.validate
         assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
