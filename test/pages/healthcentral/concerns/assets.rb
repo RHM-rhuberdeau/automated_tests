@@ -43,7 +43,9 @@ module HealthCentralAssets
           @good_assets << entry.request.url
         end
         if ( entry.request.url.index(ASSET_HOST) == 0 && entry.response.status != 200 )
-          @unloaded_assets << entry.request.url unless entry.request.url == @base_url
+          unless entry.request.url == @base_url || is_known_problem(entry.request.url)
+            @unloaded_assets << entry.request.url
+          end
         end
         if has_wrong_host(entry.request.url) == true
           @bad_assets << entry.request.url unless is_known_problem(entry.request.url)
