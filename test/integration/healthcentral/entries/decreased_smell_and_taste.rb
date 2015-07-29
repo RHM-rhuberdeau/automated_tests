@@ -81,17 +81,6 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
         global_test_cases = @page.global_test_cases
         global_test_cases.validate
         assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
-
-        subnav = @driver.find_element(:css, "div.Page-category.Page-sub-category.js-page-category")
-        title_link = @driver.find_element(:css, ".Page-category-titleLink")
-        sub_category_links = @driver.find_element(:link, "Asthma")
-        sub_category_links = @driver.find_element(:link, "Cold & Flu")
-        sub_category_links = @driver.find_element(:link, "Skin Care")
-
-        button = @driver.find_element(:css, ".Button--Ask")
-        button.click
-        wait_for { @driver.find_element(css: '.titlebar').displayed? }
-        assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/allergy/c/question", "Ask a Question linked to #{@driver.current_url} not /allergy/c/question")
       end
     end
   end
