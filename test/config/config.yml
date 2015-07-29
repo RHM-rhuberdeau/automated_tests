@@ -39,7 +39,7 @@ uat2:
     asset_host: http://www.thebody.
 
 qa:
-  asset_host: http://qa.choicemedia.healthcentral.
+  asset_host: http://qa.healthcentral.
   collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
   healthcentral:
     base_url: http://drupaladmin.healthcentral.com/
@@ -67,11 +67,11 @@ qa1:
     drupal_url: http://qa1.healthcentral.com
     immersive: http://immersiveqa.healthcentral.choicemedia.com
   berkeley:
-    base_url: http://qa.berkeleywellness.choicemedia.com
+    base_url: http://qa1.berkeleywellness.com
     name: berkeleywellness
     asset_host: http://qa1.berkeleywellness.
   medtronic:
-    base_url: https://concrete5.qa1.healthcentral.com
+    base_url: http://qa1.healthcentral.com
     name: medtronic
     asset_host: https://secure.healthcentral.
   thebody:
