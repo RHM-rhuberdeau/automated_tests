@@ -12,8 +12,10 @@ module BerkleyOmniture
 
     def initialize(omniture_string, fixture)
       @fixture  = fixture
+      raise OmnitureIsBlank unless omniture_string
       array     = omniture_string.lines
       index     = array.index { |x| x.include?("pageName") }
+      raise OmnitureIsBlank unless index
       range     = array.length - index
       new_array = array[index, range]
       omniture_from_array(new_array)
