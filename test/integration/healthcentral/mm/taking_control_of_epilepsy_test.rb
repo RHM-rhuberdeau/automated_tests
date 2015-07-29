@@ -10,7 +10,8 @@ class LBLN < MiniTest::Test
       mm_fixture = YAML::load_documents(io)
       @mm_fixture = OpenStruct.new(mm_fixture[0]['epilepsy'])
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @mm_fixture)
-      visit "#{HC_BASE_URL}/epilepsy/d/living-with/taking-control"
+      @url  = "#{HC_BASE_URL}/epilepsy/d/living-with/taking-control"
+      visit @url
     end
 
     context "when fucntioning properly" do 
@@ -49,7 +50,7 @@ class LBLN < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
