@@ -125,12 +125,12 @@ class HealthCentralPage
     end
   end
 
-  def assets
-    HealthCentralAssets::Assets.new(:proxy => @proxy, :driver => @driver)
+  def assets(args)
+    HealthCentralAssets::Assets.new(:proxy => @proxy, :driver => @driver, :base_url => args[:base_url])
   end
 
   def global_test_cases
-    raise NotImplementedError
+    GlobalTestCases.new(:driver => @driver, :head_navigation => @head_navigation, :footer => @footer)
   end
 
   def functionality
