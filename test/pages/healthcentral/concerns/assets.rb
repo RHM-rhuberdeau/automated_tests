@@ -78,11 +78,10 @@ module HealthCentralAssets
     def no_broken_images
       images = @driver.find_elements(:tag_name => "img")
       broken_images = images.reject do |image|
-        begin
-          @driver.execute_script("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", image)
-        rescue Selenium::WebDriver::Error::JavascriptError
-          true
-        end
+        @driver.execute_script("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", image)
+      end
+      unless broken_images.empty?
+        self.errors.add(:assets, "#{broken_images.length} broken images on the page")
       end
     end
   end
