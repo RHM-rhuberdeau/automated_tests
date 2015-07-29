@@ -88,10 +88,15 @@ namespace :healthcentral do
   Rake::TestTask.new("clinical_trials") do |t|
     t.pattern = "test/integration/healthcentral/clinical_trials/*.rb"
   end
+
+  desc "Run all concrete five tests"
+  Rake::TestTask.new("concrete_five") do |t|
+    t.pattern = "test/integration/healthcentral/concrete_five/*.rb"
+  end
 end
 
 namespace :berkeley do 
-  desc "Run all healthcentral tests"
+  desc "Run all berkeley tests"
   Rake::TestTask.new("all") do |t|
     t.pattern = "test/integration/berkeley_wellness/**/*.rb"
   end
@@ -99,6 +104,28 @@ namespace :berkeley do
   desc "Run all home page tests"
   Rake::TestTask.new("home_page") do |t|
     t.pattern = "test/integration/berkeley_wellness/home_page/*.rb"
+  end
+end
+
+namespace :the_body do 
+  desc "Run all of The Body tests"
+  Rake::TestTask.new("all") do |t|
+    t.pattern = "test/integration/the_body/**/*.rb"
+  end
+
+  desc "Run all articles tests"
+  Rake::TestTask.new("articles") do |t|
+    t.pattern = "test/integration/the_body/articles/*.rb"
+  end
+
+  desc "Run all evp tests"
+  Rake::TestTask.new("evp") do |t|
+    t.pattern = "test/integration/the_body/evp/*.rb"
+  end
+
+  desc "Run all keystone article tests"
+  Rake::TestTask.new("keystone_articles") do |t|
+    t.pattern = "test/integration/the_body/keystone_articles/*.rb"
   end
 end
 
