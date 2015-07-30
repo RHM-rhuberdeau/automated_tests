@@ -1,4 +1,6 @@
 module TheBodyOmniture
+  class OmnitureIsBlank < Exception; end
+
   class Omniture
     include ::ActiveModel::Validations
 
@@ -11,13 +13,19 @@ module TheBodyOmniture
     validate :correct_report_suite
 
     def initialize(omniture_string, fixture)
-      @fixture  = fixture
-      array     = omniture_string.lines
-      index     = array.index { |x| x.include?("pageName") }
-      range     = array.length - index
-      new_array = array[index, range]
-      omniture_from_array(new_array)
-      get_report_suite(array)
+      begin
+        @fixture  = fixture
+        raise OmnitureIsBlank unless omniture_string
+        array     = omniture_string.lines
+        index     = array.index { |x| x.include?("pageName") }
+        raise OmnitureIsBlank unless index
+        range     = array.length - index
+        new_array = array[index, range]
+        omniture_from_array(new_array)
+        get_report_suite(array)
+      rescue OmnitureIsBlank
+        self
+      end
     end
 
     def get_report_suite(array)
@@ -74,7 +82,7 @@ module TheBodyOmniture
         suite = "cmi-choicemediacom-thebody"
       end
       unless @report_suite == suite
-        self.errors.add(:base, "Omniture report suite being used is: #{@report_suite} not #{suite}")
+        self.errors.add(:omniture, "Omniture report suite being used is: #{@report_suite} not #{suite}")
       end
     end
   end
