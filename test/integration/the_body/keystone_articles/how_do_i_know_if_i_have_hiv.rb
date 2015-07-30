@@ -6,11 +6,12 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      io = File.open('test/fixtures/the_body/articles.yml')
-      body_fixture = YAML::load_documents(io)
+      io            = File.open('test/fixtures/the_body/articles.yml')
+      body_fixture  = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['how-do-i-know-if-i-have-HIV'])
-      @page = ::TheBodyKeystoneArticle::KeystoneArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
-      visit "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html"
+      @page         = TheBodyKeystoneArticle::KeystoneArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
+      @url          = "#{BODY_URL}/h/how-do-i-know-if-i-have-HIV.html"
+      visit @url
     end
 
 
@@ -46,7 +47,9 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html", :ugc => "[\"n\"]") 
+        ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => @url,
+                                           :ugc => "[\"n\"]", :ad_site => 'cm.own.body', :ad_categories => ['bodypages'],
+                                           :exclusion_cat => '') 
         ads.validate
 
         omniture = @page.omniture

@@ -1,7 +1,7 @@
-require_relative './../healthcentral/healthcentral_page'
+require_relative './../the_body/the_body_page'
 
 module TheBodyKeystoneArticle
-  class KeystoneArticlePage < HealthCentralPage
+  class KeystoneArticlePage < TheBodyPage
 
     def initialize(args)
       @driver  = args[:driver]
@@ -15,22 +15,6 @@ module TheBodyKeystoneArticle
 
     def global_test_cases
       GlobalTestCases.new(:driver => @driver)
-    end
-
-    def assets
-      all_images      = @driver.find_elements(tag_name: 'img')
-      Assets.new(:proxy => @proxy, :imgs => all_images)
-    end
-
-    def omniture
-      open_omniture_debugger
-      omniture_text = get_omniture_from_debugger
-      omniture = TheBodyOmniture::Omniture.new(omniture_text, @fixture)
-    end 
-
-    def has_correct_title?
-      title = @driver.title
-      title.scan(/^[^\-]*-[\s+\w+]+/).length == 1
     end
 
     class Functionality
@@ -110,7 +94,7 @@ module TheBodyKeystoneArticle
         unless read_mores.length == article_links.length
           self.errors.add(:base, "One of the articles in the articles section was missing the Read More link: #{read_mores.inspect}")
         end
-        unless section_header.first.displayed? == true
+        unless section_header.first && section_header.first.displayed? == true
           self.errors.add(:base, "Articles section header was not displayed on the page")
         end
       end
@@ -121,7 +105,7 @@ module TheBodyKeystoneArticle
         unless section_header.length == 1
           self.errors.add(:base, "Missing the 'CONNECT WITH OTHERS' section header")
         end 
-        unless section_header.first.displayed? == true
+        unless section_header.first && section_header.first.displayed? == true
           self.errors.add(:base, "Connect with others section header was not displayed on the page.")
         end
       end
