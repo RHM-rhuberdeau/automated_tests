@@ -6,11 +6,12 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      io = File.open('test/fixtures/the_body/articles.yml')
-      body_fixture = YAML::load_documents(io)
+      io            = File.open('test/fixtures/the_body/articles.yml')
+      body_fixture  = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['raise_funds'])
-      @page = ::TheBodyArticle::TheBodyArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
-      visit "#{Configuration["thebody"]["base_url"]}/content/75791/gods-love-we-deliver-celebrates-30-years-of-food-a.html"
+      @page         = ::TheBodyArticle::TheBodyArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
+      @url          = "#{BODY_URL}/content/75791/gods-love-we-deliver-celebrates-30-years-of-food-a.html"
+      visit @url
     end
 
 
@@ -42,18 +43,20 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
       end
     end
 
-    #########################################################################
-    ################### ADS, ANALYTICS, OMNITURE ############################
-    context "ads, analytics, omniture" do
-      should "not have any errors" do 
-        ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => "#{Configuration["thebody"]["base_url"]}/content/74692/31-communitydirect-partners-to-raise-funds-through.html", :ugc => "[\"n\"]") 
-        ads.validate
+   #########################################################################
+   ################### ADS, ANALYTICS, OMNITURE ############################
+   context "ads, analytics, omniture" do
+     should "not have any errors" do 
+       ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => @url,
+                                          :ugc => "[\"n\"]", :ad_site => 'cm.own.body', :ad_categories => ['healthcentral'],
+                                          :exclusion_cat => '') 
+       ads.validate
 
-        omniture = @page.omniture
-        omniture.validate
-        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
-      end
-    end
+       omniture = @page.omniture
+       omniture.validate
+       assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
+     end
+   end
 
     # ##################################################################
     # ################### GLOBAL SITE TESTS ############################
