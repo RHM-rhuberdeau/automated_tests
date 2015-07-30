@@ -1,0 +1,9 @@
+change_treatment:
+  pageName:  "The Body > Treatment > Switching or Stopping HIV/AIDS Treatment"
+  channel:   "The Body"
+  events:    "event4"
+  prop1:     "Treatment"
+  prop5:     "Switching or Stopping HIV/AIDS Treatment"
+  prop6:     "Index"
+  prop10:    "/index/treat/changing.html"
+  hier1:     "The Body, Treatment,"
