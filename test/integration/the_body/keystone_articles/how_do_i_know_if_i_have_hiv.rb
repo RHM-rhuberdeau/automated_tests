@@ -46,7 +46,7 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        ads = HealthCentralAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html", :ugc => "[\"n\"]") 
+        ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => "#{Configuration["thebody"]["base_url"]}/h/how-do-i-know-if-i-have-HIV.html", :ugc => "[\"n\"]") 
         ads.validate
 
         omniture = @page.omniture
