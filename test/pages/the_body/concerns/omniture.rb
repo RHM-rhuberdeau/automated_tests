@@ -5,7 +5,7 @@ module TheBodyOmniture
     include ::ActiveModel::Validations
 
     def self.attr_list
-      [:pageName, :channel, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop10, :prop12, :prop13, :prop16, :prop17, :prop22, :prop29, :prop30, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :eVar17, :events]
+      [:pageName, :channel, :hier1, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop10, :prop16, :prop17, :prop22, :prop29, :prop30, :prop32, :prop35, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :evar6, :eVar17, :events]
     end
 
     attr_accessor *attr_list
