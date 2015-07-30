@@ -18,15 +18,17 @@ class TheBodyPage
   end
 
   def assets
-    raise NotImplementedError
+    Assets.new(:proxy => @proxy, :driver => @driver)
   end
 
   def omniture
-    raise NotImplementedError
+    open_omniture_debugger
+    omniture_text = get_omniture_from_debugger
+    omniture = TheBodyOmniture::Omniture.new(omniture_text, @fixture)
   end 
 
   def global_test_cases
-    raise NotImplementedError
+    GlobalTestCases.new(:driver => @driver)
   end
 
   def has_correct_title?
