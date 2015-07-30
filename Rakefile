@@ -27,6 +27,13 @@ namespace :healthcentral do
     end
   end
 
+  desc "Run all keystone tests"
+  ["slideshows", "encyclopedia", "daily_dose"].each do |name|
+    Rake::TestTask.new("keystone") do |t|
+      t.pattern = "test/integration/healthcentral/#{name}/*.rb"
+    end
+  end
+
   desc "Run all FDB tests"
   Rake::TestTask.new("fdb") do |t|
     t.pattern = "test/integration/healthcentral/fdb/*.rb"
