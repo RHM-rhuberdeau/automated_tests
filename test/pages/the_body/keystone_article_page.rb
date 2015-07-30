@@ -23,122 +23,15 @@ module TheBodyKeystoneArticle
     end
 
     def omniture
-      @driver.execute_script "javascript:void(window.open(\"\",\"dp_debugger\",\"width=600,height=600,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1\").document.write(\"<script language='JavaScript' id=dbg src='https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js'></\"+\"script>\"))"
-      sleep 1
-      second_window = @driver.window_handles.last
-      @driver.switch_to.window second_window
-      omniture_text = @driver.find_element(:css, 'td#request_list_cell').text
-      omniture = Omniture.new(omniture_text, @fixture)
+      open_omniture_debugger
+      omniture_text = get_omniture_from_debugger
+      omniture = TheBodyOmniture::Omniture.new(omniture_text, @fixture)
     end 
 
     def has_correct_title?
       title = @driver.title
       title.scan(/^[^\-]*-[\s+\w+]+/).length == 1
     end
-
-    class Omniture < HealthCentralPage::Omniture
-      def correct_report_suite
-        if ENV['TEST_ENV'] != 'production'
-          suite = "cmi-choicemediacom-thebody"
-        else
-          suite = "cmi-choicemediacom-thebody"
-        end
-        unless @report_suite == suite
-          self.errors.add(:base, "Omniture report suite being used is: #{@report_suite} not #{suite}")
-        end
-      end
-    end
-
-    class Assets
-      include ::ActiveModel::Validations
-
-      validate :assets_using_correct_host
-      validate :no_broken_images
-      validate :no_unloaded_assets
-
-      def initialize(args)
-        @proxy     = args[:proxy]
-        @all_imgs  = args[:imgs]
-      end
-
-      def wrong_asset_hosts
-        (["http://uat.thebody.", "http://qa.thebody.", "http://qa1.thebody.","http://qa2.thebody.","http://qa3.thebody.", "http://qa4.thebody.", "http://www.thebody.", "http://alpha.thebody.", "http://stage.thebody."] - [Configuration["thebody"]["asset_host"], ASSET_HOST])
-      end
-
-      def assets_using_correct_host
-        wrong_assets = page_wrong_assets
-        unless wrong_assets.empty?
-          self.errors.add(:base, "there were assets loaded from the wrong environment #{wrong_assets}")
-        end
-      end
-
-      def page_wrong_assets
-        site_urls = @proxy.har.entries.map do |entry|
-          if entry.request.url.include?("thebody")
-            entry.request.url
-          end
-        end
-
-        site_urls = site_urls.compact
-
-        wrong_assets_on_page = site_urls.map do |site_url|
-          if url_has_wrong_asset_host(site_url)
-            site_url
-          end
-        end
-
-        wrong_assets_on_page.compact
-      end
-
-      def url_has_wrong_asset_host(url)
-        bad_host = wrong_asset_hosts.map do |host_url|
-          if url.index(host_url) == 0
-            true
-          end
-        end
-        bad_host.compact.length > 0
-      end
-
-      def no_unloaded_assets
-        unloaded_assets = page_unloaded_assets.compact
-        if unloaded_assets.empty? == false
-          self.errors.add(:base, "there were unloaded assets #{unloaded_assets}")
-        end
-      end
-
-      def page_unloaded_assets
-        @unloaded_assets ||= @proxy.har.entries.map do |entry|
-           if (entry.request.url.split('.com').first.include?("#{HC_BASE_URL}") || entry.request.url.split('.com').first.include?("#{HC_DRUPAL_URL}") ) && entry.response.status != 200
-             entry.request.url
-          end
-        end
-        @unloaded_assets.compact
-      end
-
-      def right_assets
-        right_assets = @proxy.har.entries.map do |entry|
-          if entry.request.url.include?(ASSET_HOST)
-            entry.request.url
-          end
-        end
-        right_assets.compact
-      end
-
-      def no_broken_images
-        broken_images = []
-        @all_imgs.each do |img|
-          broken_images << @proxy.har.entries.find do |entry|
-            entry.request.url == img.attribute('src') && entry.response.status == 404
-          end
-        end
-        broken_images = broken_images.compact.collect do |x| 
-          x.request.url if (!x.request.url.include?("avatars") && (ENV['TEST_ENV'] != "production")) 
-        end
-        unless broken_images.compact.empty?
-          self.errors.add(:base, "broken images on the page #{broken_images}")
-        end
-      end
-    end#Assets
 
     class Functionality
       include ::ActiveModel::Validations
