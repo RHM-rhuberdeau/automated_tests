@@ -7,7 +7,7 @@ module TheBodyAssets
 
     def initialize(args)
       @proxy     = args[:proxy]
-      @all_imgs  = args[:imgs]
+      @driver    = args[:imgs]
     end
 
     def assets_using_correct_host
@@ -43,19 +43,12 @@ module TheBodyAssets
     end
 
     def no_broken_images
-      broken_images = []
-      @all_imgs.each do |img|
-        @proxy.har.entries.each do |entry|
-          if ( entry.request.url == img.attribute('src') && entry.response == 404 )
-            broken_images << entry.request.url
-          end
-        end
+      images = @driver.find_elements(:tag_name => "img")
+      broken_images = images.reject do |image|
+        @driver.execute_script("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", image)
       end
-      broken_images = broken_images.compact.collect do |x| 
-        x.request.url if (!x.request.url.include?("avatars") && (ENV['TEST_ENV'] != "production")) 
-      end
-      unless broken_images.compact.empty?
-        self.errors.add(:base, "broken images on the page #{broken_images}")
+      unless broken_images.empty?
+        self.errors.add(:assets, "#{broken_images.length} broken images on the page")
       end
     end
   end
