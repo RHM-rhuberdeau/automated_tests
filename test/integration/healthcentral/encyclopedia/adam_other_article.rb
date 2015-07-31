@@ -1,14 +1,14 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/encyclopedia_page'
 
-class SlideshowTest < MiniTest::Test
-  context "Adam Other index page" do 
+class AdamOtherArticle < MiniTest::Test
+  context "Adam Other article page" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
-      @fixture        = OpenStruct.new(fixture[0]['adam_other_index'])
+      @fixture        = OpenStruct.new(fixture[0]['adam_other_article'])
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
