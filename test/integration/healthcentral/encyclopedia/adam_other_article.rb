@@ -2,17 +2,17 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/encyclopedia_page'
 
 class SlideshowTest < MiniTest::Test
-  context "HC Encyclopedia article, Autologous Blood Donation" do 
+  context "Adam Other index page" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
-      @fixture        = OpenStruct.new(fixture[0]['hc_article'])
+      @fixture        = OpenStruct.new(fixture[0]['adam_other_index'])
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/hc/autologous-blood-donation-3168430/"
+      @url            = "#{HC_BASE_URL}/encyclopedia/adam/abo-incompatibility-4012271/"
       visit @url
     end
 
@@ -20,18 +20,13 @@ class SlideshowTest < MiniTest::Test
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "have the proper links" do 
-        condition    = find "h1.Page-info-title"
-        condition    = condition.text if condition
-        content      = find "ul.ContentList.ContentList--article"
-        bread_crumbs = @driver.find_elements(:css, "div.Breadcrums-container a") || []
+        condition           = find "h1.Page-info-title"
+        condition           = condition.text if condition
+        condition_links     = @driver.find_elements(:css, "ul.ContentList li a")
+        bread_crumbs        = @driver.find_elements(:css, "div.Breadcrums-container a") || []
 
-        if content
-          content = content.text
-        else
-          content = ""
-        end
-        assert_equal("Autologous Blood Donation", condition)
-        assert_equal(true, content.length > 300)
+        assert_equal("Other Conditions Alphabetically", condition)
+        assert_equal(29, condition_links.length)
         assert_equal(2, bread_crumbs.length)
       end
     end
@@ -52,15 +47,15 @@ class SlideshowTest < MiniTest::Test
       should "not have any errors" do 
         pharma_safe   = true
         ad_site       = "cm.own.healthcentral"
-        ad_categories = ["encyclopedia-index","encyclopedia",""]
+        ad_categories = ["adam-index","adam",""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
-                                                           :url => "#{HC_BASE_URL}/encyclopedia/hc/autologous-blood-donation-3168430",
+                                                           :url => "#{HC_BASE_URL}/encyclopedia/adam",
                                                            :ad_site => ad_site,
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",
                                                            :sponsor_kw => '',
-                                                           :thcn_content_type => "encyclopedia",
+                                                           :thcn_content_type => "adam",
                                                            :thcn_super_cat => "HealthCentral",
                                                            :thcn_category => "",
                                                            :ugc => "[\"n\"]") 

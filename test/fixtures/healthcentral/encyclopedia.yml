@@ -111,6 +111,28 @@ adam_other_index:
   prop45:    "cm.own.healthcentral"
   prop50:    "D=User-Agent"
 
+adam_alphabetical_index:
+  pageName:  "Verticals > Other > Adam_Encyclopedia_Index > > > Other Conditions - A"
+  events:    "event4"
+  prop1:     "HealthCentral"
+  hier1:     "Verticals,Other,Adam_Encyclopedia_Index, , ,Other Conditions - A"
+  prop5:     "Other Conditions - A"
+  prop6:     "Adam_Encyclopedia_Index"
+  prop7:     "adam-index|adam"
+  prop10:    "/encyclopedia/adam/a/"
+  prop12:    "07-31-2015"
+  prop13:    "07-31-2015"
+  eVar17:    "D=oid"
+  prop22:    "/encyclopedia/adam/a/"
+  prop29:    "desktop"
+  prop30:    "Landscape"
+  prop35:    "D=v21"
+  prop39:    "Other"
+  prop43:    "keystone"
+  prop44:    "HealthCentral"
+  prop45:    "cm.own.healthcentral"
+  prop50:    "D=User-Agent"
+
 adam_subcategory_index:
   pageName:  "Verticals > Alzheimer's Disease > ADAM Encyclopedia > > > HealthCentral Conditions Library – Alzheimer's Disease Index"
   channel:   "Alzheimer's Disease Vertical"
