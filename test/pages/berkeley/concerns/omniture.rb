@@ -1,4 +1,4 @@
-module BerkleyOmniture
+module BerkeleyOmniture
   class Omniture
     include ::ActiveModel::Validations
 

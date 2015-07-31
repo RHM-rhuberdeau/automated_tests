@@ -9,11 +9,6 @@ class BerkeleySlideShowPage < BerkeleyPage
   	@old_ad_calls = []
   end
 
-  def assets
-    all_images = @driver.find_elements(tag_name: 'img')
-    BerkeleyAssets::Assets.new(:proxy => @proxy, :imgs => all_images)
-  end
-
   def old_ad_calls
   	@old_ad_calls
   end
