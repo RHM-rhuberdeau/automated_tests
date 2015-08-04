@@ -6,9 +6,9 @@ class FdbMedicationPageTest < MiniTest::Test
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      io          = File.open('test/fixtures/healthcentral/fdb.yml')
-      fixture     = YAML::load_documents(io)
-      fdb_fixture = OpenStruct.new(fixture[0]['acid_reducer'])
+      io                = File.open('test/fixtures/healthcentral/fdb.yml')
+      fixture           = YAML::load_documents(io)
+      fdb_fixture       = OpenStruct.new(fixture[0]['acid_reducer'])
       head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Acid Reflux",
                                    :related => ['Digestive Health'],

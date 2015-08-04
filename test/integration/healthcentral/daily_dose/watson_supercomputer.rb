@@ -6,13 +6,13 @@ class DailyDoseHomePage < MiniTest::Test
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/daily_dose.yml')
+      io                = File.open('test/fixtures/healthcentral/daily_dose.yml')
       fixture           = YAML::load_documents(io)
       topic_fixture     = OpenStruct.new(fixture[0]['watson'])
       head_navigation   = HealthCentralHeader::DailyDoseDesktop.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/watson_supercomputer_to_guide_personalized_cancer_treatments"
+      @url              = "#{HC_BASE_URL}/dailydose/2015/6/30/sugary_drinks_tied_to_nearly_200_000_deaths_a_year/"
       visit @url
     end
 
@@ -20,7 +20,6 @@ class DailyDoseHomePage < MiniTest::Test
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "not have any errors" do 
-        today            = Time.now.strftime('%A')
         quote_of_the_day = find "p.js-fake-infinite-title-green"
         quote_text       = quote_of_the_day.text if quote_of_the_day
         infite_content   = @driver.find_elements(:css, ".js-fake-infinite-content") || []
@@ -39,7 +38,7 @@ class DailyDoseHomePage < MiniTest::Test
         assert_equal(false, quote_text.nil?)
         assert_equal(true, quote_text.length > 1)
         assert_equal(1, infite_content.length)
-        assert_equal("Inside #{today}'s DOSE", inside_dd_text)
+        assert_equal("Inside Tuesday's DOSE", inside_dd_text)
         assert_equal(true, infite_content.length < new_content_count.length, "page failed to lazy load additional content")
         assert_equal(11, new_content_count.length)
       end
@@ -59,7 +58,7 @@ class DailyDoseHomePage < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal("\"Watson\" supercomputer to guide personalized cancer treatments", @driver.title)
+        assert_equal("Sugary Drinks Tied to Nearly 200,000 Deaths a Year", @driver.title)
       end
     end
 
@@ -76,7 +75,7 @@ class DailyDoseHomePage < MiniTest::Test
         thcn_category     = ""
         ads               = DailyDose::DailyDosePage::AdsTestCases.new(:driver => @driver,
                                                                 :proxy => @proxy, 
-                                                                :url => "#{HC_BASE_URL}/dailydose/watson_supercomputer_to_guide_personalized_cancer_treatments",
+                                                                :url => @url,
                                                                 :ad_site => ad_site,
                                                                 :ad_categories => ad_categories,
                                                                 :exclusion_cat => exclusion_cat,

@@ -6,13 +6,13 @@ class DailyDoseHomePage < MiniTest::Test
     setup do 
       mobile_fire_fox_with_secure_proxy
       @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/daily_dose.yml')
+      io                = File.open('test/fixtures/healthcentral/daily_dose.yml')
       fixture           = YAML::load_documents(io)
       topic_fixture     = OpenStruct.new(fixture[0]['watson_mobile'])
       head_navigation   = HealthCentralHeader::DailyDoseMobile.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/watson_supercomputer_to_guide_personalized_cancer_treatments"
+      @url              = "#{HC_BASE_URL}/dailydose/2015/6/30/sugary_drinks_tied_to_nearly_200_000_deaths_a_year/"
       visit @url 
     end
 
@@ -40,7 +40,7 @@ class DailyDoseHomePage < MiniTest::Test
         assert_equal(true, article_links.length > 1, "Missing article links on the page")
         assert_equal(false, quote_text.nil?)
         assert_equal(true, quote_text.length > 1)
-        assert_equal(11, infite_content.length )
+        assert_equal(7, infite_content.length )
         assert_equal(infite_content.length, new_content_count.length)
       end
     end
@@ -59,7 +59,7 @@ class DailyDoseHomePage < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal("\"Watson\" supercomputer to guide personalized cancer treatments", @driver.title)
+        assert_equal("Sugary Drinks Tied to Nearly 200,000 Deaths a Year", @driver.title)
       end
     end
 
@@ -76,7 +76,7 @@ class DailyDoseHomePage < MiniTest::Test
         thcn_category     = ""
         ads               = DailyDose::DailyDosePage::LazyLoadedAds.new(:driver => @driver,
                                                                         :proxy => @proxy, 
-                                                                        :url => "#{HC_BASE_URL}/dailydose/watson_supercomputer_to_guide_personalized_cancer_treatments",
+                                                                        :url => @url,
                                                                         :ad_site => ad_site,
                                                                         :ad_categories => ad_categories,
                                                                         :exclusion_cat => exclusion_cat,

@@ -40,7 +40,7 @@ class DailyDoseMobileHomePage < MiniTest::Test
         assert_equal(true, article_links.length > 1, "Missing article links on the page")
         assert_equal(false, quote_text.nil?)
         assert_equal(true, quote_text.length > 1)
-        assert_equal(11, infite_content.length )
+        assert_equal(8, infite_content.length )
         assert_equal(infite_content.length, new_content_count.length)
       end
     end
