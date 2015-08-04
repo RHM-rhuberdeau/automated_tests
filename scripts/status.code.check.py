@@ -58,13 +58,13 @@ for o, a in myopts:
         arg_use_proxy=a
         arg_other_test_subdomain='www'
     elif o == '-o':
-        arg_just_primary_domain=1
+        arg_just_primary_domain=a
     elif o == '-w':
         arg_print_header=a
     elif o == '-c':
         arg_concurrent=a
     elif o == '-h':
-        rgs_help()
+        args_help()
     else:
         print("Don't know what do do with: %s " % o, a)
         args_help()
@@ -88,7 +88,7 @@ def getStatus(ourl):
     conn.request("HEAD", url.path)
     res = conn.getresponse()
     #--- scan second domain
-    if arg_just_primary_domain == 0:
+    if arg_just_primary_domain == '0':
         if arg_use_proxy == 0 :
             other_url = string.replace(ourl, 'www', arg_other_test_subdomain)
             url = urlparse(other_url)
@@ -111,12 +111,11 @@ def processResponse(resp,url):
         location = resp.msg.dict['location']
     if 'server' in resp.msg.dict:
         server = resp.msg.dict['server']
-    if arg_just_primary_domain == 0:
+    if arg_just_primary_domain == '0':
         if 'server' in resp.other.msg.dict:
             server_other = resp.other.msg.dict['server']
         if 'location' in resp.other.msg.dict:
             location_other = resp.other.msg.dict['location']
-
         #--- only care about the diffances
         if (resp.status != resp.other.status) or (arg_display_all <> 0):
             # main:status,other:status,test URI,main:response uri,other:response url
