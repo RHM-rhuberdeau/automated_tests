@@ -79,7 +79,7 @@ module HealthCentralOmniture
         suite = "cmi-choicemediacom"
       end
       unless @report_suite == suite
-        self.errors.add(:base, "Omniture report suite being used is: #{@report_suite} not #{suite}")
+        self.errors.add(:omniture, "Omniture report suite being used is: #{@report_suite} not #{suite}")
       end
     end
 
