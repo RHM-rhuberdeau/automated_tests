@@ -50,7 +50,7 @@ class AdamOtherArticle < MiniTest::Test
         ad_categories = ["adam-index","adam",""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
-                                                           :url => "#{HC_BASE_URL}/encyclopedia/adam",
+                                                           :url => @url,
                                                            :ad_site => ad_site,
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",
