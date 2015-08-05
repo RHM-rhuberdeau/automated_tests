@@ -1,0 +1,1260 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>Ad-Omniture-NewDesign</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Ad-Omniture-NewDesign</td></tr>
+</thead><tbody>
+<!--=========================-->
+<!--ADS-->
+<!--=========================-->
+<tr>
+	<td>store</td>
+	<td>javascript{this.browserbot.getUserWindow().AD_SITE}</td>
+	<td>AD_SITE</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Page AD_SITE: ${AD_SITE}&quot;);</td>
+	<td></td>
+</tr>
+<!-- AD: ad_stite-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().AD_SITE</td>
+	<td>regexp:cm\.(ver|own)\.[a-z]{2,24}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().AD_SITE</td>
+	<td>ADSVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;ad_site: ${ADSVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- AD: AD_CATEGORIES: ALL-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().AD_CATEGORIES</td>
+	<td>regexpi:[a-z]*\,[a-z]*\,([a-z]*)?</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().AD_CATEGORIES</td>
+	<td>ADSVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;AD_CATEGORIES: ${ADSVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!--     CATEGORIES1: Phase-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().AD_CATEGORIES[0]</td>
+	<td>regexpi:([a-z]{2,32})</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().AD_CATEGORIES[0]</td>
+	<td>ADSVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;CATEGORY1: ${ADSVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!--     CATEGORIES2: Topic-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().AD_CATEGORIES[1]</td>
+	<td>regexpi:([a-z]{2,32})</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().AD_CATEGORIES[1]</td>
+	<td>ADSVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;CATEGORY2: ${ADSVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!--     CATEGORIES3-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().AD_CATEGORIES[2]</td>
+	<td>regexpi:([a-z]{2,32})?</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().AD_CATEGORIES[2]</td>
+	<td>ADSVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;CATEGORY 3: ${ADSVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- AD: THCN_CONTENT_TYPE-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().THCN_CONTENT_TYPE</td>
+	<td>regexp:Home Page|Questions|Blogposts|subcategory|topic|phase|slideshow|quiz|native|assessment|landing|iframe|immersive|home|super collection|topics|Profiles</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;THCN_CONTENT_TYPE: ${THCN_CONTENT_TYPE}&quot;);</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP Article or Taxonomy Checks-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_NON_ARTICLE_PAGE'] ==1</td>
+	<td>after_is_non_article_page1</td>
+</tr>
+<!-- AD: THCN_SUPER_CAT-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().THCN_SUPER_CAT</td>
+	<td>regexpi:[a-z\&amp;\s\-]{2,32}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().THCN_SUPER_CAT</td>
+	<td>ADSVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;THCN_SUPER_CAT: ${ADSVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- AD: THCN_CATEGORY-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().THCN_CATEGORY</td>
+	<td>regexpi:[a-z\&amp;\s\-]{2,32}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().THCN_CATEGORY</td>
+	<td>ADSVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;THCN_CATEGORY: ${ADSVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_is_non_article_page1</td>
+	<td></td>
+</tr>
+<!-- AD: EXCLUSION_CAT-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_UGC'] == 1</td>
+	<td>before_is_ugc</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_is_ugc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>before_is_ugc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().EXCLUSION_CAT</td>
+	<td>regexpi:(community)</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_is_ugc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_is_ugc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().EXCLUSION_CAT</td>
+	<td>ADSVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;EXCLUSION_CAT: ${ADSVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!--=========================-->
+<!--OMNITURE-->
+<!--=========================-->
+<!--=====> PROP <=====-->
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Omniture: =====&gt; PROP &lt;=====&quot;);</td>
+	<td></td>
+</tr>
+<!--Omniture: using DTM?-->
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//script[contains(@src, 'assets.adobedtm.com')]@src</td>
+	<td>*assets.adobedtm.com*</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//script[contains(@src, 'assets.adobedtm.com')]@src</td>
+	<td>USING_DTM</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;DTM FILE: ${USING_DTM}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: channel-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('channel')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('channel')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;channel: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP Article or Taxonomy Checks-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_NON_ARTICLE_PAGE'] ==1</td>
+	<td>after_is_non_article_page2</td>
+</tr>
+<!-- Omniture: category_super: prop1-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('category_super')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('category_super')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;category_super: prop1: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: category: prop2-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('category')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('category')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;category: prop2: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_is_non_article_page2</td>
+	<td></td>
+</tr>
+<!-- Omniture: author_name: prop4: XXXXXX-->
+<!--      ==== SKIP IF NOT: Conent Article Pages-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_CONTENT_PAGE'] == 0</td>
+	<td>after_content_page_items1</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('author_name')</td>
+	<td>regexpi:[a-z\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('author_name')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;author_name: prop4: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_content_page_items1</td>
+	<td></td>
+</tr>
+<!-- Omniture: title: prop5-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('title')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}(\s-\s[a-z0-9\s\-\&amp;]{2,50})?</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('title')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Title: prop5: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: type: prop6-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('type')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('type')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;type: prop6: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture:  ad_zones: prop7-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('ad_zones')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('ad_zones')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;ad_zones: prop7: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: full_url: prop10, prop22-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('full_url')</td>
+	<td>regexpi:[a-z0-9\/\s\-\.]{3,156}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('full_url')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;full_url: prop10, prop22: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP Article or Taxonomy Checks-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_NON_ARTICLE_PAGE'] ==1</td>
+	<td>after_is_non_article_page3</td>
+</tr>
+<!-- Omniture: date_created: prop12-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('date_created')</td>
+	<td>regexp:^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('date_created')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;date_created: prop12: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: date_changed: prop13-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('date_changed')</td>
+	<td>regexp:^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('date_changed')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;date_changed: prop13: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_is_non_article_page3</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP FOR COLLECTIONS-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_CONTENT_PAGE'] == 0</td>
+	<td>after_content_page_items2</td>
+</tr>
+<!-- Omniture: Best Match (/h/: prop15: XXXXXX-->
+<!-- Omniture: comments: prop16: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('comments')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('comments')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;comments: prop16: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: author_type: prop17: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('author_type')</td>
+	<td>regexpi:Community Member|Health Guide|Health Pro|Content Producer</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('author_type')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;author_type: prop17: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: multipage_total_pages: prop18: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('multipage_total_pages')</td>
+	<td>regexpi:[0-9]{1,4}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('multipage_total_pages')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;multipage_total_pages: prop18: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: multipage_current_page_title: prop19: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('multipage_current_page_title')</td>
+	<td>regexpi:[0-9]{1,4}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('multipage_current_page_title')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;multipage_current_page_title: prop19: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: type_subtype: prop21: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('type_subtype')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('type_subtype')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;type_subtype: prop21: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_content_page_items2</td>
+	<td></td>
+</tr>
+<!-- Omniture: location_pathname: prop22-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('location_pathname')</td>
+	<td>regexpi:[a-z0-9\s\-\/\.]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('location_pathname')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;location_pathname: prop22: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: breakpoint: prop29-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('breakpoint')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,80}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('breakpoint')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;breakpoint: prop29: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: orientation: prop30-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('orientation')</td>
+	<td>regexpi:(Landscape|Portrait)</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('orientation')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;orientation: prop30: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: batch: prop37 XXXXXX-->
+<!--      ==== SKIP IF NOT: Questions, SharePosts, Encyclopedia-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['THCN_CONTENT_TYPE'] == 'Questions' || storedVars['THCN_CONTENT_TYPE'] == 'SharePosts' || storedVars['THCN_CONTENT_TYPE'] == 'ADAM Encyclopedia'</td>
+	<td>before_omniture_batch</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_omniture_batch</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>before_omniture_batch</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('batch')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}\s-\s[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('batch')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;batch: prop37: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_omniture_batch</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP Article or Taxonomy Checks-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_NON_ARTICLE_PAGE'] ==1</td>
+	<td>after_is_non_article_page4</td>
+</tr>
+<!-- Omniture: id: prop38-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('id')</td>
+	<td>regexpi:[0-9]{2,7}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('id')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;id: prop38: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: category_sub: prop39-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('category_sub')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('category_sub')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;category_sub: prop39: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: topic: prop40-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('topic')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('topic')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;topic: prop40: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: phase: prop42-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('phase')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('phase')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;phase: prop42: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: phase_topic-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('phase_topic')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('phase_topic')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;phase_topic: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_is_non_article_page4</td>
+	<td></td>
+</tr>
+<!-- Omniture:  app_name: prop43-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('app_name')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{3,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('app_name')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;ad_zones: prop43: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: site: prop44-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('site')</td>
+	<td>HealthCentral</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('site')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;site: prop44: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture:  adsite: prop45-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('ad_site_name')</td>
+	<td>regexpi:cm\.(ver|own)\.[a-z]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('ad_site_name')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;ad_site_name: prop45: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: pharma_safe: prop46-->
+<!--      ==== SKIP IF NOT: Questions, SharePosts-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['THCN_CONTENT_TYPE'] == 'SharePosts' || storedVars['THCN_CONTENT_TYPE'] == 'Questions'</td>
+	<td>before_pharma_safe</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_pharma_safe</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>before_pharma_safe</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('pharma_safe')</td>
+	<td>regexpi:(TRUE|FALSE)</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('pharma_safe')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;pharma_safe: prop46: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_pharma_safe</td>
+	<td></td>
+</tr>
+<!-- Omniture: LBLN Module ID: prop48-->
+<!-- Omniture: LBLN Navigation: prop49-->
+<!-- Omniture: navigator_userAgent: prop50-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('navigator_userAgent')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;\/]{2,150}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('navigator_userAgent')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;navigator_userAgent: prop50: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP??? prop50-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['SKIP_OMINTURE_COMMON_FAIL'] ==1</td>
+	<td>after_user_agent</td>
+</tr>
+<!-- Omniture: user_agent: prop50: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('user_agent')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('user_agent')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;user_agent: prop50: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_user_agent</td>
+	<td></td>
+</tr>
+<!-- Omniture: Log Entry (Yes or No): prop51-->
+<!-- Omniture: Log Severity: prop52-->
+<!-- Omniture: Log Triggers: prop53-->
+<!-- Omniture: Log Symptoms: prop54-->
+<!-- Omniture: Log Treatments: prop55-->
+<!-- Omniture: Log Settings: prop56-->
+<!-- Omniture: Unsubscribe Reason: prop57-->
+<!-- Omniture: Clinical Trail Fail Reason: prop58-->
+<!-- Omniture: Video ID: prop73-->
+<!-- Omniture: Video Length: prop74-->
+<!-- Omniture: Video Title: prop75-->
+<!-- Omniture: hierarchy: hier1-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('hierarchy')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;\,]{2,150}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('hierarchy')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;hierarchy: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: hierarchy: hier1-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('pagename')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;\&gt;]{2,150}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('pagename')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;pagename: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!--=====> EVAR <=====-->
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Omniture: =====&gt; EVAR &lt;=====&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: state-->
+<!-- Omniture: zip-->
+<!--      ==== SKIP COMMON FAIL-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['SKIP_OMINTURE_COMMON_FAIL'] ==1</td>
+	<td>skip_common_fail1</td>
+</tr>
+<!-- Omniture: external_campaign: campaign (?ap=): XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('external_campaign')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}\s-\s[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('external_campaign')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;external_campaign: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: internal_campaign: eVar1 (?ic=): XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('internal_campaign')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('internal_campaign')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;internal_campaign: eVar1: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: search_term: eVar2: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('search_term')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('search_term')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;search_term: eVar2: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>skip_common_fail1</td>
+	<td></td>
+</tr>
+<!-- Omniture: Lead Type: eVar3-->
+<!-- Omniture: Tool Clicks: eVar5-->
+<!-- Omniture: Logged In Status: eVar6-->
+<!-- Omniture: Share Type: eVar9-->
+<!--Omniture: registration_location: eVar11: XXXXXX-->
+<!--      ==== SKIP REGISTRATION TESTS if SKIP_REGISTRATION_TESTS=1-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['SKIP_REGISTRATION_TESTS'] == 1</td>
+	<td>after_skip_regirstion_tests1</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('registration_location')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('registration_location')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;registration_location: eVar11: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: Registration Start: URL: eVar12-->
+<!-- Omniture: Registration Start: Content Type : eVar13-->
+<tr>
+	<td>label</td>
+	<td>after_skip_regirstion_tests1</td>
+	<td></td>
+</tr>
+<!-- Omniture: Clickmap: Click Thru URL: eVar14-->
+<!-- Omniture: Personalization Status: eVar15-->
+<!--      ==== SKIP FOR COLLECTIONS-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_CONTENT_PAGE'] == 0 || storedVars['SKIP_OMINTURE_COMMON_FAIL'] ==1</td>
+	<td>end_single_page_items2</td>
+</tr>
+<!-- Omniture: Offer ID/Transaction ID: eVar16 XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('transactionId')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('transactionId')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;transactionId: eVar16: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: Multipage Item Count: eVar19 XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('multipage_current_page_number')</td>
+	<td>regexpi:[0-9]{1,4}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('multipage_current_page_number')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;multipage_current_page_number: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>end_single_page_items2</td>
+	<td></td>
+</tr>
+<!--      ==== ONLY SPONSORED COLLECTIONS TESTS-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_SPONSORED_COLLECTIONS_TESTS'] == 0</td>
+	<td>after_center_name</td>
+</tr>
+<!--Omniture: center name: eVar21-->
+<!--      Omniture: center_name: eVar21: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('center_name')</td>
+	<td>regexpi:^[a-z0-9]+_[a-z0-9]+_[a-z0-9\s]+$</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('center_name')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;center_name: eVar21: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;!!!!====&gt; eVar21: ${OMNITUREVAL} &lt;====!!!!&quot;);</td>
+	<td></td>
+</tr>
+<!--      Omniture: sponsor_name: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('sponsor_name')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('sponsor_name')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;sponsor_name: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<!--      Omniture: sponsor_condition: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('sponsor_condition')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('sponsor_condition')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;sponsor_condition: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_center_name</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP Article or Taxonomy Checks-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_NON_ARTICLE_PAGE'] ==1</td>
+	<td>after_is_non_article_page5</td>
+</tr>
+<!--      Omniture: collection_type: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('collection_type')</td>
+	<td>regexpi:(default|lbln|st|mm|ct|newsletter)</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('collection_type')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;collection_type: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_is_non_article_page5</td>
+	<td></td>
+</tr>
+<!--Omniture: trial form step name / Tab Name: eVar22-->
+<!--Omniture: user_id: eVar27: XXXXXX-->
+<!--      ==== ONLY LOGGED IN CHECK-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['USER_ID'] == ''</td>
+	<td>after_user_id</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('user_id')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,80}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;user_id: eVar27: ${USER_ID}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_user_id</td>
+	<td></td>
+</tr>
+<!-- Omniture: Comment Type (was it a reply or a comment): eVar28-->
+<!-- Omniture: Follow Type: eVar29-->
+<!-- Omniture: gigya_provider: eVar30: XXXXXX-->
+<!--      ==== ONLY LOGGED IN CHECK-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['USER_ID'] == '' || storedVars['SKIP_OMINTURE_COMMON_FAIL'] ==1</td>
+	<td>after_gigya_provider</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('gigya_provider')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{1,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('gigya_provider')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;gigya_provider: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_gigya_provider</td>
+	<td></td>
+</tr>
+<!--Omniture: Assessment Result Grouping: eVar31-->
+<!-- Omniture: gigya_user_id: eVar32: XXXXXX-->
+<!--      ==== ONLY LOGGED IN CHECK-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['USER_ID'] == ''</td>
+	<td>after_gigya_user_id</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('gigya_user_id')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,80}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('gigya_user_id')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;gigya_user_id: eVar32: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_gigya_user_id</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP??? eVar33-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['SKIP_OMINTURE_COMMON_FAIL'] ==1</td>
+	<td>after_center_name_form</td>
+</tr>
+<!--Omniture: center_name_form: eVar33: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('center_name_form')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('center_name_form')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;center_name_form: eVar33: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_center_name_form</td>
+	<td></td>
+</tr>
+<!-- Omniture: Video Start Method: eVar72-->
+<!-- Omniture: Video: Content Type: eVar73-->
+<!-- Omniture: Video: Segments: eVar74-->
+<!-- Omniture: Video Title: eVar75-->
+<!--      ==== SKIP-->
+<tr>
+	<td>gotoIf</td>
+	<td>1 == 1</td>
+	<td>after_qa_user_type</td>
+</tr>
+<!--=====> ??? <=====-->
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Omniture: =====&gt; ??? &lt;=====&quot;);</td>
+	<td></td>
+</tr>
+<!-- Omniture: qa_user_type: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('qa_user_type')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('qa_user_type')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;qa_user_type: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_qa_user_type</td>
+	<td></td>
+</tr>
+<!-- Omniture: type_subtype: prop21: XXXXXX-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('sponsor_name')</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;]{2,50}</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('sponsor_name')</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;TEST: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

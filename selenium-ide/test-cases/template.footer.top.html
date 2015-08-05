@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>template.footer</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">template.footer</td></tr>
+</thead><tbody>
+<!--FooterMain: Bottom Leaderboard Ad-->
+<!--      ====  SKIP Footer Ad if SKIP_AD_FOOTER=1-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['SKIP_AD_FOOTER'] == 1</td>
+	<td>after_bottom_leaderboard_ad</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[@class=' Ad-IframeWrap Ad-IframeWrap--js-Footer-adLeaderboard-inside']/iframe@id</td>
+	<td>AD_IFRAME</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;AD FOOTER: ${AD_IFRAME}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//div[@class=' Ad-IframeWrap Ad-IframeWrap--js-Footer-adLeaderboard-inside']/iframe@id</td>
+	<td>Ad-iframe--js-Footer-adLeaderboard-inside</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='js-Footer-adLeaderboard-inside']/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_bottom_leaderboard_ad</td>
+	<td></td>
+</tr>
+<!--Footer: Identity: Remedy-->
+<tr>
+	<td>verifyText</td>
+	<td>css=span.HC-footer-copyright-prefix</td>
+	<td>regexp:.* 201[0-9]{1}</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Remedy Health Media, LLC</td>
+	<td>Remedy Health Media, LLC</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=span.HC-footer-copyright-postfix</td>
+	<td>All Rights Reserved</td>
+</tr>
+<!--Footer: links-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[@class='HC-external-links-content']/ul[@class='HC-link-row Policies-list']/li</td>
+	<td>FOOTER_LINKS</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${FOOTER_LINKS} - FOOTER LINKS&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${FOOTER_LINKS} &gt;=&nbsp;&nbsp;7 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=About Us</td>
+	<td>About Us</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Contact Us</td>
+	<td>Contact Us</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Privacy Policy</td>
+	<td>Privacy Policy</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Terms of Use</td>
+	<td>Terms of Use</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Security Policy</td>
+	<td>Security Policy</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Advertising Policy</td>
+	<td>Advertising Policy</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Advertise With Us</td>
+	<td>Advertise With Us</td>
+</tr>
+<!--Footer: Our Sites-->
+<tr>
+	<td>verifyText</td>
+	<td>css=li.HC-link-row-item.item-our-sites &gt; span</td>
+	<td>Our sites</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[@class='HC-external-links-content']/ul[@class='HC-link-row OurSites-list']/li</td>
+	<td>FOOTER_SITES</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${FOOTER_SITES} - FOOTER SITES&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${FOOTER_SITES} &gt;=&nbsp;&nbsp;8 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=The Body</td>
+	<td>The Body</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=The Body Pro</td>
+	<td>The Body Pro</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Berkeley Wellness</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Health Communities</td>
+	<td>Health Communities</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Health After 50</td>
+	<td>Health After 50</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Intelecare</td>
+	<td>Intelecare</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>link=Mood 24/7</td>
+	<td>Mood 24/7</td>
+</tr>
+<!--Footer: Hon Code-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//ul[@class='HC-link-row Sponsors-list']/li[@class='HC-link-row-item item-honimg']/a/img</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

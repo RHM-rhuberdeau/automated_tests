@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>templates.nav.socialshare</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">templates.nav.socialshare</td></tr>
+</thead><tbody>
+<!--SocialShare: count-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[@class='SocialButtons--Share is-vertical js-main-utils--sticky']/ul[@class='SocialButtons-list']/li</td>
+	<td>SOCIAL_SHARE_COUNT</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${SOCIAL_SHARE_COUNT} &gt;=&nbsp;&nbsp;6 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${SOCIAL_SHARE_COUNT} - Social Share&quot;);</td>
+	<td></td>
+</tr>
+<!--SocialShare: fb-->
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//div[@class='SocialButtons--Share is-vertical js-main-utils--sticky']/ul[@class='SocialButtons-list']/li[@class='SocialButtons-listItem SocialButtons-listItem-facebook']/a@title</td>
+	<td>Facebook</td>
+</tr>
+<!--SocialShare: twitter-->
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//div[@class='SocialButtons--Share is-vertical js-main-utils--sticky']/ul[@class='SocialButtons-list']/li[@class='SocialButtons-listItem SocialButtons-listItem-twitter']/a@title</td>
+	<td>Twitter</td>
+</tr>
+<!--SocialShare: pinterest-->
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//div[@class='SocialButtons--Share is-vertical js-main-utils--sticky']/ul[@class='SocialButtons-list']/li[@class='SocialButtons-listItem SocialButtons-listItem-pinterest']/a@title</td>
+	<td>Pinterest</td>
+</tr>
+<!--SocialShare: stumble-->
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//div[@class='SocialButtons--Share is-vertical js-main-utils--sticky']/ul[@class='SocialButtons-list']/li[@class='SocialButtons-listItem SocialButtons-listItem-stumble']/a@title</td>
+	<td>Stumbleupon</td>
+</tr>
+<!--SocialShare: email-->
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//div[@class='SocialButtons--Share is-vertical js-main-utils--sticky']/ul[@class='SocialButtons-list']/li[@class='SocialButtons-listItem SocialButtons-listItem-email']/a@title</td>
+	<td>Mail</td>
+</tr>
+<!--SocialShare: print-->
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//div[@class='SocialButtons--Share is-vertical js-main-utils--sticky']/ul[@class='SocialButtons-list']/li[@class='SocialButtons-listItem SocialButtons-listItem-print']/a@title</td>
+	<td>Print</td>
+</tr>
+</tbody></table>
+</body>
+</html>

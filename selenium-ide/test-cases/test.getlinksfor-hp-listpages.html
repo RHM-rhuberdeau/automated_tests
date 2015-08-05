@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>New Test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">New Test</td></tr>
+</thead><tbody>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>TEST_LIST_PAGE</td>
+</tr>
+<!--List liniks on Subcategory Otto Topics Pages-->
+<!--http://www.healthcentral.com/acid-reflux/h/list_2.html-->
+<tr>
+	<td>gotoIf</td>
+	<td>TEST_LIST_PAGE==0</td>
+	<td>test_module</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>//div[@id='hp_related']/div[contains(@class, &quot;hp_related_cols&quot;)]/ul/li</td>
+	<td>LNK_CNT</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;LINK: (0) &quot; + storedVars.LNK_CNT);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>x</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars.x&lt;=3</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>//div[@id='hp_related']/div[contains(@class, &quot;hp_related_cols&quot;)][${x}]/ul/li</td>
+	<td>LNK_CNT</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;====&gt;COLUMN: (${x})&quot; + &quot; LINKS (&quot; + storedVars.LNK_CNT + &quot;)&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>LNKS_ALL = new Array()</td>
+	<td>LNKS_ALL</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars.i&lt;=storedVars.LNK_CNT</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>//div[@id='hp_related']/div[contains(@class, &quot;hp_related_cols&quot;)][${x}]/ul/li[${i}]/a@href</td>
+	<td>TMP</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot; ,'&quot; + storedVars.TMP + &quot;'&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>javascript{storedVars['LNKS_ALL'].push(storedVars['TMP'])}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars.i++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars.x++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>the_end</td>
+	<td></td>
+</tr>
+<!--===============================-->
+<!--http://www.healthcentral.com/asthma/index-29290-5.html-->
+<!--===============================-->
+<tr>
+	<td>label</td>
+	<td>test_module</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>//div[@id='most_items']/ul/li</td>
+	<td>LNK_CNT</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;====&gt;COLUMN: (${x})&quot; + &quot; LINKS (&quot; + storedVars.LNK_CNT + &quot;)&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>LNKS_ALL = new Array()</td>
+	<td>LNKS_ALL</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars.i&lt;=storedVars.LNK_CNT</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>//div[@id='most_items']/ul/li[${i}]/a@href</td>
+	<td>TMP</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot; ,'&quot; + storedVars.TMP + &quot;'&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>javascript{storedVars['LNKS_ALL'].push(storedVars['TMP'])}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars.i++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>the_end</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

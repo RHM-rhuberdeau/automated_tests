@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>content.phase</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">content.phase</td></tr>
+</thead><tbody>
+<!--COLLECTIONS-->
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;COLLECTIONS CHECK&quot;);</td>
+	<td></td>
+</tr>
+<!--============================-->
+<!--COLLECTIONS CAROUSEL-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')]</td>
+	<td>COLLECTION_MODULES</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;COLLECTIONS ${COLLECTION_MODULES}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>x</td>
+</tr>
+<!--Loop for modules-->
+<tr>
+	<td>while</td>
+	<td>${COLLECTION_MODULES} &gt;= ${x}</td>
+	<td></td>
+</tr>
+<!--   COLLECTION MAIN: validate elements-->
+<!--      ~~~check for H4/H2 tag titles-->
+<tr>
+	<td>storeElementPresent</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')][${x}]/h4[@class='CollectionListBoxes-titleSub']</td>
+	<td>element_state</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['element_state']==false</td>
+	<td>begin_check_h2</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')][${x}]/h4[@class='CollectionListBoxes-titleSub']</td>
+	<td>module_name</td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>end_check_h2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>begin_check_h2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')][${x}]/h2</td>
+	<td>element_state</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')][${x}]/h2</td>
+	<td>module_name</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['element_state']==false</td>
+	<td>end_check_h2</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>end_check_h2</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;== Collection ${x}: ${module_name} ==&quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~~check for H4/H2 tag titles: END-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')][${x}]/ul/li</td>
+	<td>COLLECTION_SLIDES</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;COLLECTIONS ${x} has ${COLLECTION_SLIDES} slides&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${COLLECTION_SLIDES} == 0</td>
+	<td>collection_flat</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<!--   Loop for elements in module-->
+<tr>
+	<td>while</td>
+	<td>${COLLECTION_SLIDES} &gt;= ${i}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;== Collection ${x} slides[${i}] ==&quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~Collection: Promo image-->
+<tr>
+	<td>gotoIf</td>
+	<td>${IS_SPONSORED_COLLECTIONS_TESTS} == 2</td>
+	<td>collection_sponsored</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')][${x}]/ul/li[${i}]/div/a/img</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')][${x}]/ul/li[${i}]/div/a/img@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>eval_collection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>collection_sponsored</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//div[contains(@class, 'flexslider')]/div/ul/li[${i}]/div/a/img</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[contains(@class, 'flexslider')]/div/ul/li[${i}]/div/a/img@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>eval_collection</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${eval_item}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Collection ${x}: image (${i}): ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~Collection: content - image, title, author-->
+<tr>
+	<td>store</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')][${x}]/ul/li[${i}]/div/a/div/div</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:[a-z0-9\.\-\&amp;\s\']*</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Collection ${x}: title1 (${i}): &quot; + storedVars['eval_data']);</td>
+	<td></td>
+</tr>
+<!--===================-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['module_name'] == 'We Recommend' &amp;&amp; storedVars['i'] &gt; 2</td>
+	<td>begin_adherance_check</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')][${x}]/ul/li[${i}]/div/a/div/div/div</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${eval_item}</td>
+	<td>regexpi:[a-z0-9\.\?\(\)\!\s\-\&amp;]{2,40}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Collection ${x}: title2 (${i}): ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>end_adherance_check</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>begin_adherance_check</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//div[contains(@class, 'CollectionListBoxes ')][${x}]/ul/li[${i}]/div/a/div/div</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${eval_item}</td>
+	<td>regexpi:[a-z0-9\.\?\(\)\!\s\-\&amp;]{2,40}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Collection ${x}: title2 (${i}): &quot; + storedVars['eval_data']);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>end_adherance_check</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<!--   Loop for elements in module: END-->
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['x']++;</td>
+	<td></td>
+</tr>
+<!--Loop for modules: END-->
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--      ~~~check ad from Polar module-->
+<!--      HERO THUMB: validate elements-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//ol[contains(@class, 'flex-control-thumbs')]/li</td>
+	<td>HERO_SLIDES_THUMBS</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>${HERO_SLIDES_THUMBS} &gt;= ${i}</td>
+	<td></td>
+</tr>
+<!--      ~~Hero: THUM - image check-->
+<tr>
+	<td>store</td>
+	<td>xpath=//ol[contains(@class, 'flex-control-thumbs')]/li[${i}]/img@src</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${eval_item}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//ol[contains(@class, 'flex-control-thumbs')]/li[${i}]/img@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Hero Thumb (${i}): img: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_collection_flat</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>collection_flat</td>
+	<td></td>
+</tr>
+<!--COLLECTIONS NON-CAROUSEL-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[contains(@class, 'HeroModule-container')]/a/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[contains(@class, 'HeroModule-container')]/a/img@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Hero: img: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['COLLECTION_TYPE'] == 'mm'</td>
+	<td>after_sponsored_collection_title_lbln</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>css=h4.HeroModule-titleSub</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:[a-z0-9\.\?\(\)\!\s\-\&amp;]{2,40}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_sponsored_collection_title_lbln</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Hero: Title: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_collection_flat</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

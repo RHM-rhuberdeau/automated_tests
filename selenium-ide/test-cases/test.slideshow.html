@@ -1,0 +1,314 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>test.slideshow</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">test.slideshow</td></tr>
+</thead><tbody>
+<tr>
+	<td>store</td>
+	<td>css=span.Page-info-mini-header</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:([a-z0-9\.\s\?\-]){3,40}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Mini header: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<!--==== Top Title check-->
+<tr>
+	<td>store</td>
+	<td>id=Page-info-title</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:([a-z0-9\.\s\?\-]){3,40}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Intro Title: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<!--==== check Pagination-->
+<tr>
+	<td>storeText</td>
+	<td>css=div.Slideshow-slideLabel.js-Slideshow-controls-container</td>
+	<td>PAGINATION_STING</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>re=/([0-9]*)[a-z\s]*([0-9]*)/; re.exec(storedVars['PAGINATION_STING'])</td>
+	<td>PAGINATIONS</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;TOTAL: ${PAGINATIONS} ||&quot; + storedVars['PAGINATIONS'][1] + &quot; through &quot; + storedVars['PAGINATIONS'][2]);</td>
+	<td></td>
+</tr>
+<!--==== ad foot-->
+<tr>
+	<td>selectFrame</td>
+	<td>Ad-iframe--js-Footer-adLeaderboard-inside</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>//body/script@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars.eval_data</td>
+	<td>regexp:sz=728x90</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;iframe AD FOOTER: ${eval_data}||&quot; + storedVars.eval_data);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectFrame</td>
+	<td>relative=top</td>
+	<td></td>
+</tr>
+<!--==== paginate slides-->
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>ADS_ORD</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['PAGINATIONS'][2] &gt;= ${i}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;== Slide cell[${i}] ==&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>//div[@id=&quot;slide-${i}&quot;]/div[@class=&quot;Slide-content&quot;]/div[@class=&quot;Slide-content-title&quot;]</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['i'] &lt;=1</td>
+	<td>skip_slide_cell_header</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:([a-z0-9\.\s\?\-]){3,75}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Intro Title: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>skip_slide_cell_header</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>//div[@id=&quot;slide-${i}&quot;]/div[@class=&quot;Slide-content&quot;]/div[@class=&quot;Slide-content-copy&quot;]</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>${eval_data}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Contents: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<!--Ads Multi Page-->
+<!--ad in slide-->
+<tr>
+	<td>selectFrame</td>
+	<td>Ad-iframe--js-Node-adLeaderboard-inside</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>//body/script@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars.eval_data</td>
+	<td>regexp:sz=728x90</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;iframe AD SLIDE: &quot; + storedVars.eval_data);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>selectFrame</td>
+	<td>relative=top</td>
+	<td></td>
+</tr>
+<!--ad right-->
+<tr>
+	<td>selectFrame</td>
+	<td>Ad-iframe--js-Node-adFlexbox-inside</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>//body/script@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;iframe AD FLEX: &quot; + storedVars.eval_data);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>re=/http:\/\/ad.doubleclick.net\/N3965\/[a-z]*\/([0-9a-z\.\s]*)\/([0-9a-z\.\s]*).*sz=([0-9x,]*).*ord=([0-9]*)\?/; re.exec(storedVars.eval_data)</td>
+	<td>ADS_DATA</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars.ADS_ORD!=storedVars['ADS_DATA'][4]</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Previous ord= should not match current: &quot; + storedVars.ADS_ORD +&quot; != &quot; + storedVars['ADS_DATA'][4]);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>storedVars['ADS_DATA'][4]</td>
+	<td>ADS_ORD</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;ADS: vert=&quot; + storedVars['ADS_DATA'][1] +&quot; :content=&quot; + storedVars['ADS_DATA'][2] +&quot; :size=&quot; + storedVars['ADS_DATA'][3] +&quot; :ord=&quot; + storedVars.ADS_ORD);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars.eval_data</td>
+	<td>regexp:sz=300x250\,300x600</td>
+</tr>
+<tr>
+	<td>selectFrame</td>
+	<td>relative=top</td>
+	<td></td>
+</tr>
+<!--Omniture Multi Page-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.slide_number</td>
+	<td>regexp:^([1-9]*)</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.slide_number</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;multipage_current_page_number: prop14: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.slide_title</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;multipage_current_page_number: prop19: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.slide_total</td>
+	<td>regexp:^([1-9]*)</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.slide_total</td>
+	<td>OMNITUREVAL</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;multipage_current_page_number: prop18: ${OMNITUREVAL}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['PAGINATIONS'][2] &lt;= ${i}</td>
+	<td>skip_click_next</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>css=span.Slideshow-controls-next-button-label</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>skip_click_next</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

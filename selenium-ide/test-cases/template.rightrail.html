@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>template.rightrail</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">template.rightrail</td></tr>
+</thead><tbody>
+<!--      ==== SKIP Promo for ST-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['COLLECTION_TYPE'] == 'st'</td>
+	<td>after_top_promo_unit</td>
+</tr>
+<!--RIGHTRAIL: PROMO-->
+<!--       Promo Image-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[contains(@class, 'RightrailbuttonpromoItem')]/a/img</td>
+	<td></td>
+</tr>
+<!--       Promo Header-->
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@class='RightrailbuttonpromoItem-content']/span[contains(@class, 'RightrailbuttonpromoItem-category')]</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-]){0,400}</td>
+</tr>
+<!--       Promo Title-->
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@class='RightrailbuttonpromoItem-content']/span[contains(@class, 'RightrailbuttonpromoItem-title')]/a</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-]){4,400}</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_top_promo_unit</td>
+	<td></td>
+</tr>
+<!--RIGHTRAIL: AD-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[@class='Ad Ad--flexbox is-ready']/div[contains(@class, 'Ad-IframeWrap')]/iframe</td>
+	<td></td>
+</tr>
+<!--      ====  SKIP SUBCATEGORY SUBHEADER TESTS IF: sponsored collection-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_SPONSORED_COLLECTIONS_TESTS'] == 1</td>
+	<td>after_rr_mostpopular</td>
+</tr>
+<!--RIGHTRAIL: MOST POPULAR-->
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[contains(@class, 'MostPopular-block')]/h1[@class='Block-title']</td>
+	<td>Most Popular</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[contains(@class, 'MostPopular-block')]/div[@class='MostPopular-container']</td>
+	<td>MOSTPOPULAR_COUNT</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${MOSTPOPULAR_COUNT} - MOST POPULAR COUNT&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[contains(@class, 'MostPopular-block')]/div[@class='MostPopular-container']</td>
+	<td>MOSTPOPULAR_COUNT</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${MOSTPOPULAR_COUNT} - MOST POPULAR COUNT&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${MOSTPOPULAR_COUNT} &gt;=&nbsp;&nbsp;3 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<!--      Popular: First Image present-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[contains(@class, 'MostPopular-block')]/div[@class='MostPopular-container']/img</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-]){4,40}</td>
+</tr>
+<!--      Popular: Most Popular Loop elemenets, header, and Title CHECK-->
+<tr>
+	<td>while</td>
+	<td>${MOSTPOPULAR_COUNT} &gt;= ${i};</td>
+	<td></td>
+</tr>
+<!--      ~~Popular: orange header-->
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[contains(@class, 'MostPopular-block')]/div[@class='MostPopular-container']/div[@class='MostPopular-article']/div[@class='ArticleHeader']</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-]){4,40}</td>
+</tr>
+<!--      ~~Popular: title-->
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[contains(@class, 'MostPopular-block')]/div[@class='MostPopular-container']/div[@class='MostPopular-article']/a[@class='ArticleTitle']</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-]){4,40}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn( storedVars['i'] + &quot;:&nbsp;&nbsp;Image &amp; Text scan of MOST POPULAR&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_rr_mostpopular</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

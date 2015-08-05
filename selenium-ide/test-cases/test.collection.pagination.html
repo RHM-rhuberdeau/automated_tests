@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>New Test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">New Test</td></tr>
+</thead><tbody>
+<!--=========================-->
+<!--CHECK EACH PAGE IN COLLECTION-->
+<!--=========================-->
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['i']&lt;storedVars['COLLECTION_LNKS'].length</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;= CHECKING (${i}) &quot; + storedVars['COLLECTION_LNKS'][${i}]);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>storedVars['COLLECTION_LNKS'][${i}]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;TOTAL: &quot; + storedVars['i']);</td>
+	<td></td>
+</tr>
+<!--=========================-->
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;= CHECKING (${i}) &quot; + storedVars['COLLECTION_LNKS'][${i}]);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>storedVars['COLLECTION_LNKS'][${i}]</td>
+	<td>TMP</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>${TMP}</td>
+	<td></td>
+</tr>
+<!--==== check Pagination-->
+<tr>
+	<td>storeText</td>
+	<td>//div[contains(@class, 'Page-supercollection-pagination-paginator')]</td>
+	<td>PAGINATION_STING</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>re=/([0-9]*)[a-z\s]*([0-9]*)/; re.exec(storedVars['PAGINATION_STING'])</td>
+	<td>PAGINATIONS</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;TOTAL: ${PAGINATIONS} ||&quot; + storedVars['PAGINATIONS'][2]);</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
