@@ -142,13 +142,12 @@ for url in open(arg_url_file):
     addTask(url.strip())
     list_urls[url.strip()]=added
     #if "%s" % arg_stop_after == "%s" % added:
-    if arg_stop_after >= added:
+    if arg_stop_after == added:
         break
+
 try:
     reactor.run()
-except KeyboardInterrupt:
+except (KeyboardInterrupt, SystemExit):
     print "Interrupted by keyboard. Exiting."
-    #signal.signal(signal.SIGINT, signal.default_int_handler)
     reactor.stop()
-    os._exit
 
