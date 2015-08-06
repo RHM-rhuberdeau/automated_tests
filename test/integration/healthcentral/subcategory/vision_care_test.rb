@@ -71,7 +71,7 @@ class SubCategory < MiniTest::Test
         assert_equal(true, text.downcase == "more resources", "text was #{text} not More Resources")
         assert_equal(true, links.length >= 3, "#{links.length} appeared in more resources, not 7")
         links_text.each do |text|
-          assert_equal(true, (text == "Slideshows" || text == "Medications" || text == "Videos" || text == "Questions" || text == "Topics A-Z" || text == "Quizzes and Assessments" || text == "Blogposts"), "#{text} did not appear in more resources")
+          assert_equal(true, (text == "Slideshows" || text == "Medication" || text == "Videos" || text == "Questions" || text == "Topics A-Z" || text == "Quizzes and Assessments" || text == "Blogposts"), "#{text} did not appear in more resources")
         end
       end 
 
