@@ -20,6 +20,7 @@ while test $# -gt 0; do
                         echo "-c, --cache-buster        if flagged, we append unix epoc seconds to the url as a query sting"
                         echo "-p, --proxy               use oru proxy server 10.0.0.10:3128"
                         echo "-d, --domain=www.healthcentral.com  use this domain for relative paths"
+                        echo "-s, --skip-time           Don't time just get status code"
                         exit 0
                         ;;
                 -p|--proxy)
@@ -55,17 +56,19 @@ while test $# -gt 0; do
                         shift
                         ;;
                 -c)
-                        shift
-                        if test $# -gt 0; then
-                                export CACHEBUST="?test=${TIME_BEGIN}"
-                        else
-                                echo "no process specified"
-                                exit 1
-                        fi
+                        export CACHEBUST="?test=${TIME_BEGIN}"
                         shift
                         ;;
                 --cache-buster*)
                         export CACHEBUST="?test=${TIME_BEGIN}"
+                        shift
+                        ;;
+                -s)
+                        export SKIPTIME=1
+                        shift
+                        ;;
+                --skip-time*)
+                        export SKIPTIME=1
                         shift
                         ;;
                 -a)
@@ -167,10 +170,16 @@ second_to_human_time () {
     echo $the_human_time
 }
 
+
+
+
 GREEN='\033[1;32m'
 RED='\033[0;31m'
 NOTE='\033[0;35m'
 NC='\033[0m'
+if [[ "${SKIPTIME}" != 1 ]]; then
+    checktime="time"
+fi
 for i in "${urls[@]}"
 do
 	if [[ "${i}" == \#* ]]; then
@@ -182,15 +191,14 @@ do
 	if [[ $i == /* ]] ; then
 		baseurl=$DOMAIN
 	fi
-	printf "====> ${baseurl}${i} <===="
+	printf "====> ${baseurl}${i}${CACHEBUST} <===="
+    echo
     #time curl $header -s -D - "http://${baseurl}${i}" -o /dev/null
 	#curl -I http://google.com | head -n 1| cut -d $' ' -f2
 	#curl -s --head --location http://google.com | head -n 1 | grep "HTTP/1.[01] [23].."
 	#RESPONSE=$(time curl -IL $HEADER --silent "${baseurl}${i}" | grep HTTP)
-    RESPONSEFULL=$(curl --head --location --silent $HEADER  "${baseurl}${i}" | grep "HTTP\|Location")
+    RESPONSEFULL=$(${checktime} curl --head --location --silent $HEADER  "${baseurl}${i}${CACHEBUST}" | grep "HTTP\|Location")
 
-
-	echo
 	if [[ $RESPONSEFULL == *200* ]] ; then
 		printf "${GREEN}${RESPONSEFULL}${NC}"
 	else
