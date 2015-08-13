@@ -12,7 +12,7 @@ class DailyDoseSecondWeek < MiniTest::Test
       head_navigation   = HealthCentralHeader::DailyDoseDesktop.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/2015/2"
+      @url              = "#{HC_BASE_URL}/dailydose/2015/2" + "?q=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -65,7 +65,7 @@ class DailyDoseSecondWeek < MiniTest::Test
         thcn_category     = ""
         ads               = DailyDose::DailyDosePage::AdsTestCases.new(:driver => @driver,
                                                                 :proxy => @proxy, 
-                                                                :url => "#{HC_BASE_URL}/dailydose/2015/2",
+                                                                :url => @url,
                                                                 :ad_site => ad_site,
                                                                 :ad_categories => ad_categories,
                                                                 :exclusion_cat => exclusion_cat,
