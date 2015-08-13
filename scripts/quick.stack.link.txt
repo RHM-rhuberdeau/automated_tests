@@ -1,0 +1,31 @@
+#--- medications
+http://www.healthcentral.com/medications/r/medications/
+http://www.healthcentral.com/medications/r/medications/carafate-oral-14156/side-effects
+http://www.healthcentral.com/medications/medications/
+http://www.healthcentral.com/other/medications/bd-pre-filled-normal-saline-inj-148592/
+http://www.healthcentral.com/other/medications/bd-pre-filled-normal-saline-inj-148592/dosage/
+http://www.healthcentral.com/other/medications/sevelamer-hcl-oral-16748/
+http://www.healthcentral.com/other/medications/sevelamer-hcl-oral-16748/dosage/
+#--- encyclopedia
+http://www.healthcentral.com/encyclopedia/home/
+http://www.healthcentral.com/encyclopedia/hc/
+http://www.healthcentral.com/encyclopedia/hc/c/
+http://www.healthcentral.com/encyclopedia/hc/cd4-lymphocyte-monitoring-3168520/
+http://www.healthcentral.com/encyclopedia/hc/candida-albicans-3168573/
+http://www.healthcentral.com/encyclopedia/hc/l/
+http://www.healthcentral.com/encyclopedia/hc/laser-assisted-uvulopalatoplasty-3168799/
+http://www.healthcentral.com/encyclopedia/hc/lupus-3168974/
+#--- DailyDose
+http://www.healthcentral.com/dailydose/
+http://www.healthcentral.com/dailydose/cf/archive
+http://www.healthcentral.com/dailydose/2015/8/
+http://www.healthcentral.com/dailydose/cf/2015/08/13/_music_reduces_pain_anxiety_after_surgery
+http://www.healthcentral.com/dailydose/2015/8/13/_music_reduces_pain_anxiety_after_surgery/
+#--- FAQ
+http://www.healthcentral.com/osteoarthritis/eorthopod/faq/index
+http://www.healthcentral.com/osteoarthritis/eorthopod/faq/accident-crashed-dashboard-2148
+http://www.healthcentral.com/osteoarthritis/eorthopod/faq/doctor-measurements-longer-1289
+
+
+
+
