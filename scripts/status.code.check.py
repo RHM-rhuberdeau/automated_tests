@@ -76,9 +76,14 @@ def strip_domain(url):
 
 def getStatus(ourl):
     url = urlparse(ourl)
-    conn = httplib.HTTPConnection(url.netloc)
-    conn.request("HEAD", url.path)
+    if arg_use_proxy == 1 and arg_just_primary_domain == 1 :
+        conn = httplib.HTTPConnection("10.0.0.10", 3128)
+        conn.request("HEAD", ourl)
+    else :
+        conn = httplib.HTTPConnection(url.netloc)
+        conn.request("HEAD", url.path)
     res = conn.getresponse()
+
     if arg_just_primary_domain == 0:
         #--- scan aother domain
         if arg_use_proxy == 0 :
