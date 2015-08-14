@@ -5,6 +5,13 @@
 #
 
 TIME_BEGIN=$(date +%s)
+GREEN='\033[1;32m'
+RED='\033[0;31m'
+YELLOW='\033[0;33m'
+BG_RED='\033[0;41m'
+BG_YELLOW='\033[0;43m'
+NOTE='\033[0;35m'
+NC='\033[0m'
 
 while test $# -gt 0; do
         case "$1" in
@@ -16,15 +23,28 @@ while test $# -gt 0; do
                         echo "options:"
                         echo "-h, --help                show brief help"
                         echo "-f, --file=FILE           file of URLs"
+                        echo "-d, --domain=www.healthcentral.com  use this domain for relative paths"
                         echo "-a, --header=curl_header  curl custom header"
                         echo "-c, --cache-buster        if flagged, we append unix epoc seconds to the url as a query sting"
                         echo "-p, --proxy               use oru proxy server 10.0.0.10:3128"
-                        echo "-d, --domain=www.healthcentral.com  use this domain for relative paths"
-                        echo "-s, --skip-time           Don't time just get status code"
+                        echo "-t, --show-time           Show time to get each link"
+                        echo "-v, --verbose             Show all statuses"
                         exit 0
                         ;;
                 -p|--proxy)
                         HEADER+=" --proxy http://10.0.0.10:3128"
+                        shift
+                        ;;
+                -v|--verbose)
+                        SHOWSUCCESS=1
+                        shift
+                        ;;
+                -t|--show-time)
+                        export SHOWTIME=1
+                        shift
+                        ;;
+                -c|--cache-buster)
+                        export CACHEBUST="test=${TIME_BEGIN}"
                         shift
                         ;;
                 -f)
@@ -55,22 +75,6 @@ while test $# -gt 0; do
                         export DOMAIN=`echo $1 | sed -e 's/^[^=]*=//g'`
                         shift
                         ;;
-                -c)
-                        export CACHEBUST="?test=${TIME_BEGIN}"
-                        shift
-                        ;;
-                --cache-buster*)
-                        export CACHEBUST="?test=${TIME_BEGIN}"
-                        shift
-                        ;;
-                -s)
-                        export SKIPTIME=1
-                        shift
-                        ;;
-                --skip-time*)
-                        export SKIPTIME=1
-                        shift
-                        ;;
                 -a)
                         shift
                         if test $# -gt 0; then
@@ -92,11 +96,14 @@ while test $# -gt 0; do
 done
 
 
-
-#if [[ "${DOMAIN// }" == "" ]]; then
 if [[ -z "${DOMAIN}" ]]; then
 	DOMAIN="www.healthcentral.com"
 fi
+if [[ -z "${FILE}" ]]; then
+    read < <(readlink  $0 | xargs dirname)
+    FILE="${REPLY}/quick.stack.link.txt"
+fi
+
 if [ -f "$FILE" ]; then
 	#urls=$(cat $FILE)
 	index=0
@@ -104,43 +111,12 @@ if [ -f "$FILE" ]; then
 	  urls+=("$line")
 	done < $FILE
 else
-	urls=(
-		/alzheimers/cf/slideshows/
-		/
-
-		/acid-reflux/
-		/alzheimers/
-		/bipolar/
-		/cold-flu/
-		/high-blood-pressure/
-		/skin-care/
-
-		/acid-reflux/cf/quizzes/
-		/alzheimers/cf/quizzes/
-		/bipolar/cf/quizzes/
-		/cold-flu/cf/quizzes/
-		/high-blood-pressure/cf/quizzes/
-		/skin-care/cf/quizzes/
-
-		/acid-reflux/cf/slideshows/7-tricks-help-prevent-acid-reflux
-		/alzheimers/cf/slideshows/10-conditions-can-mimic-dementia
-		/bipolar-disorder/cf/slideshows/10-people-who-shaped-how-we-view-bipolar-disorder
-		/cold-flu/cf/slideshows/10-best-foods-fight-spring-colds
-		/high-blood-pressure/cf/slideshows/10-foods-to-avoid-with-high-blood-pressure
-		/skin-care/cf/slideshows/12-terms-you-may-hear-when-living-psoriasis
-
-		/acid-reflux/cf/slideshows/
-		# /alzheimers/cf/slideshows
-		# /bipolar/cf/slideshows
-		# /cold-flu/cf/slideshows
-		# /high-blood-pressure/cf/slideshows
-		# /skin-care/cf/slideshows
-
-	 )
+    echo
+    printf "${RED}Please specify a file of URLs to scan:${NC}\n"
+    printf "${0} -f ./quick.stack.link.txt\n"
+    echo
+    exit
 fi
-
-
-
 
 
 second_to_human_time () {
@@ -166,51 +142,75 @@ second_to_human_time () {
     else
         ((sec=num))
     fi
-    the_human_time="TOTAL EXECUTION TIME: ${day}d ${hour}h ${min}m ${sec}s"
+    the_human_time="[${day}d ${hour}h ${min}m ${sec}s] TOTAL EXECUTION TIME"
     echo $the_human_time
 }
 
 
+TMP_RSP='/tmp/rsp_msg'
+re="real ([0-9sm\.]*)"
 
-
-GREEN='\033[1;32m'
-RED='\033[0;31m'
-NOTE='\033[0;35m'
-NC='\033[0m'
-if [[ "${SKIPTIME}" != 1 ]]; then
-    checktime="time"
-fi
 for i in "${urls[@]}"
 do
 	if [[ "${i}" == \#* ]]; then
+        echo
+        printf "${BG_YELLOW}${i}${NC}"
 		continue
 	fi
 	if [[ ! -n "${i}" ]]; then
 		continue
 	fi
-	if [[ $i == /* ]] ; then
-		baseurl=$DOMAIN
-	fi
-	printf "====> ${baseurl}${i}${CACHEBUST} <===="
-    echo
+    if [[ $i == /* ]] ; then
+        baseurl=$DOMAIN
+    fi
+    if [[ $i == *\?* && ! -z "$CACHEBUST" ]] ; then
+        url_to_test="${baseurl}${i}&${CACHEBUST}"
+    elif [[ ! -z "$CACHEBUST" ]] ; then
+        url_to_test="${baseurl}${i}?${CACHEBUST}"
+    else
+        url_to_test="${baseurl}${i}"
+    fi
     #time curl $header -s -D - "http://${baseurl}${i}" -o /dev/null
 	#curl -I http://google.com | head -n 1| cut -d $' ' -f2
 	#curl -s --head --location http://google.com | head -n 1 | grep "HTTP/1.[01] [23].."
 	#RESPONSE=$(time curl -IL $HEADER --silent "${baseurl}${i}" | grep HTTP)
-    RESPONSEFULL=$(${checktime} curl --head --location --silent $HEADER  "${baseurl}${i}${CACHEBUST}" | grep "HTTP\|Location")
+    #RESPONSEFULL=$(${checktime} curl --head --location --silent $HEADER  "${baseurl}${i}?${CACHEBUST}" | grep "HTTP\|Location")
+    if [[ "${SHOWTIME}" == 1 ]]; then
+        THETIMER=$(time (curl --head --location --silent $HEADER "${url_to_test}" | grep "HTTPS\|HTTP\|Location" >${TMP_RSP} ) 3>&1 1>&2 2>&3 )
+        #RESPONSEFULL=$(tr '\015' ' ' < /tmp/tmp.txt)
+        THETIMER=$(echo $THETIMER | tr '\015' ' ')
+        RESPONSEFULL=$( < ${TMP_RSP})
+    else
+        RESPONSEFULL=$(curl --head --location --insecure --silent $HEADER "${url_to_test}" | grep "HTTPS\|HTTP\|Location")
+    fi
 
+    if [[ $THETIMER =~ $re ]]; then real_time=${BASH_REMATCH[1]}; fi
 	if [[ $RESPONSEFULL == *200* ]] ; then
-		printf "${GREEN}${RESPONSEFULL}${NC}"
+        echo
+        if [[ ! -n "${real_time}" ]]; then real_time="200"; fi
+        if [[ -n $SHOWSUCCESS ]] ; then
+            printf "[${LIGHT}${real_time}${NC}] ${url_to_test} "
+            echo
+            printf "${GREEN}${RESPONSEFULL}${NC}"
+        else
+            printf "[${real_time}] ${GREEN}${url_to_test}${NC}..."
+        fi
 	else
+        if [[ ! -n "${real_time}" ]]; then real_time="ERROR"; fi
+        echo
+        printf "[${RED}${real_time}${NC}] ${url_to_test} "
+        echo
 		printf "${RED}${RESPONSEFULL}${NC}"
 	fi
-	echo ""
 	baseurl=""
+    real_time=""
 done
 
+echo
+echo
 TIME_END=$(date +%s)
-
 TIME_DIFF=(TIME_END-TIME_BEGIN)
 second_to_human_time $TIME_DIFF
 TIME_EXEC=$?
+echo
 
