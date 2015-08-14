@@ -29,9 +29,8 @@
 #--- KS: adam
 /adam
 /encyclopedia/adam
-/encyclopedia/adam/a
-/encyclopedia/adam/alzheimer-4000285
-/alzheimers/encyclopedia/alzheimer-4000285/risk-factors
+/encyclopedia/adam/a/
+/alzheimers/encyclopedia/alzheimer-4000285/risk-factors/
 /encyclopedia/adam/alcoholism-4021391
 /encyclopedia/adam/alcoholism-4021391/treatment-for-alcoholism
 /acid-reflux/1157-146.html
@@ -104,7 +103,7 @@ https://secure.healthcentral.com/cecs/cf/cancer-center/cancers-we-treat
 /genital-herpes/g/early-signs-of-genital-herpes-and-pictures.html
 /cold-flu/g/what-can-cause-chills-with-no-fever.html
 /colon-cancer/h/symptoms-of-rectal-cancer-in-women.html
-http://search.healthcentral.com/query?utf8=%E2%9C%93&ver=colon-cancer&ic=506010&submit=Search&q=test
+#http://search.healthcentral.com/query?utf8=%E2%9C%93&ver=colon-cancer&ic=506010&submit=Search&q=test
 #--- newsletters
 /profiles/c/newsletters/subscribe
 #--- drupal collections
