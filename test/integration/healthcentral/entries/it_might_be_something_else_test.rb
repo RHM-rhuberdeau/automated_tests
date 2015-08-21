@@ -15,7 +15,7 @@ class ItMightBeSomethingEntryPageTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url  = "#{HC_BASE_URL}/multiple-sclerosis/c/936913/173745/might-something"
+      @url  = "#{HC_BASE_URL}/multiple-sclerosis/c/936913/173745/might-something" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -57,7 +57,7 @@ class ItMightBeSomethingEntryPageTest < MiniTest::Test
         ad_categories = ["multiplesclerosis","whentoseeadoctor",""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
-                                                           :url => "#{HC_BASE_URL}/multiple-sclerosis/c/936913/173745/might-something",
+                                                           :url => @url,
                                                            :ad_site => ad_site,
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "community",
