@@ -12,7 +12,7 @@ class SlideshowTest < MiniTest::Test
       head_navigation = HealthCentralHeader::MobileRedesignHeader.new(:driver => @driver, :sub_category => "Multiple Sclerosis", :related_links => ['Chronic Pain', 'Depression', 'Rheumatoid Arthritis'])
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url  = "#{HC_BASE_URL}/multiple-sclerosis/cf/slideshows/top-ten-common-myths-about-ms-busted"
+      @url  = "#{HC_BASE_URL}/multiple-sclerosis/cf/slideshows/top-ten-common-myths-about-ms-busted" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 

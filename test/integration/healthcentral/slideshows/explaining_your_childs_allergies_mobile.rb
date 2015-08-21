@@ -15,7 +15,7 @@ class SlideshowTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others"
+      @url              = "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
