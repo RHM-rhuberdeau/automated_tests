@@ -54,7 +54,7 @@ class SlideshowTest < MiniTest::Test
         ad_categories = ["flu","adam",""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
-                                                           :url => "#{HC_BASE_URL}/cold-flu/encyclopedia/colds-and-the-flu-4021748",
+                                                           :url => @url,
                                                            :ad_site => ad_site,
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",
@@ -65,7 +65,7 @@ class SlideshowTest < MiniTest::Test
                                                            :ugc => "[\"n\"]") 
         ads.validate
 
-        omniture = @page.omniture
+        omniture = @page.omniture(:url => @url)
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end

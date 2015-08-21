@@ -12,7 +12,7 @@ class AdamOtherArticle < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/adam/abo-incompatibility-4012271/"
+      @url            = "#{HC_BASE_URL}/encyclopedia/adam/abo-incompatibility-4012271/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -22,10 +22,9 @@ class AdamOtherArticle < MiniTest::Test
       should "have the proper links" do 
         condition           = find "h1.Page-info-title"
         condition           = condition.text if condition
-        condition_links     = @driver.find_elements(:css, "ul.ContentList li a")
         bread_crumbs        = @driver.find_elements(:css, "div.Breadcrums-container a") || []
 
-        assert_equal("Other Conditions Alphabetically", condition)
+        assert_equal("ABO incompatibility", condition)
         assert_equal(29, condition_links.length)
         assert_equal(2, bread_crumbs.length)
       end
@@ -47,7 +46,7 @@ class AdamOtherArticle < MiniTest::Test
       should "not have any errors" do 
         pharma_safe   = true
         ad_site       = "cm.own.healthcentral"
-        ad_categories = ["adam-index","adam",""]
+        ad_categories = ["blooddisorders", "adam", ""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
                                                            :url => @url,
@@ -61,7 +60,7 @@ class AdamOtherArticle < MiniTest::Test
                                                            :ugc => "[\"n\"]") 
         ads.validate
 
-        omniture = @page.omniture
+        omniture = @page.omniture(:url => @url)
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end

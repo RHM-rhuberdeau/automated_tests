@@ -12,7 +12,7 @@ class SlideshowTest < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/adam"
+      @url            = "#{HC_BASE_URL}/adam" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -47,18 +47,18 @@ class SlideshowTest < MiniTest::Test
         ad_categories = ["adam-index","adam",""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
-                                                           :url => "#{HC_BASE_URL}/adam",
+                                                           :url => @url,
                                                            :ad_site => ad_site,
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",
                                                            :sponsor_kw => '',
-                                                           :thcn_content_type => "Adam",
+                                                           :thcn_content_type => "adam",
                                                            :thcn_super_cat => "",
                                                            :thcn_category => "",
                                                            :ugc => "[\"n\"]") 
         ads.validate
 
-        omniture = @page.omniture
+        omniture = @page.omniture(:url => @url)(:url => @url)
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end

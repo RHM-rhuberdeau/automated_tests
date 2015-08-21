@@ -12,7 +12,7 @@ class AdamOtherAlphabeticalIndex < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/adam/a/"
+      @url            = "#{HC_BASE_URL}/encyclopedia/adam/a" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -58,7 +58,7 @@ class AdamOtherAlphabeticalIndex < MiniTest::Test
                                                            :ugc => "[\"n\"]") 
         ads.validate
 
-        omniture = @page.omniture
+        omniture = @page.omniture(:url => @url)
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
