@@ -60,7 +60,7 @@ class MobileSymptomsOfRa < MiniTest::Test
         thcn_category     = "Bones, Joints, & Muscles"
         ads                     = Topics::TopicMobilePage::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
-                                                                     :url => "#{HC_BASE_URL}/rheumatoid-arthritis/d/introduction/symptoms-ra",
+                                                                     :url => @url,
                                                                      :ad_site => ad_site,
                                                                      :ad_categories => ad_categories,
                                                                      :exclusion_cat => exclusion_cat,
