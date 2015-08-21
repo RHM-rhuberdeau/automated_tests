@@ -10,7 +10,7 @@ class QuizTest < MiniTest::Test
       quiz_fixture = YAML::load_documents(io)
       @quiz_fixture = OpenStruct.new(quiz_fixture[0]['bipolar'])
       @page = ::HealthCentral::QuizPage.new(:driver => @driver,:proxy => @proxy,:fixture => @quiz_fixture)
-      @url  = "#{HC_BASE_URL}/bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-disorder"
+      @url  = "#{HC_BASE_URL}/bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-disorder" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -51,7 +51,7 @@ class QuizTest < MiniTest::Test
         ad_categories  = ["seroquel", "", ""]
         ads            = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                             :proxy => @proxy, 
-                                                            :url => "#{HC_BASE_URL}/bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-disorder",
+                                                            :url => @url,
                                                             :ad_site => ad_site,
                                                             :ad_categories => ad_categories,
                                                             :exclusion_cat => "",
