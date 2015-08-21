@@ -10,7 +10,7 @@ class MedtronicPageTest< MiniTest::Test
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['medtronic'])
       @page           = HealthCentralConcreteFive::ConcreteFivePage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture)
-      @url            = "#{MED_BASE_URL}/cecs/cf/medtronic" 
+      @url            = "#{MED_BASE_URL}/cecs/cf/medtronic" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -18,7 +18,7 @@ class MedtronicPageTest< MiniTest::Test
    ################### ASSETS #######################################
    context "assets" do 
      should "have valid assets" do 
-       assets = @page.assets(:base_url => @url)
+       assets = @page.assets(:base_url => @url, :host => MED_BASE_URL)
        assets.validate
        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
      end
