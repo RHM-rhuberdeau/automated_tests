@@ -10,7 +10,7 @@ class LBLN < MiniTest::Test
       mm_fixture = YAML::load_documents(io)
       @mm_fixture = OpenStruct.new(mm_fixture[0]['epilepsy'])
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @mm_fixture)
-      @url  = "#{HC_BASE_URL}/epilepsy/d/living-with/taking-control"
+      @url  = "#{HC_BASE_URL}/epilepsy/d/living-with/taking-control" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -73,7 +73,7 @@ class LBLN < MiniTest::Test
         ad_categories           = ["mymoment", "", ""]
         ads                     = RedesignEntry::RedesignEntryPage::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
-                                                                     :url => "#{HC_BASE_URL}/epilepsy/d/living-with/taking-control",
+                                                                     :url => @url,
                                                                      :ad_site => ad_site,
                                                                      :ad_categories => ad_categories,
                                                                      :exclusion_cat => "",
