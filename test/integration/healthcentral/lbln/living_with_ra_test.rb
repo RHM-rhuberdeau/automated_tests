@@ -10,7 +10,7 @@ class LBLN < MiniTest::Test
       lbln_fixture = YAML::load_documents(io)
       @lbln_fixture = OpenStruct.new(lbln_fixture[0]['ra'])
       @page = RedesignEntry::RedesignEntryPage.new(:driver => @driver, :proxy => @proxy, :fixture => @lbln_fixture)
-      @url  = "#{HC_BASE_URL}/rheumatoid-arthritis/d/immersive/living-ra-update/?ic=herothirds"
+      @url  = "#{HC_BASE_URL}/rheumatoid-arthritis/d/immersive/living-ra-update/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -40,7 +40,7 @@ class LBLN < MiniTest::Test
         ad_categories           = ["immersive", "livingwith", ""]
         ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
-                                                                     :url => "#{HC_DRUPAL_URL}/rheumatoid-arthritis/d/immersive/living-ra-update/?ic=herothirds",
+                                                                     :url => @url,
                                                                      :ad_site => ad_site,
                                                                      :ad_categories => ad_categories,
                                                                      :exclusion_cat => "",
