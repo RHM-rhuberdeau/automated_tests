@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>Quick.Common.Checks</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Quick.Common.Checks</td></tr>
+</thead><tbody>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>regexpi:Community Member|Health Guide|Health Pro|Content Producer</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('author_type')</td>
+	<td>TEMPVAR</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars['TEMPVAR']</td>
+	<td>regexpi:Community Member|Health Guide|Health Pro|Content Producer</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn( &quot;AUTH TYPE:&nbsp;&nbsp;${TEMPVAR} &quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('author_type')</td>
+	<td>regexpi:Community Member|Health Guide|Health Pro|Content Producer</td>
+</tr>
+<!--Check DTM is here-->
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('title')</td>
+	<td>TEMPVAR</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars['TEMPVAR']</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-]){12,40}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn( &quot;DTM TITLE:&nbsp;&nbsp;${TEMPVAR} &quot;);</td>
+	<td></td>
+</tr>
+<!--   - batch-->
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('batch')</td>
+	<td>TEMPVAR</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars['TEMPVAR']</td>
+	<td>regexpi:([0-9a-z\s]){1,40}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn( &quot;BATCH:&nbsp;&nbsp;${TEMPVAR} &quot;);</td>
+	<td></td>
+</tr>
+<!--Check Ads-->
+<tr>
+	<td>store</td>
+	<td>javascript{this.browserbot.getUserWindow().AD_SITE}</td>
+	<td>TEMPVAR</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars['TEMPVAR']</td>
+	<td>regexp:cm\.(ver|own)\.[a-z]{2,24}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn( &quot;AD_SITE:&nbsp;&nbsp;${TEMPVAR} &quot;);</td>
+	<td></td>
+</tr>
+<!--   - exclusion_cat-->
+<tr>
+	<td>store</td>
+	<td>javascript{this.browserbot.getUserWindow().EXCLUSION_CAT}</td>
+	<td>TEMPVAR</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars['TEMPVAR']</td>
+	<td>exact:community</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn( &quot;EXCLUSION_CAT:&nbsp;&nbsp;${TEMPVAR} &quot;);</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

@@ -1,0 +1,189 @@
+#--- KS: medications
+/medications/r/medications/
+/medications/r/medications/carafate-oral-14156/side-effects
+/medications/medications/
+/adhd/medications
+/rheumatoid-arthritis/medications
+/adhd/medications/concerta-oral-19857
+/adhd/medications/methylphenidate-oral-12114
+/rheumatoid-arthritis/medications/depen-titratabs-oral-9703
+/rheumatoid-arthritis/medications/infliximab-iv-16504
+/other/medications/bd-pre-filled-normal-saline-inj-148592/
+/other/medications/bd-pre-filled-normal-saline-inj-148592/dosage/
+/other/medications/sevelamer-hcl-oral-16748/
+/other/medications/sevelamer-hcl-oral-16748/dosage/
+#--- KS: encyclopedia
+/encyclopedia/home/
+/encyclopedia/hc/
+/encyclopedia/hc/c/
+/encyclopedia/hc/l/
+/encyclopedia/hc/cd4-lymphocyte-monitoring-3168520/
+/encyclopedia/hc/candida-albicans-3168573/
+/encyclopedia/hc/laser-assisted-uvulopalatoplasty-3168799/
+/encyclopedia/hc/lupus-3168974/
+/encyclopedia/hc/canker-sores-3168884/
+/encyclopedia/hc/ocular-migraine-3169068/
+/encyclopedia/408/211.html
+/encyclopedia/hc/brain-and-spinal-cord-magnetic-resonance-imaging-3168434/
+/encyclopedia/408/673.html
+#--- KS: adam
+/adam
+/encyclopedia/adam
+/encyclopedia/adam/a/
+/alzheimers/encyclopedia/alzheimer-4000285/risk-factors/
+/encyclopedia/adam/alcoholism-4021391
+/encyclopedia/adam/alcoholism-4021391/treatment-for-alcoholism
+/acid-reflux/1157-146.html
+/ency/408/001655prv.html
+/high-blood-pressure/index-000102_7-145.html
+/acid-reflux/encyclopedia/pancreatitis-chronic-ct-scan-4007209/
+/encyclopedia/adam/tmj-disorders-4011923/treatment/
+/skin-cancer/encyclopedia/skin-wrinkles-and-blemishes-4005575/prevention/
+/cold-flu/encyclopedia/fatigue-4005917/prevention
+/ibd/irritable-bowel-syndrome-000069_5-145.html
+/symptoms/symptom.html
+#--- KS: DailyDose
+/dailydose/
+/dailydose/cf/archive
+/dailydose/2015/8/
+/dailydose/cf/2015/08/13/_music_reduces_pain_anxiety_after_surgery
+/dailydose/2015/8/13/music_reduces_pain_anxiety_after_surgery/
+/dailydose/cf/2014/05/06/_young_blood_reverses_aging_in_older_mice
+/dailydose/2013/1/28/yogurt_boosts_nutrition_and_happiness/
+/dailydose/2014/11/17/why_meditation_works/
+/dailydose/cf/2015/07
+/dailydose/cf/2015/07/30
+/dailydose/cf/2015/03/31/study_says_u_s_kids_eating_less_fast_food
+#--- KS: Slideshows
+/adhd/cf/slideshows
+/rheumatoid-arthritis/cf/slideshows/
+/adhd/cf/slideshows/9-ways-prepare-summer-adhd-child
+/adhd/cf/slideshows/8-types-inattention-adult-adhd
+/adhd/cf/slideshows/understanding-your-childs-adhd-q-adhd-author
+/rheumatoid-arthritis/cf/slideshows/8-facts-about-ra-and-heart-disease
+/rheumatoid-arthritis/cf/slideshows/leslie-rott-graduate-student-ra-and-lupus
+/rheumatoid-arthritis/cf/slideshows/10-tips-for-building-and-maintaining-energy-with-rheumatoid-arth
+#--- Java: Clinical Trials
+/clinical-trial/survey-ui/index.html
+#--- c5: TCC
+https://secure.healthcentral.com/cecs/cf/medtronic-oab
+https://secure.healthcentral.com/cecs/cf/medtronic-oab/is-it-right-for-me
+https://secure.healthcentral.com/cecs/cf/cancer-center
+https://secure.healthcentral.com/cecs/cf/cancer-center/cancers-we-treat
+#--- c5: Assessment
+/adhd/cf/assessments/adhd-screening/
+/adhd/cf/assessments/adhd-screening/question/1/
+/asthma/cf/assessments/could-you-be-suffering-from-asthma/
+/asthma/cf/assessments/could-you-be-suffering-from-asthma/question/3/
+#--- c5: quizzes
+/acid-reflux/cf/quizzes/heartburn-trigger-foods/peppermint/
+/allergy/cf/quizzes/how-much-do-you-know-about-seasonal-allergies/question-1/
+/allergy/cf/quizzes/do-you-know-how-to-protect-your-child-from-allergies/question-1/
+/allergy/cf/quizzes/seasonal-vs-year-round-allergies/question-1/
+/allergy/cf/quizzes/quiz-do-you-know-the-effects-of-mold-on-your-health/question-1/
+#--- c5: Video
+/videos/cf/adhd
+/videos/cf/adhd/teachers-and-adhd
+#--- c5: bibliography
+/allergy/cf/bibliography/
+#--- FAQ
+/osteoarthritis/eorthopod/faq/index
+/osteoarthritis/eorthopod/faq/accident-crashed-dashboard-2148
+/osteoarthritis/eorthopod/faq/doctor-measurements-longer-1289
+#--- Colon Cancer
+/colon-cancer/
+/colon-cancer/h/colon-cancer-center/what-are-the-symptoms-of-colon-cancer.html
+/colon-cancer/h/colon-cancer-center/colon-cancer.html
+#--- migraine center
+/migraine/medications.html
+/migraine/medications-29469-5.html
+/2/migraine/awarenessweek-290697-5.html
+/2/migraine/medications-540055-5.html
+#--- Otto
+/genital-herpes/g/early-signs-of-genital-herpes-and-pictures.html
+/cold-flu/g/what-can-cause-chills-with-no-fever.html
+/colon-cancer/h/symptoms-of-rectal-cancer-in-women.html
+#http://search.healthcentral.com/query?utf8=%E2%9C%93&ver=colon-cancer&ic=506010&submit=Search&q=test
+#--- newsletters
+/profiles/c/newsletters/subscribe
+#--- drupal collections
+/epilepsy/d/living-with/taking-control
+/bipolar/d/living/taking-control
+/tools/d/clinical-trials
+/multiple-sclerosis/d/LBLN/living-with-ms
+/rheumatoid-arthritis/d/LBLN/living-with-ra/
+/rheumatoid-arthritis/m/LBLN/living-with-ra/
+#--- drupal: subcat
+/adhd
+/rheumatoid-arthritis
+#--- drupal: slideshow index
+/adhd/cf/slideshows
+/rheumatoid-arthritis/cf/slideshows
+#--- drupal: quizzes index
+/adhd/cf/quizzes
+/rheumatoid-arthritis/cf/quizzes
+#--- drupal: quizzes & assessments
+/bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-disorder/
+/hepatitis-c/d/quizzes/do-you-know-how-hepatitis-c-spread
+/multiple-sclerosis/d/treatment/are-your-ms-treatment-options-working
+#--- RE
+/colon-cancer/r/ccac/index
+/colon-cancer/r/ccac/understanding-colorectal-3931
+/cholesterol/lifestyle.html
+/cholesterol/dailyfat-3432-143.html
+/cholesterol/lifestyle-36510-5.html
+/cholesterol/treatment-26019-5.html
+#--- SP
+#SP: questions
+/adhd/c/question
+/rheumatoid-arthritis/c/question
+/adhd/c/question/all
+/rheumatoid-arthritis/c/question/all
+/adhd/c/question/758502/176454
+/adhd/c/question/638082/174657
+/rheumatoid-arthritis/c/question/616170/176421
+/rheumatoid-arthritis/c/question/55523/175700
+#SP: entries
+/adhd/c/create
+/rheumatoid-arthritis/c/create
+/adhd/c/all
+/rheumatoid-arthritis/c/all
+/rheumatoid-arthritis/c/80106/177060/boundaries
+/rheumatoid-arthritis/c/499724/176945/rheumatoid
+/adhd/c/question/807363/174039
+/adhd/c/question/638082/174657
+#SP: other
+/diabetes/c/458275/175063/hypothyroidism-infographic/
+/heart-disease/c/458275/171998/atrial-fibrillation/
+/breast-cancer/c/general/introduction/what-is-breast-cancer
+#---Tracker
+/migraine/d/tracker-start
+/condition-tracker/
+#Full Immersive:
+# http://immersive.thebody.com/LBLN/hiv-addiction-recovery-relationship/
+# http://immersive.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms/
+# http://immersive.healthcentral.com/skin-care/d/LBLN/dtalbert-living-with-psoriasis
+#Flat Immersive:
+# http://immersiveq.thebody.com/LBLN/hiv-addiction-recovery-relationship
+# http://immersive.healthcentral.com/skin-care/d/LBLN/dtalbert-living-with-psoriasis/flat
+# http://immersive.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms/flat
+#SYSTEMS
+#--- Assets
+/common/a/assets/healthcentral_common.js
+/assets/sites/healthcentral.css
+/sites/all/modules/custom/assets_pipeline/public/css/sites/all/themes/healthcentral.css
+/sites/all/modules/custom/assets_pipeline/app/fonts/icon/font/icon.woff
+/assets/icon/font/icon.woff
+#drupal rss
+#/scripts/rss.php
+#/scripts/rss_bw_ploar.php
+#/scripts/rss_bw_hr.php
+#/scripts/rss_hc_nr.php
+#Get drupal collections
+#/admin/config/content/fetch-configured-articles
+#Get drupal taxonomy
+#/admin/config/content/xml-navigation-categories
+#c5: dailydose feed
+#/dailydose/cf/feeds/20150301-20150315
+#SP feed for drupal
+# http://tools.choicemedia.com/shareposts/admin/feeds/drupal/records?mode=full&page=0&timestamp=1401580800&limit=5

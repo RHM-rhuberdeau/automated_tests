@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>1._runfirst.setVars</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">1._runfirst.setVars</td></tr>
+</thead><tbody>
+<!--=========================-->
+<!--CONFIGS: 0=NO, 1=>YES-->
+<!--=========================-->
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>SKIP_AD_HEADER</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>SKIP_AD_FOOTER</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>SKIP_META</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>SKIP_OMINTURE_COMMON_FAIL</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>SKIP_REGISTRATION_TESTS</td>
+</tr>
+<!--=========================-->
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;CONFIG: SKIP METAS: ${SKIP_META}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;CONFIG: SKIP AD HEADER: ${SKIP_AD_HEADER}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;CONFIG: SKIP AD FOOTER: ${SKIP_AD_FOOTER}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;CONFIG: SKIP AD FOOTER: ${IS_SPONSORED_COLLECTIONS_TESTS}&quot;);</td>
+	<td></td>
+</tr>
+<!--=========================-->
+<!--PRE-CHECKS-->
+<!--=========================-->
+<!--DETERMINE CURRENT URL-->
+<tr>
+	<td>storeLocation</td>
+	<td>CURRENT_URL</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;PREFETCH: ${CURRENT_URL} - CURRENT_URL&quot;);</td>
+	<td></td>
+</tr>
+<!--DETERMINE PAGE TYPE-->
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('type')</td>
+	<td>PAGE_TYPE</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;PREFETCH: PAGE TYPE: ${PAGE_TYPE}&quot;);</td>
+	<td></td>
+</tr>
+<!--DETERMINE IS LOGGED IN?-->
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('user_id')</td>
+	<td>USER_ID</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;PREFETCH: USER_ID: ${USER_ID}&quot;);</td>
+	<td></td>
+</tr>
+<!--DETERMINE CURRENT collection_type-->
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('collection_type')</td>
+	<td>COLLECTION_TYPE</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;PREFETCH: COLLECTION_TYPE: ${COLLECTION_TYPE}&quot;);</td>
+	<td></td>
+</tr>
+<!--DETERMINE CURRENT ad content_type-->
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow().THCN_CONTENT_TYPE</td>
+	<td>THCN_CONTENT_TYPE</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;PREFETCH: COLLECTION_TYPE: ${THCN_CONTENT_TYPE}&quot;);</td>
+	<td></td>
+</tr>
+<!--=========================-->
+<!--Set Auto-->
+<!--=========================-->
+<!--DETECT: Check subcateogory subheader-->
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>SKIP_SUB_HEADER</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['THCN_CONTENT_TYPE'] == 'Profiles' || storedVars['PAGE_TYPE']=='home' || storedVars['COLLECTION_TYPE']=='lbln' || storedVars['COLLECTION_TYPE']=='mm' || storedVars['COLLECTION_TYPE']=='st' || storedVars['COLLECTION_TYPE']=='ct'</td>
+	<td>after_skip_sub_header</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>SKIP_SUB_HEADER</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_skip_sub_header</td>
+	<td></td>
+</tr>
+<!--DETECT: Sponsored Collections-->
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>IS_SPONSORED_COLLECTIONS_TESTS</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['COLLECTION_TYPE']=='lbln' || storedVars['COLLECTION_TYPE']=='mm' || storedVars['COLLECTION_TYPE']=='st' || storedVars['COLLECTION_TYPE']=='ct'</td>
+	<td>after_is_sponsored_collection_tests</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>IS_SPONSORED_COLLECTIONS_TESTS</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_is_sponsored_collection_tests</td>
+	<td></td>
+</tr>
+<!--DETECT: Single page or other types of page-->
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>IS_CONTENT_PAGE</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['THCN_CONTENT_TYPE'] == 'Profiles' || storedVars['COLLECTION_TYPE']=='lbln' || storedVars['COLLECTION_TYPE']=='mm' || storedVars['COLLECTION_TYPE']=='st' || storedVars['COLLECTION_TYPE']=='ct' || storedVars['COLLECTION_TYPE']=='default'</td>
+	<td>before_is_content_page</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_is_content_page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>before_is_content_page</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>IS_CONTENT_PAGE</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_is_content_page</td>
+	<td></td>
+</tr>
+<!--DETECT: No an Article and no Taxomomy-->
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>IS_NON_ARTICLE_PAGE</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['THCN_CONTENT_TYPE'] == 'Profiles'</td>
+	<td>before_skip_taxonomy</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_skip_taxonomy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>before_skip_taxonomy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>IS_NON_ARTICLE_PAGE</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_skip_taxonomy</td>
+	<td></td>
+</tr>
+<!--DETECT: UGC for questions-->
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>IS_UGC</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>this.browserbot.getUserWindow().THCN_CONTENT_TYPE == 'Questions' </td>
+	<td>before_check_ugc</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_check_ugc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>before_check_ugc</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>xpath=//div[contains(@class, 'is-expert ')]</td>
+	<td>questions_export_status</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['questions_export_status'] == false</td>
+	<td>after_check_ugc</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>0</td>
+	<td>IS_UGC</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('author_type')</td>
+	<td>Community Member</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_check_ugc</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

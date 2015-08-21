@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>content.phase</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">content.phase</td></tr>
+</thead><tbody>
+<!--TOPIC ONLY - Related Topics-->
+<tr>
+	<td>verifyText</td>
+	<td>css=h2.CollectionListTopic-title.js-CollectionListTopic-title</td>
+	<td>More on this topic</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[@class='Page-category-content']/ul[@class='CollectionListBoxes-list']/li</td>
+	<td>MORE_ON_THIS</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${MORE_ON_THIS} - MORE ON THIS&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${MORE_ON_THIS} &gt;=&nbsp;&nbsp;6 ? true : false</td>
+	<td>true</td>
+</tr>
+<!--============================-->
+<!--      More On This Topic: validate elements-->
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>6</td>
+	<td>view_more_click</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>2</td>
+	<td>view_more_click_ad_count</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>${MORE_ON_THIS} &gt;= ${i}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;== More on this cell[${i}] ==&quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~More On This: Promo image-->
+<tr>
+	<td>store</td>
+	<td>xpath=//div[@class='Page-category-content']/ul[@class='CollectionListBoxes-list']/li[${i}]/div/a/img</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[@class='Page-category-content']/ul[@class='CollectionListBoxes-list']/li[${i}]/div/a/img@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${eval_item}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- More On: image: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~More On This: content - Title-->
+<tr>
+	<td>store</td>
+	<td>xpath=//div[@class='Page-category-content']/ul[@class='CollectionListBoxes-list']/li[${i}]/div/a/div/div/div[contains(@class, 'CollectionListBoxes-box-info-title')]</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-\&amp;]){2,40}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- More On: Title: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~More On This: content - Author-->
+<tr>
+	<td>store</td>
+	<td>xpath=//div[@class='Page-category-content']/ul[@class='CollectionListBoxes-list']/li[${i}]/div/a/div/div/div[contains(@class, 'CollectionListBoxes-box-author-label')]/span</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:([a-z0-9\.\s]){3,40}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- More On: Posted By: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${view_more_click} != ${i}</td>
+	<td>click_view_more</td>
+</tr>
+<!--      ==== SKIP if no More on this button-->
+<!--      ~~More On This: Click View More button & Check Ad-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['MORE_ON_THIS'] &lt;= 6</td>
+	<td>click_view_more</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@class='CollectionListBoxes-button']/button[contains(@class, 'view-more-all')]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;== More On: CLICKED View More Botton ==&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['view_more_click']=6+storedVars['view_more_click']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[${view_more_click_ad_count}]/div[contains(@class, 'Ad-IframeWrap')]/iframe</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- More On: check AD after - click View More Botton&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>click_view_more</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

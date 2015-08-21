@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>New Test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">New Test</td></tr>
+</thead><tbody>
+
+<!--======= ADS =======--->
+<tr>
+	<td>store</td>
+	<td>javascript{this.browserbot.getUserWindow().AD_SITE}</td>
+	<td>AD_SITE</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>Page AD_SITE===&gt; ${AD_SITE} &lt;===</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().AD_SITE</td>
+	<td>regexp:cm\.ver\.[a-z\-\.]{2,20}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().AD_CATEGORIES</td>
+	<td>regexpi:[a-z]*\,[a-z]*\,([a-z]*)?</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().THCN_CONTENT_TYPE</td>
+	<td>regexp:Questions|Blogposts|topic|phase</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().THCN_SUPER_CAT</td>
+	<td>regexpi:[a-z\&amp;\s\-]{2,32}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().THCN_CATEGORY</td>
+	<td>regexpi:[a-z\&amp;\s\-]{2,32}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().EXCLUSION_CAT</td>
+	<td>regexpi:(community)?</td>
+</tr>
+<!--======= Omniture rhm.vars.pageData =======-->
+<!--blogposts or shareposts-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.app_name</td>
+	<td>regexp:blogposts|drupal</td>
+</tr>
+<!--props-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.pageName</td>
+	<td>regexpi:Verticals \&gt;( [a-z\s\-\.\&amp;].*)?\&gt;( [a-z\s\-\.\&amp;].*)?\&gt;( [a-z\s\-\.\&amp;].*)?\&gt;( [a-z\s\-\.\&amp;].*)?\&gt;( [a-z\s\-\.\&amp;\?].*)</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.hier1</td>
+	<td>regexpi:Verticals,( [a-z\s\-\.\&amp;]*)?</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.channel</td>
+	<td>regexpi:(.*) Vertical</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.pageURL</td>
+	<td>regexpi:http\:\/\/([a-z\.\/\-]).*\.[a-z]{2,4}\/.*</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop1</td>
+	<td>regexpi:([a-z\s\-\&amp;]{2,64})</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop2</td>
+	<td>regexpi:([a-z\s\-\&amp;]{2,64})</td>
+</tr>
+<!--prop4: auth - non article pages-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop4</td>
+	<td>regexpi:([a-z\s\-]{2,64})</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop5</td>
+	<td>regexpi:([a-z\s\-\&amp;\?]{2,64})</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop6</td>
+	<td>regexpi:([a-z\s\-\&amp;]{2,64})</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop7</td>
+	<td>regexpi:([a-z\s\-\&amp;]{2,64})</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop10</td>
+	<td>regexpi:\/(.*)?</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop12</td>
+	<td>regexp:[0-9]{2}\-[0-9]{2}\-[0-9]{4}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop13</td>
+	<td>regexp:[0-9]{2}\-[0-9]{2}\-[0-9]{4}</td>
+</tr>
+<!--prop14: Multipage - Current Page Number-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop14</td>
+	<td>regexp:[0-9]{1,2}</td>
+</tr>
+<!--prop16: comments-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop16</td>
+	<td>regexp:[a-z]{4,32}</td>
+</tr>
+<!--prop17: Author Type -->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop17</td>
+	<td>regexpi:[(Community Member)|(Health Guide)|(Health Pro)|(Content Producer)]</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop18</td>
+	<td>regexp:[0-9]{0,2}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop19</td>
+	<td>regexpi:([a-z0-9\.\s\-\?]{0,32})</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop21</td>
+	<td>regexpi:([a-z0-9\.\s\-\?]{0,32})</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop22</td>
+	<td>regexpi:\/(.*)?</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop29</td>
+	<td>regexpi:[(desktop_large)|(desktop)|(mobile)]</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop30</td>
+	<td>regexpi:[(landscape)|(portraite)]</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop38</td>
+	<td>regexpi:[0-9]{1,10}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop39</td>
+	<td>regexpi:[a-z\.\-\s]{1,32}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop40</td>
+	<td>regexpi:([a-z\s\-\&amp;]{2,64})</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop42</td>
+	<td>regexpi:([a-z\s\-\&amp;]{2,64})</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop43</td>
+	<td>regexpi:([a-z\s\-\&amp;]{2,64})</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop44</td>
+	<td>HealthCentral</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop45</td>
+	<td>regexp:cm\.ver\.[a-z\-\.]{2,20}</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop46</td>
+	<td>regexp:(False)?</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.prop50</td>
+	<td>regexp:[a-z0-9\=\.\-].*</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.eVar1</td>
+	<td>regexp:([a-z0-9\=\.\-])*</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.eVar6</td>
+	<td>regexp:([a-z0-9\s])*</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.eVar17</td>
+	<td>regexp:[a-z0-9\=\.\-].*</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.eVar21</td>
+	<td>regexp:([a-z0-9\=\.\-])*</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.eVar26</td>
+	<td>regexp:([a-z0-9\=\.\-])*</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.eVar31</td>
+	<td>regexp:([a-z0-9\,])*</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.events</td>
+	<td>regexp:([a-z0-9])*</td>
+</tr>
+<!--========= DTM values-->
+<!--dtm: author stuff next 3 tests - may fail-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.author_name</td>
+	<td>regexp:[a-z\.\s]{2,32}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.author_name</td>
+	<td>regexp:[a-z\.\s]{2,32}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.author_type</td>
+	<td>regexp:[a-z\.\s]{2,32}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.channel</td>
+	<td>regexpi:[(Community Member)|(Health Guide)|(Health Pro)|(Content Producer)]</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.breakpoint</td>
+	<td>regexpi:[(desktop)|(mobile)|(portrait)|(landscrape)]</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.title</td>
+	<td>regexpi:[a-z0-9\s\-\&amp;\.\?\'\;]{2,64}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.category_sub</td>
+	<td>regexpi:[a-z\s\-\&amp;]{2,64}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.phase</td>
+	<td>regexpi:([a-z\s\-\&amp;]{2,64})?</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.topic</td>
+	<td>regexpi:([a-z\s\-\&amp;]{2,64})?</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.site</td>
+	<td>HealthCentral</td>
+</tr>
+<!--1 to 10 numbers-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.id</td>
+	<td>regexp:[0-9]{1,10}</td>
+</tr>
+<!--dates-->
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.date_changed</td>
+	<td>regexp:[0-9]{2}\-[0-9]{2}\-[0-9]{4}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.date_created</td>
+	<td>regexp:[0-9]{2}\-[0-9]{2}\-[0-9]{4}</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>this.browserbot.getUserWindow().rhm.vars.pageData.date_published</td>
+	<td>regexp:[0-9]{2}\-[0-9]{2}\-[0-9]{4}</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow().thcn.eVar1</td>
+	<td>regexp:([a-z0-9\=\.\-])*</td>
+</tr>
+</tbody></table>
+</body>
+</html>

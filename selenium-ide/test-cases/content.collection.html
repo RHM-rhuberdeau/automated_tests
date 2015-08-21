@@ -1,0 +1,387 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>content.phase</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">content.phase</td></tr>
+</thead><tbody>
+<!--      ==== PAGINATION: skip to latest post if page 2 or greater-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['CURRENT_URL'].match(/.*\/p\/[0-9]{1,3}.*/g) &amp;&amp; ! storedVars['CURRENT_URL'].match(/.*\/p\/1/g);</td>
+	<td>latestpost</td>
+</tr>
+<!--Top Title and descripton-->
+<!--      ==== Subcategory ONLY check-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['PAGE_TYPE'] != 'subcategory home'</td>
+	<td>description_phaseTopic</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[contains(@class, 'HeroBox')]/a/img</td>
+	<td></td>
+</tr>
+<!--      ==== Phase & Topic ONLY check-->
+<tr>
+	<td>gotolabel</td>
+	<td>after_phaseTopic_digRelated</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>description_phaseTopic</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=h2.PhaseTitle</td>
+	<td>regexpi:[a-z0-9\-\.\&amp;\?\s]{2,90}</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@class='Taxonomy-term-description']/p</td>
+	<td>regexpi:([a-z0-9\.\&gt;\(\)\!\s\,]){124,400}</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['PAGE_TYPE'] == 'PJ Phases'</td>
+	<td>phase_dig</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['PAGE_TYPE'] == 'PJ Topics'</td>
+	<td>topic_related</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_phaseTopic_digRelated</td>
+	<td></td>
+</tr>
+<!--TOPIC ONLY - Related Topics-->
+<tr>
+	<td>label</td>
+	<td>topic_related</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=div.TopicListInset-header</td>
+	<td>RELATED TOPICS</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[@class='TopicListInset']/ul[@class='TopicListInset-topiclist']/li</td>
+	<td>RELATED_TOPICS</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${RELATED_TOPICS} - RELATED ITEM&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${RELATED_TOPICS} &gt;=&nbsp;&nbsp;1 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_phaseTopic_digRelated</td>
+	<td></td>
+</tr>
+<!--PHASE ONLY - Dig Deeper-->
+<tr>
+	<td>label</td>
+	<td>phase_dig</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=div.TopicListInset-header</td>
+	<td>DIG DEEPER</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[@class='TopicListInset']/ul[@class='TopicListInset-topiclist']/li</td>
+	<td>DIG_DEEPER</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${DIG_DEEPER} - RELATED ITEM&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${DIG_DEEPER} &gt;= 1 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_phaseTopic_digRelated</td>
+	<td></td>
+</tr>
+<!--LATEST POSTS: must have 7 subcats, 10 phase/topic-->
+<tr>
+	<td>label</td>
+	<td>latestpost</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=h1.Block-title</td>
+	<td>Latest posts</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//form[@id='editorspicks']/div[starts-with(@class, 'Editor-picks-item')]</td>
+	<td>LATEST_POST</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${LATEST_POST} - LATEST POST&quot;);</td>
+	<td></td>
+</tr>
+<!--      ==== Subcategory ONLY check-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['PAGE_TYPE'] != 'subcategory home'</td>
+	<td>phaseTopic_latest</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>issubcategory_latest</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${LATEST_POST} &gt;=&nbsp;&nbsp;5 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_latest_check</td>
+	<td></td>
+</tr>
+<!--      ==== Phase & Topic ONLY check-->
+<tr>
+	<td>label</td>
+	<td>phaseTopic_latest</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${LATEST_POST} &lt;&nbsp;&nbsp;10</td>
+	<td>after_next_button_check</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${LATEST_POST} &gt;=&nbsp;&nbsp;10 ? true : false</td>
+	<td>true</td>
+</tr>
+<!--      Latest Pagination - Count-->
+<tr>
+	<td>verifyText</td>
+	<td>css=span.Custom-paginator-label-pageId</td>
+	<td>regexp:[0-9]{1,4}\-[0-9]{1,4}</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=span.Custom-paginator-label-pageTotal</td>
+	<td>regexp:[0-9]{1,4}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>css=span.Custom-paginator-controls-next-button-label</td>
+	<td>LATEST_NEXT</td>
+</tr>
+<!--      Latest Pagination - Next/Preview-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[@class='Custom-paginator-controls']/div/a/span[@class='Custom-paginator-controls-next']/span/i</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Latest Post: Button NEXT&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_next_button_check</td>
+	<td></td>
+</tr>
+<!--      ====  SKIP Latest Posts, if in a paginated page-->
+<tr>
+	<td>gotoIf</td>
+	<td>! storedVars['CURRENT_URL'].match(/.*\/p\/[0-9]{1,3}.*/g);</td>
+	<td>after_latest_check</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[@class='Custom-paginator-controls']/div/a/span[@class='Custom-paginator-controls-prev']/span/i</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Latest Post: Button PREVIOUS&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_latest_check</td>
+	<td></td>
+</tr>
+<!--============================-->
+<!--      Latest Post: validate elements-->
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>${LATEST_POST} &gt;= ${i};</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;== LATEST IMAGE[${i}] ==&quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~Latest Post: image: author OR promo = one WILL FAIL-->
+<tr>
+	<td>store</td>
+	<td>xpath=//section[@class='Editor-picks-container']/form/div[${i}]/div/img</td>
+	<td>image_promo</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//section[@class='Editor-picks-container']/form/div[${i}]/div/div/img</td>
+	<td>image_author</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>${image_author}</td>
+	<td>xpathcount</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['xpathcount'] &gt;0</td>
+	<td>image_author</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${image_promo}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>${image_promo}</td>
+	<td>image_promo_state</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_image_author</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>image_author</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${image_author}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>${image_author}</td>
+	<td>image_author_state</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_image_author</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- promo: (${image_promo_state}),&nbsp;&nbsp;author: (${image_author_state}) &quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~Latest: content-->
+<tr>
+	<td>store</td>
+	<td>xpath=//section[@class='Editor-picks-container']/form/div[${i}]/div[contains(@class, 'Editor-picks-teaser-container')]/div/div[contains(@class, 'Editor-picks-label-container')]/span</td>
+	<td>latest_header</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${latest_header}</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-\&amp;]){2,56}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${latest_header}</td>
+	<td>latest_state</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- header: ${latest_state}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//section[@class='Editor-picks-container']/form/div[${i}]/div[contains(@class, 'Editor-picks-teaser-container')]/div/div[contains(@class, 'Editor-picks-title-container')]/div/span/a</td>
+	<td>latest_title</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${latest_title}</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-\&amp;]){12,40}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${latest_title}</td>
+	<td>latest_state</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//section[@class='Editor-picks-container']/form/div[${i}]/div[contains(@class, 'Editor-picks-teaser-container')]/div/div[contains(@class, 'Editor-picks-content')]/div</td>
+	<td>latest_content</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${latest_content}</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-\&amp;]){12,240}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Title: ${latest_state}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot; ^^^^^^^^^^^DONE CONTENT.COLLCTION^^^^^^^^^^^&quot;);</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

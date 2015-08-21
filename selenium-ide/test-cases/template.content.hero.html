@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>content.phase</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">content.phase</td></tr>
+</thead><tbody>
+<!--HERO-->
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;HERO CHECK&quot;);</td>
+	<td></td>
+</tr>
+<!--============================-->
+<!--COLLECTIONS CAROUSEL-->
+<!--      HERO MAIN: validate elements-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[contains(@class, 'flexslider')]/div/ul/li</td>
+	<td>HERO_SLIDES</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>${HERO_SLIDES} == 0</td>
+	<td>hero_flat</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>${HERO_SLIDES} &gt;= ${i}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;== Hero slides[${i}] ==&quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~Hero: Promo image-->
+<tr>
+	<td>gotoIf</td>
+	<td>${IS_SPONSORED_COLLECTIONS_TESTS} == 2</td>
+	<td>hero_sponsored</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//div[contains(@class, 'flexslider')]/div/ul/li[${i}]/a/img</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[contains(@class, 'flexslider')]/div/ul/li[${i}]/a/img@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>eval_hero</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>hero_sponsored</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//div[contains(@class, 'flexslider')]/div/ul/li[${i}]/div/a/img</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[contains(@class, 'flexslider')]/div/ul/li[${i}]/div/a/img@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>eval_hero</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${eval_item}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Hero: image (${i}): ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~Hero: content - image, title, author-->
+<tr>
+	<td>store</td>
+	<td>xpath=//div[contains(@class, 'flexslider')]/div/ul/li[${i}]/a/span/span[@class='CollectionListSlider-caption-title']</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:[a-z0-9\.\-\&amp;\s\']*</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//div[contains(@class, 'flexslider')]/div/ul/li[${i}]/a/span/span[@class='CollectionListSlider-caption-title']</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${eval_item}</td>
+	<td>regexpi:[a-z0-9\.\?\(\)\!\s\-\&amp;]{2,40}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Hero: title (${i}): ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--============================-->
+<!--      HERO THUMB: validate elements-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//ol[contains(@class, 'flex-control-thumbs')]/li</td>
+	<td>HERO_SLIDES_THUMBS</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>${HERO_SLIDES_THUMBS} &gt;= ${i}</td>
+	<td></td>
+</tr>
+<!--      ~~Hero: THUM - image check-->
+<tr>
+	<td>store</td>
+	<td>xpath=//ol[contains(@class, 'flex-control-thumbs')]/li[${i}]/img@src</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${eval_item}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//ol[contains(@class, 'flex-control-thumbs')]/li[${i}]/img@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Hero Thumb (${i}): img: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_hero_flat</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>hero_flat</td>
+	<td></td>
+</tr>
+<!--COLLECTIONS NON-CAROUSEL-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[contains(@class, 'HeroBox')]/a/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[contains(@class, 'HeroBox')]/a/img@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Hero: img: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['COLLECTION_TYPE'] == 'mm'</td>
+	<td>after_sponsored_collection_title_lbln</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//div[contains(@class, 'HeroBox')]/div[@class='Overlay']/div/div[contains(@class, 'HeroBox-title')]/a</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:[a-z0-9\.\?\(\)\!\s\-\&amp;]{2,40}</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_sponsored_collection_title_lbln</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- Hero: Title: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_hero_flat</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

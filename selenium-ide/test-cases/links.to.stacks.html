@@ -1,0 +1,518 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>links.to.stacks</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">links.to.stacks</td></tr>
+</thead><tbody>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{Math.floor(Math.random()*12221)}</td>
+	<td>randNumber</td>
+</tr>
+<!--Otto-->
+<!--  - Lists-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/acid-reflux/h/list_1.html?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{confirm(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - Search-->
+<tr>
+	<td>echo</td>
+	<td>&quot;==== ${varNext} ====&quot;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://search.healthcentral.com/query?utf8=%E2%9C%93&amp;ver=colon-cancer&amp;ic=506010&amp;submit=Search&amp;q=test&amp;test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;==== ${varNext} ====&quot;);</td>
+	<td></td>
+</tr>
+<!--  - Center-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/colon-cancer/h/colon-cancer-center/colon-cancer.html?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - TheBody list-->
+<tr>
+	<td>open</td>
+	<td>http://www.thebody.com/h/list_1.html?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--CMS2-->
+<!--  - Ency-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/ency/408/000154.html?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/encyclopedia/408/370.html?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--Clinical Trials-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/clinical-trial/survey-ui/index.html?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--C5-->
+<!--  - CECS-->
+<tr>
+	<td>open</td>
+	<td>https://secure.healthcentral.com/cecs/cf/medtronic-oab?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>https://secure.healthcentral.com/cecs/cf/cancer-center</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - assessment-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/adhd/cf/assessments/adhd-screening/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - quiz-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/acid-reflux/cf/quizzes/heartburn-trigger-foods/peppermint/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - bibliography-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/allergy/cf/bibliography/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - DailyDose-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/dailydose/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/dailydose/cf/2015/04/02/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/dailydose/cf/2015/04/02/ancient_potion_fights_superbug?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - DailyDose Feed-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/dailydose/cf/feeds/20150301-20150315?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - Videos-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/videos/cf/adhd?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--DRUPAL-->
+<!--  - collections MM-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/epilepsy/d/living-with/taking-control?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - collections ST-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/bipolar/d/living/taking-control?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - collections CT-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/tools/d/clinical-trials?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - collections LBLN-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - collections LBLN static-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/rheumatoid-arthritis/m/LBLN/living-with-ra/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - collections Subcat-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/rheumatoid-arthritis/m/LBLN/living-with-ra/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - slideshow list-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/adhd/cf/slideshows?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - slideshow-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/adhd/cf/slideshows/10-signs-adhd-school?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - quiz list-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/adhd/cf/quizzes?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--  - slideshow-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/adhd/cf/slideshows?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/adhd/cf/slideshows?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--RENDER ENGINE-->
+<!--  - medication-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/adhd/r/medications?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/colon-cancer/r/ccac/index?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/colon-cancer/r/ccac/understanding-colorectal-3931?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!-- - Guildes-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/cholesterol/lifestyle.html?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!-- - SharePosts qustions lit-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/adhd/c/question/all?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/rheumatoid-arthritis/c/question/all?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!-- - SharePosts qustions lit-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/adhd/c/all?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/rheumatoid-arthritis/c/question/all?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/diabetes/c/458275/175063/hypothyroidism-infographic/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/heart-disease/c/458275/171998/atrial-fibrillation/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!-- - Patient Juorney-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/breast-cancer/c/general/introduction/what-is-breast-cancer?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--NEWSLETTER-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/profiles/c/newsletters/subscribe?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--TRACKER-->
+<tr>
+	<td>open</td>
+	<td>http://www.healthcentral.com/migraine/d/tracker-start?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--IMMERSIVE-->
+<tr>
+	<td>open</td>
+	<td>http://immersive.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://immersive.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms/flat</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<!--Medications-->
+<tr>
+	<td>open</td>
+	<td>http://immersive.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms/?test=${randNumber}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>http://immersive.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms/flat</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>javascript{alert(&quot;Continue?&quot;)}</td>
+	<td>varNext</td>
+</tr>
+</tbody></table>
+</body>
+</html>

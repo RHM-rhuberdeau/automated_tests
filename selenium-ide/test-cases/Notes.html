@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>Notes</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">Notes</td></tr>
+</thead><tbody>
+<!--Check Link-->
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//button[@class='Button Button--Share']@data-url</td>
+	<td>regexpi:.*/profiles/c/create</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//a[@class='Button Button--Share']/a</td>
+	<td>regexpi:.*/profiles/c/create</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>window.document.getElementsByClassName('Nav-listGroupSub-list-link').length</td>
+	<td>AZ_LINK_COUNT</td>
+</tr>
+<!--Check Text-->
+<tr>
+	<td>verifyText</td>
+	<td>css=a.LogoHC</td>
+	<td>HealthCentral</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars['sub_header_subcategory']</td>
+	<td>regexpi:[a-z\s\-\.]*</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=div[@class='Subscriptions-secondar'] div h3</td>
+	<td>exact:Why Subscribe?</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@class='Subscriptions-secondary']/div[1]/h3</td>
+	<td>exact:Why Subscribe?</td>
+</tr>
+<!--Xpath wildcard-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//form[@id='editorspicks']/div[starts-with(@class, 'Editor-picks-item')]</td>
+	<td>LATEST_POST</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>//section[@class='Editor-picks-container']/form/div[1]/div/img</td>
+	<td>b</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>javascript{var a = this.browserbot.getUserWindow().document.evaluate(storedVars['b'], this.browserbot.getUserWindow().document, null, 3, null ); a.booleanValue;}</td>
+	<td>popular_img</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${popular_img} &gt;= 1 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>alert( popular_img );</td>
+	<td></td>
+</tr>
+<!--Check Text after storing-->
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[@class='Custom-paginator-controls']/div/a@rel</td>
+	<td>LATEST_NEXT</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>${LATEST_NEXT}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars['LATEST_NEXT']</td>
+	<td>next</td>
+</tr>
+<!--Check element-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[@class='HC-header-controls js-HC-header-controls js-TrackingInternal']/form[@class='Search--Mini']/input[@id=&quot;q&quot;]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//script[contains(@src, 'assets.adobedtm.com')]@src</td>
+	<td>*assets.adobedtm.com*</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//script[contains(@src, 'assets.adobedtm.com')]@src</td>
+	<td>USING_DTM</td>
+</tr>
+<tr>
+	<td>echo</td>
+	<td>=========&gt; ${USING_DTM}</td>
+	<td></td>
+</tr>
+<!--Store CSS txt-->
+<tr>
+	<td>storeText</td>
+	<td>css=a.Page-category-titleLink.js-Page-category-titleLink</td>
+	<td>sub_header_subcategory</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//*/div[@class=' Ad-IframeWrap Ad-IframeWrap--js-Header-adLeaderboard-inside']/iframe@id</td>
+	<td>AD_IFRAME</td>
+</tr>
+<!--echo-->
+<tr>
+	<td>echo</td>
+	<td>javascript{this.browserbot.getUserWindow().thcn.hier1}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('title')</td>
+	<td>TEST</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>this.browserbot.getUserWindow()._satellite.getVar('title')</td>
+	<td>Acid Reflux - Introductionx</td>
+</tr>
+<!--LOG-->
+<tr>
+	<td>getEval</td>
+	<td>alert(123);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.info(&quot;ALERT DETECTED ${USING_DTM}&quot;);</td>
+	<td></td>
+</tr>
+<!--while loop-->
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>4&gt;${i};</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn( &quot;${i} - WE RECOMMEND&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<!--We recommend - count and verify 3 cells & images and text-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>//div[6]/ul[@class='CollectionListBoxes-list']/li</td>
+	<td>COUNT</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn( &quot;${RCOUNT} - RCOUNT&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>3 &gt;= ${i};</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//ul[@class='CollectionListBoxes-list']/li[${i}]/div/a/img</td>
+	<td>cur_werecommend</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${cur_werecommend}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//ul[@class='CollectionListBoxes-list']/li[${i}]/div/a/div[@class='CollectionListBoxes-box-info']</td>
+	<td>cur_werecommend</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${cur_werecommend}</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-]){12,40}</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn( storedVars['i'] + &quot;:&nbsp;&nbsp;${cur_werecommend}&nbsp;&nbsp;- WE RECOMMEND&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

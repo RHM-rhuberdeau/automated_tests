@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>template.we_recommend</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">template.we_recommend</td></tr>
+</thead><tbody>
+<!--      ==== PAGINATION: skip to latest post if page 2 or greater-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['CURRENT_URL'].match(/.*\/p\/[0-9]{1,3}.*/g) &amp;&amp; ! storedVars['CURRENT_URL'].match(/.*\/p\/1/g);</td>
+	<td>after_we_recomment</td>
+</tr>
+<!--We recommend - count and verify 3 cells & images and text-->
+<tr>
+	<td>verifyText</td>
+	<td>css=h4.CollectionListBoxes-titleSub</td>
+	<td>We Recommend</td>
+</tr>
+<!--============================-->
+<!--      we recommend: check images and title-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[contains(@class, 'CollectionListWeRecommend')]/ul[@class='CollectionListBoxes-list']/li</td>
+	<td>WE_RECOMMEND_COUNT</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;WE RECOMMEND ${WE_RECOMMEND_COUNT} Total&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${WE_RECOMMEND_COUNT} &gt;=&nbsp;&nbsp;1 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>${WE_RECOMMEND_COUNT} &gt;= ${i};</td>
+	<td></td>
+</tr>
+<!--      ~~we recommend: image-->
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;== We Recommend cell[${i}] ==&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//ul[@class='CollectionListBoxes-list']/li[${i}]/div/a/img</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//ul[@class='CollectionListBoxes-list']/li[${i}]/div/a/img@src</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>${eval_item}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- We Recommend: image: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<!--      ~~we recommend: Title-->
+<tr>
+	<td>store</td>
+	<td>xpath=//ul[@class='CollectionListBoxes-list']/li[${i}]/div/a/div[@class='CollectionListBoxes-box-info']/div</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:([a-z0-9\.\?\(\)\!\s\-]){12,40}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;&nbsp;&nbsp;&nbsp;- We Recommend: Title: &quot; + storedVars['eval_data']);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_we_recomment</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

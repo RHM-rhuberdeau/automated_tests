@@ -1,0 +1,468 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>New Test</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">New Test</td></tr>
+</thead><tbody>
+<!--      ==== SKIP Header if SKIP_AD_HEADER=1-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['SKIP_AD_HEADER'] == 1</td>
+	<td>check_meta</td>
+</tr>
+<!--HeaderMain: Top Leaderboard Ad-->
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[@class=' Ad-IframeWrap Ad-IframeWrap--js-Header-adLeaderboard-inside']/iframe@id</td>
+	<td>AD_IFRAME</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;AD HEADER: ${AD_IFRAME}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyAttribute</td>
+	<td>xpath=//*/div[@class=' Ad-IframeWrap Ad-IframeWrap--js-Header-adLeaderboard-inside']/iframe@id</td>
+	<td>Ad-iframe--js-Header-adLeaderboard-inside</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>//div[@id='js-Header-adLeaderboard-inside']/div</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>check_meta</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP Meta if SKIP_META=1-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['SKIP_META'] == 1</td>
+	<td>after_check_meta</td>
+</tr>
+<!--META-->
+<!--      page title-->
+<tr>
+	<td>assertTitle</td>
+	<td>regexpi:[a-z0-9\s\-\.\?\s]{2,64} (\-|\|) [a-z0-9\s\-\.]{2,64}</td>
+	<td></td>
+</tr>
+<!--     description-->
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@name='description']@content</td>
+	<td>regexpi:[a-z0-9\-\s\,\&amp;]{5,256}</td>
+</tr>
+<!--     keywords-->
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@name='keywords']@content</td>
+	<td>regexpi:[a-z0-9\-\s\,\&amp;]{3,256}</td>
+</tr>
+<!--     twitter:card-->
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@name='twitter:card']@content</td>
+	<td>exact:summary</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@name='twitter:site']@content</td>
+	<td>exact:@healthcentral</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@name='twitter:creator']@content</td>
+	<td>exact:@healthcentral</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@name='twitter:site']@content</td>
+	<td>exact:@healthcentral</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@name='twitter:title']@content</td>
+	<td>regexpi:[a-z0-9\-\s\,\&amp;]{5,256}</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@name='twitter:description']@content</td>
+	<td>regexpi:[a-z0-9\-\s\,\&amp;]{5,256}</td>
+</tr>
+<!--     facebook:OpenGraph-->
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@property='og:title']@content</td>
+	<td>regexpi:[a-z0-9\-\s\,\&amp;]{5,256}</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@property='og:description']@content</td>
+	<td>regexpi:[a-z0-9\-\s\,\&amp;]{5,256}</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//meta[@property='og:site_name']@content</td>
+	<td>exact:@healthcentral</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_check_meta</td>
+	<td></td>
+</tr>
+<!--HeaderMain: HCN logo-->
+<tr>
+	<td>verifyText</td>
+	<td>css=a.LogoHC</td>
+	<td>HealthCentral</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//a[@class='LogoHC']@href</td>
+	<td>exact:/</td>
+</tr>
+<!--HeaderMain: Health A-Z count more then 46 links-->
+<tr>
+	<td>click</td>
+	<td>id=HC-menu</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//nav[contains(@class, 'Nav--Primary')]/ul/li/ul</td>
+	<td>AZ_HEADING_COUNT</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//nav[contains(@class, 'Nav--Primary')]/ul/li/ul[1]/li[@role='presentation']</td>
+	<td>Resources</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//nav[contains(@class, 'Nav--Primary')]/ul/li/ul[3]/li[@role='presentation']</td>
+	<td>Body &amp; Mind</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//nav[contains(@class, 'Nav--Primary')]/ul/li/ul[4]/li[@role='presentation']</td>
+	<td>Family Health</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//nav[contains(@class, 'Nav--Primary')]/ul/li/ul[5]/li[@role='presentation']</td>
+	<td>Healthy Living</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;A-Z Nav: Super Category Headings: ${AZ_HEADING_COUNT} &quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//nav[contains(@class, 'Nav--Primary')]/ul/li/ul[5]/li[@role='presentation']</td>
+	<td>Healthy Living</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>window.document.getElementsByClassName('Nav-listGroupSub-list-link').length</td>
+	<td>AZ_LINK_COUNT</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${AZ_LINK_COUNT} &gt;=&nbsp;&nbsp;40 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;A-Z Nav: (${AZ_LINK_COUNT}) Links&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>id=HC-menu</td>
+	<td></td>
+</tr>
+<!--HeaderMain: Ask A Question-->
+<tr>
+	<td>verifyText</td>
+	<td>css=button.Button--Ask</td>
+	<td>Ask A Question</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//a[@class='js-TrackingInternal--ask-link']@href</td>
+	<td>regexpi:[a-z\-\_]*/c/question/(create|home)</td>
+</tr>
+<!--HeaderMain: search-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[@class='HC-header-controls js-HC-header-controls js-TrackingInternal']/form[@class='Search--Mini']/input[@id=&quot;q&quot;]</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP SUBCATEGORY SUBHEADER TESTS IF: sponsored collection-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IS_SPONSORED_COLLECTIONS_TESTS'] == 1</td>
+	<td>lbln_subheader</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['SKIP_SUB_HEADER'] == 1</td>
+	<td>after_sub_header</td>
+</tr>
+<!--SUBCATEGORY: Subcategory-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>css=a.Page-category-titleLink.js-Page-category-titleLink</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=a.Page-category-titleLink.js-Page-category-titleLink</td>
+	<td>regexpi:[a-z\s\-\.]{2,32}</td>
+</tr>
+<!--      Subheader: same subhead test-->
+<tr>
+	<td>storeText</td>
+	<td>css=a.Page-category-titleLink.js-Page-category-titleLink</td>
+	<td>sub_header_subcategory</td>
+</tr>
+<tr>
+	<td>assertEval</td>
+	<td>storedVars['sub_header_subcategory']</td>
+	<td>regexpi:[a-z\s\-\.]*</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${sub_header_subcategory} - sub header&quot;);</td>
+	<td></td>
+</tr>
+<!--      Subheader: buttons on the right-->
+<!---
+<tr>
+	<td>verifyText</td>
+	<td>css=button.Button.Button--Join</td>
+	<td>GET OUR NEWSLETTERS</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//a[@class='js-TrackingInternal--jcom-link']@href</td>
+	<td>regexpi:/profiles/c/newsletters/subscribe</td>
+</tr>
+--->
+<!--      Join Our Commnity-->
+<!--      ==== SKIP Join Our Community if logged in-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['USER_ID'] != ''</td>
+	<td>after_joinoutcommunity</td>
+</tr>
+<tr>
+	<td>verifyVisible</td>
+	<td>css=button.Button.Button--Join</td>
+	<td>JOIN OUR COMMUNITY</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_joinoutcommunity</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=button.Button.Button--Share</td>
+	<td>SHARE YOUR STORY</td>
+</tr>
+<tr>
+	<td>assertAttribute</td>
+	<td>xpath=//button[@class='Button Button--Share']@data-url</td>
+	<td>regexpi:.*/profiles/c/create</td>
+</tr>
+<!--      ==== SKIP Sponsored Collection Subheader-->
+<tr>
+	<td>gotolabel</td>
+	<td>before_also_see</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>lbln_subheader</td>
+	<td></td>
+</tr>
+<!--Sponsored Collection Sub Header-->
+<!--      ==== SKIP Sponsored Collection if not LBLN-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['COLLECTION_TYPE'] == 'lbln' || storedVars['COLLECTION_TYPE'] == 'mm'</td>
+	<td>begin_sponsored_collection_header_lbln</td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_sub_header</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>begin_sponsored_collection_header_lbln</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP LBLN template if mm-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['COLLECTION_TYPE'] == 'mm'</td>
+	<td>before_sponsored_collection_header_mm</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//div[@class='Page-category-content']/div/div[@class='Logo-supercollection']/img</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_sponsored_collection_header_mm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>before_sponsored_collection_header_mm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>xpath=//div[@class='Page-category-content']/div/div[@class='Logo-supercollection-mymoment']</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars['eval_data']</td>
+	<td>MyMoment</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Subheader MM: top logo ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_sponsored_collection_header_mm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Subheader LBLN: top logo ${a}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@class='Page-category-content']/div/div[@class='Description-supercollection']/a</td>
+	<td>regexpi:[a-z0-9\'\,\.\-\&amp;\s]{2,24}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>xpath=//div[@class='Page-category-content']/div/div[@class='Description-supercollection']/a</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;LBLN Subheader: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@class='Page-category-content']/div/div[@class='Description-supercollection']/span/a</td>
+	<td>regexpi:more on[a-z0-9\'\,\.\-\&amp;\s»]{2,56}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>xpath=//div[@class='Page-category-content']/div/div[@class='Description-supercollection']/span/a</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Subheader LBLN: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>gotolabel</td>
+	<td>after_sub_header</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_sponsored_collection_header_lbln</td>
+	<td></td>
+</tr>
+<!--      ==== SKIP Sponsored Collection if not ST-->
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['COLLECTION_TYPE'] != 'st'</td>
+	<td>after_sponsored_collection_header_st</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>xpath=//div[@class='Page-category-content']/div/div[contains(@class, 'Description-supercollection')]/a</td>
+	<td>eval_item</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>${eval_item}</td>
+	<td>regexpi:[a-z0-9\'\,\.\-\&amp;\s]{2,56}</td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>${eval_item}</td>
+	<td>eval_data</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Subheader ST: ${eval_data}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_sponsored_collection_header_st</td>
+	<td></td>
+</tr>
+<!--      Subheader: Also See check more than 1-->
+<tr>
+	<td>label</td>
+	<td>before_also_see</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=div.Page-category-related-title</td>
+	<td>Also See</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//ul[@class='Page-category-related-list']/li</td>
+	<td>ALSOSEE_COUNT</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${ALSOSEE_COUNT} &gt;=&nbsp;&nbsp;1 ? true : false</td>
+	<td>true</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;Also See: (${ALSOSEE_COUNT} ) links&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>after_sub_header</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>

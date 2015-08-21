@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://local.healthcentral.com:8000" />
+<title>test.collection.index</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">test.collection.index</td></tr>
+</thead><tbody>
+<!--=========================-->
+<!--CONFIGS: 0=NO, 1=>YES-->
+<!--=========================-->
+<tr>
+	<td>store</td>
+	<td></td>
+	<td>SCAN_DOMAIN</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>HAS_PAGINATION</td>
+</tr>
+<!--=========================-->
+<!--GET LINKS FROM COLLECTION HOME-->
+<!--=========================-->
+<!--Hero link: -->
+<tr>
+	<td>storeElementPresent</td>
+	<td>div[contains(@class, 'HeroBox')]</td>
+	<td>HERO_OR_SLIDE</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['HERO_OR_SLIDE']</td>
+	<td>begin_hero_link_check</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>//a[contains(@class, 'CollectionListSlider-link')]@href</td>
+	<td>TMP</td>
+</tr>
+<tr>
+	<td>goto</td>
+	<td>end_hero_link_check</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>begin_hero_link_check</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>//div[contains(@class, 'HeroBox')]/a@href</td>
+	<td>TMP</td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>end_hero_link_check</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>COLLECTION_LNKS = new Array()</td>
+	<td>COLLECTION_LNKS</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>storedVars['TMP'].replace(/http:\/\/[a-z0-9]*\.[a-z0-9\-]*\.[a-z0-9\:]*/, storedVars['SCAN_DOMAIN'])</td>
+	<td>TMP</td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>javascript{storedVars['COLLECTION_LNKS'][0] = storedVars['TMP']}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;LINK: (0) &quot; + storedVars['TMP']);</td>
+	<td></td>
+</tr>
+<!--Collection Lists links-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>//a[contains(@class, 'CollectionList')]</td>
+	<td>COLLECTION_LNK_CNT</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>selectWindow</td>
+	<td>null</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>css=img.RightrailbuttonpromoItem-image</td>
+	<td>RR_PROMO</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['RR_PROMO']==false</td>
+	<td>end_rr_promo</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>css=img.RightrailbuttonpromoItem-image</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>css=img.RightrailbuttonpromoItem-image</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeText</td>
+	<td>css=img.RightrailbuttonpromoItem-image</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>end_rr_promo</td>
+	<td></td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['i']&lt;=storedVars['COLLECTION_LNK_CNT']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>//descendant::a[contains(@class, 'CollectionList')][${i}]@href</td>
+	<td>TMP</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['TMP'] == '' || storedVars['TMP'] == false</td>
+	<td>skip_the_url</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>storedVars['TMP'].replace(/http:\/\/[a-z0-9]*\.[a-z0-9\-]*\.[a-z0-9\:]*/, storedVars['SCAN_DOMAIN'])</td>
+	<td>TMP</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['COLLECTION_LNKS'].indexOf( storedVars['TMP'] ) &gt;= 0</td>
+	<td>skip_the_url</td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>javascript{storedVars['COLLECTION_LNKS'].push(storedVars['TMP'])}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;LINK: (${i}) &quot; + storedVars['TMP']);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>skip_the_url</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;TOTAL LINKS: ${i} || in found: &quot; + storedVars.COLLECTION_LNKS.length);</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

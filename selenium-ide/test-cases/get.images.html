@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>get.images</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">get.images</td></tr>
+</thead><tbody>
+<!--=========================-->
+<!--CONFIGS: 0=NO, 1=>YES-->
+<!--=========================-->
+<tr>
+	<td>store</td>
+	<td>http://www.healthcentral.com</td>
+	<td>SCAN_DOMAIN</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>HAS_PAGINATION</td>
+</tr>
+<!--=========================-->
+<!--GET LINKS FROM COLLECTION HOME-->
+<!--=========================-->
+<!--Collection Lists links-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>//img</td>
+	<td>COLLECTION_LNK_CNT</td>
+</tr>
+<tr>
+	<td>store</td>
+	<td>1</td>
+	<td>i</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>COLLECTION_LNKS = new Array()</td>
+	<td>COLLECTION_LNKS</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(storedVars['COLLECTION_LNK_CNT'] + &quot; Images found&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>while</td>
+	<td>storedVars['i']&lt;=storedVars['COLLECTION_LNK_CNT']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeElementPresent</td>
+	<td>//img[${i}]</td>
+	<td>IMG</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['IMG']==false</td>
+	<td>skip_the_url</td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>//img[${i}]@src</td>
+	<td>TMP</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['TMP'] == '' || storedVars['TMP'] == false</td>
+	<td>skip_the_url</td>
+</tr>
+<tr>
+	<td>storeEval</td>
+	<td>storedVars['TMP'].replace(/http:\/\/[a-z0-9]*\.[a-z0-9\-]*\.[a-z0-9\:]*/, storedVars['SCAN_DOMAIN'])</td>
+	<td>TMP</td>
+</tr>
+<!--remove page jumps-->
+<tr>
+	<td>storeEval</td>
+	<td>storedVars['TMP'].replace(/\#[0-9a-z\=]*/, '')</td>
+	<td>TMP</td>
+</tr>
+<tr>
+	<td>gotoIf</td>
+	<td>storedVars['COLLECTION_LNKS'].indexOf( storedVars['TMP'] ) &gt;= 0</td>
+	<td>skip_the_url</td>
+</tr>
+<tr>
+	<td>runScript</td>
+	<td>javascript{storedVars['COLLECTION_LNKS'].push(storedVars['TMP'])}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn( storedVars['TMP']);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>label</td>
+	<td>skip_the_url</td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>storedVars['i']++;</td>
+	<td></td>
+</tr>
+<tr>
+	<td>endWhile</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;TOTAL LINKS: ${i} || in found: &quot; + storedVars.COLLECTION_LNKS.length);</td>
+	<td></td>
+</tr>
+
+</tbody></table>
+</body>
+</html>

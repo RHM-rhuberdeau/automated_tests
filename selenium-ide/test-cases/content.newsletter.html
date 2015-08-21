@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head profile="http://selenium-ide.openqa.org/profiles/test-case">
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<link rel="selenium.base" href="http://qa.healthcentral.choicemedia.com/skin-care/c/question/550423/132858" />
+<title>content.phase</title>
+</head>
+<body>
+<table cellpadding="1" cellspacing="1" border="1">
+<thead>
+<tr><td rowspan="1" colspan="3">content.phase</td></tr>
+</thead><tbody>
+<!--HEADING: Title and descripton-->
+<tr>
+	<td>verifyText</td>
+	<td>css=div.Subscriptions-main h1</td>
+	<td>Subscribe to our Newsletters</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@class='Subscriptions-main']/h2</td>
+	<td>regexpi:([a-z0-9\.\&gt;\(\)\!\s]){24,128}</td>
+</tr>
+<!--SIGNUP: Newsletter Subcategory lists & Promo-->
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[@class='Subscriptions-main-list']/div/label</td>
+	<td>NEWSLETTER_LIST</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${NEWSLETTER_LIST} - NEWSLETTER LIST&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${NEWSLETTER_LIST} ==&nbsp;&nbsp;14 ? true : false</td>
+	<td>true</td>
+</tr>
+<!--      SIGNUP: Verify Email Field-->
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//form[@class='edit_newsletters_db_newsletter']/div/input[@id='email_address']</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>xpath=//form[@class='edit_newsletters_db_newsletter']/div/input[@id='newsletters_db_newsletter_submit']</td>
+	<td></td>
+</tr>
+<!--      Disclaimer-->
+<tr>
+	<td>verifyText</td>
+	<td>css=p.Subscriptions-privacy</td>
+	<td>Your privacy is important to us.*</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Privacy Policy</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[@class='Subscriptions-main']/p[@class='Subscriptions-privacy']/a@href</td>
+	<td>DISCLAIMER</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars['DISCLAIMER']</td>
+	<td>http://www.remedyhealthmedia.com/privacy-policy.pdf</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${DISCLAIMER}&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>link=Terms of Use</td>
+	<td></td>
+</tr>
+<tr>
+	<td>storeAttribute</td>
+	<td>xpath=//div[@class='Subscriptions-main']/p[@class='Subscriptions-privacy']/a[2]@href</td>
+	<td>DISCLAIMER</td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>storedVars['DISCLAIMER']</td>
+	<td>http://www.remedyhealthmedia.com/terms-use.pdf</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${DISCLAIMER}&quot;);</td>
+	<td></td>
+</tr>
+<!--RIGHTRAIL: Why Subscribe-->
+<tr>
+	<td>verifyText</td>
+	<td>css=div[@class='Subscriptions-secondar'] div h3</td>
+	<td>exact:Why Subscribe?</td>
+</tr>
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@class='Subscriptions-secondary']/div[1]/h3</td>
+	<td>exact:Why Subscribe?</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[@class='Subscriptions-secondary']/div[1]/ul/li</td>
+	<td>NEWSLETTER_LIST</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${NEWSLETTER_LIST} - NEWSLETTER LIST&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${NEWSLETTER_LIST} &gt;=&nbsp;&nbsp;3 ? true : false</td>
+	<td>true</td>
+</tr>
+<!--      RIGHTRAIL: More Great Newsletters:-->
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@class='Subscriptions-secondary']/div[2]/h3</td>
+	<td>exact:More Great Newsletters:</td>
+</tr>
+<tr>
+	<td>storeXpathCount</td>
+	<td>xpath=//div[@class='Subscriptions-secondary']/div[2]/ul/li</td>
+	<td>NEWSLETTER_LIST</td>
+</tr>
+<tr>
+	<td>getEval</td>
+	<td>LOG.warn(&quot;${NEWSLETTER_LIST} - NEWSLETTER LIST&quot;);</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyEval</td>
+	<td>${NEWSLETTER_LIST} &gt;=&nbsp;&nbsp;3 ? true : false</td>
+	<td>true</td>
+</tr>
+<!--      RIGHTRAIL: Feedback-->
+<tr>
+	<td>verifyText</td>
+	<td>xpath=//div[@class='Subscriptions-secondary']/p</td>
+	<td>Don't see a newsletter relevant to you? Send your feedback to*</td>
+</tr>
+<tr>
+	<td>assertElementPresent</td>
+	<td>link=comments@healthcentral.com</td>
+	<td></td>
+</tr>
+</tbody></table>
+</body>
+</html>
