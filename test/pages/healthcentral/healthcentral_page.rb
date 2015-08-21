@@ -126,7 +126,7 @@ class HealthCentralPage
   end
 
   def assets(args)
-    HealthCentralAssets::Assets.new(:proxy => @proxy, :driver => @driver, :base_url => args[:base_url])
+    HealthCentralAssets::Assets.new(:proxy => @proxy, :driver => @driver, :base_url => args[:base_url], :host => args[:host])
   end
 
   def global_test_cases
