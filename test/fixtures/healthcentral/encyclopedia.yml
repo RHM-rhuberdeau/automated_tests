@@ -65,14 +65,14 @@ adam_index:
   prop50:    "D=User-Agent"
 
 adam_leaf_adhd:
-  pageName:  "Verticals > ADHD > ADAM Encyclopedia > > > HealthCentral Conditions Library – ADHD Index"
-  channel:   "ADHD Vertical"
+  pageName:  "Verticals > ADHD > Adam_Encyclopedia_Index > > > HealthCentral Conditions Library – ADHD Index"
+  channel:   "ADHD"
   events:    "event4"
   prop1:     "Body & Mind"
-  hier1:     "Verticals,ADHD,ADAM Encyclopedia, , ,HealthCentral Conditions Library – ADHD Index"
+  hier1:     "Verticals,ADHD,Adam_Encyclopedia_Index, , ,HealthCentral Conditions Library – ADHD Index"
   prop2:     "Mental Health"
   prop5:     "HealthCentral Conditions Library – ADHD Index"
-  prop6:     "ADAM Encyclopedia"
+  prop6:     "Adam_Encyclopedia_Index"
   prop7:     "adam-index|adam"
   prop10:    "/adhd/encyclopedia/"
   prop12:    "2015-06-17"
