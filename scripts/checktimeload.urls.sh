@@ -4,6 +4,7 @@
 # time curl --header Host:www.healthcentral.com -s -D - drupal1.hcaws.net/adhd -o /dev/null
 #
 
+THE_LOGFILE="/tmp/scanlog.txt"
 TIME_BEGIN=$(date +%s)
 GREEN='\033[1;32m'
 RED='\033[0;31m'
@@ -23,6 +24,7 @@ while test $# -gt 0; do
                         echo "options:"
                         echo "-h, --help                show brief help"
                         echo "-f, --file=FILE           file of URLs"
+                        echo "-o, --out-file=FILE       file for log output"
                         echo "-d, --domain=www.healthcentral.com  use this domain for relative paths"
                         echo "-a, --header=curl_header  curl custom header"
                         echo "-c, --cache-buster        if flagged, we append unix epoc seconds to the url as a query sting"
@@ -75,6 +77,20 @@ while test $# -gt 0; do
                         export DOMAIN=`echo $1 | sed -e 's/^[^=]*=//g'`
                         shift
                         ;;
+                # -o)
+                #         shift
+                #         if test $# -gt 0; then
+                #                 export THE_LOGFILE=$1
+                #         else
+                #                 echo "no process specified"
+                #                 exit 1
+                #         fi
+                #         shift
+                #         ;;
+                # --out-file*)
+                #         export THE_LOGFILE=`echo $1 | sed -e 's/^[^=]*=//g'`
+                #         shift
+                #         ;;
                 -a)
                         shift
                         if test $# -gt 0; then
@@ -94,6 +110,7 @@ while test $# -gt 0; do
                         ;;
         esac
 done
+
 
 
 if [[ -z "${DOMAIN}" ]]; then
@@ -147,14 +164,31 @@ second_to_human_time () {
 }
 
 
+echo > $THE_LOGFILE
+log_output() {
+    printf "${1}\n"
+    if [[ "${2}" == 1 ]]; then
+        the_string=$(echo $1 | sed -E 'N;s/\\033\[[0-9]{1}\;?[0-9]{1,2}m//g')
+    else
+        the_string=$(echo $1 | sed -E 's/\\033\[[0-9]{1}\;?[0-9]{1,2}m//g')
+    fi
+    printf "${the_string}\n" >> $THE_LOGFILE
+    #printf "%s"  "$*" "$(date +'%Y-%m-%d %H:%M:%S')" >> $THE_LOGFILE
+    #the_string=$(echo $* | sed -E "s/"$'\E'"\[([0-9]{1,3}((;[0-9]{1,3})*)?)?[m|K]//g")
+    #the_string=`perl -pe 's/\x1b\[[0-9;]*[mG]//g'`
+}
+
+
 TMP_RSP='/tmp/rsp_msg'
 re="real ([0-9sm\.]*)"
 
+cnt_error=0
+cnt_success=0
+cnt_total=0
 for i in "${urls[@]}"
 do
 	if [[ "${i}" == \#* ]]; then
-        echo
-        printf "${BG_YELLOW}${i}${NC}"
+        printf "\n${BG_YELLOW}${i}${NC}\n"
 		continue
 	fi
 	if [[ ! -n "${i}" ]]; then
@@ -176,37 +210,42 @@ do
 	#RESPONSE=$(time curl -IL $HEADER --silent "${baseurl}${i}" | grep HTTP)
     #RESPONSEFULL=$(${checktime} curl --head --location --silent $HEADER  "${baseurl}${i}?${CACHEBUST}" | grep "HTTP\|Location")
     if [[ "${SHOWTIME}" == 1 ]]; then
-        THETIMER=$(time (curl --head --location --silent $HEADER "${url_to_test}" | grep "HTTPS\|HTTP\|Location" >${TMP_RSP} ) 3>&1 1>&2 2>&3 )
+        #THETIMER=$(time (curl --head --location --insecure --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}" | grep "HTTPS\|HTTP\|Location\|X-Cache" >${TMP_RSP} ) 3>&1 1>&2 2>&3 )
+        THETIMER=$(time (curl --head --location --insecure --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}" > ${TMP_RSP} ) 3>&1 1>&2 2>&3 )
         #RESPONSEFULL=$(tr '\015' ' ' < /tmp/tmp.txt)
         THETIMER=$(echo $THETIMER | tr '\015' ' ')
-        RESPONSEFULL=$( < ${TMP_RSP})
+        RESPONSEFULL_ALL=$( < ${TMP_RSP})
     else
-        RESPONSEFULL=$(curl --head --location --insecure --silent $HEADER "${url_to_test}" | grep "HTTPS\|HTTP\|Location")
+        #RESPONSEFULL=$(curl --head --location --insecure --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}" | grep "HTTPS\|HTTP\|Location\|X-Cache")
+        RESPONSEFULL_ALL=$(curl --head --location --insecure --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}")
     fi
+
+    RESPONSEFULL=$(echo "${RESPONSEFULL_ALL}" | grep "HTTPS\|HTTP\|Location\|X-Cache")
 
     if [[ $THETIMER =~ $re ]]; then real_time=${BASH_REMATCH[1]}; fi
 	if [[ $RESPONSEFULL == *200* ]] ; then
-        echo
+        cnt_success=$((cnt_success+1))
         if [[ ! -n "${real_time}" ]]; then real_time="200"; fi
         if [[ -n $SHOWSUCCESS ]] ; then
-            printf "[${LIGHT}${real_time}${NC}] ${url_to_test} "
-            echo
-            printf "${GREEN}${RESPONSEFULL}${NC}"
+            log_output "[${LIGHT}${real_time}${NC}] ${url_to_test}"
+            log_output "${GREEN}${RESPONSEFULL}${NC}" 1
         else
-            printf "[${real_time}] ${GREEN}${url_to_test}${NC}..."
+            log_output "[${real_time}] ${GREEN}${url_to_test}${NC}..."
         fi
 	else
-        if [[ ! -n "${real_time}" ]]; then real_time="ERROR"; fi
-        echo
-        printf "[${RED}${real_time}${NC}] ${url_to_test} "
-        echo
-		printf "${RED}${RESPONSEFULL}${NC}"
+        if [[ ! -n "${real_time}" ]]; then real_time="ERROR";cnt_error=$((cnt_error+1)); fi
+        log_output "[${RED}${real_time}${NC}] ${url_to_test}"
+        log_output "${RED}${RESPONSEFULL}${NC}" 1
 	fi
 	baseurl=""
     real_time=""
 done
 
+cnt_total=$((cnt_success+cnt_error))
 echo
+printf "${cnt_success}\t[${GREEN}200${NC}]\n"
+printf "${cnt_error}\t[${RED}ERROR${NC}]${NC}\n"
+printf "${cnt_total}\tTOTAL\n"
 echo
 TIME_END=$(date +%s)
 TIME_DIFF=(TIME_END-TIME_BEGIN)

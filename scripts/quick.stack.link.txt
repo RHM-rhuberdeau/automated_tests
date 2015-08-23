@@ -100,10 +100,7 @@ https://secure.healthcentral.com/cecs/cf/cancer-center/cancers-we-treat
 /2/migraine/awarenessweek-290697-5.html
 /2/migraine/medications-540055-5.html
 #--- Otto
-/genital-herpes/g/early-signs-of-genital-herpes-and-pictures.html
-/cold-flu/g/what-can-cause-chills-with-no-fever.html
-/colon-cancer/h/symptoms-of-rectal-cancer-in-women.html
-#http://search.healthcentral.com/query?utf8=%E2%9C%93&ver=colon-cancer&ic=506010&submit=Search&q=test
+http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q=test
 #--- newsletters
 /profiles/c/newsletters/subscribe
 #--- drupal collections
@@ -167,6 +164,9 @@ https://secure.healthcentral.com/cecs/cf/cancer-center/cancers-we-treat
 # http://immersiveq.thebody.com/LBLN/hiv-addiction-recovery-relationship
 # http://immersive.healthcentral.com/skin-care/d/LBLN/dtalbert-living-with-psoriasis/flat
 # http://immersive.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms/flat
+#--- Things that have broke in the past
+http://www.healthcentral.com/allergy/d/immersive/living-with-chronic-hives/
+http://www.healthcentral.com/allergy/d/immersive/living-with-chronic-hives
 #SYSTEMS
 #--- Assets
 /common/a/assets/healthcentral_common.js
@@ -187,3 +187,10 @@ https://secure.healthcentral.com/cecs/cf/cancer-center/cancers-we-treat
 #/dailydose/cf/feeds/20150301-20150315
 #SP feed for drupal
 # http://tools.choicemedia.com/shareposts/admin/feeds/drupal/records?mode=full&page=0&timestamp=1401580800&limit=5
+################
+# Expected Errors
+################
+#--- Otto
+/genital-herpes/g/early-signs-of-genital-herpes-and-pictures.html
+/cold-flu/g/what-can-cause-chills-with-no-fever.html
+/colon-cancer/h/symptoms-of-rectal-cancer-in-women.html
