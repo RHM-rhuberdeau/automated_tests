@@ -15,7 +15,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url  = "#{HC_BASE_URL}/allergy/c/3989/173667/decreased-common-bedfellows"
+      @url  = "#{HC_BASE_URL}/allergy/c/3989/173667/decreased-common-bedfellows" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -57,7 +57,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
         ad_categories = ["allergy","",""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
-                                                           :url => "#{HC_BASE_URL}/allergy/c/3989/173667/decreased-common-bedfellows",
+                                                           :url => @url,
                                                            :ad_site => ad_site,
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",

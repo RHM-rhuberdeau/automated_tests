@@ -10,7 +10,7 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
       question_fixture = YAML::load_documents(io)
       @question_fixture = OpenStruct.new(question_fixture[0][40783])
       @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @question_fixture)
-      @url  = "#{HC_BASE_URL}/heart-disease/c/question/67255/40783"
+      @url  = "#{HC_BASE_URL}/heart-disease/c/question/67255/40783" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -123,7 +123,7 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
         ad_categories = ["heartdisease","smokingcessation",""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
-                                                           :url => "#{HC_BASE_URL}/heart-disease/c/question/67255/40783",
+                                                           :url => @url,
                                                            :ad_site => ad_site,
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",

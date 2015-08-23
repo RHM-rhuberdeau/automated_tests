@@ -10,7 +10,7 @@ class SubCategory < MiniTest::Test
       subcat_fixture = YAML::load_documents(io)
       @subcat_fixture = OpenStruct.new(subcat_fixture[0]['visioncare'])
       @page = ::HealthCentral::SubcategoryPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @subcat_fixture)
-      @url  = "#{HC_DRUPAL_URL}/vision-care"
+      @url  = "#{HC_DRUPAL_URL}/vision-care" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -71,7 +71,7 @@ class SubCategory < MiniTest::Test
         assert_equal(true, text.downcase == "more resources", "text was #{text} not More Resources")
         assert_equal(true, links.length >= 3, "#{links.length} appeared in more resources, not 7")
         links_text.each do |text|
-          assert_equal(true, (text == "Slideshows" || text == "Medications" || text == "Videos" || text == "Questions" || text == "Topics A-Z" || text == "Quizzes and Assessments" || text == "Blogposts"), "#{text} did not appear in more resources")
+          assert_equal(true, (text == "Slideshows" || text == "Medication" || text == "Videos" || text == "Questions" || text == "Topics A-Z" || text == "Quizzes and Assessments" || text == "Blogposts"), "#{text} did not appear in more resources")
         end
       end 
 
@@ -124,7 +124,7 @@ class SubCategory < MiniTest::Test
         ad_categories  = ["home", "", ""] 
         ads            = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                             :proxy => @proxy, 
-                                                            :url => "#{HC_BASE_URL}/vision-care",
+                                                            :url => @url,
                                                             :ad_site => ad_site,
                                                             :ad_categories => ad_categories,
                                                             :exclusion_cat => "ad_content_type",

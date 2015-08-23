@@ -15,7 +15,7 @@ class SlideshowTest < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => true)
-      @url  = "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd"
+      @url  = "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 

@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/dailydose_page'
 
-class DailyDoseHomePage < MiniTest::Test
+class DailyDoseSugaryDrinks < MiniTest::Test
   context "daily dose homepage" do 
     setup do 
       fire_fox_with_secure_proxy
@@ -30,17 +30,20 @@ class DailyDoseHomePage < MiniTest::Test
         inside_dd_text   = inside_dailydose.text if inside_dailydose
 
         scroll_to_bottom_of_page
-
-        new_content_count = @driver.find_elements(:css, ".js-fake-infinite-content")
         sleep 0.5
-
+        @driver.execute_script("window.scrollTo(0,500);")
+        sleep 0.5
+        new_content      = @driver.find_elements(:css, ".js-fake-infinite-content")
+        if new_content
+          new_content    = new_content.select {|x| x.displayed?}
+        end
 
         assert_equal(false, quote_text.nil?)
         assert_equal(true, quote_text.length > 1)
         assert_equal(1, infite_content.length)
         assert_equal("Inside Tuesday's DOSE", inside_dd_text)
-        assert_equal(true, infite_content.length < new_content_count.length, "page failed to lazy load additional content")
-        assert_equal(11, new_content_count.length)
+        assert_equal(true, infite_content.length < new_content.length, "page failed to lazy load additional content")
+        assert_equal(true, new_content.length >= 2)
       end
     end
 

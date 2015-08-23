@@ -15,7 +15,7 @@ class FdbMedicationPageTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = FDB::FDBPage.new(:driver => @driver,:proxy => @proxy,:fixture => fdb_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/acid-reflux/medications/acid-reducer-famotidine-oral-153189/"
+      @url              = "#{HC_BASE_URL}/acid-reflux/medications/acid-reducer-famotidine-oral-153189/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -33,7 +33,7 @@ class FdbMedicationPageTest < MiniTest::Test
     ################## SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal(true, @page.has_correct_title?)
+        assert_equal("Acid Reducer (Famotidine) Oral Uses and How to Use - Acid Reflux", @page.driver.title)
       end
     end
 
@@ -51,7 +51,7 @@ class FdbMedicationPageTest < MiniTest::Test
         omniture          = @page.omniture
         ads               = FDB::FDBPage::AdsTestCases.new(:driver => @driver,
                                                                 :proxy => @proxy, 
-                                                                :url => "#{HC_BASE_URL}/acid-reflux/medications/acid-reducer-famotidine-oral-153189",
+                                                                :url => @url,
                                                                 :ad_site => ad_site,
                                                                 :ad_categories => ad_categories,
                                                                 :exclusion_cat => exclusion_cat,

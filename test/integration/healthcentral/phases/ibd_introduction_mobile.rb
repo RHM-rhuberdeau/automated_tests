@@ -15,7 +15,7 @@ class MobileIBDIntroductionTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = Phases::MobilePhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/ibd/d/introduction"
+      @url              = "#{HC_BASE_URL}/ibd/d/introduction" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -60,7 +60,7 @@ class MobileIBDIntroductionTest < MiniTest::Test
         thcn_category     = "Digestive Health"
         ads               = Phases::MobilePhasePage::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
-                                                                     :url => "#{HC_BASE_URL}/ibd/d/introduction",
+                                                                     :url => @url,
                                                                      :ad_site => ad_site,
                                                                      :ad_categories => ad_categories,
                                                                      :exclusion_cat => exclusion_cat,

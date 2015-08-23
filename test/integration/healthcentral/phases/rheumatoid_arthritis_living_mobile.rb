@@ -15,7 +15,7 @@ class MobileRheumatoidArthritisLivingTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = Phases::MobilePhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/rheumatoid-arthritis/d/living"
+      @url              = "#{HC_BASE_URL}/rheumatoid-arthritis/d/living" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -60,7 +60,7 @@ class MobileRheumatoidArthritisLivingTest < MiniTest::Test
         thcn_category     = "Bones, Joints, & Muscles"
         ads                     = Phases::MobilePhasePage::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
-                                                                     :url => "#{HC_BASE_URL}/rheumatoid-arthritis/d/living",
+                                                                     :url => @url,
                                                                      :ad_site => ad_site,
                                                                      :ad_categories => ad_categories,
                                                                      :exclusion_cat => exclusion_cat,

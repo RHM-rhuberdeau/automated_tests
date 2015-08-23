@@ -12,7 +12,7 @@ class DailyDoseMobileHomePage < MiniTest::Test
       head_navigation   = HealthCentralHeader::DailyDoseMobile.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/"
+      @url              = "#{HC_BASE_URL}/dailydose/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -23,8 +23,6 @@ class DailyDoseMobileHomePage < MiniTest::Test
         headers           = @driver.find_elements(:css, "h2")
         header_text       = headers.collect(&:text).compact
         article_links     = @driver.find_elements(:css, "ul.ContentList--article li.ContentList-item a") || []
-        quote_of_the_day = find "p.js-fake-infinite-title-green"
-        quote_text       = quote_of_the_day.text if quote_of_the_day
         infite_content   = @driver.find_elements(:css, ".js-fake-infinite-content") || []
         if infite_content
           infite_content = infite_content.select {|x| x.displayed?}
@@ -38,10 +36,8 @@ class DailyDoseMobileHomePage < MiniTest::Test
         assert_equal(false, header_text.nil?, "header text was nil")
         assert_equal(true, header_text.length == headers.length, "A h2 tag was blank")
         assert_equal(true, article_links.length > 1, "Missing article links on the page")
-        assert_equal(false, quote_text.nil?)
-        assert_equal(true, quote_text.length > 1)
-        assert_equal(8, infite_content.length )
-        assert_equal(infite_content.length, new_content_count.length)
+        assert_equal(true, infite_content.length >= 1, "Not enough infinite content loaded")
+        assert_equal(infite_content.length, new_content_count.length, "Not enough new content loaded")
       end
     end
 
@@ -59,7 +55,7 @@ class DailyDoseMobileHomePage < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal(true, @page.has_correct_title?)
+        assert_equal(true, @driver.title.length > 0)
       end
     end
 
@@ -76,7 +72,7 @@ class DailyDoseMobileHomePage < MiniTest::Test
         thcn_category     = ""
         ads               = DailyDose::DailyDosePage::LazyLoadedAds.new(:driver => @driver,
                                                                 :proxy => @proxy, 
-                                                                :url => "#{HC_BASE_URL}/dailydose/",
+                                                                :url => @url,
                                                                 :ad_site => ad_site,
                                                                 :ad_categories => ad_categories,
                                                                 :exclusion_cat => exclusion_cat,

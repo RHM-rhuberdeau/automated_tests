@@ -17,7 +17,7 @@ class LBLN < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @lbln_fixture)
-      @url  = "#{HC_DRUPAL_URL}/ibd/d/immersive/living-crohns-disease-update/?ic=herothirds"
+      @url  = "#{HC_DRUPAL_URL}/ibd/d/immersive/living-crohns-disease-update/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -47,7 +47,7 @@ class LBLN < MiniTest::Test
         ad_categories           = ["immersive", "livingwith", ""]
         ads                     = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
-                                                                     :url => "#{HC_DRUPAL_URL}/ibd/d/immersive/living-crohns-disease-update/?ic=herothirds",
+                                                                     :url => @url,
                                                                      :ad_site => ad_site,
                                                                      :ad_categories => ad_categories,
                                                                      :exclusion_cat => "",

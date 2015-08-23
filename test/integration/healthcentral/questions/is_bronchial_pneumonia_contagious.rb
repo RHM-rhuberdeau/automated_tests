@@ -1,7 +1,5 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/redesign_question_page'
-require 'yaml'
-require 'ostruct'
 
 class ChronicPainQuestionPageTest < MiniTest::Test
   context "a question with lots of community answers" do 
@@ -12,7 +10,7 @@ class ChronicPainQuestionPageTest < MiniTest::Test
       question_fixture = YAML::load_documents(io)
       @question_fixture = OpenStruct.new(question_fixture[0][125351])
       @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture)
-      @url  = "#{HC_BASE_URL}/chronic-pain/c/question/515205/125351"
+      @url  = "#{HC_BASE_URL}/chronic-pain/c/question/515205/125351" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -91,7 +89,7 @@ class ChronicPainQuestionPageTest < MiniTest::Test
          ad_categories = ["chronicpain","basics",""]
          ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                             :proxy => @proxy, 
-                                                            :url => "#{HC_BASE_URL}/chronic-pain/c/question/515205/125351",
+                                                            :url => @url,
                                                             :ad_site => ad_site,
                                                             :ad_categories => ad_categories,
                                                             :exclusion_cat => "",

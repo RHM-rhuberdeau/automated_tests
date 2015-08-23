@@ -10,7 +10,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
       question_fixture = YAML::load_documents(io)
       @question_fixture = OpenStruct.new(question_fixture[0][132858])
       @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture)
-      @url  = "#{HC_BASE_URL}/skin-care/c/question/550423/132858"
+      @url  = "#{HC_BASE_URL}/skin-care/c/question/550423/132858" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -138,7 +138,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
         ad_categories = ["skinhealth","acne",""]
         ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                            :proxy => @proxy, 
-                                                           :url => "#{HC_BASE_URL}/skin-care/c/question/550423/132858",
+                                                           :url => @url,
                                                            :ad_site => ad_site,
                                                            :ad_categories => ad_categories,
                                                            :exclusion_cat => "",

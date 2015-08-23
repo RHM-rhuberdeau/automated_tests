@@ -60,7 +60,7 @@ class IbdIntroductionSymptoms < MiniTest::Test
         thcn_category     = "Digestive Health"
         ads                     = Topics::TopicPage::AdsTestCases.new(:driver => @driver,
                                                                      :proxy => @proxy, 
-                                                                     :url => "#{HC_BASE_URL}/ibd/d/introduction/symptoms",
+                                                                     :url => @url,
                                                                      :ad_site => ad_site,
                                                                      :ad_categories => ad_categories,
                                                                      :exclusion_cat => exclusion_cat,

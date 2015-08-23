@@ -10,7 +10,7 @@ class SubCategory < MiniTest::Test
       subcat_fixture = YAML::load_documents(io)
       @subcat_fixture = OpenStruct.new(subcat_fixture[0]['chronicpain'])
       @page = ::HealthCentral::SubcategoryPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @subcat_fixture)
-      @url  = "#{HC_DRUPAL_URL}/chronic-pain/"
+      @url  = "#{HC_DRUPAL_URL}/chronic-pain/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -124,7 +124,7 @@ class SubCategory < MiniTest::Test
         ad_categories  = ["home", "", ""]
         ads            = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                             :proxy => @proxy, 
-                                                            :url => "#{HC_BASE_URL}/chronic-pain/",
+                                                            :url => @url,
                                                             :ad_site => ad_site,
                                                             :ad_categories => ad_categories,
                                                             :exclusion_cat => "ad_content_type",

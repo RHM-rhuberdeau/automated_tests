@@ -34,13 +34,16 @@ class DailyDoseHomePage < MiniTest::Test
         scroll_to_bottom_of_page
         sleep 1
         new_content_count = @driver.find_elements(:css, ".js-fake-infinite-content")
+        if new_content_count
+          new_content_count = new_content_count.select {|x| x.displayed?}
+        end
 
         assert_equal(false, header_text.nil?, "header text was nil")
         assert_equal(true, header_text.length == headers.length, "A h2 tag was blank")
         assert_equal(true, article_links.length > 1, "Missing article links on the page")
         assert_equal(false, quote_text.nil?)
         assert_equal(true, quote_text.length > 1)
-        assert_equal(7, infite_content.length )
+        assert_equal(1, infite_content.length )
         assert_equal(infite_content.length, new_content_count.length)
       end
     end
@@ -86,7 +89,7 @@ class DailyDoseHomePage < MiniTest::Test
                                                                         :thcn_category => thcn_category,
                                                                         :ugc => "[\"n\"]",
                                                                         :scroll1 => 1750,
-                                                                        :scroll2 => 1500) 
+                                                                        :scroll2 => 1750) 
         ads.validate
 
         omniture = @page.omniture

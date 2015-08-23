@@ -15,7 +15,7 @@ class SlideshowTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/adhd/cf/slideshows/6-facts-on-adjunctive-adhd-therapy-in-children"
+      @url              = "#{HC_BASE_URL}/adhd/cf/slideshows/6-facts-on-adjunctive-adhd-therapy-in-children" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 

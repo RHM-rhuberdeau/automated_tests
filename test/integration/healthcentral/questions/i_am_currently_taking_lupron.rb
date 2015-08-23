@@ -10,7 +10,7 @@ class LupronQuestionPageTest < MiniTest::Test
       question_fixture = YAML::load_documents(io)
       @question_fixture = OpenStruct.new(question_fixture[0][132860])
       @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture)
-      @url  =  "#{HC_BASE_URL}/diet-exercise/c/question/748553/132860/"
+      @url  =  "#{HC_BASE_URL}/diet-exercise/c/question/748553/132860/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -85,7 +85,7 @@ class LupronQuestionPageTest < MiniTest::Test
          ad_categories = ["exercisefitness","smokingcessation",""]
          ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                             :proxy => @proxy, 
-                                                            :url => "#{HC_BASE_URL}/diet-exercise/c/question/748553/132860/",
+                                                            :url => @url,
                                                             :ad_site => ad_site,
                                                             :ad_categories => ad_categories,
                                                             :exclusion_cat => "community",

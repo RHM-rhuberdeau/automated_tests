@@ -12,7 +12,7 @@ class DailyDoseHomePage < MiniTest::Test
       head_navigation   = HealthCentralHeader::DailyDoseDesktop.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/"
+      @url              = "#{HC_BASE_URL}/dailydose/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -23,26 +23,25 @@ class DailyDoseHomePage < MiniTest::Test
         headers           = @driver.find_elements(:css, "h2")
         header_text       = headers.collect(&:text).compact
         article_links     = @driver.find_elements(:css, "ul.ContentList--article li.ContentList-item a") || []
-        quote_of_the_day = find "p.js-fake-infinite-title-green"
-        quote_text       = quote_of_the_day.text if quote_of_the_day
-        infite_content   = @driver.find_elements(:css, ".js-fake-infinite-content") || []
+        infite_content    = @driver.find_elements(:css, ".js-fake-infinite-content") || []
         if infite_content
-          infite_content = infite_content.select {|x| x.displayed?}
+          infite_content  = infite_content.select {|x| x.displayed?}
         end
         we_reccommend     = find "div.OUTBRAIN"
 
         scroll_to_bottom_of_page
-        new_content_count = @driver.find_elements(:css, ".js-fake-infinite-content")
+        new_content       = @driver.find_elements(:css, ".js-fake-infinite-content")
+        if new_content
+          new_content     = new_content.select {|x| x.displayed?}
+        end
         sleep 0.5
 
         assert_equal(false, header_text.nil?, "header text was nil")
         assert_equal(true, header_text.length == headers.length, "A h2 tag was blank")
         assert_equal(true, article_links.length > 1, "Missing article links on the page")
-        assert_equal(false, quote_text.nil?)
-        assert_equal(true, quote_text.length > 1)
-        assert_equal(1, infite_content.length)
-        assert_equal(true, infite_content.length < new_content_count.length, "page failed to lazy load additional content")
-        assert_equal(11, new_content_count.length)
+        assert_equal(1, infite_content.length, "no infinite content on the page")
+        assert_equal(true, infite_content.length < new_content.length, "page failed to lazy load additional content")
+        assert_equal(true, new_content_count.length > 0, "no new content was lazy loaded")
       end
     end
 
@@ -60,12 +59,7 @@ class DailyDoseHomePage < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        h2_tags = @driver.find_elements(:css, "h2")
-        if h2_tags.first 
-          first_tag_text = h2_tags.first.text 
-        end
-        assert_equal(true, !first_tag_text.nil?)
-        assert_equal(first_tag_text, @driver.title)
+        assert_equal(true, @driver.title.length > 0)
       end
     end
 
@@ -82,7 +76,7 @@ class DailyDoseHomePage < MiniTest::Test
         thcn_category     = ""
         ads               = DailyDose::DailyDosePage::AdsTestCases.new(:driver => @driver,
                                                                 :proxy => @proxy, 
-                                                                :url => "#{HC_BASE_URL}/dailydose/",
+                                                                :url => @url,
                                                                 :ad_site => ad_site,
                                                                 :ad_categories => ad_categories,
                                                                 :exclusion_cat => exclusion_cat,

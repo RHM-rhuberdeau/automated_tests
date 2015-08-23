@@ -13,6 +13,7 @@ module HealthCentralAssets
       @proxy     = args[:proxy]
       @driver    = args[:driver]
       @base_url  = args[:base_url]
+      @host      = args[:host] || ASSET_HOST
     end
 
     def wrong_asset_hosts
@@ -39,10 +40,10 @@ module HealthCentralAssets
       @unloaded_assets  = []
       
       @proxy.har.entries.each do |entry|
-        if ( entry.request.url.index(ASSET_HOST) == 0 && entry.response.status == 200 )
+        if ( entry.request.url.index(@host) == 0 && entry.response.status == 200 )
           @good_assets << entry.request.url
         end
-        if ( entry.request.url.index(ASSET_HOST) == 0 && entry.response.status != 200 )
+        if ( entry.request.url.index(@host) == 0 && entry.response.status != 200 )
           unless entry.request.url == @base_url || is_known_problem(entry.request.url)
             @unloaded_assets << entry.request.url
           end
