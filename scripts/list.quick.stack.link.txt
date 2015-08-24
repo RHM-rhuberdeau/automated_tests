@@ -15,8 +15,8 @@
 #--- KS: encyclopedia
 /encyclopedia/home/
 /encyclopedia/hc/
-/encyclopedia/hc/c/
-/encyclopedia/hc/l/
+/encyclopedia/hc/c
+/encyclopedia/hc/l
 /encyclopedia/hc/cd4-lymphocyte-monitoring-3168520/
 /encyclopedia/hc/candida-albicans-3168573/
 /encyclopedia/hc/laser-assisted-uvulopalatoplasty-3168799/

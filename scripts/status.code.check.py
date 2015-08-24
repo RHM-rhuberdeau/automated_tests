@@ -13,7 +13,7 @@ import sys, getopt
 
 #arg_other_test_subdomain = input("Enter a subdomain to test agains: ")
 arg_other_test_subdomain="qa1"
-arg_url_file = './100k.crawl.txt'
+arg_url_file = './list.100k.crawl.txt'
 arg_stop_after=0
 arg_display_all=0
 arg_use_proxy=0

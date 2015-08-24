@@ -5,6 +5,8 @@
 #
 
 THE_LOGFILE="/tmp/scanlog.txt"
+TMP_RSP='/tmp/rsp_msg'
+DEFAULT_SCAN_FILE='list.quick.stack.link.txt'
 TIME_BEGIN=$(date +%s)
 GREEN='\033[1;32m'
 RED='\033[0;31m'
@@ -118,7 +120,7 @@ if [[ -z "${DOMAIN}" ]]; then
 fi
 if [[ -z "${FILE}" ]]; then
     read < <(readlink  $0 | xargs dirname)
-    FILE="${REPLY}/quick.stack.link.txt"
+    FILE="${REPLY}/${DEFAULT_SCAN_FILE}"
 fi
 
 if [ -f "$FILE" ]; then
@@ -130,7 +132,7 @@ if [ -f "$FILE" ]; then
 else
     echo
     printf "${RED}Please specify a file of URLs to scan:${NC}\n"
-    printf "${0} -f ./quick.stack.link.txt\n"
+    printf "${0} -f ./${DEFAULT_SCAN_FILE}\n"
     echo
     exit
 fi
@@ -168,7 +170,8 @@ echo > $THE_LOGFILE
 log_output() {
     printf "${1}\n"
     if [[ "${2}" == 1 ]]; then
-        the_string=$(echo $1 | sed -E 'N;s/\\033\[[0-9]{1}\;?[0-9]{1,2}m//g')
+        #the_string=$(echo $1 | sed -E 'N;s/\\033\[[0-9]{1}\;?[0-9]{1,2}m//g')
+        the_string=$(echo -e $1 | tr '\n' ' ')
     else
         the_string=$(echo $1 | sed -E 's/\\033\[[0-9]{1}\;?[0-9]{1,2}m//g')
     fi
@@ -179,7 +182,6 @@ log_output() {
 }
 
 
-TMP_RSP='/tmp/rsp_msg'
 re="real ([0-9sm\.]*)"
 
 cnt_error=0
