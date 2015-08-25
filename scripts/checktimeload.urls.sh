@@ -10,6 +10,7 @@ DEFAULT_SCAN_FILE='list.quick.stack.link.txt'
 TIME_BEGIN=$(date +%s)
 GREEN='\033[1;32m'
 RED='\033[0;31m'
+MAGENTA='\e[0;35m';
 YELLOW='\033[0;33m'
 BG_RED='\033[0;41m'
 BG_YELLOW='\033[0;43m'
@@ -186,12 +187,19 @@ re="real ([0-9sm\.]*)"
 
 cnt_error=0
 cnt_success=0
+cnt_warning=0
 cnt_total=0
+cnt_total_all=0
 MAXPROG=${#urls[@]}
 for i in "${urls[@]}"
 do
+    let cnt_total_all=cnt_total_all+1
 	if [[ "${i}" == \#* ]]; then
-        printf "\n${BG_YELLOW}${i}${NC}\n"
+        printf "${BG_YELLOW}${i}                                ${NC}\n"
+        #--- create status
+        let cnt_status=$(((cnt_total_all*100)/MAXPROG))
+        echo -n "${cnt_status}% ${cnt_total}/${MAXPROG} - ERROR(S): [${cnt_error}]      "
+        echo -n R | tr 'R' '\r'
 		continue
 	fi
 	if [[ ! -n "${i}" ]]; then
@@ -207,19 +215,11 @@ do
     else
         url_to_test="${baseurl}${i}"
     fi
-    #time curl $header -s -D - "http://${baseurl}${i}" -o /dev/null
-	#curl -I http://google.com | head -n 1| cut -d $' ' -f2
-	#curl -s --head --location http://google.com | head -n 1 | grep "HTTP/1.[01] [23].."
-	#RESPONSE=$(time curl -IL $HEADER --silent "${baseurl}${i}" | grep HTTP)
-    #RESPONSEFULL=$(${checktime} curl --head --location --silent $HEADER  "${baseurl}${i}?${CACHEBUST}" | grep "HTTP\|Location")
     if [[ "${SHOWTIME}" == 1 ]]; then
-        #THETIMER=$(time (curl --head --location --insecure --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}" | grep "HTTPS\|HTTP\|Location\|X-Cache" >${TMP_RSP} ) 3>&1 1>&2 2>&3 )
         THETIMER=$(time (curl --head --location --insecure --connect-timeout 6 --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}" > ${TMP_RSP} ) 3>&1 1>&2 2>&3 )
-        #RESPONSEFULL=$(tr '\015' ' ' < /tmp/tmp.txt)
         THETIMER=$(echo $THETIMER | tr '\015' ' ')
         RESPONSEFULL_ALL=$( < ${TMP_RSP})
     else
-        #RESPONSEFULL=$(curl --head --location --insecure --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}" | grep "HTTPS\|HTTP\|Location\|X-Cache")
         RESPONSEFULL_ALL=$(curl --head --location --insecure --connect-timeout 6 --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}")
     fi
 
@@ -236,23 +236,38 @@ do
             log_output "[${real_time}] ${GREEN}${url_to_test}${NC}..."
         fi
 	else
-        if [[ ! -n "${real_time}" ]]; then real_time="ERROR";cnt_error=$((cnt_error+1)); fi
-        log_output "[${RED}${real_time}${NC}] ${url_to_test}"
-        log_output "${RED}${RESPONSEFULL}${NC}" 1
+        if [[ ! -n "${real_time}" ]]; then
+            if [[ $RESPONSEFULL =~ .*403|404|500.* ]] ; then
+                real_time="ERROR";
+                cnt_error=$((cnt_error+1));
+                NOTSUCCESS=$RED
+            elif [[ $RESPONSEFULL =~ .*410|50[0-9].* ]] ; then
+                real_time="WARMING"
+                NOTSUCCESS=$MAGENTA
+                cnt_warning=$((cnt_warning+1));
+            else
+                real_time="ERROR";
+                NOTSUCCESS=$RED
+                cnt_error=$((cnt_error+1));
+            fi
+        fi
+        log_output "[${NOTSUCCESS}${real_time}${NC}] ${url_to_test}"
+        log_output "${NOTSUCCESS}${RESPONSEFULL}${NC}" 1
 	fi
 	baseurl=""
     real_time=""
     let cnt_total=cnt_total+1
     #--- create status
-    let cnt_status=$(((cnt_total*100)/MAXPROG))
-    echo -n "${cnt_status}% ${cnt_total}/${MAXPROG}      "
+    let cnt_status=$(((cnt_total_all*100)/MAXPROG))
+    echo -n "${cnt_status}% ${cnt_total}/${MAXPROG} - ERROR: [${cnt_error}]      "
     echo -n R | tr 'R' '\r'
 #if [ $cnt_total -gt 10 ] ; then exit; fi
 done
 
-#cnt_total=$((cnt_success+cnt_error))
+
 echo
 printf "${cnt_success}\t[${GREEN}200${NC}]\n"
+printf "${cnt_warning}\t[${MAGENTA}WARMING${NC}]${NC}\n"
 printf "${cnt_error}\t[${RED}ERROR${NC}]${NC}\n"
 printf "${cnt_total}\tTOTAL\n"
 echo

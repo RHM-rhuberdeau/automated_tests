@@ -1,0 +1,29 @@
+http://www.healthcommunities.com/
+#Subcat list
+http://www.healthcommunities.com/health-topics/index.shtml
+#Subcat Main
+http://www.healthcommunities.com/health-topics/allergies-asthma.shtml
+http://www.healthcommunities.com/health-topics/cancer.shtml
+#Guide List
+http://www.healthcommunities.com/healthy-living-guides/index.shtml
+#Guide Main
+http://www.healthcommunities.com/healthy-living-guides/index.shtml/your-year-to-quit-smoking_1
+http://www.healthcommunities.com/healthy-living-guides/index.shtml/is-it-angina-getting-a-diagnosis_2
+http://www.healthcommunities.com/healthy-living-guides/index.shtml/better-bladder-control_3
+#Slideshows
+http://www.healthcommunities.com/healthy-living-guides/index.shtml/6-ways-to-quit-smoking_8
+http://www.healthcommunities.com/healthy-living-guides/index.shtml/10-smoking-triggers_9
+http://www.healthcommunities.com/healthy-living-guides/index.shtml/quit-smoking-10-tips-for-getting-through-the-first-day_14
+http://www.healthcommunities.com/healthy-living-guides/index.shtml/13-food-hazards-for-dogs-and-other-pets_116
+#Content Pages
+http://www.healthcommunities.com/bladder-cancer/overview-of-bladder-cancer.shtml
+http://www.healthcommunities.com/quit-smoking/overview-health-effects-of-smoking.shtml
+http://www.healthcommunities.com/cancer-pain/cancer-pain-overview.shtml
+#Doctor Finder
+http://www.healthcentral.com/diet-exercise/c/42/176683/diet-lower-biological-age
+#Newsletter
+http://www.healthcommunities.com/newsletter/signup.shtml
+#Promo Page
+http://www.healthcommunities.com/tools-and-apps/index.shtml
+#Search
+http://www.healthcommunities.com/search-results/index.shtml
