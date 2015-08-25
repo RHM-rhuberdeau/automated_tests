@@ -170,8 +170,8 @@ echo > $THE_LOGFILE
 log_output() {
     printf "${1}\n"
     if [[ "${2}" == 1 ]]; then
-        #the_string=$(echo $1 | sed -E 'N;s/\\033\[[0-9]{1}\;?[0-9]{1,2}m//g')
-        the_string=$(echo -e $1 | tr '\n' ' ')
+        #the_string=$(echo $1 | sed -E 's/\\033\[[0-9]{1}\;?[0-9]{1,2}m//g')
+        the_string=$1
     else
         the_string=$(echo $1 | sed -E 's/\\033\[[0-9]{1}\;?[0-9]{1,2}m//g')
     fi
@@ -187,6 +187,7 @@ re="real ([0-9sm\.]*)"
 cnt_error=0
 cnt_success=0
 cnt_total=0
+MAXPROG=${#urls[@]}
 for i in "${urls[@]}"
 do
 	if [[ "${i}" == \#* ]]; then
@@ -213,13 +214,13 @@ do
     #RESPONSEFULL=$(${checktime} curl --head --location --silent $HEADER  "${baseurl}${i}?${CACHEBUST}" | grep "HTTP\|Location")
     if [[ "${SHOWTIME}" == 1 ]]; then
         #THETIMER=$(time (curl --head --location --insecure --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}" | grep "HTTPS\|HTTP\|Location\|X-Cache" >${TMP_RSP} ) 3>&1 1>&2 2>&3 )
-        THETIMER=$(time (curl --head --location --insecure --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}" > ${TMP_RSP} ) 3>&1 1>&2 2>&3 )
+        THETIMER=$(time (curl --head --location --insecure --connect-timeout 6 --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}" > ${TMP_RSP} ) 3>&1 1>&2 2>&3 )
         #RESPONSEFULL=$(tr '\015' ' ' < /tmp/tmp.txt)
         THETIMER=$(echo $THETIMER | tr '\015' ' ')
         RESPONSEFULL_ALL=$( < ${TMP_RSP})
     else
         #RESPONSEFULL=$(curl --head --location --insecure --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}" | grep "HTTPS\|HTTP\|Location\|X-Cache")
-        RESPONSEFULL_ALL=$(curl --head --location --insecure --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}")
+        RESPONSEFULL_ALL=$(curl --head --location --insecure --connect-timeout 6 --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}")
     fi
 
     RESPONSEFULL=$(echo "${RESPONSEFULL_ALL}" | grep "HTTPS\|HTTP\|Location\|X-Cache")
@@ -241,9 +242,15 @@ do
 	fi
 	baseurl=""
     real_time=""
+    let cnt_total=cnt_total+1
+    #--- create status
+    let cnt_status=$(((cnt_total*100)/MAXPROG))
+    echo -n "${cnt_status}% ${cnt_total}/${MAXPROG}      "
+    echo -n R | tr 'R' '\r'
+#if [ $cnt_total -gt 10 ] ; then exit; fi
 done
 
-cnt_total=$((cnt_success+cnt_error))
+#cnt_total=$((cnt_success+cnt_error))
 echo
 printf "${cnt_success}\t[${GREEN}200${NC}]\n"
 printf "${cnt_error}\t[${RED}ERROR${NC}]${NC}\n"

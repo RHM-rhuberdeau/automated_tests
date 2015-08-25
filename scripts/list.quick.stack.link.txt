@@ -15,8 +15,8 @@
 #--- KS: encyclopedia
 /encyclopedia/home/
 /encyclopedia/hc/
-/encyclopedia/hc/c
-/encyclopedia/hc/l
+/encyclopedia/hc/c/
+/encyclopedia/hc/l/
 /encyclopedia/hc/cd4-lymphocyte-monitoring-3168520/
 /encyclopedia/hc/candida-albicans-3168573/
 /encyclopedia/hc/laser-assisted-uvulopalatoplasty-3168799/
@@ -165,8 +165,8 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 # http://immersive.healthcentral.com/skin-care/d/LBLN/dtalbert-living-with-psoriasis/flat
 # http://immersive.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms/flat
 #--- Things that have broke in the past
-http://www.healthcentral.com/allergy/d/immersive/living-with-chronic-hives/
-http://www.healthcentral.com/allergy/d/immersive/living-with-chronic-hives
+/allergy/d/immersive/living-with-chronic-hives/
+/allergy/d/immersive/living-with-chronic-hives
 #SYSTEMS
 #--- Assets
 /common/a/assets/healthcentral_common.js
@@ -174,6 +174,9 @@ http://www.healthcentral.com/allergy/d/immersive/living-with-chronic-hives
 /sites/all/modules/custom/assets_pipeline/public/css/sites/all/themes/healthcentral.css
 /sites/all/modules/custom/assets_pipeline/app/fonts/icon/font/icon.woff
 /assets/icon/font/icon.woff
+#--- PDF Infographic
+/common/includes/guides/guides/adhd/Organize_Your_ADHD_Child.pdf
+/common/includes/guides/guides/anxiety/AnxietyEffects.pdf
 #drupal rss
 #/scripts/rss.php
 #/scripts/rss_bw_ploar.php
