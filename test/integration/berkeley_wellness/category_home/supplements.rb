@@ -1,13 +1,13 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/berkeley/berkeley_slide_show_page'
+require_relative '../../../pages/berkeley/home_page'
 
 class BerkeleyCategoryHomeTest < MiniTest::Test
   context "supplements" do 
     setup do
       fire_fox_with_secure_proxy
       @proxy.new_har
+      @page = Berkeley::BerkeleyHomePage.new(:driver =>@driver, :proxy => @proxy)
       visit "#{BW_BASE_URL}/supplements"
-      @page = ::BerkeleySlideShowPage.new(:driver =>@driver, :proxy => @proxy)
     end
 
     ##################################################################
@@ -17,6 +17,16 @@ class BerkeleyCategoryHomeTest < MiniTest::Test
         assets = @page.assets
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO" do 
+      should "have valid seo" do 
+        seo = @page.seo
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
   end

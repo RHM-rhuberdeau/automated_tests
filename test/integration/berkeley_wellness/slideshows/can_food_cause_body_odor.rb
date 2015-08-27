@@ -6,8 +6,8 @@ class BerkeleySlideShowTest < MiniTest::Test
   	setup do
   	  fire_fox_with_secure_proxy
       @proxy.new_har
+      @page = BerkeleySlideshow::SlideshowPage.new(:driver =>@driver, :proxy => @proxy)
       visit "#{BW_BASE_URL}/healthy-eating/food/slideshow/can-food-cause-body-odor"
-      @page = ::BerkeleySlideShowPage.new(:driver =>@driver, :proxy => @proxy)
   	end
 
   	# should "update slide text while browsing through the slides" do
@@ -42,6 +42,16 @@ class BerkeleySlideShowTest < MiniTest::Test
     #     end
     #   end
     # end
+
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO" do 
+      should "have valid seo" do 
+        seo = @page.seo
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
+      end
+    end
     
     ##################################################################
     ################### ASSETS #######################################

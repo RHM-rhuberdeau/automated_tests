@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/berkeley/berkeley_slide_show_page'
+require_relative '../../../pages/berkeley/home_page'
 
 class BerkeleyTagHomeTest < MiniTest::Test
   context "immune system" do 
@@ -7,7 +7,7 @@ class BerkeleyTagHomeTest < MiniTest::Test
       fire_fox_with_secure_proxy
       @proxy.new_har
       visit "#{BW_BASE_URL}"
-      @page = ::BerkeleySlideShowPage.new(:driver =>@driver, :proxy => @proxy)
+      @page = Berkeley::BerkeleyHomePage.new(:driver =>@driver, :proxy => @proxy)
     end
 
     should "produce results" do

@@ -6,10 +6,10 @@ class BerkeleyHomePage < MiniTest::Test
     setup do
       fire_fox_with_secure_proxy
       @proxy.new_har
-      visit BW_BASE_URL
       header            = BerkeleyHeader::DesktopHeader.new(:driver => @driver)
       footer            = BerkeleyFooter::DesktopFooter.new(:driver => @driver)
       @page             = Berkeley::BerkeleyHomePage.new(:driver =>@driver, :proxy => @proxy, :header => header, :footer => footer)
+      visit BW_BASE_URL
     end
 
     ##################################################################
@@ -29,6 +29,16 @@ class BerkeleyHomePage < MiniTest::Test
         assets = @page.assets
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO" do 
+      should "have valid seo" do 
+        seo = @page.seo
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 

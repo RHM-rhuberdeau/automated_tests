@@ -6,8 +6,18 @@ class BerkeleyFlatSlideshowTest < MiniTest::Test
     setup do
       fire_fox_with_secure_proxy
       @proxy.new_har
+      @page = BerkeleySlideshow::SlideshowPage.new(:driver =>@driver, :proxy => @proxy)
       visit "#{BW_BASE_URL}/healthy-eating/food-safety/lists/food-poisoning-facts/slideid_1578"
-      @page = ::BerkeleySlideShowPage.new(:driver =>@driver, :proxy => @proxy)
+    end
+
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO" do 
+      should "have valid seo" do 
+        seo = @page.seo
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
+      end
     end
 
     ##################################################################
