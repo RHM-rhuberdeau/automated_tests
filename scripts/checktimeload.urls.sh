@@ -8,8 +8,12 @@ THE_LOGFILE="/tmp/scanlog.txt"
 TMP_RSP='/tmp/rsp_msg'
 DEFAULT_SCAN_FILE='list.quick.stack.link.txt'
 TIME_BEGIN=$(date +%s)
-GREEN='\033[1;32m'
+GREEN='\033[0;32m'
+GREEN_B='\033[1;32m'
+BLUE='\e[0;94m'
+BLUE_B='\e[1;94m'
 RED='\033[0;31m'
+RED_B='\033[1;31m'
 MAGENTA='\e[0;35m';
 YELLOW='\033[0;33m'
 BG_RED='\033[0;41m'
@@ -240,19 +244,22 @@ do
             if [[ $RESPONSEFULL =~ .*403|404|500.* ]] ; then
                 real_time="ERROR";
                 cnt_error=$((cnt_error+1));
-                NOTSUCCESS=$RED
+                NOTSUCCESS=$RED_B
+                NOTSUCCESS_MSG=$RED
             elif [[ $RESPONSEFULL =~ .*410|50[0-9].* ]] ; then
                 real_time="WARMING"
                 NOTSUCCESS=$MAGENTA
+                NOTSUCCESS_MSG=$MAGENTA
                 cnt_warning=$((cnt_warning+1));
             else
                 real_time="ERROR";
                 NOTSUCCESS=$RED
+                NOTSUCCESS_MSG=$RED
                 cnt_error=$((cnt_error+1));
             fi
         fi
-        log_output "[${NOTSUCCESS}${real_time}${NC}] ${url_to_test}"
-        log_output "${NOTSUCCESS}${RESPONSEFULL}${NC}" 1
+        log_output "[${NOTSUCCESS}${real_time}${NC}] ${BLUE_B}${url_to_test}${NC}"
+        log_output "${NOTSUCCESS_MSG}${RESPONSEFULL}${NC}" 1
 	fi
 	baseurl=""
     real_time=""
