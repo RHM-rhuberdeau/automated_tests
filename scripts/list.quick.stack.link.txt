@@ -219,8 +219,8 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 #   /conf/redirects-head/dailydose_dupes.conf
 /dailydose/cf/2013/04/26/eggs_may_raise_heart_risk_via_gut_bacteria/
 /dailydose/cf/2013/04/26/eggs_may_raise_heart_risk_via_gut_bacteria/comments/
-/dailydose/cf/2014/0?7/17/high_cholesterol_also_linked_to_cancer/
-/dailydose/cf/2014/0?7/17/high_cholesterol_also_linked_to_cancer/comments/
+/dailydose/cf/2014/07/17/high_cholesterol_also_linked_to_cancer/
+/dailydose/cf/2014/07/17/high_cholesterol_also_linked_to_cancer/comments/
 /dailydose/cf/2014/11/05/_7_herbal_remedies_for_stress_infographic/
 /dailydose/cf/2014/11/05/_7_herbal_remedies_for_stress_infographic/comments/
 #   ./conf/redirects-head/encyclopedia_adam_map.conf
