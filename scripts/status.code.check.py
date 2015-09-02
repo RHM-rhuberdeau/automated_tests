@@ -4,16 +4,22 @@
 from twisted.internet import reactor, threads
 from urlparse import urlparse
 from random import random
-import httplib
+import httplib, os, sys, getopt, optparse, datetime, collections
 import itertools
 #-->pip install regex
 import string, re
-import sys, getopt, optparse, datetime
 
 
+
+
+
+# sys.exit()
+
+
+script_cwd = os.path.dirname(os.path.realpath(__file__))
 parser = optparse.OptionParser()
 parser.add_option('-f', '--file', action="store", dest="file"
-    , help="file with newline for each url", default="./list.100k.crawl.txt", metavar="./list.100k.crawl.txt")
+    , help="file with newline for each url", default=script_cwd + "/list.100k.crawl.txt", metavar="./list.100k.crawl.txt")
 parser.add_option('-p', '--proxy', action="store_const", const=1, dest="proxy"
     , help="Flag to use proxy", default=0)
 parser.add_option('-r', '--ramdom', action="store_const", const=1, dest="ramdom"
@@ -52,6 +58,9 @@ arg_ramdom=options.ramdom
 arg_cache_bust=options.cache_bust
 added_at_cnt=0
 cache_key = datetime.datetime.now().strftime('%s')
+report_summery=collections.defaultdict(lambda:collections.defaultdict(int))
+report_errors=0
+
 
 finished=itertools.count(1)
 reactor.suggestThreadPoolSize(arg_concurrent)
@@ -72,18 +81,28 @@ class bcolors:
     GREEN = '\033[0;32m'
     WARNING = '\033[93m'
     RED = '\033[0;31m'
+    MAGENTA_B = '\033[1;35m'
     MAGENTA = '\033[0;35m'
     FAIL = '\033[91m'
     BOLD = '\033[1m'
     ENDC = '\033[0m'
 
-def statuscode_colorize(status):
+def statuscode_colorize(status, profile):
+    global report_errors
+    if profile:
+        report_summery[profile][status]+=1
     status = str(status)
     if re.search(("^5[0-9]{2}"), str(status)):
+        if profile:
+            report_errors+=1
         return bcolors.ERR_L1 + status + bcolors.ENDC
     elif re.search(("^40[4-9]{1}"), str(status)):
+        if profile:
+            report_errors+=1
         return bcolors.ERR_L2 + status + bcolors.ENDC
     elif re.search(("^40[0-3]{1}"), str(status)):
+        if profile:
+            report_errors+=1
         return bcolors.WRN_L1 + status + bcolors.ENDC
     elif re.search(("^41[0-9]{1}"), str(status)):
         return bcolors.WRN_L2 + status + bcolors.ENDC
@@ -108,7 +127,6 @@ def strip_domain(url):
     return re.sub('[\:\/a-z]{1,14}\.[a-z\.\-]{1,20}\.[a-z]{1,4}', '', url)
 
 def getStatus(ourl):
-
     if arg_cache_bust == 1 and not re.search((".*\?.*"), ourl):
         ourl = ourl + "?c=" + cache_key
 
@@ -168,16 +186,17 @@ def processResponse(resp,url):
             timer_other = resp.other.timer
         #--- only care about the diffances
         if (resp.status != resp.other.status) or (arg_display_all <> 0):
-            msg = '{1},{4},{0},{3},{6},{7},{8}'.format( strip_domain(url), statuscode_colorize(resp.status), server, strip_domain(location), statuscode_colorize(resp.other.status), server_other, location_other, resp.timer, timer_other)
+            report_summery['BOTH']['diff']+=1
+            msg = '{1},{4},{0},{3},{6},{7},{8}'.format( strip_domain(url), statuscode_colorize(resp.status, '(1) ' + arg_main_domain), server, strip_domain(location), statuscode_colorize(resp.other.status, '(2) ' + arg_other_test_domain), server_other, location_other, resp.timer, timer_other)
             # total_timer = (resp.timer + timer_other)
             # print "{0} and ".format( total_timer.timer )
             logger(msg, 1)
     else:
-        msg = '{1},,{0},{3},,{4},'.format(strip_domain(url), statuscode_colorize(resp.status), server, strip_domain(location), resp.timer)
+        msg = '{1},,{0},{3},,{4},'.format(strip_domain(url), statuscode_colorize(resp.status, arg_main_domain), server, strip_domain(location), resp.timer)
         logger(msg, 1)
         #total_timer += resp.timer.microseconds
     thecount = counter()
-    sys.stdout.write("  {3}  {2}% {1} of {0}  {4}\r".format(added, thecount, get_percentage(thecount, added), bcolors.GRAY_BL, bcolors.ENDC))
+    sys.stdout.write("  {3}  {2}% {1} of {0} @{5}concurent - ERRORS [{6}]  {4} \r".format(added, thecount, get_percentage(thecount, added), bcolors.GRAY_BL, bcolors.ENDC, arg_concurrent, report_errors))
     sys.stdout.flush()
     processedOne()
 
@@ -228,9 +247,16 @@ for url in lines:
     if arg_stop_after == added:
         break
 
+
 try:
     reactor.run()
 except (KeyboardInterrupt, SystemExit):
     print "Interrupted by keyboard. Exiting."
     reactor.stop()
 f.close()
+
+print "\n\n{0}Summery{1}".format(bcolors.GRAY_BL, bcolors.ENDC)
+for profile, scodes in report_summery.iteritems():
+    print '{1}{0}{2}'.format(profile, bcolors.MAGENTA_B, bcolors.ENDC)
+    for scode, snum in scodes.iteritems():
+        print '\t{0}: ({1})'.format(statuscode_colorize(scode, ''), snum)
