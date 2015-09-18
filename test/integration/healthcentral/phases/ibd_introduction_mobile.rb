@@ -15,7 +15,7 @@ class MobileIBDIntroductionTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = Phases::MobilePhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/ibd/d/introduction" + "?foo=#{rand(36**8).to_s(36)}"
+      @url              = "#{HC_BASE_URL}/ibd/d/introduction" 
       visit @url
     end
 
@@ -41,9 +41,11 @@ class MobileIBDIntroductionTest < MiniTest::Test
 
     ##################################################################
     ################### SEO ##########################################
-    context "SEO" do 
+    context "SEO safe" do 
       should "have the correct title" do 
-        assert_equal("Introduction - Digestive Health | www.healthcentral.com", @driver.title)
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 
@@ -71,7 +73,7 @@ class MobileIBDIntroductionTest < MiniTest::Test
                                                                      :ugc => "[\"n\"]") 
         ads.validate
 
-        omniture = @page.omniture
+        omniture = @page.omniture(:url => @url)
 
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
