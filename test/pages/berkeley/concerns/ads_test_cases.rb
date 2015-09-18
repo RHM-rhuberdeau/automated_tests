@@ -30,7 +30,7 @@ module BerkeleyAds
       @ads[1] = all_ads
 
       visit @url
-      sleep 5
+      sleep 1
       all_ads2 = BerkeleyPage.get_all_ads(@proxy)
       @ads[2] = all_ads2 - @ads.flatten(2)
 
@@ -66,9 +66,11 @@ module BerkeleyAds
     end
 
     def thcn_content_type
-      thcn_content_type = evaluate_script "THCN_CONTENT_TYPE"
-      unless thcn_content_type == @thcn_content_type
-        self.errors.add(:ads, "THCN_CONTENT_TYPE was #{thcn_content_type} not #{@thcn_content_type}")
+      if @thcn_content_type
+        thcn_content_type = evaluate_script "THCN_CONTENT_TYPE"
+        unless thcn_content_type == @thcn_content_type
+          self.errors.add(:ads, "THCN_CONTENT_TYPE was #{thcn_content_type} not #{@thcn_content_type}")
+        end
       end
     end
 
