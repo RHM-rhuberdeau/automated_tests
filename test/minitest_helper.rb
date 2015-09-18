@@ -109,9 +109,10 @@ def wait_for_page_to_load
     Timeout::timeout(3) do
       loop until finished_loading?
     end
-  rescue Timeout::Error
+  rescue Timeout::Error, Net::ReadTimeout
   end
   sleep 0.5
+  @driver.execute_script("window.stop();")
 end
 
 def wait_for
