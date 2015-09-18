@@ -29,11 +29,13 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
       end
     end
 
-    #################################################################
-    ################## SEO ##########################################
-    context "SEO" do 
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO safe" do 
       should "have the correct title" do 
-        assert_equal(true, @page.has_correct_title?)
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 
@@ -61,7 +63,7 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
                                                             :ugc => "[\"n\"]") 
 
         ads.validate
-        omniture          = @page.omniture
+        omniture          = @page.omniture(:url => @url)
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end

@@ -29,11 +29,13 @@ class FdbMedicationPageTest < MiniTest::Test
       end
     end
 
-    #################################################################
-    ################## SEO ##########################################
-    context "SEO" do 
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO safe" do 
       should "have the correct title" do 
-        assert_equal("Acid Reducer (Famotidine) Oral Uses and How to Use - Acid Reflux", @page.driver.title)
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 
@@ -48,7 +50,7 @@ class FdbMedicationPageTest < MiniTest::Test
         thcn_content_type = "Drug"
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Digestive Health"
-        omniture          = @page.omniture
+        omniture          = @page.omniture(:url => @url)
         ads               = FDB::FDBPage::AdsTestCases.new(:driver => @driver,
                                                                 :proxy => @proxy, 
                                                                 :url => @url,
