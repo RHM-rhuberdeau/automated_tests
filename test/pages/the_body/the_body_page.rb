@@ -3,6 +3,8 @@ require_relative './concerns/omniture'
 require_relative './concerns/assets'
 require_relative './concerns/ads'
 require_relative './concerns/ads_tests_cases'
+require_relative './concerns/header'
+require_relative './concerns/footer'
 
 
 class TheBodyPage
@@ -10,6 +12,8 @@ class TheBodyPage
   include TheBodyOmniture 
   include TheBodyAssets 
   include TheBodyAds 
+  include TheBodyHeader
+  include TheBodyFooter
                     
   SITE_HOSTS = ["http://uat.thebody.", "http://qa1.thebody.","http://qa2.thebody.","http://qa3.thebody.", "http://qa4.thebody.", "http://www.thebody.", "http://alpha.thebody.", "http://stage.thebody."]
 
