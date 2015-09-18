@@ -21,10 +21,6 @@ module RedesignEntry
                                                 :profile_link => args[:profile_link])
     end
 
-    def global_test_cases
-      RedesignEntry::GlobalTestCases.new(:driver => @driver, :head_navigation => @head_navigation, :footer => @footer)
-    end
-
     def analytics_file
       has_file = false
       proxy.har.entries.each do |entry|
@@ -147,100 +143,15 @@ module RedesignEntry
     end
   end
 
-  class AdsTestCases
+  class AdsTestCases < HealthCentralAds::AdsTestCases
     include ::ActiveModel::Validations
 
-    validate :unique_ads_per_page_view
-    validate :correct_ad_site
-    validate :correct_ad_categories
     validate :pharma_safe
     validate :loads_analytics_file
-
-    def initialize(args)
-      @driver                 = args[:driver]
-      @proxy                  = args[:proxy]
-      @url                    = args[:url]
-      @ad_site                = args[:ad_site]
-      @expected_ad_site       = args[:expected_ad_site]
-      @ad_categories          = args[:ad_categories]
-      @expected_ad_categories = args[:expected_ad_categories]
-      @pharma_safe            = args[:pharma_safe]
-      @expected_pharma_safe   = args[:expected_pharma_safe]
-    end
-
-    def unique_ads_per_page_view
-      @ads = {}
-      @all_ads = HealthCentralPage.get_all_ads(@proxy)
-      @ads[1] = @all_ads
-
-      visit @url
-      @all_ads = HealthCentralPage.get_all_ads(@proxy)
-      @ads[2] = @all_ads - @ads.flatten(2)
-
-      ads_from_page1 = @ads[1].map { |ad| HealthCentralAds::Ads.new(ad) }
-      ads_from_page2 = @ads[2].map { |ad| HealthCentralAds::Ads.new(ad) }
-
-      ord_values_1 = ads_from_page1.collect(&:ord).uniq
-      ord_values_2 = ads_from_page2.collect(&:ord).uniq
-
-      unless ord_values_1.length == 1
-        self.errors.add(:base, "Ads on the first view had multiple ord values: #{ord_values_1}")
-      end
-      unless ord_values_2.length == 1
-        self.errors.add(:base, "Ads on the second view had multiple ord values: #{ord_values_2}")
-      end
-      unless (ord_values_1[0] != ord_values_2[0])
-        self.errors.add(:base, "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
-      end
-    end
-
-    def correct_ad_site
-      unless @ad_site == @expected_ad_site
-        self.errors.add(:base, "ad_site was #{@ad_site} not #{@expected_ad_site}")
-      end
-    end
-
-    def correct_ad_categories
-      unless @ad_categories == @expected_ad_categories
-        self.errors.add(:base, "ad_categories was #{@ad_categories} not #{@expected_ad_categories}")
-      end
-    end
-
-    def pharma_safe
-      unless @pharma_safe == @expected_pharma_safe
-        self.errors.add(:base, "ad_categories was #{@pharma_safe} not #{@expected_pharma_safe}")
-      end
-    end 
 
     def loads_analytics_file
       unless @page.analytics_file == true
         self.errors.add(:base, "namespace.js was not loaded")
-      end
-    end
-  end
-
-  class GlobalTestCases
-    include ::ActiveModel::Validations
-
-    validate :head_navigation
-    validate :footer
-
-    def initialize(args)
-      @head_navigation = args[:head_navigation]
-      @footer          = args[:footer]
-    end
-
-    def head_navigation
-      @head_navigation.validate
-      unless @head_navigation.errors.empty?
-        self.errors.add(:head_navigation, @head_navigation.errors.values.first)
-      end
-    end
-
-    def footer
-      @footer.validate
-      unless @footer.errors.empty?
-        self.errors.add(:footer, @footer.errors.values.first)
       end
     end
   end
