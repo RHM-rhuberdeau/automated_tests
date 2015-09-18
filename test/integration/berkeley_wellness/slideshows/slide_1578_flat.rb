@@ -7,7 +7,8 @@ class BerkeleyFlatSlideshowTest < MiniTest::Test
       fire_fox_with_secure_proxy
       @proxy.new_har
       @page = BerkeleySlideshow::SlideshowPage.new(:driver =>@driver, :proxy => @proxy)
-      visit "#{BW_BASE_URL}/healthy-eating/food-safety/lists/food-poisoning-facts/slideid_1578"
+      @url  = "#{BW_BASE_URL}/healthy-eating/food-safety/lists/food-poisoning-facts/slideid_1578" + "?foo=#{rand(36**8).to_s(36)}"
+      visit @url
     end
 
     ##################################################################
