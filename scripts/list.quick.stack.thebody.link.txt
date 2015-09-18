@@ -1,0 +1,7 @@
+#--- /sites/thebody/thebody/htdocs/siteVault/templates/index/
+http://www.thebody.com/index/newsroom/2015-07.html
+http://www.thebody.com/index/treat/resistance.html
+http://www.thebody.com/index/treat/changing.html
+http://www.thebody.com/siteVault/templates/index/index.html
+#--- Pro
+http://www.thebodypro.com/index/treat/resistance.html

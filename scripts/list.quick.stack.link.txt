@@ -1,0 +1,589 @@
+#--- KS: medications
+/medications/r/medications/
+/medications/r/medications/carafate-oral-14156/side-effects
+/medications/medications/
+/adhd/medications
+/rheumatoid-arthritis/medications
+/adhd/medications/concerta-oral-19857
+/adhd/medications/methylphenidate-oral-12114
+/rheumatoid-arthritis/medications/depen-titratabs-oral-9703
+/rheumatoid-arthritis/medications/infliximab-iv-16504
+/other/medications/bd-pre-filled-normal-saline-inj-148592/
+/other/medications/bd-pre-filled-normal-saline-inj-148592/dosage/
+/other/medications/sevelamer-hcl-oral-16748/
+/other/medications/sevelamer-hcl-oral-16748/dosage/
+#--- KS: encyclopedia
+/encyclopedia/home/
+/encyclopedia/hc/
+/encyclopedia/hc/c/
+/encyclopedia/hc/l/
+/encyclopedia/hc/cd4-lymphocyte-monitoring-3168520/
+/encyclopedia/hc/candida-albicans-3168573/
+/encyclopedia/hc/laser-assisted-uvulopalatoplasty-3168799/
+/encyclopedia/hc/lupus-3168974/
+/encyclopedia/hc/canker-sores-3168884/
+/encyclopedia/hc/ocular-migraine-3169068/
+/encyclopedia/408/211.html
+/encyclopedia/hc/brain-and-spinal-cord-magnetic-resonance-imaging-3168434/
+/encyclopedia/408/673.html
+#--- KS: adam
+/adam
+/encyclopedia/adam
+/encyclopedia/adam/a/
+/alzheimers/encyclopedia/alzheimer-4000285/risk-factors/
+/encyclopedia/adam/alcoholism-4021391
+/encyclopedia/adam/alcoholism-4021391/treatment-for-alcoholism
+/acid-reflux/1157-146.html
+/ency/408/001655prv.html
+/high-blood-pressure/index-000102_7-145.html
+/acid-reflux/encyclopedia/pancreatitis-chronic-ct-scan-4007209/
+/encyclopedia/adam/tmj-disorders-4011923/treatment/
+/skin-cancer/encyclopedia/skin-wrinkles-and-blemishes-4005575/prevention/
+/cold-flu/encyclopedia/fatigue-4005917/prevention
+/ibd/irritable-bowel-syndrome-000069_5-145.html
+/symptoms/symptom.html
+#--- KS: DailyDose
+/dailydose/
+/dailydose/cf/archive
+/dailydose/2015/8/
+/dailydose/cf/2015/08/13/_music_reduces_pain_anxiety_after_surgery
+/dailydose/2015/8/13/music_reduces_pain_anxiety_after_surgery/
+/dailydose/cf/2014/05/06/_young_blood_reverses_aging_in_older_mice
+/dailydose/2013/1/28/yogurt_boosts_nutrition_and_happiness/
+/dailydose/2014/11/17/why_meditation_works/
+/dailydose/cf/2015/07
+/dailydose/cf/2015/07/30
+/dailydose/cf/2015/03/31/study_says_u_s_kids_eating_less_fast_food
+/dailydose/cf/2015/04/03/night_owls_have_higher_risk_of_diabetes/comments
+/dailydose/cf/2015/06/15/major_surgical_errors_still_happen_in_u_s/comments
+#--- KS: Slideshows
+/adhd/cf/slideshows
+/rheumatoid-arthritis/cf/slideshows/
+/adhd/cf/slideshows/9-ways-prepare-summer-adhd-child
+/adhd/cf/slideshows/8-types-inattention-adult-adhd
+/adhd/cf/slideshows/understanding-your-childs-adhd-q-adhd-author
+/rheumatoid-arthritis/cf/slideshows/8-facts-about-ra-and-heart-disease
+/rheumatoid-arthritis/cf/slideshows/leslie-rott-graduate-student-ra-and-lupus
+/rheumatoid-arthritis/cf/slideshows/10-tips-for-building-and-maintaining-energy-with-rheumatoid-arth
+#SA-720 drupal redirects to keystone
+/sexual-health/cf/slideshows/8-myths-about-hepatitis-c
+/high-blood-pressure/cf/slideshows/top-5-myths-about-high-blood-pressure
+/diabetes/cf/slideshows/thyroid-cancer-risk-factors
+/skin-care/cf/slideshows/8-things-i-wish-id-known-about-psoriasis
+/allergy/cf/slideshows/top-10-health-tweets-of-the-week-june-3
+/diet-exercise/cf/slideshows/9-great-gifts-for-family-and-kids
+/sleep-disorders/cf/slideshows/what-we-learned-this-week-november-2nd-2012
+#--- Java: Clinical Trials
+/clinical-trial/survey-ui/index.html
+#--- c5: TCC
+https://secure.healthcentral.com/cecs/cf/medtronic-oab
+https://secure.healthcentral.com/cecs/cf/medtronic-oab/is-it-right-for-me
+https://secure.healthcentral.com/cecs/cf/cancer-center
+https://secure.healthcentral.com/cecs/cf/cancer-center/cancers-we-treat
+#--- c5: Assessment
+/adhd/cf/assessments/adhd-screening/
+/adhd/cf/assessments/adhd-screening/question/1/
+/asthma/cf/assessments/could-you-be-suffering-from-asthma/
+/asthma/cf/assessments/could-you-be-suffering-from-asthma/question/3/
+#--- c5: quizzes
+/acid-reflux/cf/quizzes/heartburn-trigger-foods/peppermint/
+/allergy/cf/quizzes/how-much-do-you-know-about-seasonal-allergies/question-1/
+/allergy/cf/quizzes/do-you-know-how-to-protect-your-child-from-allergies/question-1/
+/allergy/cf/quizzes/seasonal-vs-year-round-allergies/question-1/
+/allergy/cf/quizzes/quiz-do-you-know-the-effects-of-mold-on-your-health/question-1/
+#--- c5: Video
+/videos/cf/adhd
+/videos/cf/adhd/teachers-and-adhd
+#--- c5: bibliography
+/allergy/cf/bibliography/
+#--- FAQ
+/osteoarthritis/eorthopod/faq/index
+/osteoarthritis/eorthopod/faq/accident-crashed-dashboard-2148
+/osteoarthritis/eorthopod/faq/doctor-measurements-longer-1289
+#--- Colon Cancer
+/colon-cancer/
+/colon-cancer/h/colon-cancer-center/what-are-the-symptoms-of-colon-cancer.html
+/colon-cancer/h/colon-cancer-center/colon-cancer.html
+#--- migraine center
+/migraine/medications.html
+/migraine/medications-29469-5.html
+/2/migraine/awarenessweek-290697-5.html
+/2/migraine/medications-540055-5.html
+#--- Otto
+http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q=test
+#--- newsletters
+/profiles/c/newsletters/subscribe
+#--- drupal collections
+/epilepsy/d/living-with/taking-control
+/bipolar/d/living/taking-control
+/tools/d/clinical-trials
+/multiple-sclerosis/d/LBLN/living-with-ms
+/rheumatoid-arthritis/d/LBLN/living-with-ra
+/rheumatoid-arthritis/m/LBLN/living-with-ra/
+#--- drupal: subcat
+/adhd
+/rheumatoid-arthritis
+#--- drupal: phase/topic
+#HCTB-346 SP to Drupal
+/adhd/c/general/introduction
+/adhd/c/general/living-with
+/heart-disease/c/general/introduction/causes
+/multiple-sclerosis/c/general/care/partner
+/breast-cancer/c/general/living-with/hair-loss
+/anxiety/c/general/diagnosis/stress
+#--- drupal: slideshow index
+/adhd/cf/slideshows
+/rheumatoid-arthritis/cf/slideshows
+#--- drupal: quizzes index
+/adhd/cf/quizzes
+/rheumatoid-arthritis/cf/quizzes
+/bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-disorder
+/bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-mania
+#--- drupal: quizzes & assessments
+/bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-disorder/
+/hepatitis-c/d/quizzes/do-you-know-how-hepatitis-c-spread
+/multiple-sclerosis/d/treatment/are-your-ms-treatment-options-working
+#--- RE
+/colon-cancer/r/ccac/index
+/colon-cancer/r/ccac/understanding-colorectal-3931
+/cholesterol/lifestyle.html
+/cholesterol/dailyfat-3432-143.html
+/cholesterol/lifestyle-36510-5.html
+/cholesterol/treatment-26019-5.html
+#--- SP
+#SP: questions
+/adhd/c/question
+/rheumatoid-arthritis/c/question
+/adhd/c/question/all
+/rheumatoid-arthritis/c/question/all
+/adhd/c/question/758502/176454
+/adhd/c/question/638082/174657
+/rheumatoid-arthritis/c/question/616170/176421
+/rheumatoid-arthritis/c/question/55523/175700
+#SP: entries
+/adhd/c/create
+/rheumatoid-arthritis/c/create
+/adhd/c/all
+/rheumatoid-arthritis/c/all
+/rheumatoid-arthritis/c/80106/177060/boundaries
+/rheumatoid-arthritis/c/499724/176945/rheumatoid
+/adhd/c/question/807363/174039
+/adhd/c/question/638082/174657
+#SP: other
+/diabetes/c/458275/175063/hypothyroidism-infographic/
+/heart-disease/c/458275/171998/atrial-fibrillation/
+/breast-cancer/c/general/introduction/what-is-breast-cancer
+#---Tracker
+/migraine/d/tracker-start
+/condition-tracker/
+#Full Immersive:
+# http://immersive.thebody.com/LBLN/hiv-addiction-recovery-relationship/
+# http://immersive.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms/
+# http://immersive.healthcentral.com/skin-care/d/LBLN/dtalbert-living-with-psoriasis
+#Flat Immersive:
+# http://immersiveq.thebody.com/LBLN/hiv-addiction-recovery-relationship
+# http://immersive.healthcentral.com/skin-care/d/LBLN/dtalbert-living-with-psoriasis/flat
+# http://immersive.healthcentral.com/multiple-sclerosis/d/LBLN/living-with-ms/flat
+#--- Things that have broke in the past
+/allergy/d/immersive/living-with-chronic-hives/
+/allergy/d/immersive/living-with-chronic-hives
+#SYSTEMS
+#--- Assets
+/common/a/assets/healthcentral_common.js
+/assets/sites/healthcentral.css
+/assets/thcn_ads.js
+/sites/all/modules/custom/assets_pipeline/public/css/sites/all/themes/healthcentral.css
+/sites/all/modules/custom/assets_pipeline/app/fonts/icon/font/icon.woff
+/assets/icon/font/icon.woff
+#--- PDF Infographic
+/common/includes/guides/guides/adhd/Organize_Your_ADHD_Child.pdf
+/common/includes/guides/guides/anxiety/AnxietyEffects.pdf
+#drupal rss
+#/scripts/rss.php
+#/scripts/rss_bw_ploar.php
+#/scripts/rss_bw_hr.php
+#/scripts/rss_hc_nr.php
+#Get drupal collections
+#/admin/config/content/fetch-configured-articles
+#Get drupal taxonomy
+#/admin/config/content/xml-navigation-categories
+#c5: dailydose feed
+#/dailydose/cf/feeds/20150301-20150315
+#SP feed for drupal
+# http://tools.choicemedia.com/shareposts/admin/feeds/drupal/records?mode=full&page=0&timestamp=1401580800&limit=5
+####################
+#--- REDIRECTS
+####################
+#./conf/healthcentral_vhosts.conf
+#./conf/redirects-head/*.conf
+#   /conf/redirects-head/dailydose_dupes.conf
+/dailydose/cf/2013/04/26/eggs_may_raise_heart_risk_via_gut_bacteria/
+/dailydose/cf/2013/04/26/eggs_may_raise_heart_risk_via_gut_bacteria/comments/
+/dailydose/cf/2014/07/17/high_cholesterol_also_linked_to_cancer/
+/dailydose/cf/2014/07/17/high_cholesterol_also_linked_to_cancer/comments/
+/dailydose/cf/2014/11/05/_7_herbal_remedies_for_stress_infographic/
+/dailydose/cf/2014/11/05/_7_herbal_remedies_for_stress_infographic/comments/
+#   ./conf/redirects-head/encyclopedia_adam_map.conf
+/acid-reflux/000329.html
+/ency/408/002182prv.html
+/ency/408/003361prv.html
+/sleep-disorders/understanding-narcolepsy-000098_8-145.html
+/symptoms/symptom.html
+#   ./conf/redirects-head/encyclopedia_hc_map.conf
+/encyclopedia/408/7.html
+/encyclopedia/408/286.html
+/encyclopedia/408/486.html
+/encyclopedia/408/776.html
+#   ./conf/redirects-head/HCTB-256-otto-redirect-kill.conf
+/genital-herpes/g/early-signs-of-genital-herpes-and-pictures.html
+/cold-flu/g/what-can-cause-chills-with-no-fever.html
+/colon-cancer/h/can-colon-cancer-make-you-gain-weight.html
+/sexual-health/h/can-i-take-a-pregnancy-test-if-Im-spotting.html
+#   ./conf/redirects-head/HCTB-299.conf
+/brast-cancer/index-4227-49.html
+/chronic-pain/find-drug-50624-73.html
+/genital-herpes/find-drug-91947-73.html
+/sleep-disorders/drug-information-67375-73.html
+/migraine/medications-533005-46.html
+#   ./conf/redirects-head/HCTB-346.conf
+/adhd/c/general/introduction
+/chronic-pain/c/general/risks/genetic
+/multiple-sclerosis/c/general/living-with/adaptive-tools
+/anxiety/c/general/treatment/supplements
+/anxiety/c/general/diagnosis/stress
+#   ./conf/redirects-head/SA-720-drupal-slideshow-redirect.conf
+/sexual-health/cf/slideshows/8-myths-about-hepatitis-c
+/multiple-sclerosis/cf/slideshows/optic-neuritis-how-multiple-sclerosis-affects-your-eyes-and-visi
+/skin-care/cf/slideshows/8-things-i-wish-id-known-about-psoriasis
+/allergy/cf/slideshows/top-10-health-tweets-of-the-week-june-3
+/sleep-disorders/cf/slideshows/what-we-learned-this-week-november-2nd-2012
+#...
+/more-conditions
+/diabetes/c/110/174140/diabetes-thyroid-gland
+/medications/r/conditions/eye-conditions
+#./conf/redirects-head/HCTB-100.conf
+/diet-exercise/fitness-survival-guides-81076-137.html
+/druglibrary/408/vytorin.html
+/peoplespharmacy/408/20597_3.html
+/druglibrary/93/cipro_xr-indications_dosage.html
+/peoplespharmacy/408/drugs/brand_index_a.html
+#./conf/redirects/01_routing
+/skin-care/c/255251/173571/retirement-psoriasis
+/f/Dfgiveaway
+/utils/news/subscriptions.html
+#./conf/redirects/HCR-4024.conf
+/chronic-pain/c/5949/155646/recommends
+/diabetes/c/9993/91780/visually-impaired
+/chronic-pain/c/question/915376/128083
+/multiple-sclerosis/c/question/725632/164847
+#./conf/redirects/HCR-4135.conf
+/ibd/d/LBLN/living-with-crohns
+/skin-care/d/LBLN/living-with-psoriasis
+#./conf/redirects/02_routing.conf
+#   ./conf/redirects/HCR-4028.txt
+/vision/c/create
+#   ./conf/redirects/HCR-3846.txt
+/ibd/h/what-could-cause-blood-in-urine-and-stool.html
+/chronic-pain/h/tendon-pain-and-burning-sensation-near-knee.html
+/incontinence/h/can-stress-cause-frequent-urination.html
+/chronic-pain/h/left-lower-rib-cage-pain.html
+/chronic-pain/h/lump-and-back-pain-lower-right-side.html
+/cold-flu/h/can-you-get-the-flu-vaccine-with-antibiotics.html
+/chronic-pain/h/pain-in-the-muscle-at-the-top-of-hip-bone.html
+/rheumatoid-arthritis/h/sharp-pain-in-big-toes-when-walking.html
+#...HCR-3938
+/ibd/h/what-could-cause-blood-in-urine-and-stool.html
+/menopause/h/how-long-does-menopause-last-after-a-hysterectomy.html
+/chronic-pain/h/severe-sacrum-back-pain.html
+/rheumatoid-arthritis/h/prednisone-alternatives.html
+/high-blood-pressure/h/will-high-blood-pressure-cause-you-to-have-the-shakes.html
+/chronic-pain/h/what-causes-leg-numbness-back-pain-and-tingling.html
+/chronic-pain/h/pinched-nerve-in-back-numb-arms.html
+/rheumatoid-arthritis/h/sharp-pain-in-big-toes-when-walking.html
+#   ./conf/redirects/videos.txt HCR-3214
+/adhd/video-529597-49.html
+/copd/video-594052-111.html
+/diet-exercise/video-540421-111.html
+/multiple-sclerosis/video-560330-49.html
+/rheumatoid-arthritis/videos-540101-111.html
+/sleep-disorders/video-596654-111.html
+#   ./conf/redirects/HCR-FDB.conf KILL
+/stressed-624117-88.html
+/breast-cancer/find-drug-503948-73.html
+/skin-care/acne-drug-info-88580-73.html
+/diabetes/find-drug-1124-150.html
+/skin-care/acne-drug-info-502949-73.html
+/alzheimers/find-drug-488732-73.html
+/anxiety/find-drug-56629-73.htm
+/allergy/find-drug-474351-73.html
+#...
+/clinical-trial/
+#./conf/redirects/HCR-4015.conf
+/acid-reflux/h/left-underarm-pain-gerd.html
+/chronic-pain/h/does-epidural-steroid-injections-cause-weight-gain.html
+/diabetes/h/best-late-night-snack-to-avoid-diabetic-hypoglycemia.html
+/erectile-dysfunction/h/how-does-cialis-work.html
+/migraine/h/can-thyroid-disease-cause-tension-headaches.html
+/sexual-health/h/when-do-you-start-getting-heartburn-during-pregnancy.html
+/sleep-disorders/h/can-you-become-addicted-to-melatonin.html
+#./conf/redirects/HCR-3150.conf
+/diet-exercise/h/can-you-eat-fruit-when-you-have-a-fever.html
+/chronic-pain/h/sharp-pain-under-rib-cage.html
+/sexual-health/h/lower-abdominal-pain-after-having-bacterial-vaginosis.html
+/chronic-pain/h/hip-to-foot-nightly-leg-pain-and-cramping.html
+/chronic-pain/h/what-does-it-mean-to-have-a-bad-pain-on-my-side-by-my-ribs.html
+/chronic-pain/h/hydrocodone-vs-oxycodone-ingredients.html
+#./conf/redirects/HCR-3938.conf
+/ibd/h/what-could-cause-blood-in-urine-and-stool.html
+/chronic-pain/h/sharp-tingling-pain-in-right-big-toe.html
+/chronic-pain/h/sudden-sharp-leg-pain.html
+/chronic-pain/h/what-to-do-to-relieve-lower-back-pain-due-to-scoliosis.html
+/high-blood-pressure/h/will-high-blood-pressure-cause-you-to-have-the-shakes.html
+/chronic-pain/h/lower-abdominal-pain-that-goes-around-to-my-back.html
+/rheumatoid-arthritis/h/stiffness-in-middle-finger-joint.html
+/rheumatoid-arthritis/h/sharp-pain-in-big-toes-when-walking.html
+#./conf/redirects/SA-660_hc.conf
+/f/reduce-risk
+/f/menopause-men
+#./conf/redirects/SA-681.conf
+/migraine/types-of-headaches-38571-5.html
+/migraine/types-of-headaches-38571-5_4.html
+#./conf/redirects/healthcentral-pkc-redirects.conf
+/acid-reflux/r/pkc/drug-therapy/intermittent-suppression-5815
+/allergy/r/pkc/general-causes-of-tinnitus/polycythemia-5398
+/asthma/r/pkc/causes-that-may-require-immediate-attention/hypertensive-crisis-5900
+/chronic-pain/r/pkc/general-causes-of-hip-groin-or-buttock-problems/acromegaly-5457
+/cold-flu/r/pkc/general-causes/esophageal-hypermotility-7028
+/heart-disease/r/pkc/general-measures/patients-symptoms-overload-6430
+/ibd/r/pkc/general-causes-of-constipation/depressive-disorder-6840
+/menopause/r/pkc/alternatives-to-hormone-therapy/clonidine-flash-management-7067
+/multiple-sclerosis/r/pkc/general-causes-of-tremor/task-specific-tremor-6016
+/osteoarthritis/r/pkc/general-causes-of-foot-or-ankle-problems/chronic-arsenic-toxicity-7944
+/prostate/r/pkc/general-causes-of-blood-in-the-urine/glomerulonephritis-7642
+/sleep-disorders/r/pkc/sleep-apnea-is-a-common-underlying-condition/sleep-apnea-7460
+/acid-reflux/r/pkc/
+/diabetes/r/pkc/
+/sleep-disorders/r/pkc/
+#./conf/redirects/healthcentral-drug-redirects.conf
+/common/includes/related-drugs-erectile-dysfunction-3100.htm
+/common/includes/related-drugs-erectile-dysfunction-3101.htm
+/acid-reflux/find-drug-100216-73.html
+/chronic-pain/find-drug-106170-73.html
+/chronic-pain/find-drug.html
+#./conf/redirects/healthcentral_redirects.conf
+#...KILL
+/allergy/causes-6263-1.html
+/allergy/h/red-spot-flaky-skin.html
+/allergy/medications-29029-116.html
+#...Webthrows
+/f/cinnamon /diet-exercise/c/299905/155721/cinnamon
+/f/greenbenefits
+/f/summer-risks
+/f/
+#...07/22/07
+/common/
+/common/ads/
+/common/js/
+/common/images/
+/common/includes/
+#...secure
+/chronic-pain/humira/HumiraServlet
+/tamethepain/registration/thankyou.jsp
+#...Newsletter
+/utils/news/drkoop/subscriptions.html
+#...01/03/08
+/breast-cancer/femara
+/bipolar/behc
+#...08/27/07
+/depression/dhc/
+#...07/05/07
+/tamethepain
+#...02/16/07
+/prostate/laserscope
+#...03/23/07
+/rheumatoid-arthritis/remicade
+#...04/10/07
+/high-blood-pressure/llsa/video.html
+#...12/01/06
+/acid-reflux/10026-146.html
+/chronic-pain/tmj
+#...10/23/07
+/chronic-pain/irritable-bowel-syndrome-000103-145.html
+/chronic-pain/000142.html
+#...11/5/07
+/multiple-sclerosis/news-153082-66.html
+/chronic-pain/guide-154183-75.html
+/chronic-pain/000142.html
+#...11/5/07
+/chronic-pain/irritable-bowel-syndrome-000069-145.html
+/chronic-pain/irritable-bowel-syndrome-000069_12-145.html
+#...11/15/07
+/chronic-pain/c/5949/16280/fm-oprah/
+/depression/19302-146.html
+/genital-herpes/insurance-help-22204-5.html
+/incontinence/news-535686-105.html
+/rheumatoid-arthritis/insurance-help-2946-143.html
+#...12/5/07
+/incontinence/includes/left-nav/find-manage-connect-64503-73.html
+/prostate/community-2777-143.html
+/sleep-disorders/news-archive-22670-31.html
+#...03/09/07
+/acid-reflux/tips.html
+/heart-disease/news-33218-31.html
+#...01/12/07
+/allergy/tests-7753-108.html
+/sleep-disorders/sleep-problems-11034-108.html
+#...02/17/07
+/acid-reflux/faq.html
+/sleep-disorders/faq.html
+#...07/14/08
+/allergy/c/75378/20687/
+/symptoms/guide-154471-75.html
+#...08/04/08
+/symptoms/guide-154472-75.html
+/prostate/9658-146.html
+#...09/09/08
+/heart-disease/symptoms.html
+#...09/15/08
+/migraine/education/
+#...09/17/08
+/schizophrenia/education/
+/heart-disease/heart-devices/
+#09/19/08
+/utils/newsweb/anxiety/news-262392.html
+#...11/07/08
+/diabeteens/c/67850/28381/
+/diabeteens/c/67850/44939/
+#...12/01/08
+/acid-reflux/education/
+#...1/9/09
+/alzheimers/namenda/
+#...1/12/09
+/diabetes/information/
+/adhd/adultadhd/
+#...4/27/09
+/depression/news-288296-98.html
+/rheumatoid-arthritis/news-288288-98.html
+#...7/6/09
+/adhd/question-answer-test.html
+/adhd/question-answer-test.html
+/asthma/includes/right-column-near-27125-63.html
+/menopause/questions-harvard-27292-63.html
+#...8/7/09
+/adhd/hc/
+#...8/12/09
+/stop-smoking/c/all
+#...9/4/09
+/nutrition/ensure/
+#...9/16/09
+/about
+#...10/2/09
+/meningitis/
+#...10/26/09
+/osteoarthritis/solution/
+#...7/28/10
+/osteoarthritis/education/
+#...12/30/ 09
+/obesity/weight-loss-surgery/
+#...02/25/10
+/healthcare08/
+#...02/25/10
+/caregiver/
+#...02/26/10
+/cancercenter/about-us
+#...2/02/10
+/common/flash/ensure/ensure.flv
+/diet-exercise/fitness-tips-414919-5.html
+/osteoporosis/treatment-408942-5.html
+#...6/11/2010
+/fibromyalgia/education/
+#...7/17/2010
+/adhd/education/
+#...9/21/2010
+/obesity/weight-loss-surgery/
+/obesity/weight-loss-surgery/eligibility.html
+#...11/3/2010
+/oab/urgentmatters
+#...11/22/2010
+/rheumatoid-arthritis/education
+#...11/22/2010
+/prostate/advanced-cancer/
+#...3/7/2011
+/ra/healthcenter/
+#...4/12/11
+/ency/408/000002.html
+/ency/408/000468.html
+/ency/408/000803.html
+/ency/408/001551prv.html
+/ency/408/imagepages/1034.html
+/ency/408/imagepages/19429.html
+/ency/408/presentations/100220.html
+#...misc
+/heart-disease/valve
+/migraine/find/websites/blogs.html
+/multiple-sclerosis/healthcenter/asking-for-help.html
+/multiple-sclerosis/healthcenter/
+#...1/3/2012
+/cholesterol/highcholesterolpreventioncenter.html
+/oab/learningcenter/
+#...profile
+/f/ADHDmom
+/f/bladder_foods
+#...4/4/2012
+/acid-reflux/tools-252257.html
+/skin-care/psoriasis-579951.html
+#...5/31/2012
+/heart-disease/medifocus/abdominal-aortic-aneurysm/introduction-to-abdominal-aortic-aneurysm
+/chronic-pain/medifocus/spondylolisthesis/diagnosis-of-spondylolisthesis
+#...6/14/2012
+/acid-reflux/find-drug-100216-73.html
+/diabetes/find-drug-469232-73.html
+/skin-care/acne-drug-info-87418-73.html
+/sleep-disorders/drug-information-72155-73.html
+#...7/19/2012
+/acid-reflux/find-drug.htm
+/sleep-disorders/drug-information.html
+#...Depuy
+/osteoarthritis/hip-and-knee-replacement-surgery-education-center
+#...10/2/2012
+/diet-exercise/quizzes-250550.html
+/skin-care/psoriasis-center-612067.html
+#...10/2/2012
+/diet-exercise/quizzes-250550.html
+/skin-care/psoriasis-center-612067.html
+#...10/15/2012
+/allergy/understanding-allergy-280689.html
+/cold-flu/cold-flu-tools-quizzes-assessments-263835.html
+#...10/16/2012
+/chronic-pain/crohns/
+#...11/12/2012
+/acid-reflux/tools.html
+/sleep-disorders/quizzes.html
+#...PROD-11
+/colon-cancer/r/ccac/understanding-colorectal-3941
+/diabetes/insulin-pump-education-center/
+#...3/20/2013 VC-10
+/acid-reflux/healthination.html
+/sleep-disorders/video.html
+/acid-reflux/news-151591-22.html
+/acid-reflux/news.html
+/asthma/news-265791-98.html
+/copd/news-408088-98.html
+/heart-disease/news-540060-98.html
+/multiple-sclerosis/news.html
+/skin-care/psoriasis-center.html
+/sexual-health/emergencycontraceptivescenter.html
+#...HCR-2303
+/breast-cancer/reconstruction-36173-5.html
+/breast-cancer/reconstruction-38681-5.html
+/breast-cancer/c/78/83875/reconstruction
+#...HCR-2594
+/skin-cancer/c/255251/169137/psoriasis-incidence/
+#HCR-3077
+/symptoms/guide.html
+#...SA-644
+/diabetes/c/110/171834/physician-injectible-treating
+#./conf/redirects/hc_hsc_healthday_redirects
+/diet-exercise/news-535361-105.html
+/heart-disease/news-256978-31.html
+/alzheimers/news-285522-31.html
