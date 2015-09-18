@@ -9,7 +9,7 @@ merck:
   prop5:     "Stage 4 Skin Cancer Center, Stage IV Melanoma"
   prop6:     "Center Home"
   prop7:     "merck"
-  prop10:    "/skin-cancer/d/treatment/stage-iv-melanoma?ic=recch"
+  prop10:    "/skin-cancer/d/treatment/stage-iv-melanoma"
   prop12:    "09-17-2014"
   prop13:    "04-01-2015"
   eVar17:    "D=oid"
