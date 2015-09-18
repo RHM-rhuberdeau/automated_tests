@@ -46,7 +46,7 @@ class BerkeleyPage
   def self.get_all_ads(proxy)
     @proxy = proxy
     ad_calls = @proxy.har.entries.map do |entry|
-      if entry.request.url.include?('ad.doubleclick.net/N3965')
+      if entry.request.url.include?('ad.doubleclick.net/N3965') && entry.response.status == 200
         entry.request.url
       end
     end
@@ -54,7 +54,7 @@ class BerkeleyPage
     if ad_calls.compact.length < 3
       sleep 2
       ad_calls = @proxy.har.entries.map do |entry|
-        if entry.request.url.include?('ad.doubleclick.net/N3965')
+        if entry.request.url.include?('ad.doubleclick.net/N3965') && entry.response.status == 200
           entry.request.url
         end
       end
