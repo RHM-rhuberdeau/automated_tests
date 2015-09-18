@@ -6,8 +6,9 @@ class BerkeleyTagHomeTest < MiniTest::Test
     setup do
       fire_fox_with_secure_proxy
       @proxy.new_har
-      visit "#{BW_BASE_URL}"
+      @url  = "#{BW_BASE_URL}"
       @page = Berkeley::BerkeleyHomePage.new(:driver =>@driver, :proxy => @proxy)
+      visit @url
     end
 
     should "produce results" do
