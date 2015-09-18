@@ -41,9 +41,11 @@ class SymptomsOfRa < MiniTest::Test
 
     ##################################################################
     ################### SEO ##########################################
-    context "SEO" do 
+    context "SEO safe" do 
       should "have the correct title" do 
-        assert_equal("Symptoms of RA - Rheumatoid Arthritis | www.healthcentral.com", @driver.title)
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 
@@ -71,7 +73,7 @@ class SymptomsOfRa < MiniTest::Test
                                                                      :ugc => "[\"n\"]") 
         ads.validate
 
-        omniture = @page.omniture
+        omniture = @page.omniture(:url => @url)
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
