@@ -33,9 +33,11 @@ class MigraineTrackerTest < MiniTest::Test
 
     ##################################################################
     ################### SEO ##########################################
-    context "SEO" do 
+    context "SEO safe" do 
       should "have the correct title" do 
-        assert_equal("Welcome to HealthCentral’s Migraine Tracker", @driver.title)
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 
@@ -65,7 +67,7 @@ class MigraineTrackerTest < MiniTest::Test
       end
 
       # should "have valid omniture values" do 
-      #   omniture = @page.omniture
+      #   omniture = @page.omniture(:url => @url)
       #   omniture.validate
       #   assert_equal(true, omniture.errors.empty?, "#{omniture.errors.messages}")
       # end
