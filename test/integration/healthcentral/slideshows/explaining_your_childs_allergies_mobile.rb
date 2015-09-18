@@ -39,6 +39,16 @@ class SlideshowTest < MiniTest::Test
       end
     end
 
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO safe" do 
+      should "have the correct title" do 
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
+      end
+    end
+
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "omniture" do
@@ -46,7 +56,7 @@ class SlideshowTest < MiniTest::Test
         ad_site        = "cm.ver.lblnallergy"
         ad_categories  = ["slideshow", 'explaining', '']
         ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
-        omniture       = @page.omniture
+        omniture       = @page.omniture(:url => @url)
 
         wait_for { @driver.find_element(:css, "#slide-1").displayed? }
         ads_test_cases.validate
