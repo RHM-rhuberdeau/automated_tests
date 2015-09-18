@@ -7,7 +7,8 @@ class BerkeleySlideShowTest < MiniTest::Test
   	  fire_fox_with_secure_proxy
       @proxy.new_har
       @page = BerkeleySlideshow::SlideshowPage.new(:driver =>@driver, :proxy => @proxy)
-      visit "#{BW_BASE_URL}/healthy-eating/food/slideshow/can-food-cause-body-odor"
+      @url  = "#{BW_BASE_URL}/healthy-eating/food/slideshow/can-food-cause-body-odor" + "?foo=#{rand(36**8).to_s(36)}"
+      visit @url
   	end
 
   	# should "update slide text while browsing through the slides" do
