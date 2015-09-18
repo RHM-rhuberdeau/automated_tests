@@ -1,3 +1,4 @@
+require "rest-client"
 module HealthCentralAssets
   class Assets
     include ::ActiveModel::Validations
@@ -14,6 +15,7 @@ module HealthCentralAssets
       @driver    = args[:driver]
       @base_url  = args[:base_url]
       @host      = args[:host] || ASSET_HOST
+      @driver.execute_script "window.stop();"
     end
 
     def wrong_asset_hosts
@@ -78,11 +80,38 @@ module HealthCentralAssets
 
     def no_broken_images
       images = @driver.find_elements(:tag_name => "img")
-      broken_images = images.reject do |image|
-        @driver.execute_script("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", image)
+      
+      image_urls = images.collect do |image|
+        begin
+           if image.attribute('src')
+            image.attribute('src').gsub(' ','')
+          end
+        rescue
+          Selenium::WebDriver::Error::StaleElementReferenceError
+        end
+      end
+
+      image_urls = image_urls.select do |x|
+        x.class == "String"
+      end
+      
+      broken_images = image_urls.reject do |url|
+        if url.length > 4
+          begin
+            RestClient.get url do |response, request, result|
+              response.code == 200
+            end
+          rescue URI::InvalidURIError
+          end
+        end
+      end
+
+      broken_images.each do |img|
+        puts "Broken image: #{}"
+        puts
       end
       unless broken_images.empty?
-        self.errors.add(:assets, "#{broken_images.length} broken images on the page")
+        self.errors.add(:assets, "#{broken_images.length} broken images on the page: #{broken_images}")
       end
     end
   end
