@@ -36,11 +36,13 @@ class UnderstandingMigrainesTest < MiniTest::Test
       end
     end
 
-    ###################################################################
-    #################### SEO ##########################################
-    context "SEO" do 
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO safe" do 
       should "have the correct title" do 
-        assert_equal(true, (@driver.title == "Taking Control of Chronic Migraine - Migraine"), "Page title was: #{@driver.title}")
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 
@@ -65,7 +67,7 @@ class UnderstandingMigrainesTest < MiniTest::Test
                                                             :ugc => "[\"n\"]") 
         ads.validate
 
-        omniture = @page.omniture
+        omniture = @page.omniture(:url => @url)
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
