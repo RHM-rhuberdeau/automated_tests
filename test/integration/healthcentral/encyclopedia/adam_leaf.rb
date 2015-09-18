@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/encyclopedia_page'
 
-class SlideshowTest < MiniTest::Test
+class AdamLeafTest < MiniTest::Test
   context "An Adams leaf page, ADHD" do 
     setup do 
       fire_fox_with_secure_proxy
@@ -35,6 +35,16 @@ class SlideshowTest < MiniTest::Test
         assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO safe" do 
+      should "have the correct title" do 
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 

@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/encyclopedia_page'
 
-class SlideshowTest < MiniTest::Test
+class AdamIndex < MiniTest::Test
   context "The encyclopedia home page" do 
     setup do 
       fire_fox_with_secure_proxy
@@ -38,6 +38,16 @@ class SlideshowTest < MiniTest::Test
       end
     end
 
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO safe" do 
+      should "have the correct title" do 
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
+      end
+    end
+
     #########################################################################
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
@@ -58,7 +68,7 @@ class SlideshowTest < MiniTest::Test
                                                            :ugc => "[\"n\"]") 
         ads.validate
 
-        omniture = @page.omniture(:url => @url)(:url => @url)
+        omniture = @page.omniture(:url => @url)
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end

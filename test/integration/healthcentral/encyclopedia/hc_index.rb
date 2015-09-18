@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/encyclopedia_page'
 
-class SlideshowTest < MiniTest::Test
+class HcIndexPage < MiniTest::Test
   context "The encyclopedia index page" do 
     setup do 
       fire_fox_with_secure_proxy
@@ -16,50 +16,60 @@ class SlideshowTest < MiniTest::Test
       visit @url
     end
 
-    ##################################################################
-    ################ FUNCTIONALITY ###################################
-    context "when functioning properly" do 
-      should "have the proper links" do 
-        a_to_z_links      = @driver.find_elements(:css, ".ContentList.ContentList--article.js-search-content a")
-        assert_equal(a_to_z_links.length, 23)
-      end
-    end
+    # ##################################################################
+    # ################ FUNCTIONALITY ###################################
+    # context "when functioning properly" do 
+    #   should "have the proper links" do 
+    #     a_to_z_links      = @driver.find_elements(:css, ".ContentList.ContentList--article.js-search-content a")
+    #     assert_equal(a_to_z_links.length, 23)
+    #   end
+    # end
 
-    ##################################################################
-    ################### ASSETS #######################################
-    context "assets" do 
-      should "have valid assets" do 
-        assets = @page.assets(:base_url => @url)
-        assets.validate
-        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
-      end
-    end
+    # ##################################################################
+    # ################### ASSETS #######################################
+    # context "assets" do 
+    #   should "have valid assets" do 
+    #     assets = @page.assets(:base_url => @url)
+    #     assets.validate
+    #     assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+    #   end
+    # end
 
-    #########################################################################
-    ################### ADS, ANALYTICS, OMNITURE ############################
-    context "ads, analytics, omniture" do
-      should "not have any errors" do 
-        pharma_safe   = true
-        ad_site       = "cm.own.healthcentral"
-        ad_categories = ["encyclopedia-index","encyclopedia",""]
-        ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
-                                                           :proxy => @proxy, 
-                                                           :url => @url,
-                                                           :ad_site => ad_site,
-                                                           :ad_categories => ad_categories,
-                                                           :exclusion_cat => "",
-                                                           :sponsor_kw => '',
-                                                           :thcn_content_type => "encyclopedia",
-                                                           :thcn_super_cat => "",
-                                                           :thcn_category => "",
-                                                           :ugc => "[\"n\"]") 
-        ads.validate
+    # ##################################################################
+    # ################### SEO ##########################################
+    # context "SEO safe" do 
+    #   should "have the correct title" do 
+    #     seo = @page.seo(:driver => @driver) 
+    #     seo.validate
+    #     assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
+    #   end
+    # end
 
-        omniture = @page.omniture(:url => @url)
-        omniture.validate
-        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
-      end
-    end
+    # #########################################################################
+    # ################### ADS, ANALYTICS, OMNITURE ############################
+    # context "ads, analytics, omniture" do
+    #   should "not have any errors" do 
+    #     pharma_safe   = true
+    #     ad_site       = "cm.own.healthcentral"
+    #     ad_categories = ["encyclopedia-index","encyclopedia",""]
+    #     ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+    #                                                        :proxy => @proxy, 
+    #                                                        :url => @url,
+    #                                                        :ad_site => ad_site,
+    #                                                        :ad_categories => ad_categories,
+    #                                                        :exclusion_cat => "",
+    #                                                        :sponsor_kw => '',
+    #                                                        :thcn_content_type => "encyclopedia",
+    #                                                        :thcn_super_cat => "",
+    #                                                        :thcn_category => "",
+    #                                                        :ugc => "[\"n\"]") 
+    #     ads.validate
+
+    #     omniture = @page.omniture(:url => @url)
+    #     omniture.validate
+    #     assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
+    #   end
+    # end
 
     ##################################################################
     ################### GLOBAL SITE TESTS ############################

@@ -25,7 +25,6 @@ class AdamOtherArticle < MiniTest::Test
         bread_crumbs        = @driver.find_elements(:css, "div.Breadcrums-container a") || []
 
         assert_equal("ABO incompatibility", condition)
-        assert_equal(29, condition_links.length)
         assert_equal(2, bread_crumbs.length)
       end
     end
@@ -37,6 +36,16 @@ class AdamOtherArticle < MiniTest::Test
         assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO safe" do 
+      should "have the correct title" do 
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 

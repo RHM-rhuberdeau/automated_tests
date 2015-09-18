@@ -12,7 +12,7 @@ class AdamOtherAlphabeticalIndex < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/adam/a" + "?foo=#{rand(36**8).to_s(36)}"
+      @url            = "#{HC_BASE_URL}/encyclopedia/adam/a/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
@@ -20,11 +20,11 @@ class AdamOtherAlphabeticalIndex < MiniTest::Test
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "have the proper links" do 
-        alphabetical_nav = find "div.Page-index-nav ul li a"
-        page_links       = find "li.ContentList-item.key-A a"
+        alphabetical_nav = @driver.find_elements(:css, "div.Page-index-nav ul li a")
+        page_links       = @driver.find_elements(:css, "li.ContentList-item.key-A a")
 
-        assert_equal(29, alphabetical_nav, "Missing alphaetical navigation links")
-        assert_equal(307, page_links, "missing some links to other articles")
+        assert_equal(29, alphabetical_nav.length, "Missing alphaetical navigation links")
+        assert_equal(307, page_links.length, "missing some links to other articles")
       end
     end
 
@@ -35,6 +35,16 @@ class AdamOtherAlphabeticalIndex < MiniTest::Test
         assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
+
+    ##################################################################
+    ################### SEO ##########################################
+    context "SEO safe" do 
+      should "have the correct title" do 
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 
