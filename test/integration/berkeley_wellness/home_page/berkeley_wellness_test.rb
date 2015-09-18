@@ -9,7 +9,8 @@ class BerkeleyHomePage < MiniTest::Test
       header            = BerkeleyHeader::DesktopHeader.new(:driver => @driver)
       footer            = BerkeleyFooter::DesktopFooter.new(:driver => @driver)
       @page             = Berkeley::BerkeleyHomePage.new(:driver =>@driver, :proxy => @proxy, :header => header, :footer => footer)
-      visit BW_BASE_URL
+      @url               = BW_BASE_URL + "?foo=#{rand(36**8).to_s(36)}"
+      visit @url
     end
 
     ##################################################################
@@ -39,6 +40,33 @@ class BerkeleyHomePage < MiniTest::Test
         seo = @page.seo
         seo.validate
         assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
+      end
+    end
+
+    #########################################################################
+    ################### ADS, ANALYTICS, OMNITURE ############################
+    context "ads, analytics, omniture" do
+      should "not have any errors" do 
+        ad_site           = 'cm.pub.berkwell'
+        ad_categories     = ["homepage"]
+        exclusion_cat     = ""
+        sponsor_kw        = ''
+        thcn_content_type = ""
+        thcn_super_cat    = ""
+        thcn_category     = ""
+        ads               = Berkeley::BerkeleyHomePage::AdsTestCases.new(:driver => @driver,
+                                                                 :proxy => @proxy, 
+                                                                 :url => @url,
+                                                                 :ad_site => ad_site,
+                                                                 :ad_categories => ad_categories,
+                                                                 :exclusion_cat => exclusion_cat,
+                                                                 :sponsor_kw  => sponsor_kw,
+                                                                 :thcn_content_type => thcn_content_type,
+                                                                 :thcn_super_cat => thcn_super_cat,
+                                                                 :thcn_category => thcn_category,
+                                                                 :ugc => "[\"n\"]") 
+        ads.validate
+        assert_equal(true, ads.errors.empty?, "#{ads.errors.messages}")
       end
     end
 
