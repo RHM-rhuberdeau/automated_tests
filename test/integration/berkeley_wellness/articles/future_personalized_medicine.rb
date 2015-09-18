@@ -10,7 +10,7 @@ class BerkeleyBlogTest < MiniTest::Test
       fixture           = YAML::load_documents(io)
       article_fixture   = OpenStruct.new(fixture[0]['future_medicine'])
       @page             = Articles::ArticlePage.new(:driver => @driver,:proxy => @proxy,:fixture => article_fixture)
-      @url              = "#{BW_BASE_URL}/healthy-community/health-care-policy/article/future-personalized-medicine"
+      @url              = "#{BW_BASE_URL}/healthy-community/health-care-policy/article/future-personalized-medicine" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
