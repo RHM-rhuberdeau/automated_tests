@@ -1,7 +1,7 @@
 home:
   pageName:  "Verticals > DailyDose > DailyDose > > > Stress May Lower Self-Control"
   channel:   "DailyDose Vertical"
-  events:    "event23,event4"
+  events:    "event4"
   hier1:     "Verticals,DailyDose,DailyDose, , ,Stress May Lower Self-Control"
   prop1:     "HealthCentral"
   prop2:     "DailyDose"
@@ -26,7 +26,7 @@ home:
 home_mobile:
   pageName:  "Verticals > DailyDose > DailyDose > > > Stress May Lower Self-Control"
   channel:   "DailyDose Vertical"
-  events:    "event23,event4"
+  events:    "event4"
   hier1:     "Verticals,DailyDose,DailyDose, , ,Stress May Lower Self-Control"
   prop1:     "HealthCentral"
   prop2:     "DailyDose"
@@ -62,7 +62,7 @@ week2:
   prop12:    "07-01-2015"
   prop13:    "07-01-2015"
   eVar17:    "D=oid"
-  prop22:    "/dailydose/2015/2/"
+  prop22:    "/dailydose/2015/2"
   prop29:    "desktop"
   prop30:    "Landscape"
   prop35:    "D=v21"
