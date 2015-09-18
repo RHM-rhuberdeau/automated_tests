@@ -1,15 +1,18 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/the_body/article_page'
 
-class HowDoIKnowIfIHaveHiv < MiniTest::Test
-  context "A TheBody desktop page" do 
+class GodsLove < MiniTest::Test
+  context "A redesigned article, gods love" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
       io            = File.open('test/fixtures/the_body/articles.yml')
       body_fixture  = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['raise_funds'])
-      @page         = ::TheBodyArticle::TheBodyArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
+      header        = TheBodyHeader::ArticleHeader.new(:driver => @driver)
+      footer        = TheBodyFooter::RedesignFooter.new(:driver => @driver)
+      @page         = TheBodyArticle::TheBodyArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
+                                                             :header => header, :footer => footer)
       @url          = "#{BODY_URL}/content/75791/gods-love-we-deliver-celebrates-30-years-of-food-a.html"
       visit @url
     end
@@ -43,33 +46,30 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
       end
     end
 
-   #########################################################################
-   ################### ADS, ANALYTICS, OMNITURE ############################
-   context "ads, analytics, omniture" do
-     should "not have any errors" do 
-       ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => @url,
-                                          :ugc => "[\"n\"]", :ad_site => 'cm.own.body', :ad_categories => ['healthcentral'],
-                                          :exclusion_cat => '') 
-       ads.validate
+   # #########################################################################
+   # ################### ADS, ANALYTICS, OMNITURE ############################
+   # context "ads, analytics, omniture" do
+   #   should "not have any errors" do 
+   #     ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => @url,
+   #                                        :ugc => "[\"n\"]", :ad_site => 'cm.own.body', :ad_categories => ['healthcentral'],
+   #                                        :exclusion_cat => '') 
+   #     ads.validate
 
-       omniture = @page.omniture
-       omniture.validate
-       assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
-     end
-   end
+   #     omniture = @page.omniture
+   #     omniture.validate
+   #     assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
+   #   end
+   # end
 
-    # ##################################################################
-    # ################### GLOBAL SITE TESTS ############################
-    # context "Global Site tests" do 
-    #   should "have passing global test cases" do 
-    #     button = find "#HC-menu"
-    #     button.click if button
-        
-    #     global_test_cases = @page.global_test_cases
-    #     global_test_cases.validate
-    #     assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
-    #   end
-    # end
+    ##################################################################
+    ################### GLOBAL SITE TESTS ############################
+    context "Global Site tests" do 
+      should "have passing global test cases" do 
+        global_test_cases = @page.global_test_cases
+        global_test_cases.validate
+        assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
+      end
+    end
   end#A TheBody desktop page
 
   def teardown  
