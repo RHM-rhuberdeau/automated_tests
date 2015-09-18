@@ -61,5 +61,6 @@ DEPENDENCIES
   browsermob-proxy
   httparty
   minitest
+  rest-client
   selenium-webdriver (= 2.44.0)
   shoulda-context

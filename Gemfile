@@ -10,6 +10,7 @@ group :test do
   gem 'minitest'
   gem 'shoulda-context'
   gem 'selenium-webdriver', '2.44.0'
+  gem "rest-client"
 end
 
 # Use ActiveModel has_secure_password
