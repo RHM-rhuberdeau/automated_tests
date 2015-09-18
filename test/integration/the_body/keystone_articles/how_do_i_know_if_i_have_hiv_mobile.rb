@@ -25,15 +25,15 @@ class HowDoIKnowIfIHaveHiv < MiniTest::Test
       end
     end
 
-    # ##################################################################
-    # ################### ASSETS #######################################
-    # context "assets" do 
-    #   should "have valid assets" do 
-    #     assets = @page.assets
-    #     assets.validate
-    #     assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
-    #   end
-    # end
+    ##################################################################
+    ################### ASSETS #######################################
+    context "assets" do 
+      should "have valid assets" do 
+        assets = @page.assets
+        assets.validate
+        assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+      end
+    end
 
     # ##################################################################
     # ################### SEO ##########################################
