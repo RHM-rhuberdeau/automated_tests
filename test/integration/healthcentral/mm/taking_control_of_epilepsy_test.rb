@@ -58,9 +58,11 @@ class LBLN < MiniTest::Test
 
     ##################################################################
     ################### SEO ##########################################
-    context "SEO" do 
+    context "SEO safe" do 
       should "have the correct title" do 
-        assert_equal(true, @page.has_correct_title?)
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 
@@ -84,7 +86,7 @@ class LBLN < MiniTest::Test
                                                                      :ugc => "[\"n\"]")
         ads.validate
 
-        omniture = @page.omniture
+        omniture = @page.omniture(:url => @url)
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
@@ -164,15 +166,15 @@ class LBLN < MiniTest::Test
   #     assert_equal(true, (bad_links.compact.length == 0), "There were links in the header that did not use relative paths: #{bad_links.compact}")
   #   end 
 
-  #   ##################################################################
-  #   ################### ASSETS #######################################
-  #   context "assets" do 
-  #     should "have valid assets" do 
-  #       assets = @page.assets
-  #       assets.validate
-  #       assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
-  #     end
-  #   end
+    # ##################################################################
+    # ################### ASSETS #######################################
+    # context "assets" do 
+    #   should "have valid assets" do 
+    #     assets = @page.assets
+    #     assets.validate
+    #     assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
+    #   end
+    # end
   # end#taking control of epilepsy immersive
 
   def teardown  
