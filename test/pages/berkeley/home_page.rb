@@ -14,6 +14,10 @@ module Berkeley
     def functionality(args)
       Functionality.new(:driver => @driver)
     end
+
+    def seo
+      BerkeleySeo::Seo.new(:driver => @driver)
+    end
   end
 
   class Functionality
@@ -28,7 +32,7 @@ module Berkeley
     def no_noindex_tag
       no_index = @driver.find_elements(:css, "meta[name='robots']")
       unless no_index.empty?
-        self.errors.add(:functionality, "Noindex tag found #{no_index.inspect}")
+        self.errors.add(:functionality, "Noindex tag found: #{no_index.first.attribute('content')}")
       end
     end
   end
