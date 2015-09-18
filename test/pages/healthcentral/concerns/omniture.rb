@@ -5,18 +5,20 @@ module HealthCentralOmniture
     include ::ActiveModel::Validations
 
     def self.attr_list
-      [:pageName, :channel, :hier1, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop10, :prop16, :prop17, :prop22, :prop29, :prop30, :prop32, :prop35, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :evar6, :eVar17, :events]
+      [:pageName, :channel, :hier1, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop16, :prop17, :prop22, :prop29, :prop30, :prop32, :prop35, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :evar6, :eVar17, :events]
     end
 
     attr_accessor *attr_list
     validate :values_match_fixture
     validate :correct_report_suite
     validate :prop12_and_13
+    validate :prop10_value
 
-    def initialize(omniture_string, fixture)
-      @fixture  = fixture
-      raise OmnitureIsBlank unless omniture_string
-      array     = omniture_string.lines
+    def initialize(args)
+      @fixture  = args[:fixture]
+      @url      = args[:url]
+      raise OmnitureIsBlank unless args[:omniture_text]
+      array     = args[:omniture_text].lines
       index     = array.index { |x| x.include?("pageName") }
       raise OmnitureIsBlank unless index
       range     = array.length - index
@@ -91,6 +93,13 @@ module HealthCentralOmniture
       end
       unless prop13
         self.errors.add(:omniture, "prop13 was blank")
+      end
+    end
+
+    def prop10_value
+      fixture_value = @fixture.send(:prop10)
+      unless @url.include?(fixture_value)
+        self.errors.add(:omniture, "prop10 had the wrong value")
       end
     end
   end
