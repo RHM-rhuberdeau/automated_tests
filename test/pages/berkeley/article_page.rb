@@ -16,9 +16,18 @@ module Articles
     class Functionality
       include ::ActiveModel::Validations
 
+      validate :no_noindex_tag
+
       def initialize(args)
         @driver = args[:driver]
         @proxy  = args[:proxy]
+      end
+
+      def no_noindex_tag
+        no_index = @driver.find_elements(:css, "meta[name='robots']")
+        unless no_index.empty?
+          self.errors.add(:functionality, "Noindex tag found: #{no_index.first.attribute('content')}")
+        end
       end
     end
   end
