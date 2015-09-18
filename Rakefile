@@ -27,6 +27,16 @@ namespace :healthcentral do
     end
   end
 
+  desc "Run Shareposts entry tests"
+  Rake::TestTask.new("entries") do |t|
+    t.pattern = "test/integration/healthcentral/entries/*.rb"
+  end
+
+  desc "Run Shareposts question tests"
+  Rake::TestTask.new("questions") do |t|
+    t.pattern = "test/integration/healthcentral/questions/*.rb"
+  end
+
   desc "Run all keystone tests"
   ["slideshows", "encyclopedia", "daily_dose"].each do |name|
     Rake::TestTask.new("keystone") do |t|
@@ -111,6 +121,26 @@ namespace :berkeley do
   desc "Run all home page tests"
   Rake::TestTask.new("home_page") do |t|
     t.pattern = "test/integration/berkeley_wellness/home_page/*.rb"
+  end
+
+  desc "Run all article tests"
+  Rake::TestTask.new("articles") do |t|
+    t.pattern = "test/integration/berkeley_wellness/articles/*.rb"
+  end
+
+  desc "Run all guides tests"
+  Rake::TestTask.new("guides") do |t|
+    t.pattern = "test/integration/berkeley_wellness/guides/*.rb"
+  end
+
+  desc "Run all guides home tests"
+  Rake::TestTask.new("guides_home") do |t|
+    t.pattern = "test/integration/berkeley_wellness/guides_home/*.rb"
+  end
+
+  desc "Run all slideshow tests"
+  Rake::TestTask.new("slideshows") do |t|
+    t.pattern = "test/integration/berkeley_wellness/slideshows/*.rb"
   end
 end
 
