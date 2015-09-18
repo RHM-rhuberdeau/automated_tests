@@ -20,10 +20,6 @@ module HealthCentralMobileSlideshow
     def functionality
       Functionality.new(:driver => @driver, :proxy => @proxy)
     end
-
-    def global_test_cases
-      GlobalTestCases.new(:driver => @driver, :head_navigation => @head_navigation, :footer => @footer)
-    end
   end
 
   class Functionality
@@ -162,12 +158,13 @@ module HealthCentralMobileSlideshow
     end
 
     def view_more
-      collection_items = @driver.find_elements(:css, "ul.CollectionListBoxes-list li.CollectionListBoxes-list-item").select { |x| x.displayed? }
-      button = find "button.js-CollectionListTopic-view-more.view-more-all"
+      collection_items  = @driver.find_elements(:css, "ul.CollectionListBoxes-list li.CollectionListBoxes-list-item").select { |x| x.displayed? }
+      button            = find "button.js-CollectionListTopic-view-more.view-more-all"
+      autoload          = find ".Slideshow-nextSlideshow.js-Slideshow-nextSlideshow.js-nextSlideshow-showCounter"
       button.click if button
       sleep 1
       new_collection_items = @driver.find_elements(:css, "ul.CollectionListBoxes-list li.CollectionListBoxes-list-item").select { |x| x.displayed? }
-      unless new_collection_items.length > collection_items.length
+      unless new_collection_items.length > collection_items.length || autoload
         self.errors.add(:functionality, "View more button does not work")
       end
     end
@@ -196,32 +193,6 @@ module HealthCentralMobileSlideshow
       ad_categories = evaluate_script("AD_CATEGORIES")
       unless ad_categories == @expected_ad_categories
         self.errors.add(:ad_tags, "ad_categories was #{ad_categories} not #{@expected_ad_categories}")
-      end
-    end
-  end
-
-  class GlobalTestCases
-    include ::ActiveModel::Validations
-
-    validate :head_navigation
-    validate :footer
-
-    def initialize(args)
-      @head_navigation = args[:head_navigation]
-      @footer          = args[:footer]
-    end
-
-    def head_navigation
-      @head_navigation.validate
-      unless @head_navigation.errors.empty?
-        self.errors.add(:head_navigation, @head_navigation.errors.values.first)
-      end
-    end
-
-    def footer
-      @footer.validate
-      unless @footer.errors.empty?
-        self.errors.add(:footer, @footer.errors.values.first)
       end
     end
   end
