@@ -9,10 +9,6 @@ module FDB
       @head_navigation  = args[:head_navigation]
       @footer           = args[:footer]
     end
-
-    def global_test_cases
-      GlobalTestCases.new(:driver => @driver, :head_navigation => @head_navigation, :footer => @footer)
-    end
   end
 
   class LazyLoadedAds < HealthCentralAds::LazyLoadedAds
@@ -49,32 +45,6 @@ module FDB
       end
       unless (ord_values_1[0] != ord_values_2[0])
         self.errors.add(:ads, "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
-      end
-    end
-  end
-
-  class GlobalTestCases
-    include ::ActiveModel::Validations
-
-    validate :head_navigation
-    validate :footer
-
-    def initialize(args)
-      @head_navigation = args[:head_navigation]
-      @footer          = args[:footer]
-    end
-
-    def head_navigation
-      @head_navigation.validate
-      unless @head_navigation.errors.empty?
-        self.errors.add(:head_navigation, @head_navigation.errors.values.first)
-      end
-    end
-
-    def footer
-      @footer.validate
-      unless @footer.errors.empty?
-        self.errors.add(:footer, @footer.errors.values.first)
       end
     end
   end
