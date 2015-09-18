@@ -9,14 +9,17 @@ module BerkeleySeo
     end
 
     def canonical_links
-      links = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-      bad_links = links.map do |link|
-        unless link.attribute('href').index(ASSET_HOST) == 0
-          link
+      anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+      link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+      all_links     = anchor_links + link_tags
+      bad_links = all_links.map do |link|
+        unless link.attribute('href').index(BW_BASE_URL) == 0
+          link.attribute('href')
         end
       end
+      bad_links = bad_links.compact
 
-      unless links.length > 0
+      unless all_links.length > 0
         self.errors.add(:seo, "Page was missing canonical link")
       end
 
