@@ -6,6 +6,7 @@ require_relative './concerns/slide'
 require_relative './concerns/ads_test_cases'
 require_relative './concerns/header'
 require_relative './concerns/footer'
+require_relative './concerns/seo'
 
 class HealthCentralPage
   attr_reader :driver, :proxy, :slides, :ords
@@ -115,11 +116,11 @@ class HealthCentralPage
     end
   end
 
-  def omniture
+  def omniture(args)
     open_omniture_debugger
     omniture_text = get_omniture_from_debugger
     begin
-      omniture = HealthCentralOmniture::Omniture.new(omniture_text, @fixture)
+      omniture = HealthCentralOmniture::Omniture.new(omniture_text: omniture_text, fixture: @fixture, url: args[:url])
     rescue HealthCentralOmniture::OmnitureIsBlank
       omniture = OpenStruct.new(:errors => OpenStruct.new(:messages => {:omniture => "Omniture was blank"}), :validate => '')
     end
@@ -127,6 +128,10 @@ class HealthCentralPage
 
   def assets(args)
     HealthCentralAssets::Assets.new(:proxy => @proxy, :driver => @driver, :base_url => args[:base_url], :host => args[:host])
+  end
+
+  def seo(args)
+    HealthCentralSeo::Seo.new(:driver => args[:driver])
   end
 
   def global_test_cases
@@ -145,6 +150,32 @@ class HealthCentralPage
     end
     site_urls.compact
   end
+
+  class GlobalTestCases
+    include ::ActiveModel::Validations
+
+    validate :head_navigation
+    validate :footer
+
+    def initialize(args)
+      @head_navigation = args[:head_navigation]
+      @footer          = args[:footer]
+    end
+
+    def head_navigation
+      @head_navigation.validate
+      unless @head_navigation.errors.empty?
+        self.errors.add(:head_navigation, @head_navigation.errors.values.first)
+      end
+    end
+
+    def footer
+      @footer.validate
+      unless @footer.errors.empty?
+        self.errors.add(:footer, @footer.errors.values.first)
+      end
+    end
+  end  
 end
 
 
