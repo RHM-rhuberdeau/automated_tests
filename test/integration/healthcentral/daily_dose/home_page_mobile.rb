@@ -53,9 +53,11 @@ class DailyDoseMobileHomePage < MiniTest::Test
 
     ##################################################################
     ################### SEO ##########################################
-    context "SEO" do 
+    context "SEO safe" do 
       should "have the correct title" do 
-        assert_equal(true, @driver.title.length > 0)
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 
@@ -82,7 +84,7 @@ class DailyDoseMobileHomePage < MiniTest::Test
                                                                 :thcn_category => thcn_category,
                                                                 :ugc => "[\"n\"]",
                                                                 :scroll1 => 1250,
-                                                                :scroll2 => 1500) 
+                                                                :scroll2 => 1750) 
         ads.validate
 
         omniture = @page.omniture

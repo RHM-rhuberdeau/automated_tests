@@ -1,8 +1,8 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/dailydose_page'
 
-class DailyDoseHomePage < MiniTest::Test
-  context "daily dose homepage" do 
+class DailyDoseMobileArticlePage < MiniTest::Test
+  context "daily dose mobile article page" do 
     setup do 
       mobile_fire_fox_with_secure_proxy
       @proxy.new_har
@@ -12,7 +12,7 @@ class DailyDoseHomePage < MiniTest::Test
       head_navigation   = HealthCentralHeader::DailyDoseMobile.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/2015/6/30/sugary_drinks_tied_to_nearly_200_000_deaths_a_year/"
+      @url              = "#{HC_BASE_URL}/dailydose/2015/6/30/sugary_drinks_tied_to_nearly_200_000_deaths_a_year/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url 
     end
 
@@ -41,9 +41,9 @@ class DailyDoseHomePage < MiniTest::Test
         assert_equal(false, header_text.nil?, "header text was nil")
         assert_equal(true, header_text.length == headers.length, "A h2 tag was blank")
         assert_equal(true, article_links.length > 1, "Missing article links on the page")
-        assert_equal(false, quote_text.nil?)
-        assert_equal(true, quote_text.length > 1)
-        assert_equal(1, infite_content.length )
+        assert_equal(false, quote_text.nil?, "missing daily quote text")
+        assert_equal(true, quote_text.length > 1, "Daily quote text was blank")
+        assert_equal(7, infite_content.length, "Expected 7 infite_content but there was #{infite_content.length}" )
         assert_equal(infite_content.length, new_content_count.length)
       end
     end

@@ -41,7 +41,7 @@ class DailyDoseHomePage < MiniTest::Test
         assert_equal(true, article_links.length > 1, "Missing article links on the page")
         assert_equal(1, infite_content.length, "no infinite content on the page")
         assert_equal(true, infite_content.length < new_content.length, "page failed to lazy load additional content")
-        assert_equal(true, new_content_count.length > 0, "no new content was lazy loaded")
+        assert_equal(true, new_content.length > 0, "no new content was lazy loaded")
       end
     end
 
@@ -57,9 +57,11 @@ class DailyDoseHomePage < MiniTest::Test
 
     ##################################################################
     ################### SEO ##########################################
-    context "SEO" do 
+    context "SEO safe" do 
       should "have the correct title" do 
-        assert_equal(true, @driver.title.length > 0)
+        seo = @page.seo(:driver => @driver) 
+        seo.validate
+        assert_equal(true, seo.errors.empty?, "#{seo.errors.messages}")
       end
     end
 
