@@ -1,7 +1,7 @@
 acid_reflux:
   pageName:  "Verticals > Acid Reflux > FDB_Article > > > Acid Reflux Medication > Medicines - Drugs for Acid Reflux"
   channel:   "Acid Reflux Vertical"
-  events:    "event4"
+  events:    "event22,event4"
   prop1:     "Body & Mind"
   hier1:     "Verticals,Acid Reflux,FDB_Article, , ,Acid Reflux Medication, Medicines - Drugs for Acid Reflux"
   prop2:     "Digestive Health"
@@ -47,7 +47,7 @@ acid_reflux_mobile:
 acid_reducer:
   pageName:  "Verticals > Acid Reflux > FDB_Article > > > Acid Reducer (Famotidine) Oral Uses and How to Use"
   channel:   "Acid Reflux Vertical"
-  events:    "event4"
+  events:    "event22,event4"
   prop1:     "Body & Mind"
   hier1:     "Verticals,Acid Reflux,FDB_Article, , ,Acid Reducer (Famotidine) Oral Uses and How to Use"
   prop2:     "Digestive Health"
