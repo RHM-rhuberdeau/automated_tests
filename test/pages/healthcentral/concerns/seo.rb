@@ -28,19 +28,21 @@ module HealthCentralSeo
       anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
       link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
       all_links     = anchor_links + link_tags
-      bad_links = all_links.map do |link|
-        unless link.attribute('href').index(HC_BASE_URL) == 0 || link.attribute('href').index("http://www.healthcentral.com") == 0
-          link.attribute('href')
-        end
-      end
-      bad_links = bad_links.compact
-
-      unless all_links.length > 0
-        self.errors.add(:seo, "Page was missing canonical link")
+      all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+      correct_hrefs = all_hrefs.select do |href|
+        href.index(HC_BASE_URL) == 0 || href.index("http://www.healthcentral.com") == 0
       end
 
-      unless bad_links.length == 0 
-        self.errors.add(:seo, "Some canonical links had an invalid href #{bad_links}")
+      unless all_links.length == 1
+        self.errors.add(:seo, "Page had #{all_links.length} canonical links not 1")
+      end
+
+      unless all_hrefs.length == 1 
+        self.errors.add(:seo, "Founds #{all_hrefs.length} hrefs on #{all_links.length} canonical links")
+      end
+
+      unless correct_hrefs.length == 1
+        self.errors.add(:seo, "None of the canonical links had a valid href; #{correct_hrefs}")
       end
     end
   end
