@@ -146,10 +146,11 @@ module HealthCentralHeader
     end
 
     def social_icons_in_header
-      fb_share          = find "span.icon-facebook.icon-light.js-social--share"
-      twitter_share     = find "span.icon-twitter.icon-light.js-social--share"
-      stumbleupon_share = find "span.icon-stumbleupon.icon-light.js-social--share"
-      mail_share        = find "span.icon-mail.icon-light.js-social--share"
+      wait_for          { @driver.find_element(:css, "ul.SocialButtons-list").displayed? }
+      fb_share          = find "div.HC-header-socialButtons a.js-Social--Follow-actionable-facebook"
+      twitter_share     = find "div.HC-header-socialButtons a.js-Social--Follow-actionable-twitter"
+      stumbleupon_share = find "div.HC-header-socialButtons a.js-Social--Follow-actionable-pinterest"
+      mail_share        = find "div.HC-header-socialButtons a.js-Social--Follow-actionable-newsletters"
 
       unless fb_share
         self.errors.add(:header, "Missing facebook share from the header")
@@ -167,9 +168,9 @@ module HealthCentralHeader
 
     def subcategory_navigation
       subcategory   = find "a.Page-category-titleLink"
-      related_links = find "ul.Page-category-related-list a"
+      related_links = @driver.find_elements(:css, "ul.Page-category-related-list a")
 
-      if @collection == false
+      unless @collection == true
         unless subcategory
           self.errors.add(:header, "#{@subcategory} did not appear in the header")
         end
@@ -239,7 +240,7 @@ module HealthCentralHeader
 
   class RedesignHeader < DesktopHeader
     def initialize(args)
-      @driver       =args[:driver]
+      @driver       = args[:driver]
       @logo         = args[:logo]
       @subcategory  = args[:sub_category]
       @related      = args[:related]
@@ -261,6 +262,10 @@ module HealthCentralHeader
         self.errrors.add(:head_navigation, "Missing 'Clinical Trials' in the header")
       end
     end
+
+    def subcategory_navigation
+
+    end
   end
 
   class EncyclopediaDesktop < DesktopHeader
@@ -277,6 +282,10 @@ module HealthCentralHeader
     end
 
     def week_is_displayed
+
+    end
+
+    def subcategory_navigation
 
     end
   end
