@@ -1,3 +1,35 @@
+#https://remedyhealthmedia.atlassian.net/wiki/display/EN/The+Body%3A+Sample+articles
+#--- Portal / subtopic / Resource Center
+http://www.thebody.com/content/75748/why-are-hiv-survival-rates-lower-in-the-deep-south.html
+http://www.thebody.com/content/76027/filling-the-void-canadas-national-voice-for-people.html
+http://www.thebody.com/content/69964/global-post-examines-unproven-unscientific-hiv-tre.html
+http://www.thebody.com/content/75388/im-positive-the-game.html
+http://www.thebody.com/content/67452/hivaids-in-virginia-2010.html
+#--- Authors / byline
+http://www.thebody.com/content/76099/coacutemo-revelar-la-noticia.html
+http://www.thebodypro.com/content/art17149.html
+http://www.thebody.com/content/art12928.html
+#--- Source organization / publication
+http://www.thebody.com/content/75862/new-approaches-to-treatment.html
+http://www.thebody.com/content/75748/why-are-hiv-survival-rates-lower-in-the-deep-south.html
+#--- Comments
+http://www.thebody.com/content/72849/hooked-up-exploring-hiv-disclosure-online.html?comments=on
+http://www.thebody.com/content/75820/when-i-was-hiv-negative-i-was-scared-of-sex-with-h.html?comments=on
+http://www.thebody.com/content/art57417.html
+http://www.thebody.com/content/75778/community-outbreak-of-hiv-infection-linked-to-inje.html?comments=on
+http://www.thebodypro.com/content/75778/community-outbreak-of-hiv-infection-linked-to-inje.html?comments=on
+#--- Videos
+http://www.thebody.com/content/art49371.html
+http://www.thebody.com/content/74409/ed-barron-is-not-hiv-positive-hes-a-person-living-.html
+http://www.thebody.com/content/68682/day-4-of-hiv-diagnosis.html
+http://www.thebody.com/content/76038/do-tops-and-bottoms-have-different-hiv-risks-askth.html
+#--- About / Bio
+http://www.thebody.com/content/39630/david-wohl-md.html
+#--- Blog
+http://www.thebody.com/content/72400/thepozlife.html
+http://www.thebody.com/content/73823/a-house-in-virginia.html
+http://www.thebody.com/content/75096/kick-rocks.html
+http://www.thebody.com/content/76008/five-reasons-to-take-the-hiv-test-right-now.html
 #--- /sites/thebody/thebody/htdocs/siteVault/templates/index/
 http://www.thebody.com/index/newsroom/2015-07.html
 http://www.thebody.com/index/treat/resistance.html
@@ -5,3 +37,15 @@ http://www.thebody.com/index/treat/changing.html
 http://www.thebody.com/siteVault/templates/index/index.html
 #--- Pro
 http://www.thebodypro.com/index/treat/resistance.html
+#--- Immersive
+http://immersive.thebody.com/LBLN/living-with-hiv/
+http://immersive.thebody.com/LBLN/living-with-hiv/flat/
+#--- assets
+http://www.healthcentral.com/assets/sites/healthcentral.css
+http://immersive.thebody.com/LBLN/living-with-hiv/css/thebody/flat.css
+http://immersive.thebody.com/LBLN/living-with-hiv/css/flat.css
+http://immersive.thebody.com/LBLN/living-with-hiv/css/main.css
+http://immersive.thebody.com/LBLN/living-with-hiv/css/thebody/main.css
+http://www.healthcentral.com/common/a/assets/thcn_ads.js
+http://immersive.thebody.com/LBLN/living-with-hiv/js/util/ImmersiveDetector.js
+http://immersive.thebody.com/LBLN/living-with-hiv/flat/thebody/flat.js

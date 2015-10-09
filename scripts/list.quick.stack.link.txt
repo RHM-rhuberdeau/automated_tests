@@ -2,12 +2,12 @@
 /medications/r/medications/
 /medications/r/medications/carafate-oral-14156/side-effects
 /medications/medications/
-/adhd/medications
-/rheumatoid-arthritis/medications
-/adhd/medications/concerta-oral-19857
-/adhd/medications/methylphenidate-oral-12114
-/rheumatoid-arthritis/medications/depen-titratabs-oral-9703
-/rheumatoid-arthritis/medications/infliximab-iv-16504
+/adhd/medications/
+/rheumatoid-arthritis/medications/
+/adhd/medications/concerta-oral-19857/
+/adhd/medications/methylphenidate-oral-12114/
+/rheumatoid-arthritis/medications/depen-titratabs-oral-9703/
+/rheumatoid-arthritis/medications/infliximab-iv-16504/
 /other/medications/bd-pre-filled-normal-saline-inj-148592/
 /other/medications/bd-pre-filled-normal-saline-inj-148592/dosage/
 /other/medications/sevelamer-hcl-oral-16748/
@@ -28,43 +28,43 @@
 /encyclopedia/408/673.html
 #--- KS: adam
 /adam
-/encyclopedia/adam
+/encyclopedia/adam/
 /encyclopedia/adam/a/
 /alzheimers/encyclopedia/alzheimer-4000285/risk-factors/
-/encyclopedia/adam/alcoholism-4021391
-/encyclopedia/adam/alcoholism-4021391/treatment-for-alcoholism
+/encyclopedia/adam/alcoholism-4021391/
+/encyclopedia/adam/alcoholism-4021391/treatment-for-alcoholism/
 /acid-reflux/1157-146.html
 /ency/408/001655prv.html
 /high-blood-pressure/index-000102_7-145.html
 /acid-reflux/encyclopedia/pancreatitis-chronic-ct-scan-4007209/
 /encyclopedia/adam/tmj-disorders-4011923/treatment/
 /skin-cancer/encyclopedia/skin-wrinkles-and-blemishes-4005575/prevention/
-/cold-flu/encyclopedia/fatigue-4005917/prevention
+/cold-flu/encyclopedia/fatigue-4005917/prevention/
 /ibd/irritable-bowel-syndrome-000069_5-145.html
 /symptoms/symptom.html
 #--- KS: DailyDose
 /dailydose/
-/dailydose/cf/archive
+/dailydose/cf/archive/
 /dailydose/2015/8/
-/dailydose/cf/2015/08/13/_music_reduces_pain_anxiety_after_surgery
+/dailydose/cf/2015/08/13/_music_reduces_pain_anxiety_after_surgery/
 /dailydose/2015/8/13/music_reduces_pain_anxiety_after_surgery/
-/dailydose/cf/2014/05/06/_young_blood_reverses_aging_in_older_mice
+/dailydose/cf/2014/05/06/_young_blood_reverses_aging_in_older_mice/
 /dailydose/2013/1/28/yogurt_boosts_nutrition_and_happiness/
 /dailydose/2014/11/17/why_meditation_works/
-/dailydose/cf/2015/07
-/dailydose/cf/2015/07/30
+/dailydose/cf/2015/07/
+/dailydose/cf/2015/07/30/
 /dailydose/cf/2015/03/31/study_says_u_s_kids_eating_less_fast_food
 /dailydose/cf/2015/04/03/night_owls_have_higher_risk_of_diabetes/comments
 /dailydose/cf/2015/06/15/major_surgical_errors_still_happen_in_u_s/comments
 #--- KS: Slideshows
 /adhd/cf/slideshows
 /rheumatoid-arthritis/cf/slideshows/
-/adhd/cf/slideshows/9-ways-prepare-summer-adhd-child
-/adhd/cf/slideshows/8-types-inattention-adult-adhd
-/adhd/cf/slideshows/understanding-your-childs-adhd-q-adhd-author
-/rheumatoid-arthritis/cf/slideshows/8-facts-about-ra-and-heart-disease
-/rheumatoid-arthritis/cf/slideshows/leslie-rott-graduate-student-ra-and-lupus
-/rheumatoid-arthritis/cf/slideshows/10-tips-for-building-and-maintaining-energy-with-rheumatoid-arth
+/adhd/cf/slideshows/9-ways-prepare-summer-adhd-child/
+/adhd/cf/slideshows/8-types-inattention-adult-adhd/
+/adhd/cf/slideshows/understanding-your-childs-adhd-q-adhd-author/
+/rheumatoid-arthritis/cf/slideshows/8-facts-about-ra-and-heart-disease/
+/rheumatoid-arthritis/cf/slideshows/leslie-rott-graduate-student-ra-and-lupus/
+/rheumatoid-arthritis/cf/slideshows/10-tips-for-building-and-maintaining-energy-with-rheumatoid-arth/
 #SA-720 drupal redirects to keystone
 /sexual-health/cf/slideshows/8-myths-about-hepatitis-c
 /high-blood-pressure/cf/slideshows/top-5-myths-about-high-blood-pressure
@@ -109,6 +109,7 @@ https://secure.healthcentral.com/cecs/cf/cancer-center/cancers-we-treat
 /migraine/medications-29469-5.html
 /2/migraine/awarenessweek-290697-5.html
 /2/migraine/medications-540055-5.html
+/2/common/images/d/DontFlush_290694_4.jpg
 #--- Otto
 http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q=test
 #--- newsletters
@@ -132,7 +133,6 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /breast-cancer/c/general/living-with/hair-loss
 /anxiety/c/general/diagnosis/stress
 #--- drupal: slideshow index
-/adhd/cf/slideshows
 /rheumatoid-arthritis/cf/slideshows
 #--- drupal: quizzes index
 /adhd/cf/quizzes
@@ -143,6 +143,8 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-disorder/
 /hepatitis-c/d/quizzes/do-you-know-how-hepatitis-c-spread
 /multiple-sclerosis/d/treatment/are-your-ms-treatment-options-working
+#--- drupa sites directory
+/sites/www.healthcentral.com/files/field/image/hives-lbln-kelly-hero-wtxt_rightrailpromoim_300_150.jpg
 #--- RE
 /colon-cancer/r/ccac/index
 /colon-cancer/r/ccac/understanding-colorectal-3931
@@ -168,7 +170,6 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /rheumatoid-arthritis/c/80106/177060/boundaries
 /rheumatoid-arthritis/c/499724/176945/rheumatoid
 /adhd/c/question/807363/174039
-/adhd/c/question/638082/174657
 #SP: other
 /diabetes/c/458275/175063/hypothyroidism-infographic/
 /heart-disease/c/458275/171998/atrial-fibrillation/
@@ -187,6 +188,8 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 #--- Things that have broke in the past
 /allergy/d/immersive/living-with-chronic-hives/
 /allergy/d/immersive/living-with-chronic-hives
+/autism/
+/autism/autism-aspergers-center/
 #SYSTEMS
 #--- Assets
 /common/a/assets/healthcentral_common.js
@@ -213,7 +216,6 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 # http://tools.choicemedia.com/shareposts/admin/feeds/drupal/records?mode=full&page=0&timestamp=1401580800&limit=5
 ####################
 #--- REDIRECTS
-####################
 #./conf/healthcentral_vhosts.conf
 #./conf/redirects-head/*.conf
 #   /conf/redirects-head/dailydose_dupes.conf
@@ -228,7 +230,6 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /ency/408/002182prv.html
 /ency/408/003361prv.html
 /sleep-disorders/understanding-narcolepsy-000098_8-145.html
-/symptoms/symptom.html
 #   ./conf/redirects-head/encyclopedia_hc_map.conf
 /encyclopedia/408/7.html
 /encyclopedia/408/286.html
@@ -246,17 +247,11 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /sleep-disorders/drug-information-67375-73.html
 /migraine/medications-533005-46.html
 #   ./conf/redirects-head/HCTB-346.conf
-/adhd/c/general/introduction
 /chronic-pain/c/general/risks/genetic
 /multiple-sclerosis/c/general/living-with/adaptive-tools
 /anxiety/c/general/treatment/supplements
-/anxiety/c/general/diagnosis/stress
 #   ./conf/redirects-head/SA-720-drupal-slideshow-redirect.conf
-/sexual-health/cf/slideshows/8-myths-about-hepatitis-c
 /multiple-sclerosis/cf/slideshows/optic-neuritis-how-multiple-sclerosis-affects-your-eyes-and-visi
-/skin-care/cf/slideshows/8-things-i-wish-id-known-about-psoriasis
-/allergy/cf/slideshows/top-10-health-tweets-of-the-week-june-3
-/sleep-disorders/cf/slideshows/what-we-learned-this-week-november-2nd-2012
 #...
 /more-conditions
 /diabetes/c/110/174140/diabetes-thyroid-gland
@@ -292,14 +287,12 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /chronic-pain/h/pain-in-the-muscle-at-the-top-of-hip-bone.html
 /rheumatoid-arthritis/h/sharp-pain-in-big-toes-when-walking.html
 #...HCR-3938
-/ibd/h/what-could-cause-blood-in-urine-and-stool.html
 /menopause/h/how-long-does-menopause-last-after-a-hysterectomy.html
 /chronic-pain/h/severe-sacrum-back-pain.html
 /rheumatoid-arthritis/h/prednisone-alternatives.html
 /high-blood-pressure/h/will-high-blood-pressure-cause-you-to-have-the-shakes.html
 /chronic-pain/h/what-causes-leg-numbness-back-pain-and-tingling.html
 /chronic-pain/h/pinched-nerve-in-back-numb-arms.html
-/rheumatoid-arthritis/h/sharp-pain-in-big-toes-when-walking.html
 #   ./conf/redirects/videos.txt HCR-3214
 /adhd/video-529597-49.html
 /copd/video-594052-111.html
@@ -316,7 +309,6 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /alzheimers/find-drug-488732-73.html
 /anxiety/find-drug-56629-73.htm
 /allergy/find-drug-474351-73.html
-#...
 /clinical-trial/
 #./conf/redirects/HCR-4015.conf
 /acid-reflux/h/left-underarm-pain-gerd.html
@@ -334,14 +326,11 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /chronic-pain/h/what-does-it-mean-to-have-a-bad-pain-on-my-side-by-my-ribs.html
 /chronic-pain/h/hydrocodone-vs-oxycodone-ingredients.html
 #./conf/redirects/HCR-3938.conf
-/ibd/h/what-could-cause-blood-in-urine-and-stool.html
 /chronic-pain/h/sharp-tingling-pain-in-right-big-toe.html
 /chronic-pain/h/sudden-sharp-leg-pain.html
 /chronic-pain/h/what-to-do-to-relieve-lower-back-pain-due-to-scoliosis.html
-/high-blood-pressure/h/will-high-blood-pressure-cause-you-to-have-the-shakes.html
 /chronic-pain/h/lower-abdominal-pain-that-goes-around-to-my-back.html
 /rheumatoid-arthritis/h/stiffness-in-middle-finger-joint.html
-/rheumatoid-arthritis/h/sharp-pain-in-big-toes-when-walking.html
 #./conf/redirects/SA-660_hc.conf
 /f/reduce-risk
 /f/menopause-men
@@ -376,7 +365,8 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /allergy/h/red-spot-flaky-skin.html
 /allergy/medications-29029-116.html
 #...Webthrows
-/f/cinnamon /diet-exercise/c/299905/155721/cinnamon
+/f/cinnamon
+/diet-exercise/c/299905/155721/cinnamon
 /f/greenbenefits
 /f/summer-risks
 /f/
@@ -413,8 +403,6 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 #...11/5/07
 /multiple-sclerosis/news-153082-66.html
 /chronic-pain/guide-154183-75.html
-/chronic-pain/000142.html
-#...11/5/07
 /chronic-pain/irritable-bowel-syndrome-000069-145.html
 /chronic-pain/irritable-bowel-syndrome-000069_12-145.html
 #...11/15/07
@@ -466,7 +454,6 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /rheumatoid-arthritis/news-288288-98.html
 #...7/6/09
 /adhd/question-answer-test.html
-/adhd/question-answer-test.html
 /asthma/includes/right-column-near-27125-63.html
 /menopause/questions-harvard-27292-63.html
 #...8/7/09
@@ -487,7 +474,6 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /obesity/weight-loss-surgery/
 #...02/25/10
 /healthcare08/
-#...02/25/10
 /caregiver/
 #...02/26/10
 /cancercenter/about-us
@@ -500,13 +486,11 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 #...7/17/2010
 /adhd/education/
 #...9/21/2010
-/obesity/weight-loss-surgery/
 /obesity/weight-loss-surgery/eligibility.html
 #...11/3/2010
 /oab/urgentmatters
 #...11/22/2010
 /rheumatoid-arthritis/education
-#...11/22/2010
 /prostate/advanced-cancer/
 #...3/7/2011
 /ra/healthcenter/
@@ -536,7 +520,6 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /heart-disease/medifocus/abdominal-aortic-aneurysm/introduction-to-abdominal-aortic-aneurysm
 /chronic-pain/medifocus/spondylolisthesis/diagnosis-of-spondylolisthesis
 #...6/14/2012
-/acid-reflux/find-drug-100216-73.html
 /diabetes/find-drug-469232-73.html
 /skin-care/acne-drug-info-87418-73.html
 /sleep-disorders/drug-information-72155-73.html
@@ -545,9 +528,6 @@ http://search.healthcentral.com/query?ver=colon-cancer&ic=506010&submit=Search&q
 /sleep-disorders/drug-information.html
 #...Depuy
 /osteoarthritis/hip-and-knee-replacement-surgery-education-center
-#...10/2/2012
-/diet-exercise/quizzes-250550.html
-/skin-care/psoriasis-center-612067.html
 #...10/2/2012
 /diet-exercise/quizzes-250550.html
 /skin-care/psoriasis-center-612067.html

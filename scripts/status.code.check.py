@@ -113,6 +113,12 @@ def statuscode_colorize(status, profile):
     else:
         return bcolors.OK_L1 + status + bcolors.ENDC
 
+def is_good_statuscode(status):
+    if re.search(("200|301|302"), str(status)):
+        return True
+    else:
+        return False
+
 
 f = open('/tmp/test.py.txt','w')
 def logger(msg, prt):
@@ -192,11 +198,13 @@ def processResponse(resp,url):
             # print "{0} and ".format( total_timer.timer )
             logger(msg, 1)
     else:
-        msg = '{1},,{0},{3},,{4},'.format(strip_domain(url), statuscode_colorize(resp.status, arg_main_domain), server, strip_domain(location), resp.timer)
-        logger(msg, 1)
+        the_status = is_good_statuscode(resp.status)
+        if (the_status == False) and (arg_display_all == 0):
+            msg = '{1},,{0},{3},,{4},'.format(strip_domain(url), statuscode_colorize(resp.status, arg_main_domain), server, strip_domain(location), resp.timer)
+            logger(msg, 1)
         #total_timer += resp.timer.microseconds
     thecount = counter()
-    sys.stdout.write("  {3}  {2}% {1} of {0} @{5}concurent - ERRORS [{6}]  {4} \r".format(added, thecount, get_percentage(thecount, added), bcolors.GRAY_BL, bcolors.ENDC, arg_concurrent, report_errors))
+    sys.stdout.write("  {3}  {2}% {1} of {0} @{5}concurrent - ERRORS [{6}]  {4} \r".format(added, thecount, get_percentage(thecount, added), bcolors.GRAY_BL, bcolors.ENDC, arg_concurrent, report_errors))
     sys.stdout.flush()
     processedOne()
 

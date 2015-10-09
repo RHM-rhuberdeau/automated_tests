@@ -19,6 +19,7 @@ YELLOW='\033[0;33m'
 BG_RED='\033[0;41m'
 BG_YELLOW='\033[0;43m'
 NOTE='\033[0;35m'
+GRAY_BL='\033[0;40;37m'
 NC='\033[0m'
 
 while test $# -gt 0; do
@@ -129,7 +130,6 @@ if [[ -z "${FILE}" ]]; then
 fi
 
 if [ -f "$FILE" ]; then
-	#urls=$(cat $FILE)
 	index=0
 	while read line; do
 	  urls+=("$line")
@@ -171,6 +171,7 @@ second_to_human_time () {
 }
 
 
+
 echo > $THE_LOGFILE
 log_output() {
     printf "${1}\n"
@@ -195,6 +196,7 @@ cnt_warning=0
 cnt_total=0
 cnt_total_all=0
 MAXPROG=${#urls[@]}
+# urls=($(echo $urls | sed -r 's/(.[^\n]*\n)/ \1 /g' | tr " " "\n" | s÷huf | tr -d "\n"))
 for i in "${urls[@]}"
 do
     let cnt_total_all=cnt_total_all+1
@@ -227,7 +229,8 @@ do
         RESPONSEFULL_ALL=$(curl --head --location --insecure --connect-timeout 6 --silent -H "Pragma: akamai-x-cache-on" $HEADER "${url_to_test}")
     fi
 
-    RESPONSEFULL=$(echo "${RESPONSEFULL_ALL}" | grep "HTTPS\|HTTP\|Location\|X-Cache")
+    RESPONSEFULL=$RESPONSEFULL_ALL
+    # RESPONSEFULL=$(echo "${RESPONSEFULL_ALL}" | grep "HTTPS\|HTTP\|Location\|X-Cache")
 
     if [[ $THETIMER =~ $re ]]; then real_time=${BASH_REMATCH[1]}; fi
 	if [[ $RESPONSEFULL == *200* ]] ; then
@@ -266,7 +269,7 @@ do
     let cnt_total=cnt_total+1
     #--- create status
     let cnt_status=$(((cnt_total_all*100)/MAXPROG))
-    echo -n "${cnt_status}% ${cnt_total}/${MAXPROG} - ERROR: [${cnt_error}]      "
+    echo -n "  ${cnt_status}% ${cnt_total}/${MAXPROG} - ERROR: [${cnt_error}]      "
     echo -n R | tr 'R' '\r'
 #if [ $cnt_total -gt 10 ] ; then exit; fi
 done
