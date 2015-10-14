@@ -135,10 +135,14 @@ module RedesignEntry
     end
 
     def profile_link
-      profile_img = @driver.find_element(:css, "a.Page-info-visual img")
-      profile_img.click
-      unless @driver.current_url == @profile_link
-        self.errors.add(:base, "Profile img linked to #{@driver.current_url} not #{@profile_link}")
+      profile_img = find "a.Page-info-visual img"
+      if profile_img
+        profile_img.click
+        unless @driver.current_url == @profile_link
+          self.errors.add(:base, "Profile img linked to #{@driver.current_url} not #{@profile_link}")
+        end
+      else
+        self.errors.add(:functionality, "Page was missing the author's profile image")
       end
     end
   end
