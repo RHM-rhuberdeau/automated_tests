@@ -9,8 +9,13 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/questions.yml')
       question_fixture = YAML::load_documents(io)
       @question_fixture = OpenStruct.new(question_fixture[0][40783])
-      @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @question_fixture)
-      @url  = "#{HC_BASE_URL}/heart-disease/c/question/67255/40783" + "?foo=#{rand(36**8).to_s(36)}"
+      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :sub_category => "Heart Disease",
+                                   :related => ['High Blood Pressure', 'Cholesterol', 'Diabetes', 'Menopause', 'Obesity'],
+                                   :driver => @driver)
+      footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
+      @page             = ::RedesignQuestion::RedesignQuestionPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @question_fixture, :head_navigation => head_navigation, :footer => footer)
+      @url              = "#{HC_BASE_URL}/heart-disease/c/question/67255/40783" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 

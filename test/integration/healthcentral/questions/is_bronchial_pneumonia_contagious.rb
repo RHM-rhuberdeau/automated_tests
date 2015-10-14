@@ -9,7 +9,12 @@ class ChronicPainQuestionPageTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/questions.yml')
       question_fixture = YAML::load_documents(io)
       @question_fixture = OpenStruct.new(question_fixture[0][125351])
-      @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture)
+      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :sub_category => "Chronic Pain",
+                                   :related => ['Multiple Sclerosis', 'Rheumatoid Arthritis'],
+                                   :driver => @driver)
+      footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
+      @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture, :head_navigation => head_navigation, :footer => footer)
       @url  = "#{HC_BASE_URL}/chronic-pain/c/question/515205/125351" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
@@ -115,18 +120,6 @@ class ChronicPainQuestionPageTest < MiniTest::Test
          global_test_cases = @page.global_test_cases
          global_test_cases.validate
          assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
-
-         subnav = @driver.find_element(:css, "div.Page-category.Page-sub-category.js-page-category")
-         title_link = @driver.find_element(:css, ".Page-category-titleLink")
-         sub_category_links = @driver.find_elements(:css, "ul.Page-category-related-list li a")
-         links = sub_category_links.select {|x| x.text == "Multiple Sclerosis" || x.text == "Rheumatoid Arthritis"}
-         assert_equal(2, links.length)
-
-         button = @driver.find_elements(:css, ".Button--Ask").select { |x| x.displayed? }.compact
-         assert_equal(true, !button.empty?, "Ask a Question button does not appear on the page", )
-         button.first.click
-         wait_for { @driver.find_element(css: '.titlebar').displayed? }
-         assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/profiles/c/question/home?ic=ask", "Ask a Question linked to #{@driver.current_url} not /profiles/c/question/home?ic=ask")
        end
      end
   end
