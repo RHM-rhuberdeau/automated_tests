@@ -5,9 +5,11 @@ module RedesignQuestion
     attr_reader :driver, :proxy
 
     def initialize(args)
-    	@driver = args[:driver]
-    	@proxy	= args[:proxy]
-      @fixture = args[:fixture]
+    	@driver           = args[:driver]
+    	@proxy	          = args[:proxy]
+      @fixture          = args[:fixture]
+      @head_navigation  = args[:head_navigation]
+      @footer           = args[:footer]
       @ads  = []
     end
 
