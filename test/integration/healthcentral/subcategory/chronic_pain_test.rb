@@ -16,7 +16,6 @@ class SubCategory < MiniTest::Test
 
     context "when functioning properly" do 
       should "have a title in each latest post" do 
-        sleep 3
         latest_post_titles = @driver.find_elements(:css, "span.Teaser-title")
         assert_equal(true, (latest_post_titles.length > 0), "No Latest posts")
         latest_post_titles = latest_post_titles.collect(&:text)
@@ -147,9 +146,11 @@ class SubCategory < MiniTest::Test
     ################### GLOBAL SITE TESTS ############################
     context "global site requirements" do
       should "have a promo item in the right rail" do 
+        wait_for { @driver.find_element(:css, ".RightrailbuttonpromoItem a").displayed? }
         promo       = find ".RightrailbuttonpromoItem"
         promo_img   = find ".RightrailbuttonpromoItem a img"
-        promo_text  = @driver.find_elements(:css, ".RightrailbuttonpromoItem a").last.text
+        promos      = @driver.find_elements(:css, ".RightrailbuttonpromoItem a")
+        promo_text  = promos.last ? promos.last.text : ''
 
         assert_equal(true, !promo_img.nil?, "promo image did not appear on the page")
         assert_equal(true, promo_text.length > 0, "promo link text did not appear on the page")
