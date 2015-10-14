@@ -9,7 +9,9 @@ class SlideshowTest < MiniTest::Test
       io                = File.open('test/fixtures/healthcentral/slideshows.yml')
       slideshow_fixture = YAML::load_documents(io)
       @fixture          = OpenStruct.new(slideshow_fixture[0]['allergies'])
-      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+      head_navigation   = HealthCentralHeader::LBLNDesktop.new(:logo => "#{ASSET_HOST}.com/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :title_link => "Taking Charge of Anaphylaxis",
+                                   :more_on_link => "more on Allergy »",
                                    :sub_category => "Allergy",
                                    :related => ['Asthma', 'Cold & Flu', 'Skin Care'],
                                    :driver => @driver)

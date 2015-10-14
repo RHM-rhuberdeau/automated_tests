@@ -2,32 +2,21 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/slideshow'
 
 class SlideshowTest < MiniTest::Test
-  context "a sponsored topic slideshow, living well with migraines" do 
+  context "adhd slideshow index page" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/slideshows.yml')
+      io                = File.open('test/fixtures/healthcentral/slideshows.yml')
       slideshow_fixture = YAML::load_documents(io)
-      @fixture = OpenStruct.new(slideshow_fixture[0]['living_well'])
-      head_navigation = HealthCentralHeader::SPDesktop.new(:logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", 
-                                   :title_link => "Taking Control of Chronic Migraine",
-                                   :related => ['Migraine', 'Migraine Triggers', 'Chronic Pain', 'Depression'],
-                                   :subcategory => "Migraine",
+      @fixture          = OpenStruct.new(slideshow_fixture[0]['adhd_index'])
+      head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :sub_category => "ADHD",
+                                   :related => ['Depression', 'Anxiety', 'Autism'],
                                    :driver => @driver)
-      footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::HealthCentralSlideshow::SlideshowPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => true)
-      @url  = "#{HC_BASE_URL}/migraine/cf/slideshows/12-tips-for-living-well-with-migraines" + "?foo=#{rand(36**8).to_s(36)}"
+      footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
+      @page             = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      @url              = "#{HC_BASE_URL}/adhd/cf/slideshows" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
-    end
-
-    ##################################################################
-    ################ FUNCTIONALITY ###################################
-    context "when functioning properly" do 
-      should "not have any errors" do 
-        functionality = @page.functionality
-        functionality.validate
-        assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
-      end
     end
 
     ##################################################################
@@ -54,8 +43,8 @@ class SlideshowTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "omniture" do
       should "not have any errors" do 
-        ad_site        = "cm.own.tcc"
-        ad_categories  = ["zecuity", ""]
+        ad_site        = "cm.ver.adhd"
+        ad_categories  = ["slideshow", "", '']
         ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
         omniture       = @page.omniture(:url => @url)
 
