@@ -35,7 +35,7 @@ module HealthCentralAds
       @ads[1] = all_ads
 
       visit @url
-      sleep 5
+      wait_for_page_to_load
       all_ads2 = HealthCentralPage.get_all_ads(@proxy)
       @ads[2] = all_ads2 - @ads.flatten(2)
 
