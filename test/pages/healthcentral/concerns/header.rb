@@ -268,9 +268,38 @@ module HealthCentralHeader
     end
   end
 
+  class CustomProgramHeader
+    include ::ActiveModel::Validations
+
+    validate :subject_present
+
+    def initialize(args)
+      @driver  = args[:driver]
+      @subject = args[:subject]
+    end
+
+    def subject_present
+      title = find "a.title-supercollection"
+
+      unless title
+        self.errors.add(:header, "Missing #{@subject} in the header")
+      end
+
+      if title
+        unless title.text == @subject
+          self.errors.add(:header, "Expected #{@subject} in the header not #{title.text}")
+        end
+      end
+    end
+  end
+
   class EncyclopediaDesktop < DesktopHeader
     def initialize(args)
       @driver = args[:driver]
+    end
+
+    def subcategory_navigation
+
     end
   end
 
@@ -329,18 +358,32 @@ module HealthCentralHeader
         self.errors.add(:header, "More on link was #{link} not #{@more_on_link}")
       end
     end
+
+    def subcategory_navigation
+      subcat_link = find "a.Page-category-titleLink.js-Page-category-titleLink"
+      related_links = @driver.find_elements(:css, "ul.Page-category-related-list a")
+
+      if subcat_link
+        self.errors.add(:header, "Subcategory link appeared in a LBLN header")
+      end
+
+      unless related_links.empty?
+        self.errors.add(:header, "Related links appeared in a LBLN header")
+      end
+    end
   end
 
   class SPDesktop <DesktopHeader
     include ::ActiveModel::Validations
 
-    # validate :logo
     validate :title_link
-    # validate :more_on_link
+    validate :subcategory_navigation
 
     def initialize(args)
-      @driver       =args[:driver]
+      @driver       = args[:driver]
       @title_link   = args[:title_link]
+      @related      = args[:related]
+      @subcategory  = args[:subcategory]
     end
 
     def title_link
@@ -350,6 +393,23 @@ module HealthCentralHeader
         self.errors.add(:header, "Title link was #{title_text} not #{@title_link}")
       end
     end
+
+    def subcategory_navigation
+      subcategory   = find "a.Page-category-titleLink.js-Page-category-titleLink"
+      related_links = @driver.find_elements(:css, "ul.Page-category-related-list a")
+
+      if subcategory
+        self.errors.add(:header, "Subcategory link appeared in the Sponsored Collection header")
+      end
+      unless related_links
+        self.errors.add(:header, "#{@related} did not appear in the header")
+      end
+      if related_links
+        unless related_links.collect {|x| x.text } == @related
+          self.errors.add(:header, "#{@related} did not appear in the header")
+        end
+      end
+    end 
   end
 
   class MobileHeader
