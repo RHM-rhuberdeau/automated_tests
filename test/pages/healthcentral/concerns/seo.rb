@@ -37,11 +37,7 @@ module HealthCentralSeo
         self.errors.add(:seo, "Page had #{all_links.length} canonical links not 1")
       end
 
-      unless all_hrefs.length == 1 
-        self.errors.add(:seo, "Founds #{all_hrefs.length} hrefs on #{all_links.length} canonical links")
-      end
-
-      unless correct_hrefs.length == 1
+      unless correct_hrefs.length >= 1
         self.errors.add(:seo, "None of the canonical links had a valid href; #{correct_hrefs}")
       end
     end
