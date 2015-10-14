@@ -11,7 +11,7 @@ class AdamOtherLeaf < MiniTest::Test
       @fixture        = OpenStruct.new(fixture[0]['adam_other_leaf'])
       head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Cold & Flu",
-                                   :related => ['Allergy', 'Asthma'],
+                                   :related => ['Asthma', 'Allergy'],
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)

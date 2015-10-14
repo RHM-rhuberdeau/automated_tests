@@ -9,7 +9,7 @@ class AdamLeafTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['adam_leaf_adhd'])
-      head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
+      head_navigation = HealthCentralHeader::RedesignHeader.new(:driver => @driver, :sub_category => "ADHD", :related => ['Depression', 'Anxiety', 'Autism'])
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       @url            = "#{HC_BASE_URL}/adhd/encyclopedia/" + "?foo=#{rand(36**8).to_s(36)}"
