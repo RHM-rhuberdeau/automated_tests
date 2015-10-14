@@ -11,7 +11,7 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
       fdb_fixture       = OpenStruct.new(fixture[0]['acid_reflux'])
       head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Acid Reflux",
-                                   :related => [''],
+                                   :related => ['Digestive Health'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = FDB::FDBPage.new(:driver => @driver,:proxy => @proxy,:fixture => fdb_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
