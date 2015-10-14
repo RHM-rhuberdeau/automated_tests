@@ -67,7 +67,7 @@ module DailyDose
     class OmnitureIsBlank < Exception; end
     include ::ActiveModel::Validations
 
-    SPECIAL_VALIDATIONS = ['pageName', 'hier1', 'prop5', 'prop10', 'prop12', 'prop13', 'prop38']
+    SPECIAL_VALIDATIONS = ['pageName', 'hier1', 'prop5', 'prop10', 'prop12', 'prop13', 'prop22', 'prop38']
 
     def self.attr_list
       [:pageName, :hier1, :channel, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop10, :prop12, :prop13, :prop16, :prop17, :prop22, :prop29, :prop30, :prop32, :prop35, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :evar6, :eVar17, :events]
@@ -82,6 +82,7 @@ module DailyDose
     validate :prop5_not_blank
     validate :prop10_not_blank
     validate :prop38_not_blank
+    validate :prop22_not_blank
 
     def initialize(omniture_string, fixture)
       @fixture  = fixture
@@ -200,6 +201,12 @@ module DailyDose
         unless prop38
           self.errors.add(:omniture, "prop38 was blank")
         end
+      end
+    end
+
+    def prop22_not_blank
+      unless prop22.include?("/dailydose/")
+        self.errors.add(:omniture, "Prop22 had the wrong value: #{prop22}")
       end
     end
   end
