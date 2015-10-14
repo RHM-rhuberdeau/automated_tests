@@ -83,7 +83,7 @@ class DailyDoseMobileHomePage < MiniTest::Test
                                                                 :thcn_super_cat => thcn_super_cat,
                                                                 :thcn_category => thcn_category,
                                                                 :ugc => "[\"n\"]",
-                                                                :scroll1 => 1250,
+                                                                :scroll1 => 1750,
                                                                 :scroll2 => 1750) 
         ads.validate
 
