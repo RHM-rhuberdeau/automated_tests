@@ -37,7 +37,11 @@ module HealthCentralHeader
       end
 
       button = @driver.find_element(:css, ".Button--AZ")
-      button.click
+      begin
+        button.click
+      rescue Net::ReadTimeout
+
+      end
       wait_for { @driver.find_element(:css, ".HC-nav").displayed? }
       wait_for_page_to_load
       az_nav = @driver.find_element(:css, ".HC-nav")
@@ -167,14 +171,15 @@ module HealthCentralHeader
     end
 
     def subcategory_navigation
-      subcategory   = find "a.Page-category-titleLink"
-      related_links = @driver.find_elements(:css, "ul.Page-category-related-list a")
+      subcategory       = find "a.Page-category-titleLink"
+      related_elements  = @driver.find_elements(:css, "ul.Page-category-related-list a")
+      related_links     = related_elements ? related_elements.collect {|x| x.text.strip } : []
 
       unless @collection == true
         unless subcategory
           self.errors.add(:header, "#{@subcategory} did not appear in the header")
         end
-        unless related_links
+        unless related_elements
           self.errors.add(:header, "#{@related} did not appear in the header")
         end
         if subcategory
@@ -182,9 +187,14 @@ module HealthCentralHeader
             self.errors.add(:header, "#{@subcategory} did not appear in the header")
           end
         end
-        if related_links
-          unless related_links.collect {|x| x.text } == @related
-            self.errors.add(:header, "#{@related} did not appear in the header")
+        # if related_links
+        #   unless related_links.collect {|x| x.text } == @related
+        #     self.errors.add(:header, "#{@related} did not appear in the header")
+        #   end
+        # end
+        @related.each do |link|
+          unless related_links.include?(link)
+            self.errors.add(:header, "Missing related #{link} in header")
           end
         end
       end
@@ -259,7 +269,7 @@ module HealthCentralHeader
       span = find ".Title-supercollection-ct span"
       span_text = span.text if span
       unless span_text == "Clinical Trials"
-        self.errrors.add(:head_navigation, "Missing 'Clinical Trials' in the header")
+        self.errors.add(:head_navigation, "Missing 'Clinical Trials' in the header")
       end
     end
 
