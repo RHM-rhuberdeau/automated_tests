@@ -112,7 +112,10 @@ def wait_for_page_to_load
   rescue Timeout::Error, Net::ReadTimeout
   end
   sleep 0.5
-  @driver.execute_script("window.stop();")
+  begin
+    @driver.execute_script("window.stop();")
+  rescue Timeout::Error, Net::ReadTimeout
+  end
 end
 
 def wait_for
