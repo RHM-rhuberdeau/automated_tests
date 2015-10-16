@@ -135,6 +135,7 @@ module RedesignEntry
     end
 
     def profile_link
+      wait_for { @driver.find_element(:css, "a.Page-info-visual img").displayed? }
       profile_img = find "a.Page-info-visual img"
       if profile_img
         profile_img.click
