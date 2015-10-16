@@ -11,7 +11,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
       @entry_fixture    = OpenStruct.new(entry_fixture[0][173667])
       head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Allergy",
-                                   :related => ['Asthma', 'Cold & FLu', 'Skin Care'],
+                                   :related => ['Asthma', 'Cold & Flu', 'Skin Care'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
