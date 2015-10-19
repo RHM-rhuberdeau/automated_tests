@@ -81,4 +81,55 @@ module TheBodyAds
       end
     end
   end
+
+  class LazyLoadedAds
+    include ::ActiveModel::Validations
+
+    validate :one_ad_per_trigger_point
+
+    def initialize(args)
+      @driver                 = args[:driver]
+      @proxy                  = args[:proxy]
+      @ad_site                = args[:ad_site]
+      @ad_categories          = args[:ad_categories]
+      @exclusion_cat          = args[:exclusion_cat]
+      @sponsor_kw             = args[:sponsor_kw]
+      @thcn_content_type      = args[:thcn_content_type]
+      @thcn_super_cat         = args[:thcn_super_cat]
+      @thcn_category          = args[:thcn_category]
+      @ugc                    = args[:ugc]
+      @trigger                = args[:trigger_point]
+      @ads                    = {}
+      trigger_all_ads
+    end
+
+    def trigger_all_ads
+      wait_for { @driver.find_elements(:css, @trigger).last.displayed? }
+      trigger_points = @driver.find_elements(:css, @trigger)
+
+      trigger_points.each_with_index do |node, index|
+        @proxy.new_har
+        if index == 0
+          distance = node.location.y
+        else
+          previous_node = trigger_points[index - 1]
+          distance = node.location.y - previous_node.location.y
+        end
+        if distance > 0
+          @driver.execute_script("window.scrollBy(0, #{distance});")
+          sleep 0.5
+          ads = TheBodyPage.get_all_ads(@proxy)
+          @ads[index + 1] = ads
+        end
+      end
+    end
+
+    def one_ad_per_trigger_point
+      @ads.each do |k, v|
+        unless @ads[k].length == 1
+          self.errors.add(:ads, "Trigger point #{k} ad calls #{v.length} ad calls")
+        end
+      end
+    end
+  end
 end
