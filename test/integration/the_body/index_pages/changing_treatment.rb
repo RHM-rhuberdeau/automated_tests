@@ -47,13 +47,20 @@ class ChangingTreatment < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => @url,
-                                           :ugc => "[\"n\"]", :ad_site => 'cm.own.body', :ad_categories => ['treatment'],
-                                           :exclusion_cat => '') 
-        ads.validate
-
-        omniture = @page.omniture
+        omniture  = @page.omniture
         omniture.validate
+        ads       = TheBodyIndex::TheBodyIndexPage::DesktopAds.new(:driver => @driver,
+                                                             :proxy => @proxy, 
+                                                             :ad_site => 'cm.own.body',
+                                                             :ad_categories => ['treatment'],
+                                                             :exclusion_cat => "",
+                                                             :sponsor_kw  => "",
+                                                             :thcn_content_type => "",
+                                                             :thcn_super_cat => "",
+                                                             :thcn_category => "",
+                                                             :ugc => "[\"n\"]",
+                                                             :url => @url) 
+        ads.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
