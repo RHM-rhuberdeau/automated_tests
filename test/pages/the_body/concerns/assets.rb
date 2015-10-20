@@ -3,11 +3,11 @@ module TheBodyAssets
     include ::ActiveModel::Validations
 
     validate :assets_using_correct_host
-    # validate :no_broken_images
+    validate :no_broken_images
 
     def initialize(args)
       @proxy     = args[:proxy]
-      @driver    = args[:imgs]
+      @driver    = args[:driver]
     end
 
     def assets_using_correct_host
@@ -44,11 +44,34 @@ module TheBodyAssets
 
     def no_broken_images
       images = @driver.find_elements(:tag_name => "img")
-      broken_images = images.reject do |image|
-        @driver.execute_script("return arguments[0].complete && typeof arguments[0].naturalWidth != \"undefined\" && arguments[0].naturalWidth > 0", image)
+      
+      image_urls = images.collect do |image|
+        begin
+           if image.attribute('src')
+            image.attribute('src').gsub(' ','')
+          end
+        rescue
+          Selenium::WebDriver::Error::StaleElementReferenceError
+        end
       end
+
+      image_urls = image_urls.select do |x|
+        x.class == "String"
+      end
+      
+      broken_images = image_urls.reject do |url|
+        if url.length > 4
+          begin
+            RestClient.get url do |response, request, result|
+              response.code == 200
+            end
+          rescue URI::InvalidURIError
+          end
+        end
+      end
+
       unless broken_images.empty?
-        self.errors.add(:assets, "#{broken_images.length} broken images on the page")
+        self.errors.add(:assets, "#{broken_images.length} broken images on the page: #{broken_images}")
       end
     end
   end
