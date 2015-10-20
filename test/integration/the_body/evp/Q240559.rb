@@ -9,21 +9,21 @@ class PartnersRaiseFunds < MiniTest::Test
       io            = File.open('test/fixtures/the_body/articles.yml')
       body_fixture  = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['raise_funds'])
-      @page         = ::TheBodyEVP::TheBodyEVPPage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
+      @page         = TheBodyEVP::TheBodyEVPPage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
       @url          = "#{BODY_URL}/Forums/AIDS/Meds/Q240559.html"
       visit @url
     end
 
 
-    ##################################################################
-    ################ FUNCTIONALITY ###################################
-    context "when functioning properly" do 
-      should "not have any errors" do 
-        functionality = @page.functionality
-        functionality.validate
-        assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
-      end
-    end
+    # ##################################################################
+    # ################ FUNCTIONALITY ###################################
+    # context "when functioning properly" do 
+    #   should "not have any errors" do 
+    #     functionality = @page.functionality
+    #     functionality.validate
+    #     assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
+    #   end
+    # end
 
     ##################################################################
     ################### ASSETS #######################################
@@ -47,13 +47,20 @@ class PartnersRaiseFunds < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => @url,
-                                           :ugc => "[\"n\"]", :ad_site => 'cm.own.body', :ad_categories => ['forums_Meds'],
-                                           :exclusion_cat => '') 
-        ads.validate
-
-        omniture = @page.omniture
+        omniture  = @page.omniture
         omniture.validate
+        ads       = TheBodyEVP::TheBodyEVPPage::DesktopAds.new(:driver => @driver,
+                                                             :proxy => @proxy, 
+                                                             :ad_site => 'cm.own.body',
+                                                             :ad_categories => ['forums_Meds'],
+                                                             :exclusion_cat => "",
+                                                             :sponsor_kw  => "",
+                                                             :thcn_content_type => "",
+                                                             :thcn_super_cat => "",
+                                                             :thcn_category => "",
+                                                             :ugc => "[\"n\"]",
+                                                             :url => @url) 
+        ads.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
