@@ -47,13 +47,20 @@ class LivingWithHiv < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => @url,
-                                           :ugc => "[\"n\"]", :ad_site => 'cm.own.thebody', :ad_categories => ['lbln', 'index'],
-                                           :exclusion_cat => '') 
-        ads.validate
-
-        omniture = @page.omniture
+        omniture  = @page.omniture
         omniture.validate
+        ads       = TheBodyLBLN::TheBodyLBLNPage::DesktopAds.new(:driver => @driver,
+                                                             :proxy => @proxy, 
+                                                             :ad_site => 'cm.own.thebody',
+                                                             :ad_categories => ['lbln', 'index'],
+                                                             :exclusion_cat => "",
+                                                             :sponsor_kw  => "lblnhiv",
+                                                             :thcn_content_type => "super collection",
+                                                             :thcn_super_cat => "Resource Center",
+                                                             :thcn_category => "HIV",
+                                                             :ugc => "[\"n\"]",
+                                                             :url => @url) 
+        ads.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
