@@ -1,19 +1,19 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/the_body/redesign_article_page'
 
-class GodsLove < MiniTest::Test
-  context "A redesigned article, gods love" do 
+class WhenIWasHivNegative < MiniTest::Test
+  context "A Body article with comments" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
       io            = File.open('test/fixtures/the_body/articles.yml')
       body_fixture  = YAML::load_documents(io)
-      @body_fixture = OpenStruct.new(body_fixture[0]['gods_love'])
+      @body_fixture = OpenStruct.new(body_fixture[0]['when_negative'])
       header        = TheBodyHeader::RedesignHeader.new(:driver => @driver)
       footer        = TheBodyFooter::RedesignFooter.new(:driver => @driver)
       @page         = TheBodyArticle::RedesignArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
                                                              :header => header, :footer => footer)
-      @url          = "#{BODY_URL}/content/75791/gods-love-we-deliver-celebrates-30-years-of-food-a.html"
+      @url          = "#{BODY_URL}/content/75820/when-i-was-hiv-negative-i-was-scared-of-sex-with-h.html"
       visit @url
     end
 
@@ -57,7 +57,7 @@ class GodsLove < MiniTest::Test
                                                             :ad_site => 'cm.own.body',
                                                             :ad_categories => ['healthcentral'],
                                                             :exclusion_cat => "",
-                                                            :sponsor_kw  => "agingrc",
+                                                            :sponsor_kw  => "gmrc",
                                                             :thcn_content_type => "BodyPage",
                                                             :thcn_super_cat => "The Body (HIV/AIDS)",
                                                             :thcn_category => "Resource Centers",

@@ -1,18 +1,19 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/the_body/redesign_article_page'
 
-class PartnersRaiseFunds < MiniTest::Test
-  context "Partners raise funds" do 
+class AnHIVCure < MiniTest::Test
+  context "A redesigned article, an hiv cure" do 
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
       io            = File.open('test/fixtures/the_body/articles.yml')
       body_fixture  = YAML::load_documents(io)
-      @body_fixture = OpenStruct.new(body_fixture[0]['raise_funds'])
-      header        = TheBodyHeader::ArticleHeader.new(:driver => @driver)
+      @body_fixture = OpenStruct.new(body_fixture[0]['an_hiv_cure'])
+      header        = TheBodyHeader::RedesignHeader.new(:driver => @driver)
       footer        = TheBodyFooter::RedesignFooter.new(:driver => @driver)
-      @page         = ::TheBodyArticle::RedesignArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture, :header => header, :footer => footer)
-      @url          = "#{BODY_URL}/content/74692/31-communitydirect-partners-to-raise-funds-through.html"
+      @page         = TheBodyArticle::RedesignArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
+                                                             :header => header, :footer => footer)
+      @url          = "#{BODY_URL}/content/75701/an-hiv-cure-and-vaccine-within-the-next-15-years.html"
       visit @url
     end
 
@@ -45,27 +46,27 @@ class PartnersRaiseFunds < MiniTest::Test
       end
     end
 
-    #########################################################################
-    ################### ADS, ANALYTICS, OMNITURE ############################
-    context "ads, analytics, omniture" do
-      should "not have any errors" do 
-        omniture  = @page.omniture
-        omniture.validate
-        ads       = TheBodyArticle::RedesignArticlePage::DesktopAds.new(:driver => @driver,
-                                                             :proxy => @proxy, 
-                                                             :ad_site => 'cm.own.body',
-                                                             :ad_categories => ['hivandaids'],
-                                                             :exclusion_cat => "",
-                                                             :sponsor_kw  => "",
-                                                             :thcn_content_type => "BodyPage",
-                                                             :thcn_super_cat => "The Body (HIV/AIDS)",
-                                                             :thcn_category => "Policy",
-                                                             :ugc => "[\"n\"]",
-                                                             :url => @url) 
-        ads.validate
-        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
-      end
-    end
+   #########################################################################
+   ################### ADS, ANALYTICS, OMNITURE ############################
+   context "ads, analytics, omniture" do
+     should "not have any errors" do 
+       ads      = TheBodyArticle::RedesignArticlePage::DesktopAds.new(:driver => @driver,
+                                                            :proxy => @proxy, 
+                                                            :ad_site => 'cm.own.body',
+                                                            :ad_categories => ['hivandaids'],
+                                                            :exclusion_cat => "",
+                                                            :sponsor_kw  => "",
+                                                            :thcn_content_type => "BodyPage",
+                                                            :thcn_super_cat => "The Body (HIV/AIDS)",
+                                                            :thcn_category => "Treatment",
+                                                            :ugc => "[\"n\"]",
+                                                            :url => @url) 
+       ads.validate
+       omniture = @page.omniture
+       omniture.validate
+       assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
+     end
+   end
 
     ##################################################################
     ################### GLOBAL SITE TESTS ############################
