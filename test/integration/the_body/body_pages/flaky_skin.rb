@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/the_body/body_page'
+require_relative '../../../pages/the_body/redesign_article_page'
 
 class FlakySkin < MiniTest::Test
   context "A TheBody desktop body page" do 
@@ -9,7 +9,9 @@ class FlakySkin < MiniTest::Test
       io            = File.open('test/fixtures/the_body/body_pages.yml')
       body_fixture  = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['flaky_skin'])
-      @page         = Body::BodyPage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture)
+      header        = TheBodyHeader::ArticleHeader.new(:driver => @driver)
+      footer        = TheBodyFooter::RedesignFooter.new(:driver => @driver)
+      @page         = TheBodyArticle::RedesignArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture, :header => header, :footer => footer)
       @url          = "#{BODY_URL}/h/flaky-skin-could-I-have-acute-HIV-infection.html"
       visit @url
     end
@@ -47,13 +49,20 @@ class FlakySkin < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        ads = TheBodyAds::AdsTestCases.new(:driver => @driver, :proxy => @proxy, :url => @url,
-                                           :ugc => "[\"n\"]", :ad_site => 'cm.own.body', :ad_categories => ['body_pages'],
-                                           :exclusion_cat => '') 
-        ads.validate
-
-        omniture = @page.omniture
+        omniture  = @page.omniture
         omniture.validate
+        ads       = TheBodyArticle::RedesignArticlePage::DesktopAds.new(:driver => @driver,
+                                                             :proxy => @proxy, 
+                                                             :ad_site => 'cm.own.body',
+                                                             :ad_categories => ['bodypages'],
+                                                             :exclusion_cat => "",
+                                                             :sponsor_kw  => "",
+                                                             :thcn_content_type => "BodyPage",
+                                                             :thcn_super_cat => "The Body (HIV/AIDS)",
+                                                             :thcn_category => "",
+                                                             :ugc => "[\"n\"]",
+                                                             :url => @url) 
+        ads.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
