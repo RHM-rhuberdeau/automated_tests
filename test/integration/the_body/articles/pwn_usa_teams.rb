@@ -1,3 +1,5 @@
+#This page was not included in the first round of the redesign.
+
 # require_relative '../../../minitest_helper' 
 # require_relative '../../../pages/the_body/redesign_article_page'
 
