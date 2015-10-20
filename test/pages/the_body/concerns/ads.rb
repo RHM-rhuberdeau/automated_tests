@@ -21,7 +21,6 @@ module TheBodyAds
         b = a.split('=')
         hash[b[0]] = b.last
       end
-      # hash ={ url: array[0], ugc: array[1].split('=').last, device: array[4].split('=').last, tile: array[7].split('=').last, sz: array[8].split('sz=').last, cat: array[11].split('=').last, sc: array[10].split('=').last, ord: array.last.split('=').last}
       hash
     end
   end
