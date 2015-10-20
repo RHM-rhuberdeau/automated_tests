@@ -32,22 +32,48 @@ class TheBodyPage
   end 
 
   def global_test_cases
-    GlobalTestCases.new(:driver => @driver)
+    GlobalTestCases.new(:driver => @driver, :header => @header, :footer => @footer)
   end
 
   def has_correct_title?
     title = @driver.title
-    title.scan(/^[^\-]*-[\s+\w+]+/).length == 1
+    title.scan(/^[^\-]*-[\s+\w+]+/).length >= 1
   end
 
   def self.get_all_ads(proxy)
     @proxy = proxy
     ad_calls = @proxy.har.entries.map do |entry|
-      if entry.request.url.include?('ad.doubleclick.net/N3965')
+      if entry.request.url.include?('ad.doubleclick.net/N3965') && entry.response.status == 200
         entry.request.url
       end
     end
     ad_calls.compact
+  end
+
+  class GlobalTestCases
+    include ::ActiveModel::Validations
+
+    validate :head_navigation
+    validate :footer
+
+    def initialize(args)
+      @head_navigation = args[:header]
+      @footer          = args[:footer]
+    end
+
+    def head_navigation
+      @head_navigation.validate
+      unless @head_navigation.errors.empty?
+        self.errors.add(:head_navigation, @head_navigation.errors.values.first)
+      end
+    end
+
+    def footer
+      @footer.validate
+      unless @footer.errors.empty?
+        self.errors.add(:footer, @footer.errors.values.first)
+      end
+    end
   end
 end
 
