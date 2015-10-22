@@ -11,7 +11,7 @@ class Hypothyroidism < MiniTest::Test
       @entry_fixture    = OpenStruct.new(entry_fixture[0]['hypothyroidism_mobile'])
       head_navigation   = HealthCentralHeader::CustomProgramHeader.new(:driver => @driver, :subject => "Living with Hypothyroidism")
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer)
+      @page             = RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer)
       @url              = "#{HC_BASE_URL}/more-conditions/c/174035/177245/hypothyroidism/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
@@ -50,25 +50,20 @@ class Hypothyroidism < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
-        pharma_safe   = true
-        has_file      = @page.analytics_file
-        ad_site       = "cm.own.tcc"
-        ad_categories = ["synthroid","",""]
-        ads           = HealthCentralAds::AdsTestCases.new(:driver => @driver,
-                                                           :proxy => @proxy, 
-                                                           :url => @url,
-                                                           :ad_site => ad_site,
-                                                           :ad_categories => ad_categories,
-                                                           :exclusion_cat => "",
-                                                           :sponsor_kw => '',
-                                                           :thcn_content_type => "SharePosts",
-                                                           :thcn_super_cat => "Healthy Living",
-                                                           :thcn_category => "Diet and Fitness",
-                                                           :ugc => "[\"n\"]") 
-        ads.validate
-
-        omniture = @page.omniture(:url => @url)
+        omniture  = @page.omniture(:url => @url)
         omniture.validate
+        ads       = RedesignEntry::RedesignEntryPage::LazyLoadedAds.new(:driver => @driver,
+                                                             :proxy => @proxy, 
+                                                             :ad_site => 'cm.own.tcc',
+                                                             :ad_categories => ["synthroid","",""],
+                                                             :exclusion_cat => "",
+                                                             :sponsor_kw  => "",
+                                                             :thcn_content_type => "SharePosts",
+                                                             :thcn_super_cat => "Healthy Living",
+                                                             :thcn_category => "Diet and Fitness",
+                                                             :ugc => "[\"n\"]",
+                                                             :trigger_point => "div.ContentListInset.js-content-inset") 
+        ads.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
