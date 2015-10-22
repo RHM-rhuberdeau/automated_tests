@@ -2,7 +2,7 @@ module HealthCentralAds
   class AdsTestCases
     include ::ActiveModel::Validations
 
-    validate :unique_ads_per_page_view
+    # validate :unique_ads_per_page_view
     validate :correct_ad_site
     validate :correct_ad_categories
     validate :exclusion_cat
@@ -131,37 +131,100 @@ module HealthCentralAds
   end
 
   class LazyLoadedAds < AdsTestCases
-    include ::ActiveModel::Validations
 
-    def unique_ads_per_page_view
-      @ads = {}
-      @driver.execute_script "window.scrollBy(0, #{@scroll1})"
-      sleep 1
-      @all_ads = HealthCentralPage.get_all_ads(@proxy)
-      @ads[1] = @all_ads
-      @driver.execute_script "window.scrollBy(0, #{@scroll2})"
-      sleep 1
-      @all_ads = HealthCentralPage.get_all_ads(@proxy)
-      @ads[2] = @all_ads - @ads.flatten(2)
+    validate :one_ad_per_trigger_point
+    validate :unique_ord_values
+    validate :tile_values
+    validate :ugc
 
-      ads_from_page1 = @ads[1].map { |ad| HealthCentralAds::Ads.new(ad) }
-      ads_from_page2 = @ads[2].map { |ad| HealthCentralAds::Ads.new(ad) }
+    def initialize(args)
+      @driver                 = args[:driver]
+      @proxy                  = args[:proxy]
+      @url                    = args[:url]
+      @ad_site                = args[:ad_site]
+      @ad_categories          = args[:ad_categories]
+      @exclusion_cat          = args[:exclusion_cat]
+      @ugc                    = args[:ugc]
+      @thcn_content_type      = args[:thcn_content_type]
+      @thcn_super_cat         = args[:thcn_super_cat]
+      @thcn_category          = args[:thcn_category]
+      @sponsor_kw             = args[:sponsor_kw]
+      @trigger                = args[:trigger_point]
+      @ad_calls               = {}
+      @ads                    = {}
+      trigger_all_ads
+      create_ads_from_ad_calls
+    end
 
-      ord_values_1 = ads_from_page1.collect(&:ord).uniq
-      ord_values_2 = ads_from_page2.collect(&:ord).uniq
+    def trigger_all_ads
+      wait_for { @driver.find_element(:css, @trigger).displayed? }
+      trigger_points = @driver.find_elements(:css, @trigger)
 
-      unless ads_from_page1.length == 1
-        self.errors.add(:ads, "Wrong number of ads were loaded on first scroll. Expeced 1 got #{ads_from_page1.length}")
+      trigger_points.each_with_index do |node, index|
+        @proxy.new_har
+        if index == 0
+          distance = node.location.y
+        else
+          previous_node = trigger_points[index - 1]
+          distance = node.location.y - previous_node.location.y
+        end
+        if distance > 0
+          @driver.execute_script("window.scrollBy(0, #{distance});")
+          sleep 0.5
+          ads = HealthCentralPage.get_all_ads(@proxy)
+          @ad_calls[index + 1] = ads
+        end
+        sleep 0.5
       end
-      unless ord_values_1.length == 1
-        self.errors.add(:ads, "First set of lazy loaded ads had multiple ord values: #{ord_values_1}")
+    end
+
+    def create_ads_from_ad_calls
+      @ad_calls.each do |key, value|
+        @ads[key] = @ad_calls[key].map { |ad_call| HealthCentralAds::Ads.new(ad_call) }
       end
-      unless ord_values_2.length == 1
-        self.errors.add(:ads, "Ads on the second view had multiple ord values: #{ord_values_2}")
+    end
+
+    def one_ad_per_trigger_point
+      unless @ad_calls.keys.length >= 1
+        self.errors.add(:ads, "No ad calls were made")
       end
-      unless (ord_values_1[0] != ord_values_2[0])
-        self.errors.add(:ads, "Ord values did not change on page reload: #{ord_values_1} #{ord_values_2}")
+      @ad_calls.each do |k, v|
+        unless @ad_calls[k].length == 1
+          self.errors.add(:ads, "Trigger point #{k} ad calls #{v.length} ad calls")
+        end
       end
+    end
+
+    def unique_ord_values
+      ord_values = []
+      @ads.each do |key, value|
+        ord_values << @ads[key].map { |x| x.ord }
+      end
+      ord_values  = ord_values.flatten(2)
+      new_array   = ord_values.uniq
+      unless ord_values.length == new_array.length
+        self.errors.add(:ads, "There were duplicate ord values")
+      end
+    end
+
+    def tile_values
+      tile_values = []
+      @ads.each do |key, value|
+        tile_values << @ads[key].map { |x| x.tile }
+      end
+      tile_values = tile_values.flatten(2)
+      new_array   = tile_values.uniq 
+      unless new_array.length == 1
+        self.errors.add(:ads, "There were multiple tile values: #{new_array}")
+      end
+      unless new_array.first.to_i == 1
+        self.errors.add(:ads, "Each lazy loaded ad did not have a tile of 1: #{new_array}")
+      end
+    end
+
+    def ugc 
+      #Go through each ad call and make sure it has the correct ugc value
+      #ugc is specific to each article
     end
   end
 
