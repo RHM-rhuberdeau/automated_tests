@@ -8,7 +8,7 @@ class TurningPointEntryPageTest < MiniTest::Test
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/entries.yml')
       entry_fixture = YAML::load_documents(io)
-      @entry_fixture = OpenStruct.new(entry_fixture[0][172231])
+      @entry_fixture = OpenStruct.new(entry_fixture[0]['turning_point'])
       head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Multiple Sclerosis",
                                    :related => ['Chronic Pain', 'Depression', 'Rheumatoid Arthritis'],

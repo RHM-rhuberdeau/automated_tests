@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral/redesign_entry_page'
+require_relative '../../../pages/healthcentral/redesign_entry_mobile_page'
 
 class ItMightBeSomethingEntryPageTest < MiniTest::Test
   context "a community member entry" do 
@@ -8,13 +8,13 @@ class ItMightBeSomethingEntryPageTest < MiniTest::Test
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/entries.yml')
       entry_fixture = YAML::load_documents(io)
-      @entry_fixture = OpenStruct.new(entry_fixture[0][173745])
+      @entry_fixture = OpenStruct.new(entry_fixture[0]['something_else_mobile'])
       head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Multiple Sclerosis",
                                    :related_links => ['Chronic Pain', 'Depression', 'Rheumatoid Arthritis'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      @page = RedesignEntry::RedesignEntryMobilePage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       @url  = "#{HC_BASE_URL}/multiple-sclerosis/c/936913/173745/might-something" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end

@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/healthcentral/redesign_entry_page'
+require_relative '../../../pages/healthcentral/redesign_entry_mobile_page'
 
 class Hypothyroidism < MiniTest::Test
   context "a mobile custom program" do 
@@ -11,7 +11,7 @@ class Hypothyroidism < MiniTest::Test
       @entry_fixture    = OpenStruct.new(entry_fixture[0]['hypothyroidism_mobile'])
       head_navigation   = HealthCentralHeader::CustomProgramHeader.new(:driver => @driver, :subject => "Living with Hypothyroidism")
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer)
+      @page             = RedesignEntry::RedesignEntryMobilePage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer)
       @url              = "#{HC_BASE_URL}/more-conditions/c/174035/177245/hypothyroidism/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
