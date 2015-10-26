@@ -61,8 +61,7 @@ class FdbMedicationsMobileIndexPageTest < MiniTest::Test
                                                             :thcn_super_cat => thcn_super_cat,
                                                             :thcn_category => thcn_category,
                                                             :ugc => "[\"n\"]",
-                                                            :scroll1 => 1500,
-                                                            :scroll2 => 1500) 
+                                                            :trigger_point => "div.ContentListInset.js-content-inset") 
 
         ads.validate
         omniture          = @page.omniture(:url => @url)
