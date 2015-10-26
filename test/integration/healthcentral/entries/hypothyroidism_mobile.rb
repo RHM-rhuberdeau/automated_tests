@@ -62,7 +62,7 @@ class Hypothyroidism < MiniTest::Test
                                                              :thcn_super_cat => "Healthy Living",
                                                              :thcn_category => "Diet and Fitness",
                                                              :ugc => "[\"n\"]",
-                                                             :trigger_point => "div.ContentListInset.js-content-inset") 
+                                                             :trigger_point => ".js-Blogpost-ad-inside-inline") 
         ads.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
