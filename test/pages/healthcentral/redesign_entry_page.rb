@@ -110,7 +110,7 @@ module RedesignEntry
     def author_links
       @links_in_post = []
       @links_with_no_follow = []
-      post_links = @driver.find_elements(:css, "ul.ContentList--blogpost a")
+      post_links = @driver.find_elements(:css, "ul.ContentList.ContentList--blogpost a")
       if post_links
         post_links.each do |link|
           if link.attribute('href') && link.attribute('href').length > 0
