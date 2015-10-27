@@ -75,12 +75,10 @@ end
 
 def mobile_fire_fox_with_secure_proxy
   proxy_location = Settings.location
-  server = BrowserMob::Proxy::Server.new(proxy_location)
-  begin
-    server.start
-  rescue
-  end
-  @proxy = server.create_proxy
+  @server = BrowserMob::Proxy::Server.new(proxy_location)
+  @server.start
+  
+  @proxy = @server.create_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
   # @profile['general.useragent.override'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25'
@@ -101,7 +99,7 @@ end
 def cleanup_driver_and_proxy
   @driver.quit  
   @proxy.close
-  @server.stop
+  @server.stop if @server
 end
 
 def phantomjs
