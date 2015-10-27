@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/redesign_entry_mobile_page'
 
-class DecreasedSmellAndTastePageTest < MiniTest::Test
+class DecreasedSmellAndTasteMobilePageTest < MiniTest::Test
   context "a health pro member entry" do 
     setup do 
       mobile_fire_fox_with_secure_proxy
