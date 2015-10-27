@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/mobile_slideshow'
 
-class SlideshowTest < MiniTest::Test
+class TopTenMobileSlideshowTest < MiniTest::Test
   context "a mobile slideshow, explaining your childs allergies to others" do 
     setup do 
       mobile_fire_fox_with_secure_proxy

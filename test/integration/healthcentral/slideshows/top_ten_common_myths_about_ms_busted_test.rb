@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/slideshow'
 
-class SlideshowTest < MiniTest::Test
+class TopTenSlideshowTest < MiniTest::Test
   context "a drupal slideshow, top ten common myths about ms" do 
     setup do 
       fire_fox_with_secure_proxy

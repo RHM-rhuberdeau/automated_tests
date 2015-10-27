@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/slideshow'
 
-class SlideshowTest < MiniTest::Test
+class ADHDSlideshowIndexTest < MiniTest::Test
   context "adhd slideshow index page" do 
     setup do 
       fire_fox_with_secure_proxy
