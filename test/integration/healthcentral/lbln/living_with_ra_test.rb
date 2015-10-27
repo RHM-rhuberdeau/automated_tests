@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/redesign_entry_page'
 
-class LBLN < MiniTest::Test
+class LBLNRa < MiniTest::Test
   context "living with ra" do 
     setup do 
       fire_fox_with_secure_proxy
