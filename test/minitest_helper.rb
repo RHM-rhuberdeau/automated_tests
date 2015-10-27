@@ -32,8 +32,8 @@ end
 
 def firefox_with_proxy
   proxy_location = Settings.location
-	server = BrowserMob::Proxy::Server.new(proxy_location)
-	server.start
+	@server = BrowserMob::Proxy::Server.new(proxy_location)
+	@server.start
 	@proxy = server.create_proxy
 	@profile = Selenium::WebDriver::Firefox::Profile.new
 	@profile.proxy = @proxy.selenium_proxy
@@ -44,12 +44,10 @@ end
 
 def fire_fox_with_secure_proxy
   proxy_location = Settings.location
-  server = BrowserMob::Proxy::Server.new(proxy_location)
-  begin
-    server.start
-  rescue
-  end
-  @proxy = server.create_proxy
+  @server = BrowserMob::Proxy::Server.new(proxy_location)
+  @server.start
+
+  @proxy = @server.create_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
@@ -98,6 +96,12 @@ def fire_fox_remote
     desired_capabilities: :firefox)
   @driver.manage.window.resize_to(1224,1000)
   @driver.manage.timeouts.implicit_wait = 5
+end
+
+def cleanup_driver_and_proxy
+  @driver.quit  
+  @proxy.close
+  @server.stop
 end
 
 def phantomjs

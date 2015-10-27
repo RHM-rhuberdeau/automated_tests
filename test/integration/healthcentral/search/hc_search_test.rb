@@ -67,7 +67,6 @@ class HCSearchTest < MiniTest::Test
   end#a search query
 
   def teardown  
-    @driver.quit 
-    @proxy.close
+    cleanup_driver_and_proxy
   end 
 end

@@ -14,7 +14,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
                                    :related => ['Skin Cancer'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture, :head_navigation => head_navigation, :footer => footer)
+      @page = RedesignQuestion::RedesignQuestionPage.new(:driver => @driver ,:proxy => @proxy,:fixture => @question_fixture, :head_navigation => head_navigation, :footer => footer)
       @url  = "#{HC_BASE_URL}/skin-care/c/question/550423/132858" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
@@ -22,6 +22,12 @@ class SkinCareQuestionPageTest < MiniTest::Test
     ##################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
+      # should "not have any errors" do 
+      #   functionality = @page.functionality
+      #   functionality.validate
+      #   assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
+      # end
+
       should "truncate the community answers to 7 lines" do 
         view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
         view_more_answers.click
@@ -178,7 +184,6 @@ class SkinCareQuestionPageTest < MiniTest::Test
   end
 
   def teardown  
-    @driver.quit  
-    @proxy.close
+    cleanup_driver_and_proxy
   end 
 end

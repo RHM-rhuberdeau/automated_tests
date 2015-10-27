@@ -77,7 +77,6 @@ class ExplainingMobileSlideshowTest < MiniTest::Test
   end
 
   def teardown  
-    @driver.quit  
-    @proxy.close
+    cleanup_driver_and_proxy
   end 
 end

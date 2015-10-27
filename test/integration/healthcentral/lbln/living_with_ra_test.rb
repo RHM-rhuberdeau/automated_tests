@@ -75,6 +75,6 @@ class LBLNRa < MiniTest::Test
   end
 
   def teardown  
-    @driver.quit  
+    cleanup_driver_and_proxy
   end 
 end
