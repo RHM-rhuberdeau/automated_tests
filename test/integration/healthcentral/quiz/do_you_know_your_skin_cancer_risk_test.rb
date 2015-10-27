@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/quiz_page'
 
-class QuizTest < MiniTest::Test
+class SkinCancerQuizTest < MiniTest::Test
   context "do-you-know-your-skin-cancer-risk" do 
     setup do 
       fire_fox_with_secure_proxy

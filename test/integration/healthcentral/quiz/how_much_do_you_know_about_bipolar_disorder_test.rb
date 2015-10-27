@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/quiz_page'
 
-class QuizTest < MiniTest::Test
+class BipolarQuizTest < MiniTest::Test
   context "how-much-do-you-know-about-bipolar-disorder" do 
     setup do 
       fire_fox_with_secure_proxy
