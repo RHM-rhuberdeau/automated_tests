@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/subcategory_page'
 
-class SubCategory < MiniTest::Test
+class ChronicPainSubCategory < MiniTest::Test
   context "chronic pain" do 
     setup do 
       fire_fox_with_secure_proxy
