@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/redesign_entry_mobile_page'
 
-class Hypothyroidism < MiniTest::Test
+class HypothyroidismMobile < MiniTest::Test
   context "a mobile custom program" do 
     setup do 
       mobile_fire_fox_with_secure_proxy
