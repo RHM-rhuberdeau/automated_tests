@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/redesign_entry_page'
 
-class LBLN < MiniTest::Test
+class LBLNEpilepsy < MiniTest::Test
   context "taking control of epilepsy landing page" do 
     setup do 
       fire_fox_with_secure_proxy
