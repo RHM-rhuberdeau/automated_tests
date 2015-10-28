@@ -166,7 +166,11 @@ module HealthCentralAds
           distance = node.location.y
         else
           previous_node = trigger_points[index - 1]
-          distance = node.location.y - previous_node.location.y
+          begin
+            distance = node.location.y - previous_node.location.y
+          rescue Selenium::WebDriver::Error::UnknownError
+            distance = 0
+          end
         end
         if distance > 0
           @driver.execute_script("window.scrollBy(0, #{distance});")
