@@ -25,17 +25,17 @@ module BerkeleyAds
     end
 
     def unique_ads_per_page_view
-      @ads = {}
-      all_ads = BerkeleyPage.get_all_ads(@proxy)
-      @ads[1] = all_ads
+      page_one_ad_calls = BerkeleyPage.get_all_ads(@proxy)
+      ads_from_page1 = page_one_ad_calls.map { |ad| BerkeleyAds::Ads.new(ad) }
+
+      # Put sleep calls around setting up a new har file to avoid race conditions
+      sleep 0.25
+      @proxy.new_har
+      sleep 0.25
 
       visit @url
-      sleep 1
-      all_ads2 = BerkeleyPage.get_all_ads(@proxy)
-      @ads[2] = all_ads2 - @ads.flatten(2)
-
-      ads_from_page1 = @ads[1].map { |ad| BerkeleyAds::Ads.new(ad) }
-      ads_from_page2 = @ads[2].map { |ad| BerkeleyAds::Ads.new(ad) }
+      page_two_ad_calls = BerkeleyPage.get_all_ads(@proxy)
+      ads_from_page2 = page_two_ad_calls.map { |ad| BerkeleyAds::Ads.new(ad) }
 
       ord_values_1 = ads_from_page1.collect(&:ord).uniq
       ord_values_2 = ads_from_page2.collect(&:ord).uniq
@@ -66,31 +66,27 @@ module BerkeleyAds
     end
 
     def thcn_content_type
-      if @thcn_content_type
-        thcn_content_type = evaluate_script "THCN_CONTENT_TYPE"
-        unless thcn_content_type == @thcn_content_type
-          self.errors.add(:ads, "THCN_CONTENT_TYPE was #{thcn_content_type} not #{@thcn_content_type}")
-        end
+      thcn_content_type = evaluate_script "THCN_CONTENT_TYPE"
+      if thcn_content_type.include?("javascript error")
+        thcn_content_type = ''
+      end
+      unless thcn_content_type == @thcn_content_type
+        self.errors.add(:ads, "thcn_content_type was #{thcn_content_type} not #{@thcn_content_type}")
       end
     end
 
     def ugc
-      has_file    = false
       ugc_values  =  []
 
       @proxy.har.entries.each do |entry|
         if entry.request.url.include?('ad.doubleclick.net/N3965')
           ugc_values << entry.request.url.split('ugc=').last.split(';').first
         end
-        has_file = true if entry.request.url.include?('namespace.js')
       end
 
       ugc_values = ugc_values.uniq.to_s
       unless ugc_values == @ugc
         self.errors.add(:ads, "ugc was #{ugc_values} not #{@ugc}")
-      end
-      unless has_file == true
-        self.errors.add(:ads, "namespace.js was not loaded")
       end
     end
   end
