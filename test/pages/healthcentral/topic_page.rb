@@ -149,8 +149,8 @@ module Topics
       latest_posts_titles = @driver.find_elements(:css, ".Editor-picks-title-container.js-Editor-picks-title-container")
       latest_posts_titles = latest_posts_titles.select { |x| x.text.length > 0 }
 
-      unless latest_posts.length >= 8
-        self.errors.add(:latest_posts, "There were only #{latest_posts.length} modules on the page")
+      unless latest_posts.length >= 5
+        self.errors.add(:latest_posts, "There were only #{latest_posts.length} latest posts modules on the page")
       end
       unless header_text == "LATEST POSTS"
         self.errors.add(:latest_posts, "LATEST POSTS did not appear on the page")
