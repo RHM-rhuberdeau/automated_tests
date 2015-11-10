@@ -112,7 +112,7 @@ module Phases
       unless we_recommend_header.text == "WE RECOMMEND"
         self.errors.add(:we_recommend, "We Recommend header was #{we_recommend_header.text} not We Recommend")
       end
-      unless we_recommend_modules && we_recommend_modules.length == 3
+      unless we_recommend_modules && we_recommend_modules.length >= 2
         self.errors.add(:we_recommend, "3 We Recommend modules did not appear on the page")
       end
       unless we_recommend_modules.length == we_recommend_links.length
@@ -154,7 +154,7 @@ module Phases
     def pagination
       pagination       = find "div.CollectionListBoxes-button"
       pagination_label = find "div.Custom-paginator-info"
-      pagination_next  = find ".Custom-paginator-controls-next-icon.icon-right-open-big"
+      pagination_next  = find "span.Custom-paginator-controls-next-button-label"
       pagination_prev  = find ".Custom-paginator-controls-prev-icon.icon-left-open-big"
       page_total       = find ".Custom-paginator-label-pageTotal"
       if page_total
@@ -180,8 +180,12 @@ module Phases
 
         pagination       = find "div.CollectionListBoxes-button"
         pagination_label = find "div.Custom-paginator-info"
-        pagination_next  = find ".Custom-paginator-controls-next-icon.icon-right-open-big"
+        pagination_next  = find ".Custom-paginator-controls-next-button"
         pagination_prev  = find ".Custom-paginator-controls-prev-icon.icon-left-open-big"
+        page_total       = find ".Custom-paginator-label-pageTotal"
+        if page_total
+          number_of_pages = page_total.text.to_i
+        end
 
         unless pagination
           self.errors.add(:pagination, "pagination did not appear on the second page")
@@ -189,7 +193,7 @@ module Phases
         unless pagination_label
           self.errors.add(:pagination, "pagination label did not appear on the second page")
         end
-        unless pagination_next
+        unless pagination_next || ( !number_of_pages.nil? && number_of_pages <= 18 )
           self.errors.add(:pagination, "Next button did not appear on the second page")
         end
         unless pagination_prev
