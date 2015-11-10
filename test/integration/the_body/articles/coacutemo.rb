@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/the_body/redesign_article_page'
+require_relative '../../../pages/the_body/the_body_pro_page'
 
 class Coacutemo < MiniTest::Test
   context "A rescource center article with 2 authors" do 
@@ -9,9 +9,9 @@ class Coacutemo < MiniTest::Test
       io            = File.open('test/fixtures/the_body/articles.yml')
       body_fixture  = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['coacutemo'])
-      header        = TheBodyHeader::RedesignHeader.new(:driver => @driver)
-      footer        = TheBodyFooter::RedesignFooter.new(:driver => @driver)
-      @page         = TheBodyArticle::RedesignArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
+      header        = TheBodyHeader::TheBodyPro.new(:driver => @driver)
+      footer        = TheBodyFooter::TheBodyPro.new(:driver => @driver)
+      @page         = TheBodyArticle::TheBodyProPage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
                                                              :header => header, :footer => footer)
       @url          = "#{BODY_URL}/content/76099/coacutemo-revelar-la-noticia.html/"
       visit @url
@@ -50,15 +50,15 @@ class Coacutemo < MiniTest::Test
    ################### ADS, ANALYTICS, OMNITURE ############################
    context "ads, analytics, omniture" do
      should "not have any errors" do 
-       ads      = TheBodyArticle::RedesignArticlePage::DesktopAds.new(:driver => @driver,
+       ads      = TheBodyArticle::TheBodyProPage::DesktopAds.new(:driver => @driver,
                                                             :proxy => @proxy, 
                                                             :ad_site => 'cm.own.body',
-                                                            :ad_categories => ['healthcentral'],
+                                                            :ad_categories => ['spanish'],
                                                             :exclusion_cat => "",
-                                                            :sponsor_kw  => "latinorc",
-                                                            :thcn_content_type => "BodyPage",
-                                                            :thcn_super_cat => "The Body (HIV/AIDS)",
-                                                            :thcn_category => "Resource Centers",
+                                                            :sponsor_kw  => "",
+                                                            :thcn_content_type => "",
+                                                            :thcn_super_cat => "",
+                                                            :thcn_category => "",
                                                             :ugc => "[\"n\"]",
                                                             :url => @url) 
        ads.validate
@@ -80,7 +80,6 @@ class Coacutemo < MiniTest::Test
   end#A TheBody desktop page
 
   def teardown  
-    @driver.quit  
-    @proxy.close
+    cleanup_driver_and_proxy
   end
 end

@@ -32,18 +32,6 @@ module TheBodyArticle
         @proxy  = args[:proxy]
       end
 
-      def present_with_text?(css)
-        node = find css
-        unless node
-          self.errors.add(:functionality, "#{css} missing from page")
-        end
-        if node 
-          unless node.text.length > 0
-            self.errors.add(:functionality, "#{css} was blank")
-          end
-        end
-      end
-
       def page_header
         header = find ".Page-category.Page-sub-category.js-page-category"
         unless header
@@ -52,7 +40,7 @@ module TheBodyArticle
       end
 
       def article_title
-        present_with_text?("h2.Page-info-title")
+        present_with_text?("h1.Page-info-title")
       end
 
       def byline
@@ -67,7 +55,7 @@ module TheBodyArticle
       end
 
       def most_viewed
-        present_with_text?(".Node-content-secondary .highlight-list h2")
+        present_with_text?(".Node-content-secondary .highlight-list div")
         article_links = @driver.find_elements(:css, ".Node-content-secondary ul li a")
         article_links = article_links.select {|x| x.displayed? }.compact
         unless article_links.length > 0

@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/the_body/redesign_article_page'
+require_relative '../../../pages/the_body/primary_subtopic_page'
 
 class GlobalPost < MiniTest::Test
   context "Primary subtopic, no portal" do 
@@ -9,9 +9,9 @@ class GlobalPost < MiniTest::Test
       io            = File.open('test/fixtures/the_body/articles.yml')
       body_fixture  = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['global_post'])
-      header        = TheBodyHeader::RedesignHeader.new(:driver => @driver)
-      footer        = TheBodyFooter::RedesignFooter.new(:driver => @driver)
-      @page         = TheBodyArticle::RedesignArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
+      header        = TheBodyHeader::TheBodyPro.new(:driver => @driver)
+      footer        = TheBodyFooter::TheBodyPro.new(:driver => @driver)
+      @page         = TheBodyArticle::PrimarySubtopicPage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
                                                              :header => header, :footer => footer)
       @url          = "#{BODY_URL}/content/69964/global-post-examines-unproven-unscientific-hiv-tre.html"
       visit @url
@@ -52,15 +52,15 @@ class GlobalPost < MiniTest::Test
      should "not have any errors" do 
        omniture  = @page.omniture
        omniture.validate
-       ads       = TheBodyArticle::RedesignArticlePage::DesktopAds.new(:driver => @driver,
+       ads       = TheBodyArticle::PrimarySubtopicPage::DesktopAds.new(:driver => @driver,
                                                             :proxy => @proxy, 
                                                             :ad_site => 'cm.own.body',
                                                             :ad_categories => ['hivandaids'],
                                                             :exclusion_cat => "",
                                                             :sponsor_kw  => "",
-                                                            :thcn_content_type => "BodyPage",
-                                                            :thcn_super_cat => "The Body (HIV/AIDS)",
-                                                            :thcn_category => "Transmission",
+                                                            :thcn_content_type => "",
+                                                            :thcn_super_cat => "",
+                                                            :thcn_category => "",
                                                             :ugc => "[\"n\"]",
                                                             :url => @url) 
        ads.validate
@@ -80,7 +80,6 @@ class GlobalPost < MiniTest::Test
   end#A TheBody desktop page
 
   def teardown  
-    @driver.quit  
-    @proxy.close
+    cleanup_driver_and_proxy
   end
 end

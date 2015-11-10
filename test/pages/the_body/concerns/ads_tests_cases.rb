@@ -139,7 +139,7 @@ module TheBodyAds
 
   class LazyLoadedAds < AdsTestCases
 
-    validate :one_ad_per_trigger_point
+    # validate :one_ad_per_trigger_point
     validate :unique_ord_values
     validate :tile_values
 
@@ -157,35 +157,41 @@ module TheBodyAds
       @sponsor_kw             = args[:sponsor_kw]
       @trigger                = args[:trigger_point]
       @ad_calls               = {}
-      @ads                    = {}
+      @ads                    = []
       trigger_all_ads
       create_ads_from_ad_calls
     end
 
     def trigger_all_ads
-      wait_for { @driver.find_element(:css, @trigger).displayed? }
-      trigger_points = @driver.find_elements(:css, @trigger)
+      # wait_for { @driver.find_element(:css, @trigger).displayed? }
+      # trigger_points = @driver.find_elements(:css, @trigger)
 
-      trigger_points.each_with_index do |node, index|
-        @proxy.new_har
-        if index == 0
-          distance = node.location.y
-        else
-          previous_node = trigger_points[index - 1]
-          distance = node.location.y - previous_node.location.y
-        end
-        if distance > 0
-          @driver.execute_script("window.scrollBy(0, #{distance});")
-          sleep 0.5
-          ads = TheBodyPage.get_all_ads(@proxy)
-          @ad_calls[index + 1] = ads
-        end
-      end
+      # trigger_points.each_with_index do |node, index|
+      #   @proxy.new_har
+      #   if index == 0
+      #     distance = node.location.y
+      #   else
+      #     previous_node = trigger_points[index - 1]
+      #     distance = node.location.y - previous_node.location.y
+      #   end
+      #   if distance > 0
+      #     @driver.execute_script("window.scrollBy(0, #{distance});")
+      #     sleep 0.5
+      #     ads = TheBodyPage.get_all_ads(@proxy)
+      #     @ad_calls[index + 1] = ads
+      #   end
+      # end
+      scroll_to_bottom_of_page
+      sleep 0.5
+      @ad_calls = TheBodyPage.get_all_ads(@proxy)
     end
 
     def create_ads_from_ad_calls
-      @ad_calls.each do |key, value|
-        @ads[key] = @ad_calls[key].map { |ad_call| TheBodyAds::Ads.new(ad_call) }
+      # @ad_calls.each do |key, value|
+      #   @ads[key] = @ad_calls[key].map { |ad_call| TheBodyAds::Ads.new(ad_call) }
+      # end
+      @ad_calls.each_with_index do |ad_call, index|
+        @ads[index] = TheBodyAds::Ads.new(ad_call)
       end
     end
 
@@ -199,10 +205,13 @@ module TheBodyAds
 
     def unique_ord_values
       ord_values = []
-      @ads.each do |key, value|
-        ord_values << @ads[key].map { |x| x.ord }
+      # @ads.each do |key, value|
+      #   ord_values << @ads[key].map { |x| x.ord }
+      # end
+      # ord_values  = ord_values.flatten(2)
+      @ads.each do |ad|
+        ord_values << ad.ord
       end
-      ord_values  = ord_values.flatten(2)
       new_array   = ord_values.uniq
       unless ord_values.length == new_array.length
         self.errors.add(:ads, "There were duplicate ord values")
@@ -211,16 +220,19 @@ module TheBodyAds
 
     def tile_values
       tile_values = []
-      @ads.each do |key, value|
-        tile_values << @ads[key].map { |x| x.tile }
+      # @ads.each do |key, value|
+      #   tile_values << @ads[key].map { |x| x.tile }
+      # end
+      @ads.each do |ad|
+        tile_values << ad.tile
       end
-      tile_values = tile_values.flatten(2)
+      # tile_values = tile_values.flatten(2)
       new_array   = tile_values.uniq 
       unless new_array.length == 1
-        self.errors.add(:ads, "There were multiple tile values")
+        self.errors.add(:ads, "There were multiple tile values: #{new_array}")
       end
       unless new_array.first.to_i == 1
-        self.errors.add(:ads, "Each lazy loaded ad did not have a tile of 1")
+        self.errors.add(:ads, "Each lazy loaded ad did not have a tile of 1: #{new_array}")
       end
     end
   end

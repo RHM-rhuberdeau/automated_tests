@@ -198,5 +198,65 @@ module TheBodyHeader
         self.errors.add(:header, "Featured links section was missing links")
       end
     end
+  end#RedesignMobileHeader
+
+  class TheBodyPro
+    include ::ActiveModel::Validations
+
+    validate :logo
+    validate :nav_links
+
+    def initialize(args)
+      @driver = args[:driver]
+    end
+
+    def logo
+      body_logo = find "#topnav > table:nth-child(2) > tbody > tr:nth-child(1) > td:nth-child(1) > a > img"
+      unless body_logo
+        self.errors.add(:header, "Missing the logo in the header")
+      end
+    end
+
+    def nav_links
+      links = @driver.find_elements(:css, "div#topnav table.navlinks a")
+      unless links
+        self.errors.add(:header, "Nav links missing in the header")
+      end
+      if links
+        unless links.length == 10
+          self.errors.add(:header, "Expected 8 links in the header, not #{links.length}")
+        end
+      end
+    end
+  end
+
+  class TheBodyProArchived
+    include ::ActiveModel::Validations
+
+    validate :logo
+    validate :nav_links
+
+    def initialize(args)
+      @driver = args[:driver]
+    end
+
+    def logo
+      body_logo = find "#header div#logo img"
+      unless body_logo
+        self.errors.add(:header, "Missing the logo in the header")
+      end
+    end
+
+    def nav_links
+      links = @driver.find_elements(:css, "div#navwrapper a")
+      unless links
+        self.errors.add(:header, "Nav links missing in the header")
+      end
+      if links
+        unless links.length == 8
+          self.errors.add(:header, "Expected 8 links in the header, not #{links.length}")
+        end
+      end
+    end
   end
 end

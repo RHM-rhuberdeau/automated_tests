@@ -80,7 +80,6 @@ class GlobalPostMobile < MiniTest::Test
   end#A TheBody desktop page
 
   def teardown  
-    @driver.quit  
-    @proxy.close
+    cleanup_driver_and_proxy
   end
 end

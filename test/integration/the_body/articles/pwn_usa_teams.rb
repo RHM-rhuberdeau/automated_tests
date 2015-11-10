@@ -83,8 +83,7 @@
 #     end
 #   end#A TheBody desktop page
 
-#   def teardown  
-#     @driver.quit  
-#     @proxy.close
-#   end
+  # def teardown  
+  #   cleanup_driver_and_proxy
+  # end
 # end

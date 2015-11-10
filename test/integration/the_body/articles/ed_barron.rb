@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/the_body/redesign_article_page'
+require_relative '../../../pages/the_body/the_body_resource_center_page'
 
 class EdBarron < MiniTest::Test
   context "A Brightcove video" do 
@@ -9,9 +9,9 @@ class EdBarron < MiniTest::Test
       io            = File.open('test/fixtures/the_body/articles.yml')
       body_fixture  = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['ed_barron'])
-      header        = TheBodyHeader::RedesignHeader.new(:driver => @driver)
-      footer        = TheBodyFooter::RedesignFooter.new(:driver => @driver)
-      @page         = TheBodyArticle::RedesignArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
+      header        = TheBodyHeader::TheBodyPro.new(:driver => @driver)
+      footer        = TheBodyFooter::TheBodyPro.new(:driver => @driver)
+      @page         = TheBodyArticle::TheBodyResourceCenterPage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
                                                              :header => header, :footer => footer)
       @url          = "#{BODY_URL}/content/74409/ed-barron-is-not-hiv-positive-hes-a-person-living-.html/"
       visit @url
@@ -50,15 +50,15 @@ class EdBarron < MiniTest::Test
    ################### ADS, ANALYTICS, OMNITURE ############################
    context "ads, analytics, omniture" do
      should "not have any errors" do 
-       ads      = TheBodyArticle::RedesignArticlePage::DesktopAds.new(:driver => @driver,
+       ads      = TheBodyArticle::TheBodyResourceCenterPage::DesktopAds.new(:driver => @driver,
                                                             :proxy => @proxy, 
                                                             :ad_site => 'cm.own.body',
                                                             :ad_categories => ['healthcentral'],
                                                             :exclusion_cat => "",
-                                                            :sponsor_kw  => "gmrc",
-                                                            :thcn_content_type => "BodyPage",
-                                                            :thcn_super_cat => "The Body (HIV/AIDS)",
-                                                            :thcn_category => "Resource Centers",
+                                                            :sponsor_kw  => "",
+                                                            :thcn_content_type => "",
+                                                            :thcn_super_cat => "",
+                                                            :thcn_category => "",
                                                             :ugc => "[\"n\"]",
                                                             :url => @url) 
        ads.validate
@@ -80,7 +80,6 @@ class EdBarron < MiniTest::Test
   end#A TheBody desktop page
 
   def teardown  
-    @driver.quit  
-    @proxy.close
+    cleanup_driver_and_proxy
   end
 end

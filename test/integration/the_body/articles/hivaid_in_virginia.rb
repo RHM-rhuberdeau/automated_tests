@@ -1,5 +1,5 @@
 require_relative '../../../minitest_helper' 
-require_relative '../../../pages/the_body/redesign_article_page'
+require_relative '../../../pages/the_body/primary_subtopic_page'
 
 class HivAidsInVirginia < MiniTest::Test
   context "An article with no primary resource or subtopic" do 
@@ -9,9 +9,9 @@ class HivAidsInVirginia < MiniTest::Test
       io            = File.open('test/fixtures/the_body/articles.yml')
       body_fixture  = YAML::load_documents(io)
       @body_fixture = OpenStruct.new(body_fixture[0]['hiv_virginia'])
-      header        = TheBodyHeader::RedesignHeader.new(:driver => @driver)
-      footer        = TheBodyFooter::RedesignFooter.new(:driver => @driver)
-      @page         = TheBodyArticle::RedesignArticlePage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
+      header        = TheBodyHeader::TheBodyPro.new(:driver => @driver)
+      footer        = TheBodyFooter::TheBodyPro.new(:driver => @driver)
+      @page         = TheBodyArticle::PrimarySubtopicPage.new(:driver => @driver, :proxy => @proxy, :fixture => @body_fixture,
                                                              :header => header, :footer => footer)
       @url          = "#{BODY_URL}/content/67452/hivaids-in-virginia-2010.html"
       visit @url
@@ -52,14 +52,14 @@ class HivAidsInVirginia < MiniTest::Test
      should "not have any errors" do 
        omniture  = @page.omniture
        omniture.validate
-       ads       = TheBodyArticle::RedesignArticlePage::DesktopAds.new(:driver => @driver,
+       ads       = TheBodyArticle::PrimarySubtopicPage::DesktopAds.new(:driver => @driver,
                                                             :proxy => @proxy, 
                                                             :ad_site => 'cm.own.body',
                                                             :ad_categories => ['hivandaids'],
                                                             :exclusion_cat => "",
                                                             :sponsor_kw  => "",
-                                                            :thcn_content_type => "BodyPage",
-                                                            :thcn_super_cat => "The Body (HIV/AIDS)",
+                                                            :thcn_content_type => "",
+                                                            :thcn_super_cat => "",
                                                             :thcn_category => "",
                                                             :ugc => "[\"n\"]",
                                                             :url => @url) 
@@ -80,7 +80,6 @@ class HivAidsInVirginia < MiniTest::Test
   end#A TheBody desktop page
 
   def teardown  
-    @driver.quit  
-    @proxy.close
+    cleanup_driver_and_proxy
   end
 end
