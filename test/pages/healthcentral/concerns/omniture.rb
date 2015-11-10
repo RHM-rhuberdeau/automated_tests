@@ -75,13 +75,8 @@ module HealthCentralOmniture
     end
 
     def correct_report_suite
-      if ENV['TEST_ENV'] != 'production'
-        suite = "cmi-choicemediacomdev"
-      else
-        suite = "cmi-choicemediacom"
-      end
-      unless @report_suite == suite
-        self.errors.add(:omniture, "Omniture report suite being used is: #{@report_suite} not #{suite}")
+      unless @report_suite == "cmi-choicemediacom"
+        self.errors.add(:omniture, "Omniture report suite being used is: #{@report_suite} not cmi-choicemediacom")
       end
     end
 
