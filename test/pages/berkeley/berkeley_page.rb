@@ -17,11 +17,11 @@ class BerkeleyPage
 
   SITE_HOSTS = ["http://bw3.hcaws.", "http://qa1.berkeleywellness.","http://qa2.berkeleywellness.","http://qa3.berkeleywellness.", "http://qa4.berkeleywellness.", "http://www.berkeleywellness.", "http://alpha.berkeleywellness.", "http://stage.berkeleywellness."]
 
-  def omniture
+  def omniture(args)
     open_omniture_debugger
     omniture_text = get_omniture_from_debugger
     begin
-      omniture = BerkeleyOmniture::Omniture.new(omniture_text, @fixture)
+      omniture = BerkeleyOmniture::Omniture.new(omniture_text: omniture_text, fixture: @fixture, url: args[:url])
     rescue BerkeleyOmniture::OmnitureIsBlank
       omniture = OpenStruct.new(:errors => OpenStruct.new(:messages => {:omniture => "Omniture was blank"}), :validate => '')
     end
