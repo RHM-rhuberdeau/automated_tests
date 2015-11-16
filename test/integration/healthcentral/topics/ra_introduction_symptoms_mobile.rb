@@ -2,7 +2,7 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/topic_mobile_page'
 
 class MobileSymptomsOfRa < MiniTest::Test
-  context "mobile ra introduction symptoms" do 
+  context "mobile ra-introduction symptoms" do 
     setup do 
       mobile_fire_fox_with_secure_proxy
       @proxy.new_har
