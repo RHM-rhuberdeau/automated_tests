@@ -58,7 +58,7 @@ class BerkeleyArticleTest < MiniTest::Test
                                                                  :ugc => "[\"n\"]") 
         ads.validate
 
-        omniture = @page.omniture
+        omniture = @page.omniture(:url => @url)
 
         omniture.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
@@ -67,7 +67,6 @@ class BerkeleyArticleTest < MiniTest::Test
   end
 
   def teardown  
-    @driver.quit  
-    @proxy.close
+    cleanup_driver_and_proxy
   end 
 end
