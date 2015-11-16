@@ -94,7 +94,6 @@ class BerkeleyHomePage < MiniTest::Test
   # end#Popular article listing
 
   def teardown  
-    @driver.quit  
-    @proxy.close if @proxy
+    cleanup_driver_and_proxy
   end 
 end
