@@ -39,7 +39,7 @@ class BerkeleyGuidesHomeTest < MiniTest::Test
         ad_categories     = ["supermarketbuyingguide"]
         exclusion_cat     = ""
         sponsor_kw        = ''
-        thcn_content_type = "explainer"
+        thcn_content_type = "category"
         thcn_super_cat    = ""
         thcn_category     = ""
         ads               = Articles::ArticlePage::AdsTestCases.new(:driver => @driver,
@@ -60,7 +60,6 @@ class BerkeleyGuidesHomeTest < MiniTest::Test
   end
 
   def teardown  
-    @driver.quit  
-    @proxy.close
+    cleanup_driver_and_proxy
   end 
 end
