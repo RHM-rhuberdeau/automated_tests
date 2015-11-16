@@ -5,17 +5,19 @@ module BerkeleyOmniture
     include ::ActiveModel::Validations
 
     def self.attr_list
-      [:pageName, :channel, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop10, :prop12, :prop13, :prop16, :prop17, :prop22, :prop29, :prop30, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :eVar17, :events]
+      [:pageName, :channel, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop12, :prop13, :prop16, :prop17, :prop22, :prop29, :prop30, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :eVar17, :events]
     end
 
     attr_accessor *attr_list
     validate :values_match_fixture
     validate :correct_report_suite
+    validate :prop10_value
 
-    def initialize(omniture_string, fixture)
-      @fixture  = fixture
-      raise OmnitureIsBlank unless omniture_string
-      array     = omniture_string.lines
+    def initialize(args)
+      @fixture  = args[:fixture]
+      @url      = args[:url]
+      raise OmnitureIsBlank unless args[:omniture_text]
+      array     = args[:omniture_text].lines
       index     = array.index { |x| x.include?("pageName") }
       raise OmnitureIsBlank unless index
       range     = array.length - index
@@ -79,6 +81,13 @@ module BerkeleyOmniture
       end
       unless @report_suite == suite
         self.errors.add(:base, "Omniture report suite being used is: #{@report_suite} not #{suite}")
+      end
+    end
+
+    def prop10_value
+      fixture_value = @fixture.send(:prop10)
+      unless @url.include?(fixture_value)
+        self.errors.add(:omniture, "prop10 had the wrong value")
       end
     end
   end
