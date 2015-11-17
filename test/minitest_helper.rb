@@ -81,7 +81,7 @@ def mobile_fire_fox_with_secure_proxy
   @proxy = @server.create_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
-  # @profile['general.useragent.override'] = 'Mozilla/5.0 (iPhone; CPU iPhone OS 6_0 like Mac OS X) AppleWebKit/536.26 (KHTML, like Gecko) Version/6.0 Mobile/10A5376e Safari/8536.25'
+  @profile['general.useragent.override'] = 'Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30'
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
   @driver.manage.window.resize_to(425,960)
   @driver.manage.timeouts.implicit_wait = 5
@@ -111,7 +111,7 @@ def wait_for_page_to_load
     Timeout::timeout(3) do
       loop until finished_loading?
     end
-  rescue Timeout::Error, Net::ReadTimeout
+  rescue Timeout::Error, Net::ReadTimeout, EOFError
   end
   sleep 0.5
   begin
@@ -141,6 +141,23 @@ def find(css)
     node = nil
   end
   node
+end
+
+#Looks for a Selenium element with the given css
+#Text fails if the element is not on the page, or does not have text
+#
+# present_with_text?(".content_pad h1")
+#
+def present_with_text?(css)
+  node = find css
+  unless node
+    self.errors.add(:functionality, "#{css} missing from page")
+  end
+  if node 
+    unless node.text.length > 0
+      self.errors.add(:functionality, "#{css} was blank")
+    end
+  end
 end
 
 def scroll_to_bottom_of_page
