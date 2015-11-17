@@ -20,9 +20,9 @@ module DailyDose
 
     def omniture
       open_omniture_debugger
-      omniture_text = get_omniture_from_debugger
+      omniture_string = get_omniture_from_debugger
       begin
-        omniture = Omniture.new(omniture_text, @fixture)
+        omniture = Omniture.new(omniture_string: omniture_string, fixture: @fixture)
       rescue Omniture::OmnitureIsBlank
         omniture = OpenStruct.new(:errors => OpenStruct.new(:messages => {:omniture => "Omniture was blank"}), :validate => '')
       end
@@ -84,10 +84,10 @@ module DailyDose
     validate :prop38_not_blank
     validate :prop22_not_blank
 
-    def initialize(omniture_string, fixture)
-      @fixture  = fixture
-      raise OmnitureIsBlank unless omniture_string
-      array     = omniture_string.lines
+    def initialize(args)
+      @fixture  = args[:fixture]
+      raise OmnitureIsBlank unless args[:omniture_string]
+      array     = args[:omniture_string].lines
       index     = array.index { |x| x.include?("pageName") }
       raise OmnitureIsBlank unless index
       range     = array.length - index
@@ -146,13 +146,8 @@ module DailyDose
     end
 
     def correct_report_suite
-      if ENV['TEST_ENV'] != 'production'
-        suite = "cmi-choicemediacomdev"
-      else
-        suite = "cmi-choicemediacom"
-      end
-      unless @report_suite == suite
-        self.errors.add(:omniture, "Omniture report suite being used is: #{@report_suite} not #{suite}")
+      unless @report_suite == "cmi-choicemediacom"
+        self.errors.add(:omniture, "Omniture report suite being used is: #{@report_suite} not cmi-choicemediacom")
       end
     end
 
