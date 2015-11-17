@@ -2,7 +2,7 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/dailydose_page'
 
 class DailyDoseMobileArticlePage < MiniTest::Test
-  context "daily dose mobile article page" do 
+  context "Mobile sugary drinks dailydose" do 
     setup do 
       mobile_fire_fox_with_secure_proxy
       @proxy.new_har
