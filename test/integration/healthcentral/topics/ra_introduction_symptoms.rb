@@ -5,6 +5,7 @@ class SymptomsOfRa < MiniTest::Test
   context "ra introduction symptoms" do 
     setup do 
       fire_fox_with_secure_proxy
+      @driver.manage.timeouts.page_load = 24
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/topics.yml')
       fixture           = YAML::load_documents(io)
