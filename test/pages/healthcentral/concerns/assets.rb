@@ -15,7 +15,10 @@ module HealthCentralAssets
       @driver    = args[:driver]
       @base_url  = args[:base_url]
       @host      = args[:host] || ASSET_HOST
-      @driver.execute_script "window.stop();"
+      begin
+        @driver.execute_script "window.stop();"
+      rescue Timeout::Error, Net::ReadTimeout
+      end
     end
 
     def wrong_asset_hosts
