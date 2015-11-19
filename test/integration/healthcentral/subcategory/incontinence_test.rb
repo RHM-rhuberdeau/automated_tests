@@ -5,6 +5,7 @@ class IncontinenceSubCategory < MiniTest::Test
   context "incontinence" do 
     setup do 
       fire_fox_with_secure_proxy
+      @driver.manage.timeouts.page_load = 20
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/subcategories.yml')
       subcat_fixture = YAML::load_documents(io)
@@ -15,7 +16,7 @@ class IncontinenceSubCategory < MiniTest::Test
                                    :related => ["Menopause"],
                                    :driver => @driver)
       @page = ::HealthCentral::SubcategoryPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @subcat_fixture, :head_navigation => header, :footer => footer)
-      @url  = "#{HC_DRUPAL_URL}/incontinence/" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/incontinence/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
