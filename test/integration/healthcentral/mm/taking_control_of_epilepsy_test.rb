@@ -5,6 +5,7 @@ class LBLNEpilepsy < MiniTest::Test
   context "taking control of epilepsy landing page" do 
     setup do 
       fire_fox_with_secure_proxy
+      @driver.manage.timeouts.page_load = 16
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/mm.yml')
       mm_fixture = YAML::load_documents(io)
@@ -70,6 +71,7 @@ class LBLNEpilepsy < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "ads, analytics, omniture" do
       should "not have any errors" do 
+        wait_for { @driver.find_element(:css, "#cta-full").displayed? }
         pharma_safe             = true
         ad_site                 = "cm.ver.epilepsy"
         ad_categories           = ["mymoment", "", ""]
