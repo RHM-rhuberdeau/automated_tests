@@ -5,6 +5,8 @@ require 'shoulda/context'
 require 'selenium-webdriver' 
 require 'browsermob/proxy'
 require 'timeout'
+require 'minitest/reporters'
+Minitest::Reporters.use! Minitest::Reporters::DefaultReporter.new
 
 #### HEALTHCENTRAL
 HC_BASE_URL    = Configuration["healthcentral"]["base_url"]
@@ -44,15 +46,15 @@ end
 
 def fire_fox_with_secure_proxy
   proxy_location = Settings.location
-  @server = BrowserMob::Proxy::Server.new(proxy_location)
-  @server.start
+  $_server ||= BrowserMob::Proxy::Server.new(proxy_location).start
 
-  @proxy = @server.create_proxy
+  @proxy = $_server.create_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
   @driver.manage.window.resize_to(1224,1000)
-  @driver.manage.timeouts.implicit_wait = 5
+  @driver.manage.timeouts.implicit_wait = 3
+  @driver.manage.timeouts.page_load = 16
 end
 
 def fire_fox_remote_proxy
@@ -75,10 +77,9 @@ end
 
 def mobile_fire_fox_with_secure_proxy
   proxy_location = Settings.location
-  @server = BrowserMob::Proxy::Server.new(proxy_location)
-  @server.start
+  $_server ||= BrowserMob::Proxy::Server.new(proxy_location).start
   
-  @proxy = @server.create_proxy
+  @proxy = $_server.create_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
   @profile['general.useragent.override'] = 'Mozilla/5.0 (Linux; U; Android 4.0.3; ko-kr; LG-L160L Build/IML74K) AppleWebkit/534.30 (KHTML, like Gecko) Version/4.0 Mobile Safari/534.30'
@@ -99,11 +100,22 @@ end
 def cleanup_driver_and_proxy
   @driver.quit  
   @proxy.close
-  @server.stop if @server
 end
 
 def phantomjs
   @driver = Selenium::WebDriver.for :remote, url: 'http://localhost:8001'
+end
+
+def visit(url)
+  begin
+    @driver.navigate.to url 
+  rescue Timeout::Error, Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
+  end
+  begin
+    @driver.execute_script("window.stop();")
+  rescue Timeout::Error, Net::ReadTimeout
+  end
+  sleep 0.25
 end
 
 def wait_for_page_to_load
@@ -117,6 +129,16 @@ def wait_for_page_to_load
   begin
     @driver.execute_script("window.stop();")
   rescue Timeout::Error, Net::ReadTimeout
+  end
+end
+
+def finished_loading?
+  state = @driver.execute_script "return window.document.readyState"
+  sleep 0.5
+  if state == "complete"
+    true
+  else
+    false
   end
 end
 
@@ -164,16 +186,6 @@ def scroll_to_bottom_of_page
   @driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
 end
 
-def finished_loading?
-  state = @driver.execute_script "return window.document.readyState"
-  sleep 0.5
-  if state == "complete"
-  	true
-  else
-  	false
-  end
-end
-
 def open_omniture_debugger
   @driver.execute_script "javascript:void(window.open(\"\",\"dp_debugger\",\"width=600,height=600,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1\").document.write(\"<script language='JavaScript' id=dbg src='https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js'></\"+\"script>\"))"
   sleep 1
@@ -204,16 +216,6 @@ def get_omniture_from_debugger
 
   @driver.switch_to.window original_window
   omniture_text
-end
-
-def visit(url)
-  begin
-    Timeout::timeout(5) do
-      @driver.navigate.to url 
-    end
-  rescue Timeout::Error, Net::ReadTimeout
-  end
-  wait_for_page_to_load
 end
 
 def evaluate_script(script)
