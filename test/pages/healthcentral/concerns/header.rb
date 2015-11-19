@@ -19,7 +19,7 @@ module HealthCentralHeader
       link = @driver.find_element(:css, "a.LogoHC")
       begin
         link.click
-      rescue Net::ReadTimeout
+      rescue Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
       end
       wait_for_page_to_load
       unless @driver.current_url == "#{HC_BASE_URL}/"
@@ -39,7 +39,7 @@ module HealthCentralHeader
       button = @driver.find_element(:css, ".Button--AZ")
       begin
         button.click
-      rescue Net::ReadTimeout
+      rescue Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
 
       end
       wait_for { @driver.find_element(:css, ".HC-nav").displayed? }
@@ -87,7 +87,6 @@ module HealthCentralHeader
     end
 
     def social_icons
-      wait_for_page_to_load
       wait_for { @driver.find_element(:css, ".HC-header-content span.icon-facebook").displayed? }
       #Check Facebook icon
       fb_icon = @driver.find_element(:css, ".HC-header-content span.icon-facebook")
@@ -131,7 +130,7 @@ module HealthCentralHeader
       mail_icon = @driver.find_element(:css, ".HC-header-content span.icon-mail")
       begin
         mail_icon.click
-      rescue Net::ReadTimeout
+      rescue Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
       end
       wait_for_page_to_load
       
