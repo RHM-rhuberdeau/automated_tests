@@ -175,7 +175,10 @@ module Phases
       end
 
       if pagination_next
-        pagination_next.click
+        begin
+          pagination_next.click
+        rescue Selenium::WebDriver::Error::TimeOutError
+        end
         sleep 1 
 
         pagination       = find "div.CollectionListBoxes-button"

@@ -86,6 +86,7 @@ def mobile_fire_fox_with_secure_proxy
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
   @driver.manage.window.resize_to(425,960)
   @driver.manage.timeouts.implicit_wait = 5
+  @driver.manage.timeouts.page_load = 16
 end
 
 def fire_fox_remote
