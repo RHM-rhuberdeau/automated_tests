@@ -154,21 +154,21 @@ production:
     base_url: http://www.thebody.com
     asset_host: http://www.thebody.
 
-stage:
-  asset_host: http://stage.healthcentral.
+staging:
+  asset_host: http://staging.healthcentral.
   healthcentral:
-    base_url: http://stage.healthcentral.com
+    base_url: http://staging.healthcentral.com
     name: healthcentral
-    drupal_url: http://drupal.stage.healthcentral.com
+    drupal_url: http://drupal.staging.healthcentral.com
     immersive: http://immersiveqa.healthcentral.choicemedia.com
   berkeley:
     base_url: http://www.berkeleywellness.com
     name: berkeleywellness
-    asset_host: http://stage.berkeleywellness.
+    asset_host: http://staging.berkeleywellness.
   medtronic:
     base_url: https://secure.healthcentral.com
     name: medtronic
     asset_host: https://secure.healthcentral.
   thebody:
-    base_url: http://stage.thebody.com
-    asset_host: http://stage.thebody.
+    base_url: http://staging.thebody.com
+    asset_host: http://staging.thebody.
