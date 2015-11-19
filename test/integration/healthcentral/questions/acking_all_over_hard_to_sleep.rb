@@ -22,84 +22,121 @@ class SkinCareQuestionPageTest < MiniTest::Test
     ##################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
-      # should "not have any errors" do 
-      #   functionality = @page.functionality
-      #   functionality.validate
-      #   assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
-      # end
+      should "not have any errors" do 
+        functionality = @page.functionality
+        functionality.validate
+        assert_equal(true, functionality.errors.empty?, "#{functionality.errors.messages}")
+      end
 
       should "truncate the community answers to 7 lines" do 
-        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
-        view_more_answers.click
-        wait_for { @driver.find_element(css: '.QA-community .CommentBox-secondary-content').displayed? }
-        first_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '')
-        expected_answer = "YourquestionhascometotheSkinCaresiteonHealthCentralandIdon'tthinkanyonecouldansweryouaboutyoursymptomsandwhatmightbehappening.Theycan'tdiagnoseyouovertheinternet,yet...READMORE"
-        assert_equal(expected_answer, first_answer, "First answer was not truncated: #{first_answer}")
+        wait_for { @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first.displayed? }
+
+        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers")
+        if view_more_answers
+          view_more_answers = view_more_answers.first 
+
+          view_more_answers.click
+          wait_for { @driver.find_element(css: '.QA-community .CommentBox-secondary-content').displayed? }
+          first_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '')
+          expected_answer = "YourquestionhascometotheSkinCaresiteonHealthCentralandIdon'tthinkanyonecouldansweryouaboutyoursymptomsandwhatmightbehappening.Theycan'tdiagnoseyouovertheinternet,yet...READMORE"
+          assert_equal(expected_answer, first_answer, "First answer was not truncated: #{first_answer}")
+        else
+          assert_equal(false, view_more_answers.empty?, "View more answers link did not appear on the page")
+        end
       end
 
       should "display the full community answer after the user clicks Read More" do 
-        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
-        view_more_answers.click
-        wait_for { @driver.find_element(css: '.QA-community .CommentBox-secondary-content').displayed? }
-        truncated_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '')
-        read_more = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content .js-read-more").select { |x| x.displayed? }.first
-        read_more.click
-        sleep 0.5
-        full_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '')
-        expected_answer = "YourquestionhascometotheSkinCaresiteonHealthCentralandIdon'tthinkanyonecouldansweryouaboutyoursymptomsandwhatmightbehappening.Theycan'tdiagnoseyouovertheinternet,yet.Ifyoufeelyouneedto,youshouldcallyourdoctor,call911forimmediateassistance,ororgotoyourlocalemergencyroom.Goodluck."
-        assert_equal(expected_answer, full_answer, "Full answer was not displayed after clicking Read More: #{full_answer}")
-        assert_equal(false, truncated_answer == full_answer)
+        wait_for { @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first.displayed? }
+
+        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers")
+        if view_more_answers 
+          view_more_answers = view_more_answers.first
+          view_more_answers.click
+          wait_for { @driver.find_element(css: '.QA-community .CommentBox-secondary-content').displayed? }
+          truncated_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '')
+          read_more = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content .js-read-more").select { |x| x.displayed? }.first
+          read_more.click
+          sleep 0.5
+          full_answer = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").first.text.gsub(" ", '').gsub("\n", '')
+          expected_answer = "YourquestionhascometotheSkinCaresiteonHealthCentralandIdon'tthinkanyonecouldansweryouaboutyoursymptomsandwhatmightbehappening.Theycan'tdiagnoseyouovertheinternet,yet.Ifyoufeelyouneedto,youshouldcallyourdoctor,call911forimmediateassistance,ororgotoyourlocalemergencyroom.Goodluck."
+          assert_equal(expected_answer, full_answer, "Full answer was not displayed after clicking Read More: #{full_answer}")
+          assert_equal(false, truncated_answer == full_answer)
+        else
+          assert_equal(false, view_more_answers.empty?, "View more answers link did not appear on the page")
+        end
       end
 
       should "display each member's avatar in each community answer" do 
-        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
-        view_more_answers.click
-        wait_for { @driver.find_element(:css, ".QA-community .CommentBox-secondary-content").displayed? }
-        community_answers = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content")
+        wait_for { @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first.displayed? }
 
-        community_avatars = @driver.find_elements(:css, ".CommentList--community .CommentList-item--qa .CommentBox .CommentBox-primary-content .AuthorInfo--qa img.Page-info-visual-image")
-        assert_equal(true, community_answers.length == community_avatars.length, "One or more answers is missing an avatar. Answers: #{community_answers.length} Avatars: #{community_avatars.length}")
+        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers")
+        if view_more_answers
+          view_more_answers = view_more_answers.first
+          view_more_answers.click
+          wait_for { @driver.find_element(:css, ".QA-community .CommentBox-secondary-content").displayed? }
+          community_answers = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content")
 
-        community_avatars.select { |x| x.displayed? }.first.click
-        wait_for { @driver.find_element(:css, "div#my_profile").displayed? }
-        assert_equal("#{HC_BASE_URL}/profiles/c/222743", @driver.current_url, "Avatar linked to #{@driver.current_url} not #{HC_BASE_URL}/profiles/c/222743")
+          community_avatars = @driver.find_elements(:css, ".CommentList--community .CommentList-item--qa .CommentBox .CommentBox-primary-content .AuthorInfo--qa img.Page-info-visual-image")
+          assert_equal(true, community_answers.length == community_avatars.length, "One or more answers is missing an avatar. Answers: #{community_answers.length} Avatars: #{community_avatars.length}")
+
+          community_avatars.select { |x| x.displayed? }.first.click
+          wait_for { @driver.find_element(:css, "div#my_profile").displayed? }
+          assert_equal("#{HC_BASE_URL}/profiles/c/222743", @driver.current_url, "Avatar linked to #{@driver.current_url} not #{HC_BASE_URL}/profiles/c/222743")
+        else
+          assert_equal(false, view_more_answers.empty?, "View more answers link did not appear on the page")
+        end
       end
 
       should "display each member's name which links to the member's profile" do 
-        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
-        view_more_answers.click
-        wait_for { @driver.find_element(:css, ".QA-community .CommentBox-secondary-content").displayed? }
+        wait_for { @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first.displayed? }
 
-        community_answers = @driver.find_elements(:css, "ul.CommentList--community li.CommentList-item--qa").select {|x| x.displayed? }
-        community_names   = @driver.find_elements(:css, ".CommentList--community .CommentList-item--qa .CommentBox .CommentBox-primary-content .AuthorInfo--qa .AuthorInfo-name--answer")
-        profile_links     = @driver.find_elements(:css, ".CommentList--community .CommentList-item--qa .CommentBox .CommentBox-primary-content .AuthorInfo--qa .AuthorInfo-name--answer a")
-        community_names   = community_names.select { |x| x.text.gsub(" ", '').length > 0 }
+        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers")
+        if view_more_answers
+          view_more_answers = view_more_answers.first
+          view_more_answers.click
+          wait_for { @driver.find_element(:css, ".QA-community .CommentBox-secondary-content").displayed? }
 
-        assert_equal(true, community_names.length > 0, "No names appeared on the page")
-        assert_equal(true, community_answers.length == community_names.length, "Some answers were missing names: Answers #{community_answers.length} Names #{community_names.length}")
-        first_user_name = profile_links.first
-        first_user_name.click
-        wait_for { @driver.find_element(:css, "div#my_profile").displayed? }
-        assert_equal("#{HC_BASE_URL}/profiles/c/222743", @driver.current_url, "Avatar linked to #{@driver.current_url} not #{HC_BASE_URL}/profiles/c/222743")
+          community_answers = @driver.find_elements(:css, "ul.CommentList--community li.CommentList-item--qa").select {|x| x.displayed? }
+          community_names   = @driver.find_elements(:css, ".CommentList--community .CommentList-item--qa .CommentBox .CommentBox-primary-content .AuthorInfo--qa .AuthorInfo-name--answer")
+          profile_links     = @driver.find_elements(:css, ".CommentList--community .CommentList-item--qa .CommentBox .CommentBox-primary-content .AuthorInfo--qa .AuthorInfo-name--answer a")
+          community_names   = community_names.select { |x| x.text.gsub(" ", '').length > 0 }
+
+          assert_equal(true, community_names.length > 0, "No names appeared on the page")
+          assert_equal(true, community_answers.length == community_names.length, "Some answers were missing names: Answers #{community_answers.length} Names #{community_names.length}")
+          first_user_name = profile_links.first
+          first_user_name.click
+          wait_for { @driver.find_element(:css, "div#my_profile").displayed? }
+          assert_equal("#{HC_BASE_URL}/profiles/c/222743", @driver.current_url, "Avatar linked to #{@driver.current_url} not #{HC_BASE_URL}/profiles/c/222743")
+        else
+          assert_equal(false, view_more_answers.empty?, "View more answers link did not appear on the page")
+        end
       end
 
       should "display the date that each community answer was created" do 
-        "AuthorInfo-created"
-        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
-        view_more_answers.click
-        wait_for { @driver.find_element(:css, ".QA-community .CommentBox-secondary-content").displayed? }
+        wait_for { @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first.displayed? }
 
-        community_answers = @driver.find_elements(:css, "ul.CommentList--community li.CommentList-item--qa").select {|x| x.displayed? }
-        community_dates   = @driver.find_elements(:css, ".CommentList--community .CommentList-item--qa .CommentBox .CommentBox-primary-content .AuthorInfo--qa .AuthorInfo-created").select {|x| x.displayed? }
-        community_dates  = community_dates.select{|x| x.text.gsub(" ", '').length > 0}
+        view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers")
+        if view_more_answers
+          view_more_answers = view_more_answers.first
+          view_more_answers.click
+          wait_for { @driver.find_element(:css, ".QA-community .CommentBox-secondary-content").displayed? }
 
-        assert_equal(true, community_dates.length > 0, "No names appeared on the page")
-        assert_equal(true, community_dates[0].text == "February 26, 2011", "First date did not appear on the page: #{community_dates[0].text}")
-        assert_equal(true, community_dates[1].text.length > 0, "Second date did not appear on the page")
-        assert_equal(true, community_dates[2].text.length > 0 ,"Third date did not appear on the page")
+          community_answers = @driver.find_elements(:css, "ul.CommentList--community li.CommentList-item--qa").select {|x| x.displayed? }
+          community_dates   = @driver.find_elements(:css, ".CommentList--community .CommentList-item--qa .CommentBox .CommentBox-primary-content .AuthorInfo--qa .AuthorInfo-created").select {|x| x.displayed? }
+          community_dates  = community_dates.select{|x| x.text.gsub(" ", '').length > 0}
+
+          assert_equal(true, community_dates.length > 0, "No names appeared on the page")
+          assert_equal(true, community_dates[0].text.length > 0, "February 26, 2011", "First date did not appear on the page: #{community_dates[0].text}")
+          assert_equal(true, community_dates[1].text.length > 0, "Second date did not appear on the page")
+          assert_equal(true, community_dates[2].text.length > 0 ,"Third date did not appear on the page")
+        else
+          assert_equal(false, view_more_answers.empty?, "View more answers link did not appear on the page")
+        end
       end
 
       should "have relatlive links in the header" do 
+        wait_for { @driver.find_element(:css, ".Page-sub-category a").displayed? }
+
         links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
         bad_links = links.map do |link|
           if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
