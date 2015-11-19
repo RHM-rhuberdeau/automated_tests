@@ -9,10 +9,9 @@ class MigrainesSlideshowTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/slideshows.yml')
       slideshow_fixture = YAML::load_documents(io)
       @fixture = OpenStruct.new(slideshow_fixture[0]['living_well'])
-      head_navigation = HealthCentralHeader::SPDesktop.new(:logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", 
-                                   :title_link => "Taking Control of Chronic Migraine",
-                                   :related => ['Migraine', 'Migraine Triggers', 'Chronic Pain', 'Depression'],
-                                   :subcategory => "Migraine",
+      head_navigation = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", 
+                                   :sub_category => "Migraine",
+                                   :related => ["Anxiety", "Chronic Pain", "Depression", "Sleep Disorders"],
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::HealthCentralSlideshow::SlideshowPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => true)
@@ -54,8 +53,8 @@ class MigrainesSlideshowTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "omniture" do
       should "not have any errors" do 
-        ad_site        = "cm.own.tcc"
-        ad_categories  = ["zecuity", ""]
+        ad_site        = "cm.ver.migraine"
+        ad_categories  = ["slideshow", "livingwell", ""]
         ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
         omniture       = @page.omniture(:url => @url)
 
