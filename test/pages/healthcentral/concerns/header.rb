@@ -54,7 +54,7 @@ module HealthCentralHeader
       end
 
       #Check for Category Links
-      wait_for { @driver.find_element(css: '.js-Nav--Primary-accordion-title').displayed? }
+      wait_for { @driver.find_elements(css: '.js-Nav--Primary-accordion-title').select {|x| x.displayed? }.length == 3 }
       titles = @driver.find_elements(:css, ".js-Nav--Primary-accordion-title").select {|x| x.displayed? }.select {|x| x.text == "BODY & MIND" || x.text == "FAMILY HEALTH" || x.text == "HEALTHY LIVING"}
       unless titles.length == 3
         self.errors.add(:header, "Not all super categories were on the page. Present were: #{titles}")
@@ -91,7 +91,7 @@ module HealthCentralHeader
       #Check Facebook icon
       fb_icon = @driver.find_element(:css, ".HC-header-content span.icon-facebook")
       fb_icon.click
-      sleep 1
+      sleep 2
       first_window  = @driver.window_handles.first
       second_window = @driver.window_handles.last
       @driver.switch_to.window second_window
@@ -104,7 +104,7 @@ module HealthCentralHeader
       #Check Twitter icon
       twitter_icon = @driver.find_element(:css, ".HC-header-content span.icon-twitter")
       twitter_icon.click
-      sleep 1
+      sleep 2
       second_window = @driver.window_handles.last
       @driver.switch_to.window second_window
       @driver.switch_to.window second_window
@@ -117,7 +117,7 @@ module HealthCentralHeader
       #Check Pinterest icon
       pinterest_icon = @driver.find_element(:css, ".HC-header-content span.icon-pinterest")
       pinterest_icon.click
-      sleep 1
+      sleep 2
       second_window = @driver.window_handles.last
       @driver.switch_to.window second_window
       unless @driver.current_url == "https://www.pinterest.com/HealthCentral/"
