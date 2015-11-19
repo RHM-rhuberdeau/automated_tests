@@ -17,7 +17,7 @@ class LBLNCrohns < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @lbln_fixture)
-      @url  = "#{HC_DRUPAL_URL}/ibd/d/immersive/living-crohns-disease-update/" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/ibd/d/immersive/living-crohns-disease-update/" + "?foo=#{rand(36**8).to_s(36)}"
       visit @url
     end
 
