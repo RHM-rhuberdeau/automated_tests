@@ -52,8 +52,8 @@ class UnderstandingMigrainesTest < MiniTest::Test
       should "not have any errors" do 
         pharma_safe    = true
         has_file       = @page.analytics_file
-        ad_site        = "cm.own.tcc"
-        ad_categories  = ["zecuity", "", ""]
+        ad_site        = "cm.ver.lblnmigraine"
+        ad_categories  = ["super collection", "", ""]
         ads            = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                             :proxy => @proxy, 
                                                             :url => @url,
@@ -61,7 +61,7 @@ class UnderstandingMigrainesTest < MiniTest::Test
                                                             :ad_categories => ad_categories,
                                                             :exclusion_cat => "",
                                                             :sponsor_kw => '',
-                                                            :thcn_content_type => "topics",
+                                                            :thcn_content_type => "super collection",
                                                             :thcn_super_cat => "Body & Mind",
                                                             :thcn_category => "Brain and Nervous System",
                                                             :ugc => "[\"n\"]") 
