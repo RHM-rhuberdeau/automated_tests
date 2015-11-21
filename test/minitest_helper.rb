@@ -23,6 +23,8 @@ BW_ASSET_HOST  = Configuration["berkeley"]["asset_host"]
 #### THE BODY
 BODY_URL            = Configuration["thebody"]["base_url"]
 THE_BODY_ASSET_HOST = Configuration["thebody"]["asset_host"]
+  
+$_cache_buster ||= "?foo=#{rand(36**8).to_s(36)}"
 
 def firefox
   # Selenium::WebDriver::Firefox::Binary.path= '/opt/firefox/firefox'
@@ -54,7 +56,7 @@ def fire_fox_with_secure_proxy
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
   @driver.manage.window.resize_to(1224,1000)
   @driver.manage.timeouts.implicit_wait = 3
-  @driver.manage.timeouts.page_load = 16
+  @driver.manage.timeouts.page_load = 8
 end
 
 def fire_fox_remote_proxy
@@ -86,7 +88,7 @@ def mobile_fire_fox_with_secure_proxy
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
   @driver.manage.window.resize_to(425,960)
   @driver.manage.timeouts.implicit_wait = 5
-  @driver.manage.timeouts.page_load = 16
+  @driver.manage.timeouts.page_load = 8
 end
 
 def fire_fox_remote
@@ -108,6 +110,7 @@ def phantomjs
 end
 
 def visit(url)
+  preload_page(url)
   begin
     @driver.navigate.to url 
   rescue Timeout::Error, Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
@@ -116,7 +119,14 @@ def visit(url)
     @driver.execute_script("window.stop();")
   rescue Timeout::Error, Net::ReadTimeout
   end
-  sleep 0.25
+  
+  #Avoid race conditions
+  sleep 0.75
+end
+
+def preload_page(url)
+  RestClient::Request.execute(method: :get, url: url,
+                              timeout: 10)
 end
 
 def wait_for_page_to_load
