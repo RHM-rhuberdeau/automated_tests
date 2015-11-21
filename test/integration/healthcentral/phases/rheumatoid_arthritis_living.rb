@@ -70,7 +70,7 @@ class RheumatoidArthritisLivingTest < MiniTest::Test
                                                                      :thcn_content_type => thcn_content_type,
                                                                      :thcn_super_cat => thcn_super_cat,
                                                                      :thcn_category => thcn_category,
-                                                                     :ugc => "[\"n\"]") 
+                                                                     :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)
