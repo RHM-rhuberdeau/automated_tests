@@ -64,7 +64,7 @@ class Hypothyroidism < MiniTest::Test
                                                            :thcn_content_type => "SharePosts",
                                                            :thcn_super_cat => "Healthy Living",
                                                            :thcn_category => "Diet and Fitness",
-                                                           :ugc => "[\"n\"]") 
+                                                           :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)

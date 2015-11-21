@@ -65,7 +65,7 @@ class TurningPointEntryPageTest < MiniTest::Test
                                                            :thcn_content_type => "SharePosts",
                                                            :thcn_super_cat => "Body & Mind",
                                                            :thcn_category => "Brain and Nervous System",
-                                                           :ugc => "[\"n\"]") 
+                                                           :ugc => "y") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)

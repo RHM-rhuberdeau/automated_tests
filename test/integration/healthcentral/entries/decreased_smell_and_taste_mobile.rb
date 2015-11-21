@@ -64,7 +64,7 @@ class DecreasedSmellAndTasteMobilePageTest < MiniTest::Test
                                                              :thcn_content_type => "SharePosts",
                                                              :thcn_super_cat => "Body & Mind",
                                                              :thcn_category => "Allergies",
-                                                             :ugc => "[\"n\"]",
+                                                             :ugc => "n",
                                                              :trigger_point => ".js-Blogpost-ad-inside-inline") 
         ads.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")

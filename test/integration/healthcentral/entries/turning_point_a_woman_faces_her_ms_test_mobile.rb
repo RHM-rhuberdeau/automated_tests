@@ -62,7 +62,7 @@ class TurningPointMobileEntryPageTest < MiniTest::Test
                                                              :thcn_content_type => "SharePosts",
                                                              :thcn_super_cat => "Body & Mind",
                                                              :thcn_category => "Brain and Nervous System",
-                                                             :ugc => "[\"n\"]",
+                                                             :ugc => "y",
                                                              :trigger_point => "div.ContentListInset.js-content-inset") 
         ads.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
