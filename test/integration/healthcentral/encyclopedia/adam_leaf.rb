@@ -65,7 +65,7 @@ class AdamLeafTest < MiniTest::Test
                                                            :thcn_content_type => "adam",
                                                            :thcn_super_cat => "Body & Mind",
                                                            :thcn_category => "Mental Health",
-                                                           :ugc => "[\"n\"]") 
+                                                           :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)

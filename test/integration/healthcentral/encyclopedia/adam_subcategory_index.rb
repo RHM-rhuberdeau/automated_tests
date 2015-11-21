@@ -68,7 +68,7 @@ class AdamSubcategoryIndex < MiniTest::Test
                                                            :thcn_content_type => "adam",
                                                            :thcn_super_cat => "Body & Mind",
                                                            :thcn_category => "Brain and Nervous System",
-                                                           :ugc => "[\"n\"]") 
+                                                           :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)

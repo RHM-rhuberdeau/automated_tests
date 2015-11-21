@@ -72,7 +72,7 @@ class AdamOtherLeaf < MiniTest::Test
                                                            :thcn_content_type => "adam",
                                                            :thcn_super_cat => "Body & Mind",
                                                            :thcn_category => "Cold, Flu, and Infectious Diseases",
-                                                           :ugc => "[\"n\"]") 
+                                                           :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)

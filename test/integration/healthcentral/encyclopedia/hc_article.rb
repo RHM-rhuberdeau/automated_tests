@@ -73,7 +73,7 @@ class HcArticlePage < MiniTest::Test
                                                            :thcn_content_type => "encyclopedia",
                                                            :thcn_super_cat => "HealthCentral",
                                                            :thcn_category => "",
-                                                           :ugc => "[\"n\"]") 
+                                                           :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)
