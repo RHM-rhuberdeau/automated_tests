@@ -57,7 +57,7 @@ class LBLNCrohns < MiniTest::Test
                                                                      :thcn_content_type => "Immersive",
                                                                      :thcn_super_cat => "Body & Mind",
                                                                      :thcn_category => "Digestive Health",
-                                                                     :ugc => "[\"n\"]") 
+                                                                     :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)
