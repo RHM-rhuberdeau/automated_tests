@@ -17,7 +17,7 @@ class TenTipsSlideshowTest < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::HealthCentralSlideshow::SlideshowPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => true)
-      @url  = "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd" + $_cache_buster
       visit @url
     end
 

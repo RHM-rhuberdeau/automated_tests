@@ -12,7 +12,7 @@ class MigrainesMobileSlideshowTest < MiniTest::Test
       head_navigation = HealthCentralHeader::MobileRedesignHeader.new(:driver => @driver, :sub_category => "Migraine", :related_links => ["Anxiety", "Chronic Pain", "Depression", "Sleep Disorders"])
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => true)
-      @url  = "#{HC_BASE_URL}/migraine/cf/slideshows/12-tips-for-living-well-with-migraines" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/migraine/cf/slideshows/12-tips-for-living-well-with-migraines" + $_cache_buster
       visit @url
     end
 
