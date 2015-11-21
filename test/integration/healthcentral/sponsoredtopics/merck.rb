@@ -10,7 +10,7 @@ class MerckTest < MiniTest::Test
       topic_fixture = YAML::load_documents(io)
       @topic_fixture = OpenStruct.new(topic_fixture[0]['merck'])
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @topic_fixture)
-      @url  = "#{HC_BASE_URL}/skin-cancer/d/treatment/stage-iv-melanoma" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/skin-cancer/d/treatment/stage-iv-melanoma" + $_cache_buster
       visit @url
     end 
 
@@ -64,7 +64,7 @@ class MerckTest < MiniTest::Test
                                                             :thcn_content_type => "topics",
                                                             :thcn_super_cat => "Body & Mind",
                                                             :thcn_category => "Cancer",
-                                                            :ugc => "[\"n\"]") 
+                                                            :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)

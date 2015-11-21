@@ -10,7 +10,7 @@ class UnderstandingMigrainesTest < MiniTest::Test
       topic_fixture = YAML::load_documents(io)
       @topic_fixture = OpenStruct.new(topic_fixture[0]['migraines'])
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @topic_fixture)
-      @url  = "#{HC_BASE_URL}/migraine/d/understanding-migraines/taking-control" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/migraine/d/understanding-migraines/taking-control" + $_cache_buster
       visit @url
     end 
 
@@ -64,7 +64,7 @@ class UnderstandingMigrainesTest < MiniTest::Test
                                                             :thcn_content_type => "super collection",
                                                             :thcn_super_cat => "Body & Mind",
                                                             :thcn_category => "Brain and Nervous System",
-                                                            :ugc => "[\"n\"]") 
+                                                            :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)
