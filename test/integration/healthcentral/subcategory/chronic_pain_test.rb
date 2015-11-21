@@ -5,7 +5,6 @@ class ChronicPainSubCategory < MiniTest::Test
   context "chronic pain" do 
     setup do 
       fire_fox_with_secure_proxy
-      @driver.manage.timeouts.page_load = 20
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/subcategories.yml')
       subcat_fixture  = YAML::load_documents(io)
@@ -16,7 +15,7 @@ class ChronicPainSubCategory < MiniTest::Test
                                    :related => ["Multiple Sclerosis" ,"Rheumatoid Arthritis"],
                                    :driver => @driver)
       @page = ::HealthCentral::SubcategoryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @subcat_fixture, :head_navigation => header, :footer => footer)
-      @url  = "#{HC_BASE_URL}/chronic-pain/" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/chronic-pain/" + $_cache_buster
       visit @url
     end
 
@@ -67,7 +66,7 @@ class ChronicPainSubCategory < MiniTest::Test
                                                             :thcn_content_type => "Home Page",
                                                             :thcn_super_cat => "Body & Mind",
                                                             :thcn_category => "Bones, Joints, & Muscles",
-                                                            :ugc => "[\"n\"]") 
+                                                            :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)
