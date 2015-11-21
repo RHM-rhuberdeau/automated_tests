@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/redesign_entry_page'
 
-class LBLNEpilepsy < MiniTest::Test
+class MyMomentEpilepsy < MiniTest::Test
   context "taking control of epilepsy landing page" do 
     setup do 
       fire_fox_with_secure_proxy
@@ -85,12 +85,12 @@ class LBLNEpilepsy < MiniTest::Test
                                                                      :thcn_content_type => "topics",
                                                                      :thcn_super_cat => "Body & Mind",
                                                                      :thcn_category => "Brain and Nervous System",
-                                                                     :ugc => "[\"n\"]")
+                                                                     :ugc => "n")
         ads.validate
 
         omniture = @page.omniture(:url => @url)
         omniture.validate
-        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
+        assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{@url}: #{ads.errors.messages} #{omniture.errors.messages}")
       end
     end
   end#taking control of epilepsy landing page
