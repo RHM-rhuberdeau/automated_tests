@@ -60,7 +60,7 @@ class FdbMedicationsMobileIndexPageTest < MiniTest::Test
                                                             :thcn_content_type => thcn_content_type,
                                                             :thcn_super_cat => thcn_super_cat,
                                                             :thcn_category => thcn_category,
-                                                            :ugc => "[\"n\"]",
+                                                            :ugc => "n",
                                                             :trigger_point => "div.ContentListInset.js-content-inset") 
 
         ads.validate
