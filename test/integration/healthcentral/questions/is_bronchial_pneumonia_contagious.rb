@@ -15,7 +15,7 @@ class ChronicPainQuestionPageTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture, :head_navigation => head_navigation, :footer => footer)
-      @url  = "#{HC_BASE_URL}/chronic-pain/c/question/515205/125351" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/chronic-pain/c/question/515205/125351" + $_cache_buster
       visit @url
     end
 
@@ -104,7 +104,7 @@ class ChronicPainQuestionPageTest < MiniTest::Test
                                                             :thcn_content_type => "Questions",
                                                             :thcn_super_cat => "Body & Mind",
                                                             :thcn_category => "Bones, Joints, & Muscles",
-                                                            :ugc => "[\"n\"]") 
+                                                            :ugc => "n") 
          ads.validate
 
          omniture = @page.omniture(:url => @url)

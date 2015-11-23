@@ -15,7 +15,7 @@ class LupronQuestionPageTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::RedesignQuestion::RedesignQuestionPage.new(:driver => @driver,:proxy => @proxy,:fixture => @question_fixture, :head_navigation => head_navigation, :footer => footer)
-      @url  =  "#{HC_BASE_URL}/diet-exercise/c/question/748553/132860/" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  =  "#{HC_BASE_URL}/diet-exercise/c/question/748553/132860/" + $_cache_buster
       visit @url
     end
 
@@ -100,7 +100,7 @@ class LupronQuestionPageTest < MiniTest::Test
                                                             :thcn_content_type => "Questions",
                                                             :thcn_super_cat => "Healthy Living",
                                                             :thcn_category => "Diet and Fitness",
-                                                            :ugc => "[\"y\"]") 
+                                                            :ugc => "y") 
          ads.validate
 
          omniture = @page.omniture(:url => @url)

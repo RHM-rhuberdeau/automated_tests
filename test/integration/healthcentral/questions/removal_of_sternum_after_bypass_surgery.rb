@@ -15,7 +15,7 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = ::RedesignQuestion::RedesignQuestionPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @question_fixture, :head_navigation => head_navigation, :footer => footer)
-      @url              = "#{HC_BASE_URL}/heart-disease/c/question/67255/40783" + "?foo=#{rand(36**8).to_s(36)}"
+      @url              = "#{HC_BASE_URL}/heart-disease/c/question/67255/40783" + $_cache_buster
       visit @url
     end
 
@@ -63,6 +63,7 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
         exposed_answers = @driver.find_elements(:css, ".QA-community .CommentBox-secondary-content").select {|x| x.displayed? }
         assert_equal(0, exposed_answers.length, "#{exposed_answers.length} answers were exposed")
 
+        wait_for { @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first.displayed? }
         view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
         view_more_answers.click
         wait_for { @driver.find_element(css: '.QA-community .CommentBox-secondary-content').displayed? }
@@ -72,6 +73,7 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
       end
 
       should "not be pharma_safe after the user clicks view more answers" do 
+        wait_for { @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first.displayed? }
         view_more_answers = @driver.find_elements(:css, "a.Button--highlight.js-view-more-answers").first
         view_more_answers.click
 
@@ -138,7 +140,7 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
                                                            :thcn_content_type => "Questions",
                                                            :thcn_super_cat => "Body & Mind",
                                                            :thcn_category => "Heart Health",
-                                                           :ugc => "[\"n\"]") 
+                                                           :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)
