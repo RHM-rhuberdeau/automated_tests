@@ -10,7 +10,7 @@ class SkinCancerQuizTest < MiniTest::Test
       quiz_fixture = YAML::load_documents(io)
       @quiz_fixture = OpenStruct.new(quiz_fixture[0]['cancerrisk'])
       @page = ::HealthCentral::QuizPage.new(:driver => @driver,:proxy => @proxy,:fixture => @quiz_fixture)
-      @url  = "#{HC_BASE_URL}/skin-cancer/d/quizzes/do-you-know-your-skin-cancer-risk" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/skin-cancer/d/quizzes/do-you-know-your-skin-cancer-risk" + $_cache_buster
       visit @url
     end
 

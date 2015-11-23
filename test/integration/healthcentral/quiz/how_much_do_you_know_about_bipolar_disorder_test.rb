@@ -10,7 +10,7 @@ class BipolarQuizTest < MiniTest::Test
       quiz_fixture = YAML::load_documents(io)
       @quiz_fixture = OpenStruct.new(quiz_fixture[0]['bipolar'])
       @page = ::HealthCentral::QuizPage.new(:driver => @driver,:proxy => @proxy,:fixture => @quiz_fixture)
-      @url  = "#{HC_BASE_URL}/bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-disorder" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/bipolar/cf/quizzes/how-much-do-you-know-about-bipolar-disorder" + $_cache_buster
       visit @url
     end
 
