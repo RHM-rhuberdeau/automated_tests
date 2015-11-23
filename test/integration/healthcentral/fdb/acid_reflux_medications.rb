@@ -15,7 +15,7 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = FDB::FDBPage.new(:driver => @driver,:proxy => @proxy,:fixture => fdb_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/acid-reflux/medications/" + "?foo=#{rand(36**8).to_s(36)}"
+      @url              = "#{HC_BASE_URL}/acid-reflux/medications/" + $_cache_buster
       visit @url
     end
 
