@@ -2,7 +2,7 @@ module HealthCentralAds
   class AdsTestCases
     include ::ActiveModel::Validations
 
-    # validate :unique_ads_per_page_view
+    validate :unique_ads_per_page_view
     validate :correct_ad_site
     validate :correct_ad_categories
     validate :exclusion_cat
@@ -10,7 +10,6 @@ module HealthCentralAds
     validate :thcn_content_type
     validate :thcn_super_cat
     validate :thcn_category
-    validate :pharma_safe
     validate :ugc
 
     def initialize(args)
@@ -25,25 +24,34 @@ module HealthCentralAds
       @thcn_super_cat         = args[:thcn_super_cat]
       @thcn_category          = args[:thcn_category]
       @ugc                    = args[:ugc]
-      @scroll1                = args[:scroll1] || 1500
-      @scroll2                = args[:scroll2] || 1500
+      @ads                    = {}
+      @ad_calls               = {}
+      collect_ads_from_two_page_loads
+    end
+
+    def collect_ads_from_two_page_loads
+      page_one_ad_calls = HealthCentralPage.get_all_ads(@proxy)
+      ads_from_page1 = page_one_ad_calls.map { |ad| HealthCentralAds::Ads.new(ad) }
+
+      # Put sleep calls around setting up a new har file to avoid race conditions
+      sleep 0.25
+      @proxy.new_har
+      sleep 0.25
+
+      visit @url
+      page_two_ad_calls = HealthCentralPage.get_all_ads(@proxy)
+      ads_from_page2 = page_two_ad_calls.map { |ad| HealthCentralAds::Ads.new(ad) }
+
+      #Do this at the end incase there's any errors
+      @ads[:page_one_ads] = ads_from_page1
+      @ads[:page_two_ads] = ads_from_page2
+      @ad_calls[:page_one_ad_calls] = page_one_ad_calls
+      @ad_calls[:page_two_ad_calls] = page_two_ad_calls
     end
 
     def unique_ads_per_page_view
-      @ads = {}
-      all_ads = HealthCentralPage.get_all_ads(@proxy)
-      @ads[1] = all_ads
-
-      visit @url
-      wait_for_page_to_load
-      all_ads2 = HealthCentralPage.get_all_ads(@proxy)
-      @ads[2] = all_ads2 - @ads.flatten(2)
-
-      ads_from_page1 = @ads[1].map { |ad| HealthCentralAds::Ads.new(ad) }
-      ads_from_page2 = @ads[2].map { |ad| HealthCentralAds::Ads.new(ad) }
-
-      ord_values_1 = ads_from_page1.collect(&:ord).uniq
-      ord_values_2 = ads_from_page2.collect(&:ord).uniq
+      ord_values_1 = @ads[:page_one_ads].collect(&:ord).uniq
+      ord_values_2 = @ads[:page_two_ads].collect(&:ord).uniq
 
       unless ord_values_1.length == 1
         self.errors.add(:ads, "Ads on the first view had multiple ord values: #{ord_values_1}")
@@ -105,27 +113,16 @@ module HealthCentralAds
       end
     end
 
-    def pharma_safe
-
-    end
-
     def ugc
-      has_file    = false
-      ugc_values  =  []
-
-      @proxy.har.entries.each do |entry|
-        if entry.request.url.include?('ad.doubleclick.net/N3965')
-          ugc_values << entry.request.url.split('ugc=').last.split(';').first
+      @ads[:page_one_ads].each do |ad|
+        unless ad.ugc == @ugc
+          self.errors.add(:ads, "Expected ad to have a ugc value of #{@ugc}: #{ad.ad_call}")
         end
-        has_file = true if entry.request.url.include?('namespace.js')
       end
-
-      ugc_values = ugc_values.uniq.to_s
-      unless ugc_values == @ugc
-        self.errors.add(:ads, "ugc was #{ugc_values} not #{@ugc}")
-      end
-      unless has_file == true
-        self.errors.add(:ads, "namespace.js was not loaded")
+      @ads[:page_two_ads].each do |ad|
+        unless ad.ugc == @ugc
+          self.errors.add(:ads, "Expected ad to have a ugc value of #{@ugc}: #{ad.ad_call}")
+        end
       end
     end
   end
