@@ -125,8 +125,11 @@ def visit(url)
 end
 
 def preload_page(url)
-  RestClient::Request.execute(method: :get, url: url,
-                              timeout: 10)
+  begin
+    RestClient::Request.execute(method: :get, url: url,
+                              timeout: 5)
+  rescue RestClient::RequestTimeout
+  end
 end
 
 def wait_for_page_to_load
