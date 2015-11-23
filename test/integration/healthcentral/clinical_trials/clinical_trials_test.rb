@@ -12,7 +12,7 @@ class ClinicalTrials < MiniTest::Test
       head_navigation   = HealthCentralHeader::ClinicalTrialHeader.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver =>@driver, :proxy => @proxy, :fixture => @trial_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url  = "#{HC_BASE_URL}/tools/d/clinical-trials" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/tools/d/clinical-trials" + $_cache_buster
       visit @url
     end
 
