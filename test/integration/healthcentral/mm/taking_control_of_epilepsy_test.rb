@@ -5,13 +5,12 @@ class MyMomentEpilepsy < MiniTest::Test
   context "taking control of epilepsy landing page" do 
     setup do 
       fire_fox_with_secure_proxy
-      @driver.manage.timeouts.page_load = 16
       @proxy.new_har
       io = File.open('test/fixtures/healthcentral/mm.yml')
       mm_fixture = YAML::load_documents(io)
       @mm_fixture = OpenStruct.new(mm_fixture[0]['epilepsy'])
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @mm_fixture)
-      @url  = "#{HC_BASE_URL}/epilepsy/d/living-with/taking-control" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/epilepsy/d/living-with/taking-control" + $_cache_buster
       visit @url
     end
 
