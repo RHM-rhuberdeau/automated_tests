@@ -12,7 +12,7 @@ class AdamIndex < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/adam" + "?foo=#{rand(36**8).to_s(36)}"
+      @url            = "#{HC_BASE_URL}/adam" + $_cache_buster
       visit @url
     end
 

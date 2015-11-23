@@ -15,7 +15,7 @@ class AdamOtherLeaf < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/cold-flu/encyclopedia/colds-and-the-flu-4021748"
+      @url            = "#{HC_BASE_URL}/cold-flu/encyclopedia/colds-and-the-flu-4021748" + $_cache_buster
       visit @url
     end
 
