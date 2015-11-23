@@ -117,7 +117,7 @@ def visit(url)
   end
   begin
     @driver.execute_script("window.stop();")
-  rescue Timeout::Error, Net::ReadTimeout
+  rescue Timeout::Error, Net::ReadTimeout, Selenium::WebDriver::Error::JavascriptError
   end
   
   #Avoid race conditions
