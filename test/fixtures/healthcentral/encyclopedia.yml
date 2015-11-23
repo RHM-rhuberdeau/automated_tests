@@ -198,7 +198,7 @@ adam_other_leaf:
   prop12:    "2011-01-29"
   prop13:    "2006-11-04"
   eVar17:    "D=oid"
-  prop22:    "/cold-flu/encyclopedia/colds-and-the-flu-4021748/"
+  prop22:    "/cold-flu/encyclopedia/colds-and-the-flu-4021748"
   prop29:    "desktop"
   prop30:    "Landscape"
   prop35:    "D=v21"
@@ -212,7 +212,7 @@ adam_other_leaf:
 hc_article:
   pageName:  "Verticals > Other > HC Encyclopedia Leaf > > > Autologous Blood Donation"
   channel:   "More Conditions"
-  events:    "event4"
+  events:    "event22,event4"
   prop1:     "HealthCentral"
   hier1:     "Verticals,Other,HC Encyclopedia Leaf, , ,Autologous Blood Donation"
   prop5:     "Autologous Blood Donation"
