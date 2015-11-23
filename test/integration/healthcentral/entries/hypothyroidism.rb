@@ -12,7 +12,7 @@ class Hypothyroidism < MiniTest::Test
       head_navigation   = HealthCentralHeader::CustomProgramHeader.new(:driver => @driver, :subject => "Living with Hypothyroidism")
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer)
-      @url              = "#{HC_BASE_URL}/more-conditions/c/174035/177245/hypothyroidism/" + "?foo=#{rand(36**8).to_s(36)}"
+      @url              = "#{HC_BASE_URL}/more-conditions/c/174035/177245/hypothyroidism/" + $_cache_buster
       visit @url
     end
 
