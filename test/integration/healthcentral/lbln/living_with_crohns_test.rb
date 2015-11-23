@@ -17,7 +17,7 @@ class LBLNCrohns < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @lbln_fixture)
-      @url  = "#{HC_BASE_URL}/ibd/d/immersive/living-crohns-disease-update/" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{HC_BASE_URL}/ibd/d/immersive/living-crohns-disease-update/" + $_cache_buster
       visit @url
     end
 
@@ -74,7 +74,10 @@ class LBLNCrohns < MiniTest::Test
         sub_category_links = @driver.find_element(:link, "more on Digestive Health »")
 
         button = @driver.find_element(:css, ".Button--Ask")
-        button.click
+        begin
+          button.click
+        rescue Selenium::WebDriver::Error::TimeOutError
+        end
         wait_for { @driver.find_element(css: '.titlebar').displayed? }
         assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/ibd/c/question", "Ask a Question linked to #{@driver.current_url} not /ibd/c/question")
       end
