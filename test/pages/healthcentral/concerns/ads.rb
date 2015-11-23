@@ -1,6 +1,6 @@
 module HealthCentralAds
   class Ads
-    attr_accessor :url, :ugc, :device, :tile, :sz, :cat, :sc, :ord
+    attr_accessor :url, :ugc, :device, :tile, :sz, :cat, :sc, :ord, :ad_call
 
     def initialize(ad_string)
       ad_from_string(ad_string)
@@ -8,7 +8,7 @@ module HealthCentralAds
 
     def ad_from_string(ad_string)
       hash = parse_ad_into_hash(ad_string)
-      hash.keep_if{|k,v| k == "url" || k == "ugc" || k == "device" || k == "tile" || k == "sz" || k == "cat" || k == "sc" || k == "ord"}
+      hash.keep_if{|k,v| k == "url" || k == "ugc" || k == "device" || k == "tile" || k == "sz" || k == "cat" || k == "sc" || k == "ord" || k == "ad_call"}
       hash.each {|k,v| send("#{k}=",v)}
     end
 
@@ -17,11 +17,11 @@ module HealthCentralAds
       array = ad_string.split(';')
       hash = {}
       hash['url'] = array.delete_at(0)
+      hash['ad_call'] = ad_string
       array.each do |a|
         b = a.split('=')
         hash[b[0]] = b.last
       end
-      # hash ={ url: array[0], ugc: array[1].split('=').last, device: array[4].split('=').last, tile: array[7].split('=').last, sz: array[8].split('sz=').last, cat: array[11].split('=').last, sc: array[10].split('=').last, ord: array.last.split('=').last}
       hash
     end
   end
