@@ -9,7 +9,7 @@ class BerkeleyHomePage < MiniTest::Test
       header            = BerkeleyHeader::DesktopHeader.new(:driver => @driver)
       footer            = BerkeleyFooter::DesktopFooter.new(:driver => @driver)
       @page             = Berkeley::BerkeleyHomePage.new(:driver =>@driver, :proxy => @proxy, :header => header, :footer => footer)
-      @url               = BW_BASE_URL + "?foo=#{rand(36**8).to_s(36)}"
+      @url               = BW_BASE_URL + $_cache_buster
       visit @url
     end
 
