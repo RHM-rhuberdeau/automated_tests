@@ -6,7 +6,7 @@ class BerkeleyTagHomeTest < MiniTest::Test
     setup do
       fire_fox_with_secure_proxy
       @proxy.new_har
-      @url  = "#{BW_BASE_URL}/immune-system" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{BW_BASE_URL}/immune-system" + $_cache_buster
       @page = Berkeley::BerkeleyHomePage.new(:driver =>@driver, :proxy => @proxy)
       visit @url
     end
