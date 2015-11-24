@@ -16,7 +16,7 @@ class MobileSymptomsOfRa < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = Topics::TopicMobilePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/rheumatoid-arthritis/d/introduction/symptoms-ra"
+      @url              = "#{HC_BASE_URL}/rheumatoid-arthritis/d/introduction/symptoms-ra" + $_cache_buster
       visit @url
     end
 
