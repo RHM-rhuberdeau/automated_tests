@@ -153,6 +153,10 @@ module HealthCentralAds
       create_ads_from_ad_calls
     end
 
+    def unique_ads_per_page_view
+
+    end
+
     def trigger_all_ads
       wait_for { @driver.find_element(:css, @trigger).displayed? }
       trigger_points = @driver.find_elements(:css, @trigger)
