@@ -7,7 +7,7 @@ class BerkeleySlideShowTest < MiniTest::Test
   	  fire_fox_with_secure_proxy
       @proxy.new_har
       @page = BerkeleySlideshow::SlideshowPage.new(:driver =>@driver, :proxy => @proxy)
-      @url  = "#{BW_BASE_URL}/healthy-eating/food/slideshow/can-food-cause-body-odor" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{BW_BASE_URL}/healthy-eating/food/slideshow/can-food-cause-body-odor" + $_cache_buster
       visit @url
   	end
 
