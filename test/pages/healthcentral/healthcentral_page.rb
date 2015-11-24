@@ -49,7 +49,7 @@ class HealthCentralPage
                     "Skin Care",
                     "Sleep Disorders"]
                     
-  SITE_HOSTS = ["http://qa.healthcentral.", "http://qa1.healthcentral.","http://qa2.healthcentral.","http://qa3.healthcentral.", "http://qa4.healthcentral.", "http://www.healthcentral.", "http://alpha.healthcentral.", "http://stage.healthcentral."]
+  SITE_HOSTS = ["http://qa.healthcentral.", "http://qa1.healthcentral.","http://qa2.healthcentral.","http://qa3.healthcentral.", "http://qa4.healthcentral.", "http://www.healthcentral.", "http://alpha.healthcentral.", "http://staging.healthcentral."]
 
   def logo_present?
     logo_1 = @driver.find_element(:css, "span.LogoHC-part1")
