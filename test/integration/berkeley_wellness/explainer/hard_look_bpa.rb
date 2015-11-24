@@ -6,7 +6,7 @@ class BerkeleyExplainerTest < MiniTest::Test
     setup do
       fire_fox_with_secure_proxy
       @proxy.new_har
-      @url  = "#{BW_BASE_URL}/healthy-community/environmental-health/article/hard-look-bpa" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{BW_BASE_URL}/healthy-community/environmental-health/article/hard-look-bpa" + $_cache_buster
       @page = Berkeley::BerkeleyHomePage.new(:driver =>@driver, :proxy => @proxy)
       visit @url
     end
