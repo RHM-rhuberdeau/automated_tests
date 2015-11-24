@@ -6,7 +6,7 @@ class BerkeleyBlogTest < MiniTest::Test
     setup do
       fire_fox_with_secure_proxy
       @proxy.new_har
-      visit "#{BW_BASE_URL}/about-us"
+      visit "#{BW_BASE_URL}/about-us#{$_cache_buster}"
       @page = Berkeley::BerkeleyHomePage.new(:driver =>@driver, :proxy => @proxy)
     end
 
