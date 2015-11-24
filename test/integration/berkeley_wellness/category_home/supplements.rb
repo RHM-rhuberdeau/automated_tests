@@ -7,7 +7,7 @@ class BerkeleyCategoryHomeTest < MiniTest::Test
       fire_fox_with_secure_proxy
       @proxy.new_har
       @page = Articles::ArticlePage.new(:driver =>@driver, :proxy => @proxy)
-      @url  = "#{BW_BASE_URL}/supplements" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{BW_BASE_URL}/supplements" + $_cache_buster
       visit @url
     end
 
