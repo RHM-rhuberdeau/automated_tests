@@ -56,7 +56,7 @@ def fire_fox_with_secure_proxy
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
   @driver.manage.window.resize_to(1224,1000)
   @driver.manage.timeouts.implicit_wait = 3
-  @driver.manage.timeouts.page_load = 8
+  @driver.manage.timeouts.page_load = 24
 end
 
 def fire_fox_remote_proxy
@@ -88,7 +88,7 @@ def mobile_fire_fox_with_secure_proxy
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
   @driver.manage.window.resize_to(425,960)
   @driver.manage.timeouts.implicit_wait = 5
-  @driver.manage.timeouts.page_load = 8
+  @driver.manage.timeouts.page_load = 24
 end
 
 def fire_fox_remote
@@ -125,10 +125,12 @@ def visit(url)
 end
 
 def preload_page(url)
-  begin
-    RestClient::Request.execute(method: :get, url: url,
-                              timeout: 5)
-  rescue RestClient::RequestTimeout
+  if ENV['TEST_ENV'] == "production" || ENV['TEST_ENV'] == "staging"
+    begin
+      RestClient::Request.execute(method: :get, url: url,
+                                timeout: 10)
+    rescue RestClient::RequestTimeout
+    end
   end
 end
 
