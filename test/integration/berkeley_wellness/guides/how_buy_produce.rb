@@ -6,7 +6,7 @@ class BerkeleyGuidesTest < MiniTest::Test
     setup do
       fire_fox_with_secure_proxy
       @proxy.new_har
-      @url  = "#{BW_BASE_URL}/healthy-eating/food/article/how-buy-produce" + "?foo=#{rand(36**8).to_s(36)}"
+      @url  = "#{BW_BASE_URL}/healthy-eating/food/article/how-buy-produce" + $_cache_buster
       @page = Articles::ArticlePage.new(:driver =>@driver, :proxy => @proxy)
       visit @url
     end
