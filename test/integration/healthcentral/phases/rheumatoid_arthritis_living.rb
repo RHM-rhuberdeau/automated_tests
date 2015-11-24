@@ -15,7 +15,7 @@ class RheumatoidArthritisLivingTest < MiniTest::Test
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = ::Phases::PhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/rheumatoid-arthritis/d/living" 
+      @url              = "#{HC_BASE_URL}/rheumatoid-arthritis/d/living" + $_cache_buster
       visit @url
     end
 
