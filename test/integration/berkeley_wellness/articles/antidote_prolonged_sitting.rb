@@ -10,7 +10,7 @@ class BerkeleyArticleTest < MiniTest::Test
       fixture           = YAML::load_documents(io)
       article_fixture   = OpenStruct.new(fixture[0]['prolonged_sitting'])
       @page             = Articles::ArticlePage.new(:driver => @driver,:proxy => @proxy,:fixture => article_fixture)
-      @url              = "#{BW_BASE_URL}/fitness/active-lifestyle/article/antidote-prolonged-sitting" + "?foo=#{rand(36**8).to_s(36)}"
+      @url              = "#{BW_BASE_URL}/fitness/active-lifestyle/article/antidote-prolonged-sitting" + $_cache_buster
       visit @url
     end
 
