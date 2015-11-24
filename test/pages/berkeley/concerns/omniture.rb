@@ -74,13 +74,8 @@ module BerkeleyOmniture
     end
 
     def correct_report_suite
-      if ENV['TEST_ENV'] != 'production'
-        suite = "cmi-choicemediacom-berkeley-dev"
-      else
-        suite = "cmi-choicemediacom-berkeley-prod"
-      end
-      unless @report_suite == suite
-        self.errors.add(:base, "Omniture report suite being used is: #{@report_suite} not #{suite}")
+      unless @report_suite == "cmi-choicemediacom-berkeley-prod"
+        self.errors.add(:base, "Omniture report suite being used is: #{@report_suite} not cmi-choicemediacom-berkeley-prod")
       end
     end
 
