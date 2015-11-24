@@ -15,7 +15,7 @@ class BerkeleyPage
   include BerkeleyHeader
   include BerkeleySeo
 
-  SITE_HOSTS = ["http://bw3.hcaws.", "http://qa1.berkeleywellness.","http://qa2.berkeleywellness.","http://qa3.berkeleywellness.", "http://qa4.berkeleywellness.", "http://www.berkeleywellness.", "http://alpha.berkeleywellness.", "http://stage.berkeleywellness."]
+  SITE_HOSTS = ["http://bw3.hcaws.", "http://qa1.berkeleywellness.","http://qa2.berkeleywellness.","http://qa3.berkeleywellness.", "http://qa4.berkeleywellness.", "http://www.berkeleywellness.", "http://alpha.berkeleywellness.", "http://staging.berkeleywellness."]
 
   def omniture(args)
     open_omniture_debugger
