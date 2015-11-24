@@ -21,7 +21,7 @@ module HealthCentralHeader
         link.click
       rescue Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
       end
-      wait_for_page_to_load
+      sleep 3
       unless @driver.current_url == "#{HC_BASE_URL}/"
         self.errors.add(:header, "The logo linked to #{@driver.current_url} not #{HC_BASE_URL}/")
       end
@@ -40,7 +40,9 @@ module HealthCentralHeader
       begin
         button.click
       rescue Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
-
+      rescue Selenium::WebDriver::Error::StaleElementReferenceError
+        button = find ".Button--AZ"
+        button.click if button
       end
       wait_for { @driver.find_element(:css, ".HC-nav").displayed? }
       wait_for_page_to_load
@@ -91,7 +93,7 @@ module HealthCentralHeader
       #Check Facebook icon
       fb_icon = @driver.find_element(:css, ".HC-header-content span.icon-facebook")
       fb_icon.click
-      sleep 2
+      sleep 3
       first_window  = @driver.window_handles.first
       second_window = @driver.window_handles.last
       @driver.switch_to.window second_window
@@ -104,7 +106,7 @@ module HealthCentralHeader
       #Check Twitter icon
       twitter_icon = @driver.find_element(:css, ".HC-header-content span.icon-twitter")
       twitter_icon.click
-      sleep 2
+      sleep 3
       second_window = @driver.window_handles.last
       @driver.switch_to.window second_window
       @driver.switch_to.window second_window
@@ -117,7 +119,7 @@ module HealthCentralHeader
       #Check Pinterest icon
       pinterest_icon = @driver.find_element(:css, ".HC-header-content span.icon-pinterest")
       pinterest_icon.click
-      sleep 2
+      sleep 3
       second_window = @driver.window_handles.last
       @driver.switch_to.window second_window
       unless @driver.current_url == "https://www.pinterest.com/HealthCentral/"
