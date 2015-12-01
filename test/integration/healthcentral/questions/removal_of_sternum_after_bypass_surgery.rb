@@ -150,24 +150,13 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
     end
 
 
-    ##################################################################
-    ################### GLOBAL SITE TESTS ############################
+    #################################################################
+    ################## GLOBAL SITE TESTS ############################
     context "Global site requirements" do 
       should "have passing global test cases" do 
         global_test_cases = @page.global_test_cases
         global_test_cases.validate
         assert_equal(true, global_test_cases.errors.empty?, "#{global_test_cases.errors.messages}")
-
-        subnav = @driver.find_element(:css, "div.Page-category.Page-sub-category.js-page-category")
-        title_link = @driver.find_element(:css, ".Page-category-titleLink")
-        sub_category_links = @driver.find_elements(:css, "ul.Page-category-related-list li a")
-        links = sub_category_links.select {|x| x.text == "High Blood Pressure" || x.text == "Cholesterol" || x.text == "Diabetes" || x.text == "Menopause" || x.text == "Obesity"}
-        assert_equal(5, links.length)
-
-        button = @driver.find_element(:css, ".Button--Ask")
-        button.click
-        wait_for { @driver.find_element(css: '.titlebar').displayed? }
-        assert_equal(true, @driver.current_url == "#{HC_BASE_URL}/profiles/c/question/home?ic=ask", "Ask a Question linked to #{@driver.current_url} not /profiles/c/question/home?ic=ask")
       end
     end
   end
