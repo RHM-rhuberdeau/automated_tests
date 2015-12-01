@@ -149,18 +149,27 @@ module HealthCentralAds
       @trigger                = args[:trigger_point]
       @ad_calls               = {}
       @ads                    = {}
+      check_initial_ads
       trigger_all_ads
       create_ads_from_ad_calls
     end
 
     def unique_ads_per_page_view
+    end
 
+    def check_initial_ads
+      ads = HealthCentralPage.get_all_ads(@proxy)
+      unless ads.length == 0 
+        self.errors.add(:ads, "There were #{ads.length} ads on the initial page load: #{ads}")
+      end
     end
 
     def trigger_all_ads
       wait_for { @driver.find_element(:css, @trigger).displayed? }
       trigger_points = @driver.find_elements(:css, @trigger)
 
+      # Only the trigger points that were displayed on the initial page laod are looped through
+      # If additional ads are displayed after an onlick even these tests wont work
       trigger_points.each_with_index do |node, index|
         @proxy.new_har
         if index == 0
