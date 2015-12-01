@@ -14,7 +14,7 @@ class HeartDiseaseQuestionPageTest < MiniTest::Test
                                    :related => ['High Blood Pressure', 'Cholesterol', 'Diabetes', 'Menopause', 'Obesity'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = ::RedesignQuestion::RedesignQuestionPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @question_fixture, :head_navigation => head_navigation, :footer => footer)
+      @page             = RedesignQuestion::RedesignQuestionPage.new(:driver =>@driver,:proxy => @proxy,:fixture => @question_fixture, :head_navigation => head_navigation, :footer => footer)
       @url              = "#{HC_BASE_URL}/heart-disease/c/question/67255/40783" + $_cache_buster
       visit @url
     end
