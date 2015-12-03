@@ -1,7 +1,7 @@
 require_relative '../../../minitest_helper' 
 require_relative '../../../pages/healthcentral/redesign_mobile_question_page'
 
-class HeartDiseaseQuestionPageTest < MiniTest::Test
+class HeartDiseaseMobileQuestionPageTest < MiniTest::Test
   context "a Question with an expert answer" do 
     setup do 
       mobile_fire_fox_with_secure_proxy
