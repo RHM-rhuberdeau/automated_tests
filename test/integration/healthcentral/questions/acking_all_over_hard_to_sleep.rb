@@ -127,7 +127,7 @@ class SkinCareQuestionPageTest < MiniTest::Test
           community_dates  = community_dates.select{|x| x.text.gsub(" ", '').length > 0}
 
           assert_equal(true, community_dates.length > 0, "No names appeared on the page")
-          assert_equal(true, community_dates[0].text.length > 0, "February 26, 2011", "First date did not appear on the page: #{community_dates[0].text}")
+          assert_equal(true, community_dates[0].text.length > 0, "First date did not appear on the page: #{community_dates[0].text}")
           assert_equal(true, community_dates[1].text.length > 0, "Second date did not appear on the page")
           assert_equal(true, community_dates[2].text.length > 0 ,"Third date did not appear on the page")
         else
