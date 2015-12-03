@@ -129,6 +129,9 @@ module HealthCentralAds
 
   class LazyLoadedAds < AdsTestCases
 
+    validate :no_initial_ads
+    validate :trigger_all_ads
+    validate :create_ads_from_ad_calls
     validate :one_ad_per_trigger_point
     validate :unique_ord_values
     validate :tile_values
@@ -149,18 +152,15 @@ module HealthCentralAds
       @trigger                = args[:trigger_point]
       @ad_calls               = {}
       @ads                    = {}
-      check_initial_ads
-      trigger_all_ads
-      create_ads_from_ad_calls
     end
 
     def unique_ads_per_page_view
     end
 
-    def check_initial_ads
+    def no_initial_ads
       ads = HealthCentralPage.get_all_ads(@proxy)
       unless ads.length == 0 
-        self.errors.add(:ads, "There were #{ads.length} ads on the initial page load: #{ads}")
+        self.errors.add(:ads, "There were #{ads.length} ads on the initial page load")
       end
     end
 
