@@ -89,21 +89,25 @@ class HealthCentralPage
   def self.get_all_ads(proxy)
     @proxy = proxy
     ad_calls = @proxy.har.entries.map do |entry|
-      if entry.request.url.include?('ad.doubleclick.net/N3965')
+      if self.dfp_ad_request entry.request.url
         entry.request.url
-      end
-    end
-
-    if ad_calls.compact.length < 3
-      sleep 2
-      ad_calls = @proxy.har.entries.map do |entry|
-        if entry.request.url.include?('ad.doubleclick.net/N3965')
-          entry.request.url
-        end
       end
     end
     
     ad_calls.compact
+  end
+
+  def self.dfp_ad_request(url)
+    # There are DFP ads and Mediaconductor ads
+    # We only care about DFP ads 
+    # Mediaconductor ads do not have a tile value, so we exclude ad calls that don't have them
+    # This means that if a DFP ad does not have a tile value, we won't know about it
+    # Joy of joys
+    if url.include?("ad.doubleclick.net/N3965") && url.include?("tile=") 
+      unless url.include?("Criteo")
+        true
+      end
+    end
   end
 
   def check_for_modal(css)
