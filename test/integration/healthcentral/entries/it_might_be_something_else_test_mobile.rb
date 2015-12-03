@@ -55,17 +55,16 @@ class ItMightBeSomethingMobileEntryPageTest < MiniTest::Test
       should "not have any errors" do 
         omniture  = @page.omniture(:url => @url)
         omniture.validate
-        ads       = RedesignEntry::RedesignEntryPage::LazyLoadedAds.new(:driver => @driver,
-                                                             :proxy => @proxy, 
-                                                             :ad_site => 'cm.ver.ms',
-                                                             :ad_categories => ["multiplesclerosis","whentoseeadoctor",""],
-                                                             :exclusion_cat => "community",
-                                                             :sponsor_kw  => "",
-                                                             :thcn_content_type => "SharePosts",
-                                                             :thcn_super_cat => "Body & Mind",
-                                                             :thcn_category => "Brain and Nervous System",
-                                                             :ugc => "y",
-                                                             :trigger_point => ".js-Blogpost-ad-inside-inline") 
+        ads       = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                       :proxy => @proxy, 
+                                                       :ad_site => 'cm.ver.ms',
+                                                       :ad_categories => ["multiplesclerosis","whentoseeadoctor",""],
+                                                       :exclusion_cat => "community",
+                                                       :sponsor_kw  => "",
+                                                       :thcn_content_type => "SharePosts",
+                                                       :thcn_super_cat => "Body & Mind",
+                                                       :thcn_category => "Brain and Nervous System",
+                                                       :ugc => "y") 
         ads.validate
         assert_equal(true, (ads.errors.empty? && omniture.errors.empty?), "#{ads.errors.messages} #{omniture.errors.messages}")
       end
