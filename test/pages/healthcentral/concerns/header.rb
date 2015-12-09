@@ -9,8 +9,8 @@ module HealthCentralHeader
     validate :subcategory_navigation
 
     def health_logo
-      logo_1 = @driver.find_element(:css, "span.LogoHC-part1")
-      logo_2 = @driver.find_element(:css, "span.LogoHC-part2")
+      logo_1 = find "span.LogoHC-part1"
+      logo_2 = find "span.LogoHC-part2"
 
       unless (logo_1.text == "Health" && logo_2.text == "Central")
         self.errors.add(:header, "Health Logo was missing from the page")
