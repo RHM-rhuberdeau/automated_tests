@@ -56,7 +56,8 @@ class ItMightBeSomethingMobileEntryPageTest < MiniTest::Test
         omniture  = @page.omniture(:url => @url)
         omniture.validate
         ads       = HealthCentralAds::AdsTestCases.new(:driver => @driver,
-                                                       :proxy => @proxy, 
+                                                       :proxy => @proxy,
+                                                       :url => @url, 
                                                        :ad_site => 'cm.ver.ms',
                                                        :ad_categories => ["multiplesclerosis","whentoseeadoctor",""],
                                                        :exclusion_cat => "community",
