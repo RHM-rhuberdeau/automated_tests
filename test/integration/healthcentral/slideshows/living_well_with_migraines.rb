@@ -9,8 +9,10 @@ class MigrainesSlideshowTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/slideshows.yml')
       slideshow_fixture = YAML::load_documents(io)
       @fixture = OpenStruct.new(slideshow_fixture[0]['living_well'])
-      head_navigation = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", 
+      head_navigation = HealthCentralHeader::LBLNDesktop.new(:logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Migraine",
+                                   :title_link => "Managing Migraine",
+                                   :more_on_link => "more on Migraine »",
                                    :related => ["Anxiety", "Chronic Pain", "Depression", "Sleep Disorders"],
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
@@ -53,7 +55,7 @@ class MigrainesSlideshowTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "omniture" do
       should "not have any errors" do 
-        ad_site        = "cm.ver.migraine"
+        ad_site        = "cm.ver.lblnmigraine"
         ad_categories  = ["slideshow", "livingwell", ""]
         ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
         omniture       = @page.omniture(:url => @url)
