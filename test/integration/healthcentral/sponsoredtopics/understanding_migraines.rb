@@ -60,7 +60,7 @@ class UnderstandingMigrainesTest < MiniTest::Test
                                                             :ad_site => ad_site,
                                                             :ad_categories => ad_categories,
                                                             :exclusion_cat => "",
-                                                            :sponsor_kw => '',
+                                                            :sponsor_kw => 'mymomentmigraine',
                                                             :thcn_content_type => "super collection",
                                                             :thcn_super_cat => "Body & Mind",
                                                             :thcn_category => "Brain and Nervous System",
