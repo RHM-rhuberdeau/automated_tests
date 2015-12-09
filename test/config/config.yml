@@ -135,6 +135,26 @@ qa4:
     name: medtronic
     asset_host: https://secure.healthcentral.
 
+qa5:
+  asset_host: http://qa5.healthcentral.
+  collection_url: http://drupalqa.healthcentral.choicemedia.com/admin/config/content/fetch-configured-articles
+  healthcentral:
+    base_url: http://qa5.healthcentral.com
+    name: healthcentral
+    drupal_url: http://qa5.healthcentral.com
+    immersive: http://immersiveqa.healthcentral.choicemedia.com
+  berkeley:
+    base_url: http://qa.berkeleywellness.choicemedia.com
+    name: berkeleywellness
+    asset_host: http://qa5.berkeleywellness.
+  medtronic:
+    base_url: https://secure.healthcentral.com
+    name: medtronic
+    asset_host: https://secure.healthcentral.
+  thebody:
+    base_url: http://uat.thebody.com
+    asset_host: http://uat.thebody.
+
 production:
   asset_host: http://www.healthcentral.
   healthcentral:
