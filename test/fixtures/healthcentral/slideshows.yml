@@ -328,11 +328,11 @@ living_well:
   prop35:    "D=v21"
   prop38:    "573"
   prop39:    "Migraine"
-  prop40:    ""
-  prop42:    "Understanding Migraines"
+  prop40:    "LBLN - Managing Migraine"
+  prop42:    "LBLN"
   prop43:    "keystone"
   prop44:    "HealthCentral"
-  prop45:    "cm.ver.migraine"
+  prop45:    "cm.ver.lblnmigraine"
   prop50:    "D=User-Agent"
 
 living_well_mobile:
