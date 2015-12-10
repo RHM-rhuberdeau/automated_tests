@@ -58,8 +58,9 @@ module HealthCentralHeader
       #Check for Category Links
       wait_for { @driver.find_elements(css: '.js-Nav--Primary-accordion-title').select {|x| x.displayed? }.length == 3 }
       titles = @driver.find_elements(:css, ".js-Nav--Primary-accordion-title").select {|x| x.displayed? }.select {|x| x.text == "BODY & MIND" || x.text == "FAMILY HEALTH" || x.text == "HEALTHY LIVING"}
+      titles_text = titles.collect { |x| x.text }
       unless titles.length == 3
-        self.errors.add(:header, "Not all super categories were on the page. Present were: #{titles}")
+        self.errors.add(:header, "Not all super categories were on the page. Present were: #{titles_text}")
       end 
 
       #Check for Sub Category links
