@@ -9,7 +9,7 @@ class MigrainesMobileSlideshowTest < MiniTest::Test
       io = File.open('test/fixtures/healthcentral/slideshows.yml')
       slideshow_fixture = YAML::load_documents(io)
       @fixture = OpenStruct.new(slideshow_fixture[0]['living_well_mobile'])
-      head_navigation = HealthCentralHeader::MobileRedesignHeader.new(:driver => @driver, :sub_category => "Migraine", :related_links => ["Anxiety", "Chronic Pain", "Depression", "Sleep Disorders"])
+      head_navigation = HealthCentralHeader::LBLNMobile.new(:driver => @driver, :logo => "#{ASSET_HOST}com/sites/all/themes/healthcentral/images/logo_lbln.png", :title_link => "Managing Migraine", :more_on_link => "more on Migraine »")
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page = HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => true)
       @url  = "#{HC_BASE_URL}/migraine/cf/slideshows/12-tips-for-living-well-with-migraines" + $_cache_buster
@@ -50,7 +50,7 @@ class MigrainesMobileSlideshowTest < MiniTest::Test
     ################### ADS, ANALYTICS, OMNITURE ############################
     context "omniture" do
       should "not have any errors" do 
-        ad_site        = "cm.ver.migraine"
+        ad_site        = "cm.ver.lblnmigraine"
         ad_categories  = ["slideshow", "livingwell", ""]
         ads_test_cases = @page.ads_test_cases(:ad_site => ad_site, :ad_categories => ad_categories)
         omniture       = @page.omniture(:url => @url)
