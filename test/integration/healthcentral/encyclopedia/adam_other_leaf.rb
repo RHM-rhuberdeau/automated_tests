@@ -15,8 +15,8 @@ class AdamOtherLeaf < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/cold-flu/encyclopedia/colds-and-the-flu-4021748" + $_cache_buster
-      visit @url
+      @url            = "#{HC_BASE_URL}/cold-flu/encyclopedia/colds-and-the-flu-4021748"
+      visit "#{@url}#{$_cache_buster}"
     end
 
     ##################################################################
@@ -28,6 +28,14 @@ class AdamOtherLeaf < MiniTest::Test
         table_of_contents   = find "ul.TableOfContents-content-container"
         table_of_contents_a = @driver.find_elements(:css, "ul.TableOfContents-content-container a")
         pagination_link     = find ".ArticlePagination-button.ArticlePagination-next"
+        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+        all_links     = anchor_links + link_tags
+        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+        all_hrefs.each do |link|
+          assert_equal(true, link.include?(@url))
+        end
         assert_equal("Colds and the Flu", condition)
         assert_equal(false, table_of_contents.nil?)
         assert_equal(10, table_of_contents_a.length)

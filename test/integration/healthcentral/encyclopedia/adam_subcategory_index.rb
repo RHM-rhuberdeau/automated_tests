@@ -15,8 +15,8 @@ class AdamSubcategoryIndex < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/alzheimers/encyclopedia/" + $_cache_buster
-      visit @url
+      @url            = "#{HC_BASE_URL}/alzheimers/encyclopedia/"
+      visit "#{@url}#{$_cache_buster}"
     end
 
     ##################################################################
@@ -26,6 +26,14 @@ class AdamSubcategoryIndex < MiniTest::Test
         conditions_library = find "h1.Page-info-title"
         conditions_library = conditions_library.text if conditions_library
         condition_links    = @driver.find_elements(:css, "ul.ContentList li a") || []
+        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+        all_links     = anchor_links + link_tags
+        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+        all_hrefs.each do |link|
+          assert_equal(true, link.include?(@url))
+        end
         assert_equal("Alzheimer's Disease Index", conditions_library)
         assert_equal(14, condition_links.length)
       end

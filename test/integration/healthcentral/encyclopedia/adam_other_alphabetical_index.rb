@@ -12,8 +12,8 @@ class AdamOtherAlphabeticalIndex < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/adam/a/" + $_cache_buster
-      visit @url
+      @url            = "#{HC_BASE_URL}/encyclopedia/adam/a/" 
+      visit "#{@url}#{$_cache_buster}"
     end
 
     ##################################################################
@@ -22,6 +22,14 @@ class AdamOtherAlphabeticalIndex < MiniTest::Test
       should "have the proper links" do 
         alphabetical_nav = @driver.find_elements(:css, "div.Page-index-nav ul li a")
         page_links       = @driver.find_elements(:css, "li.ContentList-item.key-A a")
+        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+        all_links     = anchor_links + link_tags
+        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+        all_hrefs.each do |link|
+          assert_equal(true, link.include?(@url))
+        end
 
         assert_equal(29, alphabetical_nav.length, "Missing alphaetical navigation links")
         assert_equal(307, page_links.length, "missing some links to other articles")

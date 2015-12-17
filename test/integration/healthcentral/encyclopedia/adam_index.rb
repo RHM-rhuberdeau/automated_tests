@@ -12,8 +12,8 @@ class AdamIndex < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/adam" + $_cache_buster
-      visit @url
+      @url            = "#{HC_BASE_URL}/adam" 
+      visit "#{@url}#{$_cache_buster}"
     end
 
     ##################################################################
@@ -23,6 +23,14 @@ class AdamIndex < MiniTest::Test
         conditions_library = find "h1.Page-info-title"
         conditions_library = conditions_library.text if conditions_library
         condition_links    = @driver.find_elements(:css, "ul.ContentList li a")
+        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+        all_links     = anchor_links + link_tags
+        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+        all_hrefs.each do |link|
+          assert_equal(true, link.include?(@url))
+        end
         assert_equal("Conditions Library", conditions_library)
         assert_equal(32, condition_links.length)
       end

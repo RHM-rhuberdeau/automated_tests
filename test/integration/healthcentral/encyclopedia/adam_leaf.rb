@@ -12,8 +12,8 @@ class AdamLeafTest < MiniTest::Test
       head_navigation = HealthCentralHeader::RedesignHeader.new(:driver => @driver, :sub_category => "ADHD", :related => ['Depression', 'Anxiety', 'Autism'])
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/adhd/encyclopedia/" + $_cache_buster
-      visit @url
+      @url            = "#{HC_BASE_URL}/adhd/encyclopedia/" 
+      visit "#{@url}#{$_cache_buster}"
     end
 
     ##################################################################
@@ -23,6 +23,14 @@ class AdamLeafTest < MiniTest::Test
         condition           = find "h1.Page-info-title"
         condition           = condition.text if condition
         condition_links     = @driver.find_elements(:css, "ul.ContentList li a")
+        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+        all_links     = anchor_links + link_tags
+        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+        all_hrefs.each do |link|
+          assert_equal(true, link.include?(@url))
+        end
         assert_equal("ADHD Index", condition)
         assert_equal(4, condition_links.length)
       end

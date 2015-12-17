@@ -12,8 +12,8 @@ class HcIndexPage < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/hc/" + $_cache_buster
-      visit @url
+      @url            = "#{HC_BASE_URL}/encyclopedia/hc/"
+      visit "#{@url}#{$_cache_buster}"
     end
 
     ##################################################################
@@ -21,6 +21,14 @@ class HcIndexPage < MiniTest::Test
     context "when functioning properly" do 
       should "have the proper links" do 
         a_to_z_links      = @driver.find_elements(:css, ".ContentList.ContentList--article.js-search-content a")
+        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+        all_links     = anchor_links + link_tags
+        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+        all_hrefs.each do |link|
+          assert_equal(true, link.include?(@url))
+        end
         assert_equal(a_to_z_links.length, 23)
       end
     end

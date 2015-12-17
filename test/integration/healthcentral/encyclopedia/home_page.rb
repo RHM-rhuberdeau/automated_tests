@@ -12,8 +12,8 @@ class EncyclopediaHomePage < MiniTest::Test
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/home/" + $_cache_buster
-      visit @url
+      @url            = "#{HC_BASE_URL}/encyclopedia/home/"
+      visit "#{@url}#{$_cache_buster}"
     end
 
     ##################################################################
@@ -23,6 +23,14 @@ class EncyclopediaHomePage < MiniTest::Test
         links = @driver.find_elements(:css, ".ContentList.ContentList--article a")
         ecyclopedia_link = links.select {|x| x.text == "HealthCentral Encyclopedia"}
         adam_link        = links.select {|x| x.text == "Conditions Library"}
+        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+        all_links     = anchor_links + link_tags
+        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+        all_hrefs.each do |link|
+          assert_equal(true, link.include?(@url))
+        end
         assert_equal(2, links.length, "Expected HealthCentral Encyclopedia and Conditions Library links to appear on the page" )
       end
     end
