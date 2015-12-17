@@ -14,7 +14,8 @@ class TenTipsMobileSlideshowTest < MiniTest::Test
                                    :more_on_link => "more on COPD »",
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => true)
+      url             = "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd"
+      @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => true, :url => url)
       @url  = "#{HC_BASE_URL}/copd/cf/slideshows/10-tips-for-coping-with-copd" + $_cache_buster
       visit @url
     end

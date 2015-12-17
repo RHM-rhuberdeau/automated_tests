@@ -11,7 +11,8 @@ class SixFactsMobileSlideshowTest < MiniTest::Test
       @fixture          = OpenStruct.new(slideshow_fixture[0]['adhd_therapy_mobile'])
       head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:driver => @driver, :sub_category => "ADHD", :related_links => ['Depression', 'Anxiety', 'Autism'])
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      url               = "#{HC_BASE_URL}/adhd/cf/slideshows/6-facts-on-adjunctive-adhd-therapy-in-children"
+      @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false, :url => url)
       @url  = "#{HC_BASE_URL}/adhd/cf/slideshows/6-facts-on-adjunctive-adhd-therapy-in-children" + $_cache_buster
       visit @url
     end

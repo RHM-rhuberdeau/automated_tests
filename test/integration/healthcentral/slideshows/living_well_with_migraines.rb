@@ -16,7 +16,8 @@ class MigrainesSlideshowTest < MiniTest::Test
                                    :related => ["Anxiety", "Chronic Pain", "Depression", "Sleep Disorders"],
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::HealthCentralSlideshow::SlideshowPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => true)
+      url             = "#{HC_BASE_URL}/migraine/cf/slideshows/12-tips-for-living-well-with-migraines"
+      @page = ::HealthCentralSlideshow::SlideshowPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => true, :url => url)
       @url  = "#{HC_BASE_URL}/migraine/cf/slideshows/12-tips-for-living-well-with-migraines" + $_cache_buster
       visit @url
     end

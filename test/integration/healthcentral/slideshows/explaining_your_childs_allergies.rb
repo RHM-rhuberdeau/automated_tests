@@ -16,7 +16,8 @@ class ExplainingSlideshowTest < MiniTest::Test
                                    :related => ['Asthma', 'Cold & Flu', 'Skin Care'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      url               = "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others"
+      @page             = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false, :url => url)
       @url              = "#{HC_BASE_URL}/allergy/cf/slideshows/explaining-your-childs-allergies-others" + $_cache_buster
       visit @url
     end

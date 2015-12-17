@@ -14,7 +14,8 @@ class AdhdSlideshowIndexTest < MiniTest::Test
                                    :related => ['Depression', 'Anxiety', 'Autism'],
                                    :driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      url               = "#{HC_BASE_URL}/adhd/cf/slideshows"
+      @page             = ::HealthCentralSlideshow::SlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false, :url => url)
       @url              = "#{HC_BASE_URL}/adhd/cf/slideshows" + $_cache_buster
       visit @url
     end

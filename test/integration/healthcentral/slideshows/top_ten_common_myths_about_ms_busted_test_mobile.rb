@@ -11,7 +11,8 @@ class TopTenMobileSlideshowTest < MiniTest::Test
       @fixture          = OpenStruct.new(slideshow_fixture[0]['top_ten_mobile'])
       head_navigation = HealthCentralHeader::MobileRedesignHeader.new(:driver => @driver, :sub_category => "Multiple Sclerosis", :related_links => ['Chronic Pain', 'Depression', 'Rheumatoid Arthritis'])
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      url             = "#{HC_BASE_URL}/multiple-sclerosis/cf/slideshows/top-ten-common-myths-about-ms-busted"
+      @page = ::HealthCentralMobileSlideshow::MobileSlideshowPage.new(:driver => @driver, :fixture => @fixture, :proxy => @proxy, :head_navigation => head_navigation, :footer => footer, :collection => false, :url => url)
       @url  = "#{HC_BASE_URL}/multiple-sclerosis/cf/slideshows/top-ten-common-myths-about-ms-busted" + $_cache_buster
       visit @url
     end
