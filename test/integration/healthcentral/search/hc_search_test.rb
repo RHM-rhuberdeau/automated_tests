@@ -48,7 +48,7 @@ class HCSearchTest < MiniTest::Test
                                                                      :expected_ad_categories => expected_ad_categories,
                                                                      :pharma_safe => pharma_safe,
                                                                      :expected_pharma_safe => true,
-                                                                     :ugc => "[\"n\"]") 
+                                                                     :ugc => "n") 
         ads.validate
 
         assert_equal(true, (ads.errors.empty?), "#{ads.errors.messages}")
