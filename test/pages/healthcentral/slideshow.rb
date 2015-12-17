@@ -9,6 +9,7 @@ module HealthCentralSlideshow
       @head_navigation  = args[:head_navigation]
       @footer           = args[:footer]
       @fixture          = args[:fixture]
+      @url              = args[:url]
     end
 
     def ads_test_cases(args)
@@ -16,13 +17,14 @@ module HealthCentralSlideshow
     end
 
     def functionality
-      Functionality.new(:driver => @driver, :proxy => @proxy)
+      Functionality.new(:driver => @driver, :proxy => @proxy, :url => @url)
     end
   end
 
   class Functionality
     include ::ActiveModel::Validations
 
+    validate :canonical_urls
     validate :updates_the_ads_between_slides
     validate :relative_links_in_the_header
     validate :includes_publish_date
@@ -32,6 +34,7 @@ module HealthCentralSlideshow
     def initialize(args)
       @driver = args[:driver]
       @proxy  = args[:proxy]
+      @url    = args[:url]
     end
 
     def slides
@@ -40,6 +43,19 @@ module HealthCentralSlideshow
 
     def slides=(value)
       @slides = value
+    end
+
+    def canonical_urls
+      anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+      link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+      all_links     = anchor_links + link_tags
+      all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+      all_hrefs.each do |link|
+        unless link.include?(@url)
+          self.errors.add(:functionality, "Canonical url is #{link} not #{@url}")
+        end
+      end
     end
 
     def updates_the_ads_between_slides
