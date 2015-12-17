@@ -12,8 +12,8 @@ class DailyDoseSecondWeekMobile < MiniTest::Test
       head_navigation   = HealthCentralHeader::DailyDoseMobile.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/2015/2/" + $_cache_buster
-      visit @url
+      @url              = "#{HC_BASE_URL}/dailydose/2015/2/"
+      visit "#{@url}#{$_cache_buster}"
     end
 
     ##################################################################
@@ -25,6 +25,14 @@ class DailyDoseSecondWeekMobile < MiniTest::Test
         article_links     = @driver.find_elements(:css, "ul.ContentList--article li.ContentList-item a") || []
         pagination_links  = @driver.find_elements(:css, "div.ArticlePaginationRange a") || []
         we_reccommend     = find "div.OUTBRAIN"
+        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+        all_links     = anchor_links + link_tags
+        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+        all_hrefs.each do |link|
+          assert_equal(true, link.include?(@url))
+        end
 
         assert_equal(false, header_text.nil?, "header title nil")
         assert_equal(true, header_text.length > 1, "header text blank")

@@ -12,8 +12,8 @@ class DailyDoseSugaryDrinks < MiniTest::Test
       head_navigation   = HealthCentralHeader::DailyDoseDesktop.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/2015/6/30/sugary_drinks_tied_to_nearly_200_000_deaths_a_year/" + $_cache_buster
-      visit @url
+      @url              = "#{HC_BASE_URL}/dailydose/2015/6/30/sugary_drinks_tied_to_nearly_200_000_deaths_a_year/"
+      visit "#{@url}#{$_cache_buster}"
     end
 
     ##################################################################
@@ -23,6 +23,15 @@ class DailyDoseSugaryDrinks < MiniTest::Test
         quote_of_the_day = find "p.js-fake-infinite-title-green"
         quote_text       = quote_of_the_day.text if quote_of_the_day
         infite_content   = @driver.find_elements(:css, ".js-fake-infinite-content") || []
+        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+        all_links     = anchor_links + link_tags
+        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+        all_hrefs.each do |link|
+          assert_equal(true, link.include?(@url))
+        end
+
         if infite_content
           infite_content = infite_content.select {|x| x.displayed?}
         end
