@@ -450,10 +450,10 @@ module HealthCentralHeader
           self.errors.add(:header, "Resources submenu did not appear in the header")
         end
 
-        aaq = find "ul.Nav-listGroup-list--Ask-a-question"
-        unless aaq 
-          self.errors.add(:header, "Ask A Question did not appear in the header")
-        end
+        # aaq = find "ul.Nav-listGroup-list--Ask-a-question"
+        # unless aaq 
+        #   self.errors.add(:header, "Ask A Question did not appear in the header")
+        # end
 
         body_and_mind = find "ul.Nav-listGroup-list--General "
         unless body_and_mind
