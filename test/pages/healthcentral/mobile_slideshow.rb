@@ -161,11 +161,21 @@ module HealthCentralMobileSlideshow
       collection_items  = @driver.find_elements(:css, "ul.CollectionListBoxes-list li.CollectionListBoxes-list-item").select { |x| x.displayed? }
       button            = find "button.js-CollectionListTopic-view-more.view-more-all"
       autoload          = find ".Slideshow-nextSlideshow.js-Slideshow-nextSlideshow.js-nextSlideshow-showCounter"
-      button.click if button
-      sleep 1
-      new_collection_items = @driver.find_elements(:css, "ul.CollectionListBoxes-list li.CollectionListBoxes-list-item").select { |x| x.displayed? }
-      unless new_collection_items.length > collection_items.length || autoload
-        self.errors.add(:functionality, "View more button does not work")
+      next_item_link    = find "a.Slideshow-nextSlideshow-actionable"
+      
+      if button
+        sleep 1
+        new_collection_items = @driver.find_elements(:css, "ul.CollectionListBoxes-list li.CollectionListBoxes-list-item").select { |x| x.displayed? }
+        unless new_collection_items.length > collection_items.length || autoload
+          self.errors.add(:functionality, "View more button does not work")
+        end
+      elsif next_item_link
+        current_url = @driver.current_url
+        next_item_link
+        new_url     = @driver.current_url
+        unless new_url != current_url
+          self.errors.add(:functionality, "Next slideshow link did not link to a new page")
+        end
       end
     end
   end
