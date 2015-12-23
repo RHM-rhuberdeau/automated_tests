@@ -38,6 +38,7 @@ class HealthCentralPage
                     "Hepatitis C",
                     "High Blood Pressure",
                     "Incontinence",
+                    "Lung Cancer",
                     "Migraine",
                     "Multiple Sclerosis",
                     "Osteoarthritis",
