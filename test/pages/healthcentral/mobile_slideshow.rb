@@ -10,6 +10,7 @@ module HealthCentralMobileSlideshow
       @head_navigation  = args[:head_navigation]
       @footer           = args[:footer]
       @collection       = args[:collection]
+      @url              = args[:url]
       raise CollectionNotSet if @collection.nil?
     end
 
@@ -18,7 +19,7 @@ module HealthCentralMobileSlideshow
     end
 
     def functionality
-      Functionality.new(:driver => @driver, :proxy => @proxy)
+      Functionality.new(:driver => @driver, :proxy => @proxy, :url => @url)
     end
   end
 
@@ -26,6 +27,7 @@ module HealthCentralMobileSlideshow
     include ::ActiveModel::Validations
 
     # validate :relative_links_in_the_header
+    validate :canonical_urls
     validate :page_has_slides
     validate :each_slide_has_content
     validate :more_on_this_topic
@@ -34,11 +36,25 @@ module HealthCentralMobileSlideshow
     validate :ads_are_lazy_loaded
     validate :loads_next_slideshow
     validate :no_routing_error
-    validate :view_more
+    # validate :view_more
 
     def initialize(args)
       @driver           = args[:driver]
       @proxy            = args[:proxy]
+      @url              = args[:url]
+    end
+
+    def canonical_urls
+      anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
+      link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
+      all_links     = anchor_links + link_tags
+      all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+
+      all_hrefs.each do |link|
+        unless link.include?(@url)
+          self.errors.add(:functionality, "Canonical url is #{link} not #{@url}")
+        end
+      end
     end
 
     def page_has_slides
