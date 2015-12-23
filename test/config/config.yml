@@ -134,6 +134,9 @@ qa4:
     base_url: https://secure.healthcentral.com
     name: medtronic
     asset_host: https://secure.healthcentral.
+  thebody:
+    base_url: http://qa4.thebody.com
+    asset_host: http://qa4.thebody.
 
 qa5:
   asset_host: http://qa5.healthcentral.
