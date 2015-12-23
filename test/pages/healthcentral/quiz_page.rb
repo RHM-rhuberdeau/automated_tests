@@ -57,7 +57,10 @@ module HealthCentral
         ads     = @ads[index].map { |ad| HealthCentralAds::Ads.new(ad) }
         @slides << HealthCentralSlide::Slide.new(:ads => ads)
 
-        questions_on_page = @driver.find_elements(:css, "label.option").select { |q| q.displayed? }
+        begin
+          questions_on_page = @driver.find_elements(:css, "label.option").select { |q| q.displayed? }
+        rescue Selenium::WebDriver::Error::UnknownError
+        end
         questions_on_page.first.click
         wait_for      { @driver.find_element(:css, "span.Quiz-controls-next-button-label").displayed? }
         next_buttons  = @driver.find_elements(:css, "span.Quiz-controls-next-button-label")
