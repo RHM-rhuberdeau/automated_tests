@@ -20,7 +20,7 @@ GEM
       minitest (~> 5.1)
       thread_safe (~> 0.3, >= 0.3.4)
       tzinfo (~> 1.1)
-    addressable (2.3.8)
+    addressable (2.4.0)
     ansi (1.5.0)
     builder (3.2.2)
     childprocess (0.5.3)
@@ -49,6 +49,7 @@ GEM
     multi_json (1.10.0)
     multi_xml (0.5.5)
     netrc (0.10.2)
+    rake (10.4.2)
     rest-client (1.7.2)
       mime-types (>= 1.16, < 3.0)
       netrc (~> 0.7)
@@ -74,6 +75,7 @@ DEPENDENCIES
   httparty
   minitest
   minitest-reporters
+  rake
   rest-client
   selenium-webdriver (= 2.44.0)
   shoulda-context
