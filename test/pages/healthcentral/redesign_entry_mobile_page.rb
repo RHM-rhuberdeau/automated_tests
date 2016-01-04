@@ -78,12 +78,19 @@ module RedesignEntry
     end
 
     def has_publish_date
-      publish_date = @driver.find_element(:css, "span.Page-info-publish-date").text
+      publish_date = find "span.Page-info-publish-date"
+
+      if publish_date
+        publish_text = publish_date.text
+      else
+        publish_text = ""
+      end
+      
       unless publish_date
         self.errors.add(:base, "Page was missing a publish date")
       end
-      unless publish_date.scan(/\w+\s\d+,\s\d+/).length == 1
-        self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
+      unless publish_text.scan(/\w+\s\d+,\s\d+/).length == 1
+        self.errors.add(:base, "Publish date was in the wrong format: #{publish_text}")
       end
     end
 
