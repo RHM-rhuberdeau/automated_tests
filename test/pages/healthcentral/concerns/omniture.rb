@@ -18,7 +18,7 @@ module HealthCentralOmniture
       @fixture  = args[:fixture]
       @url      = args[:url]
       raise OmnitureIsBlank unless args[:omniture_text]
-      array     = args[:omniture_text].lines
+      array     = args[:omniture_text].lines.to_a
       index     = array.index { |x| x.include?("pageName") }
       raise OmnitureIsBlank unless index
       range     = array.length - index
