@@ -12,7 +12,10 @@ module HealthCentralHeader
       logo_1 = find "span.LogoHC-part1"
       logo_2 = find "span.LogoHC-part2"
 
-      unless (logo_1.text == "Health" && logo_2.text == "Central")
+      logo_1_text = logo_1.text if logo_1
+      logo_2_text = logo_2.text if logo_2
+
+      unless (logo_1_text == "Health" && logo_2_text == "Central")
         self.errors.add(:header, "Health Logo was missing from the page")
       end
 
