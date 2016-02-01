@@ -6,13 +6,13 @@ class ClinicalTrials < MiniTest::Test
     setup do 
       fire_fox_with_secure_proxy
       @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/clinical_trials.yml')
-      trial_fixture = YAML::load_documents(io)
-      @trial_fixture = OpenStruct.new(trial_fixture[0]['clinical_trials'])
+      io                = File.open('test/fixtures/healthcentral/clinical_trials.yml')
+      trial_fixture     = YAML::load_documents(io)
+      @trial_fixture    = OpenStruct.new(trial_fixture[0]['clinical_trials'])
       head_navigation   = HealthCentralHeader::ClinicalTrialHeader.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page = ::RedesignEntry::RedesignEntryPage.new(:driver =>@driver, :proxy => @proxy, :fixture => @trial_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url  = "#{HC_BASE_URL}/tools/d/clinical-trials" + $_cache_buster
+      @page             = ::RedesignEntry::RedesignEntryPage.new(:driver =>@driver, :proxy => @proxy, :fixture => @trial_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      @url              = "#{HC_BASE_URL}/tools/d/clinical-trials" + $_cache_buster
       visit @url
     end
 
