@@ -87,11 +87,20 @@ class HealthCentralPage
     @ads_on_page_view.map { |ad| HealthCentralAds::Ads.new(ad) }
   end
 
-  def self.get_all_ads(proxy)
-    @proxy = proxy
-    ad_calls = @proxy.har.entries.map do |entry|
-      if self.dfp_ad_request entry.request.url
-        entry.request.url
+  def self.get_all_ads
+    begin
+      execute_script "window.stop();"
+    rescue Timeout::Error, Net::ReadTimeout
+    end
+    sleep 0.25
+
+    traffic_calls = get_network_traffic
+    ad_calls      = traffic_calls.map do |entry|
+      unless entry.empty?
+        entry = entry.first
+        if self.dfp_ad_request entry.first
+          entry.first
+        end
       end
     end
     
@@ -132,11 +141,11 @@ class HealthCentralPage
   end
 
   def assets(args)
-    HealthCentralAssets::Assets.new(:proxy => @proxy, :driver => @driver, :base_url => args[:base_url], :host => args[:host])
+    HealthCentralAssets::Assets.new(:network_traffic => args[:network_traffic], :base_url => args[:base_url], :host => args[:host])
   end
 
   def seo(args)
-    HealthCentralSeo::Seo.new(:driver => args[:driver])
+    HealthCentralSeo::Seo.new
   end
 
   def global_test_cases
