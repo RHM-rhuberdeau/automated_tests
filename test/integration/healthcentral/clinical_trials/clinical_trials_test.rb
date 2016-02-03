@@ -3,15 +3,16 @@ require_relative '../../../pages/healthcentral/redesign_entry_page'
 
 class ClinicalTrials < MiniTest::Test
   context "living with ra" do 
+    include Capybara::DSL
+
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
+      capybara_with_phantomjs
       io                = File.open('test/fixtures/healthcentral/clinical_trials.yml')
       trial_fixture     = YAML::load_documents(io)
       @trial_fixture    = OpenStruct.new(trial_fixture[0]['clinical_trials'])
       head_navigation   = HealthCentralHeader::ClinicalTrialHeader.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
-      @page             = ::RedesignEntry::RedesignEntryPage.new(:driver =>@driver, :proxy => @proxy, :fixture => @trial_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
+      @page             = RedesignEntry::RedesignEntryPage.new(:driver =>@driver, :proxy => @proxy, :fixture => @trial_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       @url              = "#{HC_BASE_URL}/tools/d/clinical-trials" + $_cache_buster
       visit @url
     end
@@ -20,7 +21,8 @@ class ClinicalTrials < MiniTest::Test
     ################### ASSETS #######################################
     context "assets safe" do 
       should "have valid assets" do 
-        assets = @page.assets(:base_url => @url)
+        network_traffic = get_network_traffic
+        assets = @page.assets(:base_url => @url, :network_traffic => network_traffic)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -72,6 +74,6 @@ class ClinicalTrials < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    # cleanup_driver_and_proxy
   end 
 end
