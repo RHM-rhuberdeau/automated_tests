@@ -11,6 +11,9 @@ gem 'minitest-reporters'
 gem 'shoulda-context'
 gem 'selenium-webdriver', '2.44.0'
 gem "rest-client"
+gem "capybara"
+gem "poltergeist"
+gem "capybara_minitest_spec"
 
 # Use ActiveModel has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
