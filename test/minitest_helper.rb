@@ -6,6 +6,12 @@ require 'selenium-webdriver'
 require 'browsermob/proxy'
 require 'timeout'
 require 'minitest/reporters'
+require 'capybara/dsl'
+require 'capybara/poltergeist'
+require 'capybara_minitest_spec'
+
+include Capybara::DSL
+
 Minitest::Reporters.use! Minitest::Reporters::DefaultReporter.new
 
 #### HEALTHCENTRAL
@@ -30,7 +36,7 @@ def firefox
   # Selenium::WebDriver::Firefox::Binary.path= '/opt/firefox/firefox'
   # Selenium::WebDriver::Firefox::Binary.path= '/Applications/Firefox.app/Contents/MacOS/firefox'
   @driver = Selenium::WebDriver.for :firefox
-  @driver.manage.window.resize_to(1224,1000)
+  @driver.manage.window.resize_to(1300,1000)
   @driver.manage.timeouts.implicit_wait = 5
 end
 
@@ -42,7 +48,7 @@ def firefox_with_proxy
 	@profile = Selenium::WebDriver::Firefox::Profile.new
 	@profile.proxy = @proxy.selenium_proxy
 	@driver = Selenium::WebDriver.for :firefox, :profile => @profile
-  @driver.manage.window.resize_to(1224,1000)
+  @driver.manage.window.resize_to(1300,1000)
   @driver.manage.timeouts.implicit_wait = 5
 end
 
@@ -54,26 +60,25 @@ def fire_fox_with_secure_proxy
   @profile = Selenium::WebDriver::Firefox::Profile.new
   @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
-  @driver.manage.window.resize_to(1224,1000)
+  @driver.manage.window.resize_to(1300,1000)
   @driver.manage.timeouts.implicit_wait = 3
-  @driver.manage.timeouts.page_load = 24
+  @driver.manage.timeouts.page_load = 28
 end
 
 def fire_fox_remote_proxy
-  proxy_location = Settings.location
-  server = BrowserMob::Proxy::Server.new(proxy_location)
-  server.start
-  @proxy = server.create_proxy
-  @profile = Selenium::WebDriver::Firefox::Profile.new
-  @profile.proxy = @proxy.selenium_proxy(:http, :ssl)
+  $_server ||= BrowserMob::Proxy::Server.new(Settings.location, :opts => { port: 4444, log: true}).start
+
+  @proxy          = $_server.create_proxy
+  @profile        = Selenium::WebDriver::Firefox::Profile.new
+  @profile.proxy  = @proxy.selenium_proxy(:http, :ssl)
   caps = Selenium::WebDriver::Remote::Capabilities.new(
     :browser_name => "firefox", :firefox_profile => @profile
   )
   @driver = Selenium::WebDriver.for(
     :remote,
-    url: 'http://jenkins.choicemedia.com:4444//wd/hub',
+    url: 'http://localhost:4444/wd/hub',
     desired_capabilities: caps) 
-  @driver.manage.window.resize_to(1224,1000)
+  @driver.manage.window.resize_to(1300,1000)
   @driver.manage.timeouts.implicit_wait = 5
 end
 
@@ -88,15 +93,15 @@ def mobile_fire_fox_with_secure_proxy
   @driver = Selenium::WebDriver.for :firefox, :profile => @profile
   @driver.manage.window.resize_to(425,960)
   @driver.manage.timeouts.implicit_wait = 5
-  @driver.manage.timeouts.page_load = 24
+  @driver.manage.timeouts.page_load = 28
 end
 
 def fire_fox_remote
   @driver = Selenium::WebDriver.for(
     :remote,
-    url: 'http://jenkins.choicemedia.com:4444//wd/hub',
+    url: 'http://localhost:4444/wd/hub',
     desired_capabilities: :firefox)
-  @driver.manage.window.resize_to(1224,1000)
+  @driver.manage.window.resize_to(1300,1000)
   @driver.manage.timeouts.implicit_wait = 5
 end
 
@@ -105,31 +110,47 @@ def cleanup_driver_and_proxy
   @proxy.close
 end
 
+def cleanup_driver
+  @driver.quit
+end
+
 def phantomjs
   @driver = Selenium::WebDriver.for :remote, url: 'http://localhost:8001'
 end
 
-def visit(url)
-  preload_page(url)
-  begin
-    @driver.navigate.to url 
-  rescue Timeout::Error, Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
+def capybara_with_phantomjs
+  Capybara.register_driver :poltergeist do |app|
+      options = {:timeout => 120,
+                :phantomjs_options => ['--ignore-ssl-errors=yes'],
+                :js_errors => false}
+      Capybara::Poltergeist::Driver.new(app, options)
   end
-  begin
-    @driver.execute_script("window.stop();")
-  rescue Timeout::Error, Net::ReadTimeout, Selenium::WebDriver::Error::JavascriptError
-  end
-  
-  #Avoid race conditions
-  sleep 0.75
+
+  Capybara.javascript_driver = :poltergeist
+  Capybara.default_driver    = :poltergeist
 end
+
+# def visit(url)
+#   preload_page(url)
+#   begin
+#     @driver.navigate.to url 
+#   rescue Timeout::Error, Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
+#   end
+#   begin
+#     @driver.execute_script("window.stop();")
+#   rescue Timeout::Error, Net::ReadTimeout, Selenium::WebDriver::Error::JavascriptError
+#   end
+  
+#   #Avoid race conditions
+#   sleep 0.25
+# end
 
 def preload_page(url)
   if ENV['TEST_ENV'] == "production" || ENV['TEST_ENV'] == "staging"
     begin
       RestClient::Request.execute(method: :get, url: url,
                                 timeout: 10)
-    rescue RestClient::RequestTimeout
+    rescue RestClient::RequestTimeout, SocketError
     end
   end
 end
@@ -168,17 +189,9 @@ def wait_for
   end
 end
 
-#Find an element by css 
-#If the element.diplayed? == true then return the element
-#Otherwise return nil
-def find(css)
-  begin
-    node = @driver.find_element(:css, css)
-    node = nil if ( node.displayed? == false )
-  rescue Selenium::WebDriver::Error::NoSuchElementError
-    node = nil
-  end
-  node
+#Get all network traffic from Phantomjs
+def get_network_traffic
+  page.driver.network_traffic.map { |request| request.response_parts.uniq(&:url).map { |response| ["#{response.url}", response.status] }}
 end
 
 #Looks for a Selenium element with the given css
@@ -234,13 +247,13 @@ def get_omniture_from_debugger
   omniture_text
 end
 
-def evaluate_script(script)
-  begin
-    @driver.execute_script "return #{script}"
-  rescue Selenium::WebDriver::Error::JavascriptError
-    "javascript error"
-  end
-end
+# def evaluate_script(script)
+#   begin
+#     @driver.execute_script "return #{script}"
+#   rescue Selenium::WebDriver::Error::JavascriptError
+#     "javascript error"
+#   end
+# end
 
 def page_has_ad(ad_url)
   ads = []
