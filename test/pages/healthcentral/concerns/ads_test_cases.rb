@@ -1,6 +1,7 @@
 module HealthCentralAds
   class AdsTestCases
     include ::ActiveModel::Validations
+    include Capybara::DSL
 
     validate :unique_ads_per_page_view
     validate :correct_ad_site
@@ -30,16 +31,16 @@ module HealthCentralAds
     end
 
     def collect_ads_from_two_page_loads
-      page_one_ad_calls = HealthCentralPage.get_all_ads(@proxy)
+      page_one_ad_calls = HealthCentralPage.get_all_ads
       ads_from_page1 = page_one_ad_calls.map { |ad| HealthCentralAds::Ads.new(ad) }
 
       # Put sleep calls around setting up a new har file to avoid race conditions
       sleep 0.25
-      @proxy.new_har
+      page.driver.clear_network_traffic
       sleep 0.25
 
       visit @url
-      page_two_ad_calls = HealthCentralPage.get_all_ads(@proxy)
+      page_two_ad_calls = HealthCentralPage.get_all_ads
       ads_from_page2 = page_two_ad_calls.map { |ad| HealthCentralAds::Ads.new(ad) }
 
       #Do this at the end incase there's any errors
