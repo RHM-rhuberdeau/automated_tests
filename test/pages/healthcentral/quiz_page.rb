@@ -62,7 +62,10 @@ module HealthCentral
         rescue Selenium::WebDriver::Error::UnknownError
         end
         questions_on_page.first.click
-        wait_for      { @driver.find_element(:css, "span.Quiz-controls-next-button-label").displayed? }
+        begin
+          wait_for      { @driver.find_element(:css, "span.Quiz-controls-next-button-label").displayed? }
+        rescue Selenium::WebDriver::Error::UnknownError
+        end
         next_buttons  = @driver.find_elements(:css, "span.Quiz-controls-next-button-label")
         next_button   = next_buttons.select {|button| button.displayed?}.first
         if next_button
