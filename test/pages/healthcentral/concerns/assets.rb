@@ -3,6 +3,7 @@ require "rest-client"
 module HealthCentralAssets
   class Assets
     include ::ActiveModel::Validations
+    include Capybara::DSL
 
     KNOWN_PROBLEMS = ["/assets/dne.js", "/common/survey/jquery.cookie.js", "/common/images/small-right-arrow-gray.png",
                       "m/common/polyfills/respond_js/respond.proxy.js"]
@@ -12,12 +13,14 @@ module HealthCentralAssets
     validate :not_using_old_pipeline
 
     def initialize(args)
-      @proxy     = args[:proxy]
-      @driver    = args[:driver]
-      @base_url  = args[:base_url]
-      @host      = args[:host] || ASSET_HOST
+      @base_url         = args[:base_url]
+      @host             = args[:host] || ASSET_HOST
+      @network_traffic  = args[:network_traffic]
+      @network_traffic  = @network_traffic.compact
+      #Lets make sure the page has stopped loading
+      #This way we don't have to worry about additional assets loading during the test
       begin
-        @driver.execute_script "window.stop();"
+        execute_script "window.stop();"
       rescue Timeout::Error, Net::ReadTimeout
       end
     end
@@ -45,22 +48,25 @@ module HealthCentralAssets
       @bad_assets       = []
       @unloaded_assets  = []
       
-      @proxy.har.entries.each do |entry|
-        if ( entry.request.url.index(@host) == 0 && entry.response.status == 200 )
-          @good_assets << entry.request.url
-        end
-        if ( entry.request.url.index(@host) == 0 && entry.response.status != 200 )
-          unless entry.request.url == @base_url || is_known_problem(entry.request.url)
-            @unloaded_assets << entry.request.url
+      @network_traffic.each do |entry|
+        unless entry.empty?
+          entry = entry.first
+          if ( entry.first.index(@host) == 0 && entry.last == 200 )
+            @good_assets << entry.first
           end
-        end
-        if has_wrong_host(entry.request.url) == true
-          @bad_assets << entry.request.url unless is_known_problem(entry.request.url)
+          if ( entry.first.index(@host) == 0 && entry.last != 200 )
+            unless entry.first == @base_url || is_known_problem(entry.first)
+              @unloaded_assets << entry.first
+            end
+          end
+          if has_wrong_host(entry.first) == true
+            @bad_assets << entry.first unless is_known_problem(entry.first)
+          end
         end
       end
 
       unless @good_assets.length > 0
-        self.errors.add(:assets, "The page did not load any assets")
+        self.errors.add(:assets, "The page did not load any assets: #{@good_assets} #{@bad_assets} #{@unloaded_assets}")
       end
       unless @bad_assets.length == 0
         self.errors.add(:assets, "There were assets loaded from the wrong environment: #{@bad_assets}")
@@ -71,33 +77,32 @@ module HealthCentralAssets
     end
 
     def not_using_old_pipeline
-      bad_calls = []
-      @proxy.har.entries.map do |entry|
-        if entry.request.url.include?("healthcentral") && entry.request.url.include?("/assets_pipeline/")
-          bad_calls << entry.request.url
+      bad_calls   = []
+      good_calls  = []
+      all_calls   = []
+      @network_traffic.map do |entry|
+        unless entry.empty?
+          entry = entry.first
+          if entry.first.include?("healthcentral") && entry.first.include?("/assets_pipeline/")
+            bad_calls << entry.first
+          end
+          if entry.first.include?("healthcentral") && !entry.first.include?("/assets_pipeline/")
+            good_calls << entry.first
+          end
         end
       end
+
       unless bad_calls.compact.empty?
         self.errors.add(:assets, "There were calls to the old pipeline #{bad_calls}")
+      end
+      unless good_calls.length >= 1
+        self.errors.add(:assets, "There were no calls to the current assets pipeline")
       end
     end
 
     def no_broken_images
-      images = @driver.find_elements(:tag_name => "img")
-      
-      image_urls = images.collect do |image|
-        begin
-           if image.attribute('src')
-            image.attribute('src').gsub(' ','')
-          end
-        rescue
-          Selenium::WebDriver::Error::StaleElementReferenceError
-        end
-      end
-
-      image_urls = image_urls.select do |x|
-        x.class == "String"
-      end
+      images = all('img')
+      image_urls = images.collect {|x| x[:src] }.compact
       
       broken_images = image_urls.reject do |url|
         if url.length > 4
@@ -110,9 +115,8 @@ module HealthCentralAssets
         end
       end
 
-      broken_images.each do |img|
-        puts "Broken image: #{}"
-        puts
+      if image_urls.empty?
+        self.errors.add(:assets, "No images were loaded on the page")
       end
       unless broken_images.empty?
         self.errors.add(:assets, "#{broken_images.length} broken images on the page: #{broken_images}")
