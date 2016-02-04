@@ -11,14 +11,14 @@ module HealthCentralOmniture
     attr_accessor *attr_list
     validate :values_match_fixture
     validate :correct_report_suite
-    validate :prop12_and_13
+    # validate :prop12_and_13
     validate :prop10_value
 
     def initialize(args)
       @fixture  = args[:fixture]
       @url      = args[:url]
       raise OmnitureIsBlank unless args[:omniture_text]
-      array     = args[:omniture_text].lines
+      array     = args[:omniture_text]
       index     = array.index { |x| x.include?("pageName") }
       raise OmnitureIsBlank unless index
       range     = array.length - index
@@ -81,12 +81,10 @@ module HealthCentralOmniture
     end
 
     def prop12_and_13
-      prop12 = @fixture.send(:prop12)
-      prop13 = @fixture.send(:prop13)
-      unless prop12
+      unless self.prop12
         self.errors.add(:omniture, "prop12 was blank")
       end
-      unless prop13
+      unless self.prop13
         self.errors.add(:omniture, "prop13 was blank")
       end
     end
