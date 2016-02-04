@@ -75,6 +75,6 @@ class ClinicalTrials < MiniTest::Test
   end
 
   def teardown  
-    # cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end
