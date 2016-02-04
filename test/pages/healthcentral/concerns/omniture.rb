@@ -5,13 +5,13 @@ module HealthCentralOmniture
     include ::ActiveModel::Validations
 
     def self.attr_list
-      [:pageName, :channel, :hier1, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop16, :prop17, :prop22, :prop29, :prop30, :prop32, :prop35, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :evar6, :eVar17, :events]
+      [:pageName, :channel, :hier1, :prop1, :prop2, :prop4, :prop5, :prop6, :prop7, :prop12, :prop13, :prop16, :prop17, :prop22, :prop29, :prop30, :prop32, :prop35, :prop37, :prop38, :prop39, :prop40, :prop42, :prop43, :prop44, :prop45, :evar6, :eVar17, :events]
     end
 
     attr_accessor *attr_list
     validate :values_match_fixture
     validate :correct_report_suite
-    # validate :prop12_and_13
+    validate :prop12_and_13
     validate :prop10_value
 
     def initialize(args)
@@ -68,8 +68,10 @@ module HealthCentralOmniture
         raise 'No fixture for this test'
       end
       Omniture.attr_list.each do |attribute|
-        if @fixture.send(attribute).to_s != self.send(attribute).to_s
-          self.errors.add(:omniture, "#{attribute || nil} was #{self.send(attribute)} not #{@fixture.send(attribute)}")
+        unless attribute.to_s == "prop12" || attribute.to_s == "prop13"
+          if @fixture.send(attribute).to_s != self.send(attribute).to_s
+            self.errors.add(:omniture, "#{attribute || nil} was #{self.send(attribute)} not #{@fixture.send(attribute)}")
+          end
         end
       end
     end
@@ -81,10 +83,10 @@ module HealthCentralOmniture
     end
 
     def prop12_and_13
-      unless self.prop12
+      unless send(:prop12).to_s.length > 0
         self.errors.add(:omniture, "prop12 was blank")
       end
-      unless self.prop13
+      unless  send(:prop13).to_s.length > 0
         self.errors.add(:omniture, "prop13 was blank")
       end
     end
