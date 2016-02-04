@@ -212,48 +212,38 @@ def present_with_text?(css)
 end
 
 def scroll_to_bottom_of_page
-  @driver.execute_script("window.scrollTo(0,document.body.scrollHeight);")
+  execute_script("window.scrollTo(0,document.body.scrollHeight);")
 end
 
 def open_omniture_debugger
-  @driver.execute_script "javascript:void(window.open(\"\",\"dp_debugger\",\"width=600,height=600,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1\").document.write(\"<script language='JavaScript' id=dbg src='https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js'></\"+\"script>\"))"
+  execute_script "javascript:void(window.open(\"\",\"dp_debugger\",\"width=600,height=600,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1\").document.write(\"<script language='JavaScript' id=dbg src='https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js'></\"+\"script>\"))"
   sleep 1
 end
 
 def get_omniture_from_debugger
-  original_window = @driver.window_handles.first
-  second_window   = @driver.window_handles.last
+  second_window   = page.driver.browser.window_handles.last
+  @omniture_lines = []
 
-  @driver.switch_to.window second_window
-  wait_for { @driver.find_element(:css, 'td#request_list_cell').displayed? }
-  omniture_node = find 'td#request_list_cell'
-  begin
-    omniture_text = omniture_node.text if omniture_node
-  rescue Selenium::WebDriver::Error::StaleElementReferenceError
-    omniture_text = nil
-  end
-  if omniture_text == nil
-    sleep 1
-    wait_for { @driver.find_element(:css, 'td#request_list_cell').displayed? }
-    omniture_node = find 'td#request_list_cell'
-    if omniture_node
-      omniture_text = omniture_node.text
-    else
-      omniture_text = nil
+  page.within_window second_window do
+    wait_for { all('table.debugtable').last.visible? }
+    uncheck "auto_refresh"
+    omniture_node   = find('td#request_list_cell').all('table.debugtable').last
+    @omniture_lines = omniture_node.all('tr').map do |line|
+      line.text
+    end
+
+    if @omniture_lines.empty?
+      sleep 1
+      wait_for { all('table.debugtable').last.visible? }
+      omniture_node   = find('td#request_list_cell').all('table.debugtable').last
+      @omniture_lines = omniture_node.all('tr').map do |line|
+        line.text
+      end
     end
   end
 
-  @driver.switch_to.window original_window
-  omniture_text
+  @omniture_lines
 end
-
-# def evaluate_script(script)
-#   begin
-#     @driver.execute_script "return #{script}"
-#   rescue Selenium::WebDriver::Error::JavascriptError
-#     "javascript error"
-#   end
-# end
 
 def page_has_ad(ad_url)
   ads = []
