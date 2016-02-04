@@ -14,6 +14,7 @@ class ClinicalTrials < MiniTest::Test
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = RedesignEntry::RedesignEntryPage.new(:driver =>@driver, :proxy => @proxy, :fixture => @trial_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       @url              = "#{HC_BASE_URL}/tools/d/clinical-trials" + $_cache_buster
+      preload_page @url
       visit @url
     end
 
