@@ -1,16 +1,17 @@
 module HealthCentralFooter
   class RedesignFooter
     include ::ActiveModel::Validations
+    include Capybara::DSL
 
     validate :footer
 
     def initialize(args)
-      @driver = args[:driver]
+      
     end
 
     def footer
-      footer_links    = @driver.find_elements(:css, "#footer a.HC-link-row-link").select { |x| x.text == "About Us" || x.text == "Contact Us" || x.text == "Privacy Policy" || x.text == "Terms of Use" || x.text == "Security Policy" || x.text == "Advertising Policy" || x.text == "Advertise With Us" }
-      other_sites     = @driver.find_elements(:css, "#footer a.HC-link-row-link")
+      footer_links    = all("#footer a.HC-link-row-link").select { |x| x.text == "About Us" || x.text == "Contact Us" || x.text == "Privacy Policy" || x.text == "Terms of Use" || x.text == "Security Policy" || x.text == "Advertising Policy" || x.text == "Advertise With Us" }
+      other_sites     = all("#footer a.HC-link-row-link")
       expected_sites  = ["The Body", "The Body Pro", "Berkeley Wellness", "Health Communities", "Intelecare", "Mood 24/7"]
       sites_in_footer = other_sites.collect {|x| x.text} if other_sites
       unless footer_links.length == 7
