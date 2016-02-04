@@ -156,15 +156,6 @@ class HealthCentralPage
     raise NotImplementedError
   end
 
-  def get_site_urls
-    site_urls = @proxy.har.entries.map do |entry|
-      if entry.request.url.include?("healthcentral")
-        entry.request.url
-      end
-    end
-    site_urls.compact
-  end
-
   class GlobalTestCases
     include ::ActiveModel::Validations
 
