@@ -2,6 +2,8 @@ require_relative './healthcentral_page'
 
 module HealthCentralConcreteFive
   class ConcreteFivePage < HealthCentralPage
+    include Capybara::DSL
+    
     def initialize(args)
       @driver           = args[:driver]
       @proxy            = args[:proxy]
