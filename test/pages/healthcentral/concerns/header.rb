@@ -1,6 +1,7 @@
 module HealthCentralHeader
   class DesktopHeader
     include ::ActiveModel::Validations
+    include Capybara::DSL
 
     validate :health_logo
     validate :health_az_menu
@@ -19,27 +20,27 @@ module HealthCentralHeader
         self.errors.add(:header, "Health Logo was missing from the page")
       end
 
-      link = @driver.find_element(:css, "a.LogoHC")
+      link = find "a.LogoHC"
       begin
         link.click
       rescue Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
       end
       sleep 3
-      unless @driver.current_url == "#{HC_BASE_URL}/"
-        self.errors.add(:header, "The logo linked to #{@driver.current_url} not #{HC_BASE_URL}/")
+      unless page.driver.current_url == "#{HC_BASE_URL}/"
+        self.errors.add(:header, "The logo linked to #{page.driver.current_url} not #{HC_BASE_URL}/")
       end
-      @driver.navigate.back
+      page.driver.go_back
     end
 
     def health_az_menu
       #Open Health A-Z Menu
-      wait_for { @driver.find_element(:css, ".Button--AZ").displayed? }
-      nav_on_pageload = @driver.find_elements(:css, ".HC-nav")
+      wait_for { find(".Button--AZ").visible? }
+      nav_on_pageload = all(:css, ".HC-nav")
       if nav_on_pageload
-        nav_on_pageload = nav_on_pageload.select { |x| x.displayed? }
+        nav_on_pageload = nav_on_pageload.select { |x| x.visible? }
       end
 
-      button = @driver.find_element(:css, ".Button--AZ")
+      button = find(:css, ".Button--AZ")
       begin
         button.click
       rescue Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
@@ -47,9 +48,9 @@ module HealthCentralHeader
         button = find ".Button--AZ"
         button.click if button
       end
-      wait_for { @driver.find_element(:css, ".HC-nav").displayed? }
+      wait_for { find(".HC-nav").visible? }
       wait_for_page_to_load
-      az_nav = @driver.find_element(:css, ".HC-nav")
+      az_nav = find(:css, ".HC-nav")
 
       unless nav_on_pageload.empty?
         self.errors.add(:header, "A-Z was on the page before clicking it")
@@ -59,15 +60,14 @@ module HealthCentralHeader
       end
 
       #Check for Category Links
-      wait_for { @driver.find_elements(css: '.js-Nav--Primary-accordion-title').select {|x| x.displayed? }.length == 3 }
-      titles = @driver.find_elements(:css, ".js-Nav--Primary-accordion-title").select {|x| x.displayed? }.select {|x| x.text == "BODY & MIND" || x.text == "FAMILY HEALTH" || x.text == "HEALTHY LIVING"}
+      titles = all(:css, ".js-Nav--Primary-accordion-title").select {|x| x.visible? }.select {|x| x.text == "BODY & MIND" || x.text == "FAMILY HEALTH" || x.text == "HEALTHY LIVING"}
       titles_text = titles.collect { |x| x.text }
       unless titles.length == 3
         self.errors.add(:header, "Not all super categories were on the page. Present were: #{titles_text}")
       end 
 
       #Check for Sub Category links
-      sub_category_links      = @driver.find_elements(:css, ".Nav--Primary.js-Nav--Primary .Nav-listGroup-list--General  a")
+      sub_category_links      = all(:css, ".Nav--Primary.js-Nav--Primary .Nav-listGroup-list--General  a")
       sub_category_links_text = sub_category_links.collect {|x| x.text }
       all_links_counted_for   = ::HealthCentralPage::SUB_CATEGORIES - sub_category_links_text
       extra_links             = sub_category_links_text - ::HealthCentralPage::SUB_CATEGORIES
@@ -81,81 +81,77 @@ module HealthCentralHeader
 
       # Commenting out because things are loading slow right now
       # unless ENV['TEST_ENV'] == "stage"
-      #   wait_for { @driver.find_element(:css, ".Nav--Primary.js-Nav--Primary a").displayed? }
-      #   ibd = @driver.find_elements(:css, ".Nav--Primary.js-Nav--Primary a").select { |x| x.text == "Digestive Health"}.first
+      #   wait_for { find(:css, ".Nav--Primary.js-Nav--Primary a").visible? }
+      #   ibd = all(:css, ".Nav--Primary.js-Nav--Primary a").select { |x| x.text == "Digestive Health"}.first
       #   ibd.click
-      #   wait_for { @driver.find_element(:css, ".Phases-navigation").displayed? }
-      #   unless (@driver.current_url == "#{HC_BASE_URL}/ibd/" || @driver.current_url == "#{HC_BASE_URL}/ibd")
-      #     self.errors.add(:header, "IBD linked to #{@driver.current_url} not #{HC_BASE_URL}/ibd/")
+      #   wait_for { find(:css, ".Phases-navigation").visible? }
+      #   unless (page.driver.current_url == "#{HC_BASE_URL}/ibd/" || page.driver.current_url == "#{HC_BASE_URL}/ibd")
+      #     self.errors.add(:header, "IBD linked to #{page.driver.current_url} not #{HC_BASE_URL}/ibd/")
       #   end
       #   @driver.navigate.back
       # end
     end
 
     def social_icons
-      wait_for { @driver.find_element(:css, ".HC-header-content span.icon-facebook").displayed? }
       #Check Facebook icon
-      fb_icon = @driver.find_element(:css, ".HC-header-content span.icon-facebook")
+      fb_icon = find(:css, ".HC-header-content span.icon-facebook")
       fb_icon.click
       sleep 3
-      first_window  = @driver.window_handles.first
-      second_window = @driver.window_handles.last
-      @driver.switch_to.window second_window
-      unless @driver.current_url.include?("https://www.facebook.com/HealthCentral") || @driver.current_url.include?("https://www.facebook.com/healthcentral")
-        self.errors.add(:header, "Facebook icon linked to #{@driver.current_url} not https://www.facebook.com/HealthCentral")
+      facebook_window = page.driver.browser.window_handles.last
+      page.within_window facebook_window do
+        unless page.driver.current_url.include?("https://www.facebook.com/HealthCentral") || page.driver.current_url.include?("https://www.facebook.com/healthcentral")
+          self.errors.add(:header, "Facebook icon linked to #{page.driver.current_url} not https://www.facebook.com/HealthCentral")
+        end
       end
-      @driver.close
-      @driver.switch_to.window first_window
+      page.driver.close_window  facebook_window
 
       #Check Twitter icon
-      twitter_icon = @driver.find_element(:css, ".HC-header-content span.icon-twitter")
+      twitter_icon = find(:css, ".HC-header-content span.icon-twitter")
       twitter_icon.click
       sleep 3
-      second_window = @driver.window_handles.last
-      @driver.switch_to.window second_window
-      @driver.switch_to.window second_window
-      unless @driver.current_url == "https://twitter.com/#!/healthcentral" || @driver.current_url == "https://twitter.com/healthcentral"
-        self.errors.add(:header, "Twitter icon linked to #{@driver.current_url} not https://twitter.com/#!/healthcentral")
+      twitter_window = page.driver.browser.window_handles.last
+      page.within_window twitter_window do
+        unless page.driver.current_url == "https://twitter.com/#!/healthcentral" || page.driver.current_url == "https://twitter.com/healthcentral" || page.driver.current_url == "https://twitter.com/"
+          self.errors.add(:header, "Twitter icon linked to #{page.driver.current_url} not https://twitter.com/#!/healthcentral")
+        end
       end
-      @driver.close
-      @driver.switch_to.window first_window
+      page.driver.close_window  twitter_window
 
       #Check Pinterest icon
-      pinterest_icon = @driver.find_element(:css, ".HC-header-content span.icon-pinterest")
+      pinterest_icon = find(:css, ".HC-header-content span.icon-pinterest")
       pinterest_icon.click
       sleep 3
-      second_window = @driver.window_handles.last
-      @driver.switch_to.window second_window
-      unless @driver.current_url == "https://www.pinterest.com/HealthCentral/"
-        self.errors.add(:header, "Pinterest icon linked to #{@driver.current_url} not https://www.pinterest.com/HealthCentral/")
+      pinterest_window = page.driver.browser.window_handles.last
+      page.within_window pinterest_window do
+        unless page.driver.current_url == "https://www.pinterest.com/HealthCentral/"
+          self.errors.add(:header, "Pinterest icon linked to #{page.driver.current_url} not https://www.pinterest.com/HealthCentral/")
+        end
       end
-      @driver.close
-      @driver.switch_to.window first_window
+      page.driver.close_window  pinterest_window
 
       #Check Mail Icon
-      mail_icon = @driver.find_element(:css, ".HC-header-content span.icon-mail")
+      mail_icon = find(:css, ".HC-header-content span.icon-mail")
       begin
         mail_icon.click
-      rescue Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
+      rescue Net::ReadTimeout
       end
       wait_for_page_to_load
       
-      unless @driver.current_url == "#{HC_BASE_URL}/profiles/c/newsletters/subscribe"
-        self.errors.add(:header, "Mail icon linked to  #{@driver.current_url} not #{HC_BASE_URL}/profiles/c/newsletters/subscribe")
+      unless page.driver.current_url == "#{HC_BASE_URL}/profiles/c/newsletters/subscribe"
+        self.errors.add(:header, "Mail icon linked to  #{page.driver.current_url} not #{HC_BASE_URL}/profiles/c/newsletters/subscribe")
       end
       begin
-        menu = @driver.find_element(:css, "div.Subscriptions-main")
+        menu = find(:css, "div.Subscriptions-main")
       rescue
         menu = nil 
       end
       if menu.nil?
         self.errors.add(:header, "Newsletter page did not load: #{HC_BASE_URL}/profiles/c/newsletters/subscribe")
       end
-      @driver.navigate.back
+      page.driver.go_back
     end
 
     def social_icons_in_header
-      wait_for          { @driver.find_element(:css, "ul.SocialButtons-list").displayed? }
       fb_share          = find "div.HC-header-socialButtons a.js-Social--Follow-actionable-facebook"
       twitter_share     = find "div.HC-header-socialButtons a.js-Social--Follow-actionable-twitter"
       stumbleupon_share = find "div.HC-header-socialButtons a.js-Social--Follow-actionable-pinterest"
@@ -177,7 +173,7 @@ module HealthCentralHeader
 
     def subcategory_navigation
       subcategory       = find "a.Page-category-titleLink"
-      related_elements  = @driver.find_elements(:css, "ul.Page-category-related-list a")
+      related_elements  = all(:css, "ul.Page-category-related-list a")
       related_links     = related_elements ? related_elements.collect {|x| x.text.strip } : []
 
       unless @collection == true
@@ -266,7 +262,6 @@ module HealthCentralHeader
     validate :clinical_trial_text
 
     def initialize(args)
-      @driver  =args[:driver]
       @logo    = "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png"
     end
 
@@ -376,7 +371,7 @@ module HealthCentralHeader
 
     def subcategory_navigation
       subcat_link = find "a.Page-category-titleLink.js-Page-category-titleLink"
-      related_links = @driver.find_elements(:css, "ul.Page-category-related-list a")
+      related_links = all(:css, "ul.Page-category-related-list a")
 
       if subcat_link
         self.errors.add(:header, "Subcategory link appeared in a LBLN header")
@@ -411,7 +406,7 @@ module HealthCentralHeader
 
     def subcategory_navigation
       subcategory   = find "a.Page-category-titleLink.js-Page-category-titleLink"
-      related_links = @driver.find_elements(:css, "ul.Page-category-related-list a")
+      related_links = all(:css, "ul.Page-category-related-list a")
 
       if subcategory
         self.errors.add(:header, "Subcategory link appeared in the Sponsored Collection header")
@@ -437,7 +432,7 @@ module HealthCentralHeader
 
     def hamburger_menu
       #Is the hamburger menu on the page?
-      wait_for {@driver.find_element(:css, "i.icon-menu.js-icon-menu").displayed? }
+      wait_for {find(:css, "i.icon-menu.js-icon-menu").displayed? }
       hamburger_menu = find "i.icon-menu.js-icon-menu"
       unless hamburger_menu
         self.errors.add(:header, "hamburger menu did not appear in the header")
@@ -479,9 +474,9 @@ module HealthCentralHeader
       resources = find "ul.Nav-listGroup-list--HealthTools li.js-Nav--Primary-accordion-title"
       if resources
         resources.click 
-        wait_for { @driver.find_element(:css, "ul.Nav-listGroup-list--HealthTools li.Nav-listGroupSub-list-item a").displayed? }
+        wait_for { find(:css, "ul.Nav-listGroup-list--HealthTools li.Nav-listGroupSub-list-item a").displayed? }
         sleep 1
-        resources_links = @driver.find_elements(:css, "ul.Nav-listGroup-list--HealthTools li.Nav-listGroupSub-list-item a")
+        resources_links = all(:css, "ul.Nav-listGroup-list--HealthTools li.Nav-listGroupSub-list-item a")
         unless resources_links
           self.errors.add(:header, "Resources submenu links Newsletters, Medications, Videos, Clinical Trials and More tools did not appear")
         end
@@ -500,9 +495,9 @@ module HealthCentralHeader
         body_and_mind = find "ul.Nav-listGroup-list--General li.js-Nav--Primary-accordion-title"
         if body_and_mind
           body_and_mind.click 
-          wait_for { @driver.find_element(:css, "ul.Nav-listGroup-list--General li.Nav-listGroupSub-list-item a").displayed? }
-          wait_for { @driver.find_element(:link_text, "Sleep Disorders").displayed? }
-          body_links = @driver.find_elements(:css, "ul.Nav-listGroup-list--General li.Nav-listGroupSub-list-item a")
+          wait_for { find(:css, "ul.Nav-listGroup-list--General li.Nav-listGroupSub-list-item a").displayed? }
+          wait_for { find(:link_text, "Sleep Disorders").displayed? }
+          body_links = all(:css, "ul.Nav-listGroup-list--General li.Nav-listGroupSub-list-item a")
           unless body_links
             self.errors.add(:header, "Body And Mind submenu links did not appear")
           end
@@ -522,8 +517,8 @@ module HealthCentralHeader
         family_health = find "ul.Nav-listGroup-list--Featured li.js-Nav--Primary-accordion-title"
         if family_health
           family_health.click
-          wait_for { @driver.find_elements(:css, "ul.Nav-listGroup-list--Featured  li.Nav-listGroupSub-list-item a").length == 2 }
-          family_links = @driver.find_elements(:css, "ul.Nav-listGroup-list--Featured  li.Nav-listGroupSub-list-item a")
+          wait_for { all(:css, "ul.Nav-listGroup-list--Featured  li.Nav-listGroupSub-list-item a").length == 2 }
+          family_links = all(:css, "ul.Nav-listGroup-list--Featured  li.Nav-listGroupSub-list-item a")
           unless family_links
             self.errors.add(:header, "Missing family health links")
           end
@@ -552,7 +547,7 @@ module HealthCentralHeader
 
     def subcategory_navigation
       subcategory   = find "a.Page-category-titleLink"
-      related_links = @driver.find_elements(:css, "ul.Page-category-related-list a")
+      related_links = all(:css, "ul.Page-category-related-list a")
 
       unless subcategory
         self.errors.add(:header, "#{@subcategory} did not appear in the header")
