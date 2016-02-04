@@ -3,14 +3,16 @@ require_relative '../../../pages/healthcentral/concrete_five_page'
 
 class CancerCenterTest < MiniTest::Test
   context "The cancer center page" do 
+    include Capybara::DSL
+
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/concrete_five.yml')
+      capybara_with_phantomjs
+      io              = File.open('test/fixtures/healthcentral/concrete_five.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['cancer_center'])
-      @page           = HealthCentralConcreteFive::ConcreteFivePage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture)
+      @page           = HealthCentralConcreteFive::ConcreteFivePage.new(:driver =>@driver, :proxy => @proxy, :fixture => @fixture)
       @url            = "#{MED_BASE_URL}/cecs/cf/cancer-center" + "?foo=#{rand(36**8).to_s(36)}"
+      preload_page @url
       visit @url
     end
 
@@ -18,7 +20,8 @@ class CancerCenterTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets(:base_url => @url, :host => MED_BASE_URL)
+        network_traffic = get_network_traffic
+        assets = @page.assets(:base_url => @url, :host => MED_BASE_URL, :network_traffic => network_traffic)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -46,6 +49,6 @@ class CancerCenterTest < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end
