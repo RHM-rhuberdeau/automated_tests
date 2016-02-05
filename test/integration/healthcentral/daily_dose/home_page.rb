@@ -3,54 +3,56 @@ require_relative '../../../pages/healthcentral/dailydose_page'
 
 class DailyDoseHomePage < MiniTest::Test
   context "daily dose homepage" do 
+    include Capybara::DSL
+
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/daily_dose.yml')
+      capybara_with_phantomjs
+      io                = File.open('test/fixtures/healthcentral/daily_dose.yml')
       fixture           = YAML::load_documents(io)
       topic_fixture     = OpenStruct.new(fixture[0]['home'])
       head_navigation   = HealthCentralHeader::DailyDoseDesktop.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/"
-      visit "#{@url}#{$_cache_buster}"
+      @url              = "#{HC_BASE_URL}/dailydose/" + $_cache_buster
+      preload_page @url
+      visit @url
     end
 
     ##################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "not have any errors" do 
-        headers           = @driver.find_elements(:css, "h2")
+        headers           = all(:css, "h2")
         header_text       = headers.collect(&:text).compact
-        article_links     = @driver.find_elements(:css, "ul.ContentList--article li.ContentList-item a") || []
-        infite_content    = @driver.find_elements(:css, ".js-fake-infinite-content") || []
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+        article_links     = all(:css, "ul.ContentList--article li.ContentList-item a")
+        infite_content    = all(:css, ".js-fake-infinite-content") || []
+        anchor_links      = all(:css, "a").select { |x| x[:rel] == "canonical" }.compact
+        link_tags         = all('link[rel="canonical"]', :visible => false)
+        all_links         = anchor_links.to_a + link_tags.to_a
+        all_hrefs         = all_links.collect { |l| l[:href]}.compact
 
         all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
+          assert_equal(true, @url.include?(link), "#{link} did not include #{@url}")
         end
 
         if infite_content
-          infite_content  = infite_content.select {|x| x.displayed?}
+          infite_content  = infite_content.select {|x| x.visible?}
         end
-        we_reccommend     = find "div.OUTBRAIN"
 
         scroll_to_bottom_of_page
         sleep 0.5
-        new_content       = @driver.find_elements(:css, ".js-fake-infinite-content")
+        new_content       = all(:css, ".js-fake-infinite-content")
         if new_content
-          new_content     = new_content.select {|x| x.displayed?}
+          new_content     = new_content.select {|x| x.visible?}
         end
 
         assert_equal(false, header_text.nil?, "header text was nil")
         assert_equal(true, header_text.length == headers.length, "A h2 tag was blank")
-        assert_equal(true, article_links.length > 1, "Missing article links on the page")
+        assert_equal(false, article_links.empty?, "Missing article links on the page")
         assert_equal(1, infite_content.length, "no infinite content on the page")
         assert_equal(true, infite_content.length < new_content.length, "page failed to lazy load additional content")
         assert_equal(true, new_content.length > 0, "no new content was lazy loaded")
+        puts "article_links: #{article_links.inspect}"
       end
     end
 
@@ -58,7 +60,8 @@ class DailyDoseHomePage < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets(:base_url => @url)
+        network_traffic = get_network_traffic
+        assets = @page.assets(:base_url => @url, :network_traffic => network_traffic)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -85,7 +88,7 @@ class DailyDoseHomePage < MiniTest::Test
         thcn_content_type = "dailydose"
         thcn_super_cat    = "HealthCentral"
         thcn_category     = ""
-        ads               = DailyDose::DailyDosePage::AdsTestCases.new(:driver => @driver,
+        ads               = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                                 :proxy => @proxy, 
                                                                 :url => @url,
                                                                 :ad_site => ad_site,
@@ -116,6 +119,6 @@ class DailyDoseHomePage < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end
