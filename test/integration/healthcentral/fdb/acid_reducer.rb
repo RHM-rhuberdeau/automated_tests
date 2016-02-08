@@ -4,8 +4,7 @@ require_relative '../../../pages/healthcentral/fdb_page'
 class FdbMedicationPageTest < MiniTest::Test
   context "acid reducer" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
+      capybara_with_phantomjs
       io                = File.open('test/fixtures/healthcentral/fdb.yml')
       fixture           = YAML::load_documents(io)
       fdb_fixture       = OpenStruct.new(fixture[0]['acid_reducer'])
@@ -16,7 +15,9 @@ class FdbMedicationPageTest < MiniTest::Test
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = FDB::FDBPage.new(:driver => @driver,:proxy => @proxy,:fixture => fdb_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       @url              = "#{HC_BASE_URL}/acid-reflux/medications/acid-reducer-famotidine-oral-153189/" + $_cache_buster
+      preload_page @url
       visit @url
+      wait_for { find("h1.Page-info-title").visible? }
     end
 
     ##################################################################
@@ -51,7 +52,7 @@ class FdbMedicationPageTest < MiniTest::Test
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Digestive Health"
         omniture          = @page.omniture(:url => @url)
-        ads               = FDB::FDBPage::AdsTestCases.new(:driver => @driver,
+        ads               = HealthCentralAds::AdsTestCases.new(:driver => @driver,
                                                                 :proxy => @proxy, 
                                                                 :url => @url,
                                                                 :ad_site => ad_site,
@@ -81,6 +82,6 @@ class FdbMedicationPageTest < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end
