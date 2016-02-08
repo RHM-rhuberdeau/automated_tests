@@ -14,10 +14,6 @@ module DailyDose
       Functionality.new(:driver => @driver)
     end
 
-    def global_test_cases
-      GlobalTestCases.new(:driver => @driver, :head_navigation => @head_navigation, :footer => @footer)
-    end
-
     def omniture
       open_omniture_debugger
       omniture_string = get_omniture_from_debugger
@@ -34,32 +30,6 @@ module DailyDose
 
     def initialize(args)
       @driver           = args[:driver]
-    end
-  end
-
-  class GlobalTestCases
-    include ::ActiveModel::Validations
-
-    validate :head_navigation
-    validate :footer
-
-    def initialize(args)
-      @head_navigation = args[:head_navigation]
-      @footer          = args[:footer]
-    end
-
-    def head_navigation
-      @head_navigation.validate
-      unless @head_navigation.errors.empty?
-        self.errors.add(:head_navigation, @head_navigation.errors.values.first)
-      end
-    end
-
-    def footer
-      @footer.validate
-      unless @footer.errors.empty?
-        self.errors.add(:footer, @footer.errors.values.first)
-      end
     end
   end
 
@@ -87,11 +57,11 @@ module DailyDose
     def initialize(args)
       @fixture  = args[:fixture]
       raise OmnitureIsBlank unless args[:omniture_string]
-      array     = args[:omniture_string].lines
-      index     = array.index { |x| x.include?("pageName") }
-      raise OmnitureIsBlank unless index
-      range     = array.length - index
-      new_array = array[index, range]
+      array     = args[:omniture_string]
+      start     = array.index { |x| x.include?("pageName") }
+      raise OmnitureIsBlank unless start
+      range     = array.length - start
+      new_array = array[start, range]
       omniture_from_array(new_array)
       get_report_suite(array)
     end
