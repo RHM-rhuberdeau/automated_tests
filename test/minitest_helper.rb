@@ -159,7 +159,7 @@ def preload_page(url)
     begin
       RestClient::Request.execute(method: :get, url: url,
                                 timeout: 10)
-    rescue RestClient::RequestTimeout, SocketError
+    rescue RestClient::RequestTimeout, SocketError, RestClient::BadGateway
     end
   end
 end
@@ -190,16 +190,16 @@ end
 
 def wait_for
   begin
-    Selenium::WebDriver::Wait.new(:timeout => 3).until { yield }
-  rescue Selenium::WebDriver::Error::NoSuchElementError, Selenium::WebDriver::Error::TimeOutError
-    false
-  rescue Net::ReadTimeout
+    Timeout::timeout(3) { yield }
+  rescue Timeout::Error, Net::ReadTimeout, EOFError
     false
   end
+  sleep 0.25
 end
 
 #Get all network traffic from Phantomjs
 def get_network_traffic
+  wait_for { page.driver.network_traffic.map { |request| request.response_parts.uniq(&:url).map { |response| ["#{response.url}", response.status] }}.length > 20 }
   page.driver.network_traffic.map { |request| request.response_parts.uniq(&:url).map { |response| ["#{response.url}", response.status] }}
 end
 
