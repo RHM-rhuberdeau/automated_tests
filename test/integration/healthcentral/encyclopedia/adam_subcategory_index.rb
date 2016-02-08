@@ -4,9 +4,8 @@ require_relative '../../../pages/healthcentral/encyclopedia_page'
 class AdamSubcategoryIndex < MiniTest::Test
   context "The adam subcategory index page" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/encyclopedia.yml')
+      capybara_with_phantomjs
+      io              = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['adam_subcategory_index'])
       head_navigation = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
@@ -15,8 +14,10 @@ class AdamSubcategoryIndex < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/alzheimers/encyclopedia/"
-      visit "#{@url}#{$_cache_buster}"
+      @url            = "#{HC_BASE_URL}/alzheimers/encyclopedia/" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for { find("h1.Page-info-title").visible? }
     end
 
     ##################################################################
@@ -25,15 +26,8 @@ class AdamSubcategoryIndex < MiniTest::Test
       should "have the proper links" do 
         conditions_library = find "h1.Page-info-title"
         conditions_library = conditions_library.text if conditions_library
-        condition_links    = @driver.find_elements(:css, "ul.ContentList li a") || []
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
-
-        all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
-        end
+        condition_links    = all(:css, "ul.ContentList li a") || []
+        
         assert_equal("Alzheimer's Disease Index", conditions_library)
         assert_equal(14, condition_links.length)
       end
@@ -97,6 +91,6 @@ class AdamSubcategoryIndex < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end

@@ -4,31 +4,32 @@ require_relative '../../../pages/healthcentral/encyclopedia_page'
 class AdamOtherAlphabeticalIndex < MiniTest::Test
   context "Adam Other alphabetical index page" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
+      capybara_with_phantomjs
       io              = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['adam_alphabetical_index'])
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/adam/a/" 
-      visit "#{@url}#{$_cache_buster}"
+      @url            = "#{HC_BASE_URL}/encyclopedia/adam/a/" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for { all("div.Page-index-nav ul li a").last.visible? }
     end
 
     ##################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "have the proper links" do 
-        alphabetical_nav = @driver.find_elements(:css, "div.Page-index-nav ul li a")
-        page_links       = @driver.find_elements(:css, "li.ContentList-item.key-A a")
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+        alphabetical_nav  = all(:css, "div.Page-index-nav ul li a")
+        page_links        = all(:css, "li.ContentList-item.key-A a")
+        anchor_links      = all(:css, "a").select { |x| x[:rel] == "canonical" }.compact
+        link_tags         = all('link[rel="canonical"]', :visible => false)
+        all_links         = anchor_links.to_a + link_tags.to_a
+        all_hrefs         = all_links.collect { |l| l[:href]}.compact
 
         all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
+          assert_equal(true, @url.include?(link), "#{link} did not include #{@url}")
         end
 
         assert_equal(29, alphabetical_nav.length, "Missing alphaetical navigation links")
@@ -94,6 +95,6 @@ class AdamOtherAlphabeticalIndex < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end

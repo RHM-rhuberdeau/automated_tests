@@ -4,9 +4,8 @@ require_relative '../../../pages/healthcentral/encyclopedia_page'
 class AdamOtherLeaf < MiniTest::Test
   context "Adam Other leaf page" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/encyclopedia.yml')
+      capybara_with_phantomjs
+      io              = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['adam_other_leaf'])
       head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
@@ -15,8 +14,10 @@ class AdamOtherLeaf < MiniTest::Test
                                    :driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/cold-flu/encyclopedia/colds-and-the-flu-4021748"
-      visit "#{@url}#{$_cache_buster}"
+      @url            = "#{HC_BASE_URL}/cold-flu/encyclopedia/colds-and-the-flu-4021748" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for { find("h1.Page-info-title").visible? }
     end
 
     ##################################################################
@@ -26,16 +27,9 @@ class AdamOtherLeaf < MiniTest::Test
         condition           = find "h1.Page-info-title"
         condition           = condition.text if condition
         table_of_contents   = find "ul.TableOfContents-content-container"
-        table_of_contents_a = @driver.find_elements(:css, "ul.TableOfContents-content-container a")
+        table_of_contents_a = all(:css, "ul.TableOfContents-content-container a")
         pagination_link     = find ".ArticlePagination-button.ArticlePagination-next"
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
-
-        all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
-        end
+        
         assert_equal("Colds and the Flu", condition)
         assert_equal(false, table_of_contents.nil?)
         assert_equal(10, table_of_contents_a.length)
@@ -101,6 +95,6 @@ class AdamOtherLeaf < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end

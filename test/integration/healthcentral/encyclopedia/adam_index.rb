@@ -4,32 +4,33 @@ require_relative '../../../pages/healthcentral/encyclopedia_page'
 class AdamIndex < MiniTest::Test
   context "The encyclopedia home page" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/encyclopedia.yml')
+      capybara_with_phantomjs
+      io              = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['adam_index'])
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/adam" 
-      visit "#{@url}#{$_cache_buster}"
+      @url            = "#{HC_BASE_URL}/adam" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for {find("h1.Page-info-title").visible?}
     end
 
     ##################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "have the proper links" do 
-        conditions_library = find "h1.Page-info-title"
-        conditions_library = conditions_library.text if conditions_library
-        condition_links    = @driver.find_elements(:css, "ul.ContentList li a")
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+        conditions_library  = find "h1.Page-info-title"
+        conditions_library  = conditions_library.text if conditions_library
+        condition_links     = all(:css, "ul.ContentList li a")
+        anchor_links        = all('a[rel="canonical"]', :visible => false)
+        link_tags           = all('link[rel="canonical"]', :visible => false)
+        all_links           = anchor_links.to_a + link_tags.to_a
+        all_hrefs           = all_links.collect { |l| l[:href]}.compact
 
         all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
+          assert_equal(true, @url.include?(link))
         end
         assert_equal("Conditions Library", conditions_library)
         assert_equal(32, condition_links.length)
@@ -94,6 +95,6 @@ class AdamIndex < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end

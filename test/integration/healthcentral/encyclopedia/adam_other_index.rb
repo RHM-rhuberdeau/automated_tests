@@ -4,16 +4,17 @@ require_relative '../../../pages/healthcentral/encyclopedia_page'
 class AdamOtherIndex < MiniTest::Test
   context "Adam Other index page" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/encyclopedia.yml')
+      capybara_with_phantomjs
+      io              = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['adam_other_index'])
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/adam/" 
-      visit "#{@url}#{$_cache_buster}"
+      @url            = "#{HC_BASE_URL}/encyclopedia/adam/" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for { find("h1.Page-info-title").visible? }
     end
 
     ##################################################################
@@ -22,15 +23,8 @@ class AdamOtherIndex < MiniTest::Test
       should "have the proper links" do 
         condition           = find "h1.Page-info-title"
         condition           = condition.text if condition
-        condition_links     = @driver.find_elements(:css, "ul.ContentList li a")
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
-
-        all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
-        end
+        condition_links     = all(:css, "ul.ContentList li a")
+        
         assert_equal("Other Conditions Alphabetically", condition)
         assert_equal(29, condition_links.length)
       end
@@ -94,6 +88,6 @@ class AdamOtherIndex < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end

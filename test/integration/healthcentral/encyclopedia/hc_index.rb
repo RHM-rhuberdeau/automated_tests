@@ -4,31 +4,24 @@ require_relative '../../../pages/healthcentral/encyclopedia_page'
 class HcIndexPage < MiniTest::Test
   context "The encyclopedia index page" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
+      capybara_with_phantomjs
       io = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['hc_index'])
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/hc/"
-      visit "#{@url}#{$_cache_buster}"
+      @url            = "#{HC_BASE_URL}/encyclopedia/hc/" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for { all(".ContentList.ContentList--article.js-search-content a").last.visible? }
     end
 
     ##################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "have the proper links" do 
-        a_to_z_links      = @driver.find_elements(:css, ".ContentList.ContentList--article.js-search-content a")
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
-
-        all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
-        end
+        a_to_z_links      = all(:css, ".ContentList.ContentList--article.js-search-content a")
         assert_equal(a_to_z_links.length, 23)
       end
     end
@@ -91,6 +84,6 @@ class HcIndexPage < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end

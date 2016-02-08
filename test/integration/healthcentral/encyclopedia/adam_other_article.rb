@@ -4,16 +4,17 @@ require_relative '../../../pages/healthcentral/encyclopedia_page'
 class AdamOtherArticle < MiniTest::Test
   context "Adam Other article page" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/encyclopedia.yml')
+      capybara_with_phantomjs
+      io              = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['adam_other_article'])
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
       footer          = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page           = ::HealthCentralEncyclopedia::EncyclopediaPage.new(:driver =>@driver,:proxy => @proxy, :fixture => @fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url            = "#{HC_BASE_URL}/encyclopedia/adam/abo-incompatibility-4012271/"
-      visit "#{@url}#{$_cache_buster}"
+      @url            = "#{HC_BASE_URL}/encyclopedia/adam/abo-incompatibility-4012271/" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for { find("h1.Page-info-title").visible? }
     end
 
     ##################################################################
@@ -22,15 +23,7 @@ class AdamOtherArticle < MiniTest::Test
       should "have the proper links" do 
         condition           = find "h1.Page-info-title"
         condition           = condition.text if condition
-        bread_crumbs        = @driver.find_elements(:css, "div.Breadcrums-container a") || []
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
-
-        all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
-        end
+        bread_crumbs        = all(:css, "div.Breadcrums-container a") || []
 
         assert_equal("ABO incompatibility", condition)
         assert_equal(2, bread_crumbs.length)
@@ -95,6 +88,6 @@ class AdamOtherArticle < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end
