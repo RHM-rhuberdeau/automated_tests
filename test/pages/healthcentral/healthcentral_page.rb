@@ -1,4 +1,5 @@
 require 'active_model'
+
 require_relative './concerns/omniture'
 require_relative './concerns/assets'
 require_relative './concerns/ads'
@@ -98,7 +99,7 @@ class HealthCentralPage
     ad_calls      = traffic_calls.map do |entry|
       unless entry.empty?
         entry = entry.first
-        if self.dfp_ad_request entry.first
+        if self.dfp_ad_request(entry.first) && (entry.last == 200)
           entry.first
         end
       end
@@ -141,7 +142,8 @@ class HealthCentralPage
   end
 
   def assets(args)
-    HealthCentralAssets::Assets.new(:network_traffic => args[:network_traffic], :base_url => args[:base_url], :host => args[:host])
+    network_traffic = get_network_traffic
+    HealthCentralAssets::Assets.new(:network_traffic => network_traffic, :base_url => args[:base_url], :host => args[:host])
   end
 
   def seo(args)
