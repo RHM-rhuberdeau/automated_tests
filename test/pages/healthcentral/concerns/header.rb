@@ -317,7 +317,6 @@ module HealthCentralHeader
     validate :week_is_displayed
 
     def initialize(args)
-      @driver = args[:driver]
     end
 
     def week_is_displayed
@@ -432,7 +431,7 @@ module HealthCentralHeader
 
     def hamburger_menu
       #Is the hamburger menu on the page?
-      wait_for {find(:css, "i.icon-menu.js-icon-menu").displayed? }
+      wait_for {find(:css, "i.icon-menu.js-icon-menu").visible? }
       hamburger_menu = find "i.icon-menu.js-icon-menu"
       unless hamburger_menu
         self.errors.add(:header, "hamburger menu did not appear in the header")
@@ -458,12 +457,12 @@ module HealthCentralHeader
           self.errors.add(:header, "Body & Mind submenu did not appear in the header")
         end
 
-        family_health = find "ul.Nav-listGroup-list--Featured"
+        family_health = find("ul.Nav-listGroup-list--Featured", text: "FAMILY HEALTH")
         unless family_health
           self.errors.add(:header, "Family Health did not appear in the header")
         end
 
-        healthy_living = find "ul.Nav-listGroup-list--Featured"
+        healthy_living = find("ul.Nav-listGroup-list--Featured", text: "HEALTHY LIVING")
         unless healthy_living
           self.errors.add(:header, "Healthy Living does not appear in the header")
         end
@@ -474,7 +473,7 @@ module HealthCentralHeader
       resources = find "ul.Nav-listGroup-list--HealthTools li.js-Nav--Primary-accordion-title"
       if resources
         resources.click 
-        wait_for { find(:css, "ul.Nav-listGroup-list--HealthTools li.Nav-listGroupSub-list-item a").displayed? }
+        wait_for { all(:css, "ul.Nav-listGroup-list--HealthTools li.Nav-listGroupSub-list-item a").first.visible? }
         sleep 1
         resources_links = all(:css, "ul.Nav-listGroup-list--HealthTools li.Nav-listGroupSub-list-item a")
         unless resources_links
@@ -495,8 +494,8 @@ module HealthCentralHeader
         body_and_mind = find "ul.Nav-listGroup-list--General li.js-Nav--Primary-accordion-title"
         if body_and_mind
           body_and_mind.click 
-          wait_for { find(:css, "ul.Nav-listGroup-list--General li.Nav-listGroupSub-list-item a").displayed? }
-          wait_for { find(:link_text, "Sleep Disorders").displayed? }
+          wait_for { all(:css, "ul.Nav-listGroup-list--General li.Nav-listGroupSub-list-item a").first.visible? }
+          wait_for { find("a", text: "Sleep Disorders").visible? }
           body_links = all(:css, "ul.Nav-listGroup-list--General li.Nav-listGroupSub-list-item a")
           unless body_links
             self.errors.add(:header, "Body And Mind submenu links did not appear")
@@ -514,7 +513,7 @@ module HealthCentralHeader
 
       def family_health
         missing_links = []
-        family_health = find "ul.Nav-listGroup-list--Featured li.js-Nav--Primary-accordion-title"
+        family_health = find("ul.Nav-listGroup-list--Featured li.js-Nav--Primary-accordion-title", text: "FAMILY HEALTH")
         if family_health
           family_health.click
           wait_for { all(:css, "ul.Nav-listGroup-list--Featured  li.Nav-listGroupSub-list-item a").length == 2 }
@@ -526,7 +525,7 @@ module HealthCentralHeader
             link_texts = family_links.collect { |x| x.text }
             missing_links = ['Menopause', 'Prostate'] - link_texts
             unless missing_links.length == 0
-              self.errors.add(:header, "MIssing from Family Health submenu: #{missing_links}")
+              self.errors.add(:header, "Missing from Family Health submenu: #{missing_links}")
             end
           end
         end
@@ -655,7 +654,6 @@ module HealthCentralHeader
     validate :week_is_displayed
 
     def initialize(args)
-      @driver = args[:driver]
     end
 
     def week_is_displayed
