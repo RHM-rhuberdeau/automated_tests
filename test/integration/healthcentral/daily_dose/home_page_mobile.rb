@@ -3,49 +3,48 @@ require_relative '../../../pages/healthcentral/dailydose_page'
 
 class DailyDoseMobileHomePage < MiniTest::Test
   context "daily dose mobile homepage" do 
+
     setup do 
-      mobile_fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/daily_dose.yml')
+      capybara_with_phantomjs_mobile
+      io                = File.open('test/fixtures/healthcentral/daily_dose.yml')
       fixture           = YAML::load_documents(io)
       topic_fixture     = OpenStruct.new(fixture[0]['home_mobile'])
       head_navigation   = HealthCentralHeader::DailyDoseMobile.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/"
-      visit "#{@url}#{$_cache_buster}"
+      @url              = "#{HC_BASE_URL}/dailydose/" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for { find("p.js-fake-infinite-title-desc").visible? }
     end
 
     ##################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "not have any errors" do 
-        headers           = @driver.find_elements(:css, "h2")
+        headers           = all(:css, "h2")
         header_text       = headers.collect(&:text).compact
-        article_links     = @driver.find_elements(:css, "ul.ContentList--article li.ContentList-item a") || []
-        infite_content   = @driver.find_elements(:css, ".js-fake-infinite-content") || []
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+        infite_content    = all(:css, ".js-fake-infinite-content")
+        anchor_links      = all(:css, "a").select { |x| x[:rel] == "canonical" }
+        link_tags         = all('link[rel="canonical"]', :visible => false)
+        all_links         = anchor_links.to_a + link_tags.to_a
+        all_hrefs         = all_links.collect { |l| l[:href]}.compact
 
         all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
+          assert_equal(true, @url.include?(link))
         end
         
         if infite_content
-          infite_content = infite_content.select {|x| x.displayed?}
+          infite_content = infite_content.select {|x| x.visible?}
         end
-        we_reccommend     = find "div.OUTBRAIN"
 
         scroll_to_bottom_of_page
         sleep 1
-        new_content_count = @driver.find_elements(:css, ".js-fake-infinite-content")
+        new_content_count = all(:css, ".js-fake-infinite-content")
 
         assert_equal(false, header_text.nil?, "header text was nil")
         assert_equal(true, header_text.length == headers.length, "A h2 tag was blank")
-        assert_equal(true, article_links.length > 1, "Missing article links on the page")
-        assert_equal(true, infite_content.length >= 1, "Not enough infinite content loaded")
+        assert_equal(false, infite_content.empty?, "Not enough infinite content loaded")
         assert_equal(infite_content.length, new_content_count.length, "Not enough new content loaded")
       end
     end
@@ -81,7 +80,7 @@ class DailyDoseMobileHomePage < MiniTest::Test
         thcn_content_type = "dailydose"
         thcn_super_cat    = "HealthCentral"
         thcn_category     = ""
-        ads               = DailyDose::DailyDosePage::LazyLoadedAds.new(:driver => @driver,
+        ads               = HealthCentralAds::LazyLoadedAds.new(:driver => @driver,
                                                                 :proxy => @proxy, 
                                                                 :url => @url,
                                                                 :ad_site => ad_site,
@@ -113,6 +112,6 @@ class DailyDoseMobileHomePage < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end

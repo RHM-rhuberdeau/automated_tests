@@ -3,7 +3,6 @@ require_relative '../../../pages/healthcentral/dailydose_page'
 
 class DailyDoseHomePage < MiniTest::Test
   context "daily dose homepage" do 
-    include Capybara::DSL
 
     setup do 
       capybara_with_phantomjs
@@ -16,6 +15,7 @@ class DailyDoseHomePage < MiniTest::Test
       @url              = "#{HC_BASE_URL}/dailydose/" + $_cache_buster
       preload_page @url
       visit @url
+      wait_for { find("p.js-fake-infinite-title-desc").visible? }
     end
 
     ##################################################################
@@ -24,7 +24,6 @@ class DailyDoseHomePage < MiniTest::Test
       should "not have any errors" do 
         headers           = all(:css, "h2")
         header_text       = headers.collect(&:text).compact
-        article_links     = all(:css, "ul.ContentList--article li.ContentList-item a")
         infite_content    = all(:css, ".js-fake-infinite-content") || []
         anchor_links      = all(:css, "a").select { |x| x[:rel] == "canonical" }.compact
         link_tags         = all('link[rel="canonical"]', :visible => false)
@@ -48,7 +47,6 @@ class DailyDoseHomePage < MiniTest::Test
 
         assert_equal(false, header_text.nil?, "header text was nil")
         assert_equal(true, header_text.length == headers.length, "A h2 tag was blank")
-        assert_equal(false, article_links.empty?, "Missing article links on the page")
         assert_equal(1, infite_content.length, "no infinite content on the page")
         assert_equal(true, infite_content.length < new_content.length, "page failed to lazy load additional content")
         assert_equal(true, new_content.length > 0, "no new content was lazy loaded")
@@ -60,8 +58,7 @@ class DailyDoseHomePage < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        network_traffic = get_network_traffic
-        assets = @page.assets(:base_url => @url, :network_traffic => network_traffic)
+        assets = @page.assets(:base_url => @url)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -89,16 +86,16 @@ class DailyDoseHomePage < MiniTest::Test
         thcn_super_cat    = "HealthCentral"
         thcn_category     = ""
         ads               = HealthCentralAds::AdsTestCases.new(:driver => @driver,
-                                                                :proxy => @proxy, 
-                                                                :url => @url,
-                                                                :ad_site => ad_site,
-                                                                :ad_categories => ad_categories,
-                                                                :exclusion_cat => exclusion_cat,
-                                                                :sponsor_kw  => sponsor_kw,
-                                                                :thcn_content_type => thcn_content_type,
-                                                                :thcn_super_cat => thcn_super_cat,
-                                                                :thcn_category => thcn_category,
-                                                                :ugc => "n") 
+                                                              :proxy => @proxy, 
+                                                              :url => @url,
+                                                              :ad_site => ad_site,
+                                                              :ad_categories => ad_categories,
+                                                              :exclusion_cat => exclusion_cat,
+                                                              :sponsor_kw  => sponsor_kw,
+                                                              :thcn_content_type => thcn_content_type,
+                                                              :thcn_super_cat => thcn_super_cat,
+                                                              :thcn_category => thcn_category,
+                                                              :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture

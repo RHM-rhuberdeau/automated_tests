@@ -4,16 +4,17 @@ require_relative '../../../pages/healthcentral/dailydose_page'
 class DailyDoseSecondWeekMobile < MiniTest::Test
   context "daily dose second week mobile" do 
     setup do 
-      mobile_fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/daily_dose.yml')
+      capybara_with_phantomjs_mobile
+      io                = File.open('test/fixtures/healthcentral/daily_dose.yml')
       fixture           = YAML::load_documents(io)
       topic_fixture     = OpenStruct.new(fixture[0]['week2_mobile'])
       head_navigation   = HealthCentralHeader::DailyDoseMobile.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/2015/2/"
-      visit "#{@url}#{$_cache_buster}"
+      @url              = "#{HC_BASE_URL}/dailydose/2015/2/" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for {find("h2.title").visible?}
     end
 
     ##################################################################
@@ -22,16 +23,16 @@ class DailyDoseSecondWeekMobile < MiniTest::Test
       should "not have any errors" do 
         header            = find "h2.title"
         header_text       = header.text if header 
-        article_links     = @driver.find_elements(:css, "ul.ContentList--article li.ContentList-item a") || []
-        pagination_links  = @driver.find_elements(:css, "div.ArticlePaginationRange a") || []
+        article_links     = all(:css, "ul.ContentList--article li.ContentList-item a") || []
+        pagination_links  = all(:css, "div.ArticlePaginationRange a") || []
         we_reccommend     = find "div.OUTBRAIN"
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+        anchor_links      = all('a[rel="canonical"]', :visible => false)
+        link_tags         = all('link[rel="canonical"]', :visible => false)
+        all_links         = anchor_links.to_a + link_tags.to_a
+        all_hrefs         = all_links.collect { |l| l[:href]}.compact
 
         all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
+          assert_equal(true, @url.include?(link))
         end
 
         assert_equal(false, header_text.nil?, "header title nil")
@@ -56,7 +57,7 @@ class DailyDoseSecondWeekMobile < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal("Health News: Jan 14th-Jan 8th", @driver.title)
+        assert_equal("Health News: Jan 14th-Jan 8th", page.title)
       end
     end
 
@@ -102,6 +103,6 @@ class DailyDoseSecondWeekMobile < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end

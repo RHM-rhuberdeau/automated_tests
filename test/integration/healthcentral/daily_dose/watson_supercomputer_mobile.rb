@@ -4,47 +4,47 @@ require_relative '../../../pages/healthcentral/dailydose_page'
 class DailyDoseMobileArticlePage < MiniTest::Test
   context "Mobile sugary drinks dailydose" do 
     setup do 
-      mobile_fire_fox_with_secure_proxy
-      @proxy.new_har
+      capybara_with_phantomjs_mobile
       io                = File.open('test/fixtures/healthcentral/daily_dose.yml')
       fixture           = YAML::load_documents(io)
       topic_fixture     = OpenStruct.new(fixture[0]['watson_mobile'])
       head_navigation   = HealthCentralHeader::DailyDoseMobile.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/2015/6/30/sugary_drinks_tied_to_nearly_200_000_deaths_a_year/"
-      visit "#{@url}#{$_cache_buster}" 
+      @url              = "#{HC_BASE_URL}/dailydose/2015/6/30/sugary_drinks_tied_to_nearly_200_000_deaths_a_year/" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for { find("h1").visible?}
     end
 
     ##################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "not have any errors" do 
-        headers           = @driver.find_elements(:css, "h2")
+        headers           = all(:css, "h2")
         header_text       = headers.collect(&:text).compact
-        article_links     = @driver.find_elements(:css, "ul.ContentList--article li.ContentList-item a") || []
-        quote_of_the_day = find "p.js-fake-infinite-title-green"
+        article_links     = all(:css, "ul.ContentList--article li.ContentList-item a") || []
+        quote_of_the_day = all("p.js-fake-infinite-title-green").first
         quote_text       = quote_of_the_day.text if quote_of_the_day
-        infite_content   = @driver.find_elements(:css, ".js-fake-infinite-content") || []
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+        infite_content   = all(:css, ".js-fake-infinite-content") || []
+        anchor_links  = all('a[rel="canonical"]', :visible => false)
+        link_tags     = all('link[rel="canonical"]', :visible => false)
+        all_links     = anchor_links.to_a + link_tags.to_a
+        all_hrefs     = all_links.collect { |l| l[:href]}.compact
 
         all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
+          assert_equal(true, @url.include?(link))
         end
         
         if infite_content
-          infite_content = infite_content.select {|x| x.displayed?}
+          infite_content = infite_content.select {|x| x.visible?}
         end
-        we_reccommend     = find "div.OUTBRAIN"
 
         scroll_to_bottom_of_page
         sleep 1
-        new_content_count = @driver.find_elements(:css, ".js-fake-infinite-content")
+        new_content_count = all(:css, ".js-fake-infinite-content")
         if new_content_count
-          new_content_count = new_content_count.select {|x| x.displayed?}
+          new_content_count = new_content_count.select {|x| x.visible?}
         end
 
         assert_equal(false, header_text.nil?, "header text was nil")
@@ -86,18 +86,18 @@ class DailyDoseMobileArticlePage < MiniTest::Test
         thcn_content_type = "dailydose"
         thcn_super_cat    = "HealthCentral"
         thcn_category     = ""
-        ads               = DailyDose::DailyDosePage::LazyLoadedAds.new(:driver => @driver,
-                                                                        :proxy => @proxy, 
-                                                                        :url => @url,
-                                                                        :ad_site => ad_site,
-                                                                        :ad_categories => ad_categories,
-                                                                        :exclusion_cat => exclusion_cat,
-                                                                        :sponsor_kw  => sponsor_kw,
-                                                                        :thcn_content_type => thcn_content_type,
-                                                                        :thcn_super_cat => thcn_super_cat,
-                                                                        :thcn_category => thcn_category,
-                                                                        :ugc => "n",
-                                                                        :trigger_point => "div.ContentListInset.js-content-inset") 
+        ads               = HealthCentralAds::LazyLoadedAds.new(:driver => @driver,
+                                                                :proxy => @proxy, 
+                                                                :url => @url,
+                                                                :ad_site => ad_site,
+                                                                :ad_categories => ad_categories,
+                                                                :exclusion_cat => exclusion_cat,
+                                                                :sponsor_kw  => sponsor_kw,
+                                                                :thcn_content_type => thcn_content_type,
+                                                                :thcn_super_cat => thcn_super_cat,
+                                                                :thcn_category => thcn_category,
+                                                                :ugc => "n",
+                                                                :trigger_point => "div.ContentListInset.js-content-inset") 
         ads.validate
 
         omniture = @page.omniture
@@ -118,6 +118,6 @@ class DailyDoseMobileArticlePage < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end

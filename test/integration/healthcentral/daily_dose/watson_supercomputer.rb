@@ -3,48 +3,50 @@ require_relative '../../../pages/healthcentral/dailydose_page'
 
 class DailyDoseSugaryDrinks < MiniTest::Test
   context "Sugary drinks dailydose" do 
+
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
+      capybara_with_phantomjs
       io                = File.open('test/fixtures/healthcentral/daily_dose.yml')
       fixture           = YAML::load_documents(io)
       topic_fixture     = OpenStruct.new(fixture[0]['watson'])
       head_navigation   = HealthCentralHeader::DailyDoseDesktop.new(:driver => @driver)
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = DailyDose::DailyDosePage.new(:driver => @driver,:proxy => @proxy,:fixture => topic_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
-      @url              = "#{HC_BASE_URL}/dailydose/2015/6/30/sugary_drinks_tied_to_nearly_200_000_deaths_a_year/"
-      visit "#{@url}#{$_cache_buster}"
+      @url              = "#{HC_BASE_URL}/dailydose/2015/6/30/sugary_drinks_tied_to_nearly_200_000_deaths_a_year/" + $_cache_buster
+      preload_page @url
+      visit @url
+      wait_for { find("h1").visible?}
     end
 
     ##################################################################
     ################ FUNCTIONALITY ###################################
     context "when functioning properly" do 
       should "not have any errors" do 
-        quote_of_the_day = find "p.js-fake-infinite-title-green"
+        quote_of_the_day = all("p.js-fake-infinite-title-green").first
         quote_text       = quote_of_the_day.text if quote_of_the_day
-        infite_content   = @driver.find_elements(:css, ".js-fake-infinite-content") || []
-        anchor_links  = @driver.find_elements(:css, "a").select { |x| x.attribute('rel') == "canonical" }.compact
-        link_tags     = @driver.find_elements(:css, "link").select { |x| x.attribute('rel') == "canonical" }.compact
-        all_links     = anchor_links + link_tags
-        all_hrefs     = all_links.collect { |l| l.attribute('href')}.compact
+        infite_content   = all(:css, ".js-fake-infinite-content") || []
+        anchor_links  = all(:css, "a").select { |x| x[:rel] == "canonical" }.compact
+        link_tags     = all('link[rel="canonical"]', :visible => false)
+        all_links     = anchor_links.to_a + link_tags.to_a
+        all_hrefs     = all_links.collect { |l| l[:href]}.compact
 
         all_hrefs.each do |link|
-          assert_equal(true, link.include?(@url))
+          assert_equal(true, @url.include?(link))
         end
 
         if infite_content
-          infite_content = infite_content.select {|x| x.displayed?}
+          infite_content = infite_content.select {|x| x.visible?}
         end
         inside_dailydose = find "div.js-TrackingInternal--mpop h2"
         inside_dd_text   = inside_dailydose.text if inside_dailydose
 
         scroll_to_bottom_of_page
         sleep 0.5
-        @driver.execute_script("window.scrollTo(0,500);")
+        execute_script("window.scrollTo(0,500);")
         sleep 0.5
-        new_content      = @driver.find_elements(:css, ".js-fake-infinite-content")
+        new_content      = all(:css, ".js-fake-infinite-content")
         if new_content
-          new_content    = new_content.select {|x| x.displayed?}
+          new_content    = new_content.select {|x| x.visible?}
         end
 
         assert_equal(false, quote_text.nil?)
@@ -70,7 +72,7 @@ class DailyDoseSugaryDrinks < MiniTest::Test
     ################### SEO ##########################################
     context "SEO" do 
       should "have the correct title" do 
-        assert_equal("Sugary Drinks Tied to Nearly 200,000 Deaths a Year", @driver.title)
+        assert_equal("Sugary Drinks Tied to Nearly 200,000 Deaths a Year", page.title)
       end
     end
 
@@ -85,17 +87,17 @@ class DailyDoseSugaryDrinks < MiniTest::Test
         thcn_content_type = "dailydose"
         thcn_super_cat    = "HealthCentral"
         thcn_category     = ""
-        ads               = DailyDose::DailyDosePage::AdsTestCases.new(:driver => @driver,
-                                                                :proxy => @proxy, 
-                                                                :url => @url,
-                                                                :ad_site => ad_site,
-                                                                :ad_categories => ad_categories,
-                                                                :exclusion_cat => exclusion_cat,
-                                                                :sponsor_kw  => sponsor_kw,
-                                                                :thcn_content_type => thcn_content_type,
-                                                                :thcn_super_cat => thcn_super_cat,
-                                                                :thcn_category => thcn_category,
-                                                                :ugc => "n") 
+        ads               = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                              :proxy => @proxy, 
+                                                              :url => @url,
+                                                              :ad_site => ad_site,
+                                                              :ad_categories => ad_categories,
+                                                              :exclusion_cat => exclusion_cat,
+                                                              :sponsor_kw  => sponsor_kw,
+                                                              :thcn_content_type => thcn_content_type,
+                                                              :thcn_super_cat => thcn_super_cat,
+                                                              :thcn_category => thcn_category,
+                                                              :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture
@@ -116,6 +118,6 @@ class DailyDoseSugaryDrinks < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end
