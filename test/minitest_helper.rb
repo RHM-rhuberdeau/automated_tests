@@ -110,10 +110,6 @@ def cleanup_driver_and_proxy
   @proxy.close
 end
 
-def cleanup_driver
-  @driver.quit
-end
-
 def phantomjs
   @driver = Selenium::WebDriver.for :remote, url: 'http://localhost:8001'
 end
@@ -128,6 +124,19 @@ def capybara_with_phantomjs
 
   Capybara.javascript_driver = :poltergeist
   Capybara.default_driver    = :poltergeist
+end
+
+def capybara_with_phantomjs_mobile
+  Capybara.register_driver :poltergeist do |app|
+      options = {:timeout => 120,
+                :phantomjs_options => ['--ignore-ssl-errors=yes'],
+                :js_errors => false}
+      Capybara::Poltergeist::Driver.new(app, options)
+  end
+
+  Capybara.javascript_driver = :poltergeist
+  Capybara.default_driver    = :poltergeist
+  Capybara.page.driver.browser.resize(425,960)
 end
 
 # def visit(url)
@@ -164,13 +173,13 @@ def wait_for_page_to_load
   end
   sleep 0.5
   begin
-    @driver.execute_script("window.stop();")
+    execute_script("window.stop();")
   rescue Timeout::Error, Net::ReadTimeout
   end
 end
 
 def finished_loading?
-  state = @driver.execute_script "return window.document.readyState"
+  state = execute_script "return window.document.readyState"
   sleep 0.5
   if state == "complete"
     true
@@ -226,7 +235,11 @@ def get_omniture_from_debugger
 
   page.within_window second_window do
     wait_for { all('table.debugtable').last.visible? }
-    uncheck "auto_refresh"
+    begin
+      uncheck "auto_refresh"
+    rescue Capybara::Ambiguous
+      all("input[name='auto_refresh']").first.click
+    end
     omniture_node   = find('td#request_list_cell').all('table.debugtable').last
     @omniture_lines = omniture_node.all('tr').map do |line|
       line.text
