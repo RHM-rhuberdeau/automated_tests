@@ -32,6 +32,11 @@ THE_BODY_ASSET_HOST = Configuration["thebody"]["asset_host"]
   
 $_cache_buster ||= "?foo=#{rand(36**8).to_s(36)}"
 
+module FakePoltergeistLogger
+  def self.puts(*)
+  end
+end
+
 def firefox
   # Selenium::WebDriver::Firefox::Binary.path= '/opt/firefox/firefox'
   # Selenium::WebDriver::Firefox::Binary.path= '/Applications/Firefox.app/Contents/MacOS/firefox'
@@ -110,6 +115,10 @@ def cleanup_driver_and_proxy
   @proxy.close
 end
 
+def cleanup_capybara
+  Capybara.reset_sessions!
+end
+
 def phantomjs
   @driver = Selenium::WebDriver.for :remote, url: 'http://localhost:8001'
 end
@@ -118,7 +127,8 @@ def capybara_with_phantomjs
   Capybara.register_driver :poltergeist do |app|
       options = {:timeout => 120,
                 :phantomjs_options => ['--ignore-ssl-errors=yes'],
-                :js_errors => false}
+                :js_errors => false,
+                :phantomjs_logger => FakePoltergeistLogger}
       Capybara::Poltergeist::Driver.new(app, options)
   end
 
@@ -130,7 +140,8 @@ def capybara_with_phantomjs_mobile
   Capybara.register_driver :poltergeist do |app|
       options = {:timeout => 120,
                 :phantomjs_options => ['--ignore-ssl-errors=yes'],
-                :js_errors => false}
+                :js_errors => false,
+                :phantomjs_logger => FakePoltergeistLogger}
       Capybara::Poltergeist::Driver.new(app, options)
   end
 
@@ -138,21 +149,6 @@ def capybara_with_phantomjs_mobile
   Capybara.default_driver    = :poltergeist
   Capybara.page.driver.browser.resize(425,960)
 end
-
-# def visit(url)
-#   preload_page(url)
-#   begin
-#     @driver.navigate.to url 
-#   rescue Timeout::Error, Net::ReadTimeout, Selenium::WebDriver::Error::TimeOutError
-#   end
-#   begin
-#     @driver.execute_script("window.stop();")
-#   rescue Timeout::Error, Net::ReadTimeout, Selenium::WebDriver::Error::JavascriptError
-#   end
-  
-#   #Avoid race conditions
-#   sleep 0.25
-# end
 
 def preload_page(url)
   if ENV['TEST_ENV'] == "production" || ENV['TEST_ENV'] == "staging"
@@ -191,7 +187,7 @@ end
 def wait_for
   begin
     Timeout::timeout(3) { yield }
-  rescue Timeout::Error, Net::ReadTimeout, EOFError
+  rescue Timeout::Error, Net::ReadTimeout, EOFError, Capybara::ElementNotFound
     false
   end
   sleep 0.25
