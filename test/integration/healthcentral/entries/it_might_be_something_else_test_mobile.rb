@@ -4,11 +4,10 @@ require_relative '../../../pages/healthcentral/redesign_entry_mobile_page'
 class ItMightBeSomethingMobileEntryPageTest < MiniTest::Test
   context "a community member entry" do 
     setup do 
-      mobile_fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/entries.yml')
-      entry_fixture = YAML::load_documents(io)
-      @entry_fixture = OpenStruct.new(entry_fixture[0]['something_else_mobile'])
+      capybara_with_phantomjs_mobile
+      io                = File.open('test/fixtures/healthcentral/entries.yml')
+      entry_fixture     = YAML::load_documents(io)
+      @entry_fixture    = OpenStruct.new(entry_fixture[0]['something_else_mobile'])
       head_navigation   = HealthCentralHeader::MobileRedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Multiple Sclerosis",
                                    :related_links => ['Chronic Pain', 'Depression', 'Rheumatoid Arthritis'],
@@ -83,6 +82,6 @@ class ItMightBeSomethingMobileEntryPageTest < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    cleanup_capybara
   end 
 end

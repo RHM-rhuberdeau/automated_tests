@@ -4,11 +4,10 @@ require_relative '../../../pages/healthcentral/redesign_entry_page'
 class TurningPointEntryPageTest < MiniTest::Test
   context "an expert entry" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/entries.yml')
-      entry_fixture = YAML::load_documents(io)
-      @entry_fixture = OpenStruct.new(entry_fixture[0]['turning_point'])
+      capybara_with_phantomjs
+      io                = File.open('test/fixtures/healthcentral/entries.yml')
+      entry_fixture     = YAML::load_documents(io)
+      @entry_fixture    = OpenStruct.new(entry_fixture[0]['turning_point'])
       head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
                                    :sub_category => "Multiple Sclerosis",
                                    :related => ['Chronic Pain', 'Depression', 'Rheumatoid Arthritis'],
@@ -17,6 +16,7 @@ class TurningPointEntryPageTest < MiniTest::Test
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       @url  = "#{HC_BASE_URL}/multiple-sclerosis/c/255251/172231/turning-embrace" + $_cache_buster
       visit @url
+      wait_for { has_selector?("h1.Page-info-title", :visible => true) }
     end
 
     ##################################################################
@@ -86,6 +86,6 @@ class TurningPointEntryPageTest < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    cleanup_capybara
   end 
 end

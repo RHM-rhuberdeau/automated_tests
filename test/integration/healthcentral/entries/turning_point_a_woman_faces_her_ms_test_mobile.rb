@@ -4,8 +4,7 @@ require_relative '../../../pages/healthcentral/redesign_entry_mobile_page'
 class TurningPointMobileEntryPageTest < MiniTest::Test
   context "an expert entry" do 
     setup do 
-      mobile_fire_fox_with_secure_proxy
-      @proxy.new_har
+      capybara_with_phantomjs_mobile
       io                = File.open('test/fixtures/healthcentral/entries.yml')
       entry_fixture     = YAML::load_documents(io)
       @entry_fixture    = OpenStruct.new(entry_fixture[0]['turning_point_mobile'])
@@ -17,6 +16,7 @@ class TurningPointMobileEntryPageTest < MiniTest::Test
       @page = RedesignEntry::RedesignEntryMobilePage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       @url  = "#{HC_BASE_URL}/multiple-sclerosis/c/255251/172231/turning-embrace" + $_cache_buster
       visit @url
+      wait_for { has_selector?("h1.Page-info-title", :visible => true) }
     end
 
     ##################################################################
@@ -81,6 +81,6 @@ class TurningPointMobileEntryPageTest < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    cleanup_capybara
   end 
 end

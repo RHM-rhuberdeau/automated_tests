@@ -4,9 +4,8 @@ require_relative '../../../pages/healthcentral/redesign_entry_page'
 class Hypothyroidism < MiniTest::Test
   context "a custom program" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/entries.yml')
+      capybara_with_phantomjs
+      io                = File.open('test/fixtures/healthcentral/entries.yml')
       entry_fixture     = YAML::load_documents(io)
       @entry_fixture    = OpenStruct.new(entry_fixture[0]['hypothyroidism'])
       head_navigation   = HealthCentralHeader::CustomProgramHeader.new(:driver => @driver, :subject => "Living with Hypothyroidism")
@@ -14,6 +13,7 @@ class Hypothyroidism < MiniTest::Test
       @page             = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer)
       @url              = "#{HC_BASE_URL}/more-conditions/c/174035/177245/hypothyroidism/" + $_cache_buster
       visit @url
+      wait_for { has_selector?("h1.Page-info-title", :visible => true) }
     end
 
     ##################################################################
@@ -85,6 +85,6 @@ class Hypothyroidism < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    cleanup_capybara
   end 
 end

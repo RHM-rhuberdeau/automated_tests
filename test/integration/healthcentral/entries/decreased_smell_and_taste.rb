@@ -4,9 +4,8 @@ require_relative '../../../pages/healthcentral/redesign_entry_page'
 class DecreasedSmellAndTastePageTest < MiniTest::Test
   context "a health pro member entry" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/entries.yml')
+      capybara_with_phantomjs
+      io                = File.open('test/fixtures/healthcentral/entries.yml')
       entry_fixture     = YAML::load_documents(io)
       @entry_fixture    = OpenStruct.new(entry_fixture[0][173667])
       head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
@@ -17,6 +16,7 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
       @page = ::RedesignEntry::RedesignEntryPage.new(:driver => @driver,:proxy => @proxy,:fixture => @entry_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       @url  = "#{HC_BASE_URL}/allergy/c/3989/173667/decreased-common-bedfellows" + $_cache_buster
       visit @url
+      wait_for { has_selector?("h1.Page-info-title", :visible => true) }
     end
 
     ##################################################################
@@ -88,6 +88,6 @@ class DecreasedSmellAndTastePageTest < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end
