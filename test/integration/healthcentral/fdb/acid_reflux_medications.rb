@@ -82,6 +82,6 @@ class FdbMedicationsIndexPageTest < MiniTest::Test
   end
 
   def teardown  
-    Capybara.reset_sessions!
+    cleanup_capybara
   end 
 end

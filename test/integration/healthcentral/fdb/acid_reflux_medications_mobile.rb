@@ -4,7 +4,7 @@ require_relative '../../../pages/healthcentral/fdb_mobile_page'
 class FdbMedicationsMobileIndexPageTest < MiniTest::Test
   context "acid reflux mobile" do 
     setup do 
-      capybara_with_phantomjs
+      capybara_with_phantomjs_mobile
       io                = File.open('test/fixtures/healthcentral/fdb.yml')
       fixture           = YAML::load_documents(io)
       fdb_fixture       = OpenStruct.new(fixture[0]['acid_reflux_mobile'])
@@ -83,6 +83,6 @@ class FdbMedicationsMobileIndexPageTest < MiniTest::Test
   end
 
   def teardown  
-    Capybara.reset_sessions!
+    cleanup_capybara
   end 
 end
