@@ -431,8 +431,12 @@ module HealthCentralHeader
 
     def hamburger_menu
       #Is the hamburger menu on the page?
-      wait_for {find(:css, "i.icon-menu.js-icon-menu").visible? }
-      hamburger_menu = find "i.icon-menu.js-icon-menu"
+      begin
+        wait_for {find(:css, "i.icon-menu.js-icon-menu").visible? }
+        hamburger_menu = find "i.icon-menu.js-icon-menu"
+      rescue Capybara::ElementNotFound
+      end
+      
       unless hamburger_menu
         self.errors.add(:header, "hamburger menu did not appear in the header")
       end
