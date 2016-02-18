@@ -25,9 +25,9 @@ module HealthCentralSeo
     end
 
     def has_canonical
-      anchor_links  = all("a", :visible => false).select { |x| x[:rel] == "canonical" }.compact
-      links         = all('link[rel="canonical"]', :visible => false).select {|x| x[:rel] == "canonical"}.compact
-      all_links     = anchor_links + links
+      anchor_links  = all('a[rel="canonical"]', :visible => false)
+      links         = all('link[rel="canonical"]', :visible => false)
+      all_links     = anchor_links.to_a + links.to_a
       all_hrefs     = all_links.collect { |l| l[:href]}.compact
       correct_hrefs = all_hrefs.select do |href|
         href.index(HC_BASE_URL) == 0 || href.index("http://www.healthcentral.com") == 0
