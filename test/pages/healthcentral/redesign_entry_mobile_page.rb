@@ -23,9 +23,13 @@ module RedesignEntry
 
     def analytics_file
       has_file = false
-      proxy.har.entries.each do |entry|
-        if entry.request.url.include?('namespace.js')
-          has_file = true
+      network_traffic = get_network_traffic
+      network_traffic.each do |entry|
+        unless entry.empty?
+          entry = entry.first
+          if (entry.first.include?('namespace.js')) && (entry.last == 200)
+            has_file = true
+          end
         end
       end
       has_file
@@ -53,7 +57,7 @@ module RedesignEntry
     end
     
     def relative_header_links
-      links = (@driver.find_elements(:css, ".js-HC-header a") + @driver.find_elements(:css, ".HC-nav-content a") + @driver.find_elements(:css, ".Page-sub-category a")).collect{|x| x.attribute('href')}.compact
+      links = (all(:css, ".js-HC-header a").to_a + all(:css, ".HC-nav-content a").to_a + all(:css, ".Page-sub-category a").to_a).collect{|x| x[:href]}.compact
       bad_links = links.map do |link|
         if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
           link unless link.include?("twitter")
@@ -65,8 +69,8 @@ module RedesignEntry
     end 
 
     def relative_right_rail_links
-      wait_for { @driver.find_element(:css, ".MostPopular-container").displayed? }
-      links = (@driver.find_elements(:css, ".Node-content-secondary a") + @driver.find_elements(:css, ".MostPopular-container a")).collect{|x| x.attribute('href')}.compact
+      wait_for { has_selector?(".MostPopular-container", :visible => true) }
+      links = (all(:css, ".Node-content-secondary a").to_a + all(:css, ".MostPopular-container a").to_a).collect{|x| x[:href]}.compact
       bad_links = links.map do |link|
         if (link.include?("healthcentral") && link.index(ASSET_HOST) != 0)
           link unless link.include?("id=promo")
@@ -78,24 +82,17 @@ module RedesignEntry
     end
 
     def has_publish_date
-      publish_date = find "span.Page-info-publish-date"
-
-      if publish_date
-        publish_text = publish_date.text
-      else
-        publish_text = ""
-      end
-      
+      publish_date = find(:css, "span.Page-info-publish-date").text
       unless publish_date
         self.errors.add(:base, "Page was missing a publish date")
       end
-      unless publish_text.scan(/\w+\s\d+,\s\d+/).length == 1
-        self.errors.add(:base, "Publish date was in the wrong format: #{publish_text}")
+      unless publish_date.scan(/\w+\s\d+,\s\d+/).length == 1
+        self.errors.add(:base, "Publish date was in the wrong format: #{publish_date}")
       end
     end
 
     def author_name
-      author_name = @driver.find_element(:css, ".Page-info-publish-author a").text
+      author_name = find(:css, ".Page-info-publish-author a").text
       unless author_name
         self.errors.add(:base, "Page was missing an author name")
       end
@@ -105,7 +102,7 @@ module RedesignEntry
     end
 
     def author_role
-      author_role = @driver.find_element(:css, "span.Page-info-publish-badge").text
+      author_role = find(:css, "span.Page-info-publish-badge").text
       unless author_role
         self.errors.add(:base, "Page was missing an author role")
       end
@@ -117,14 +114,14 @@ module RedesignEntry
     def author_links
       @links_in_post = []
       @links_with_no_follow = []
-      post_links = @driver.find_elements(:css, "ul.ContentList--blogpost a")
+      post_links = all(:css, "ul.ContentList.ContentList--blogpost a")
       if post_links
         post_links.each do |link|
-          if link.attribute('href') && link.attribute('href').length > 0
-            @links_in_post << link.attribute('href')
+          if link[:href] && link[:href].length > 0
+            @links_in_post << link[:href]
           end
-          if link.attribute('rel') && link.attribute('rel') == 'nofollow' && (link.attribute('href').include?("/profiles/c/newsletters/subscribe") == false)
-            @links_with_no_follow << link.attribute('href')
+          if link[:rel] && link[:rel] == 'nofollow' && (link[:href].include?("/profiles/c/newsletters/subscribe") == false)
+            @links_with_no_follow << link[:href]
           end
         end
       end
