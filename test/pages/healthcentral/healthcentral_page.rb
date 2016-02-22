@@ -1,4 +1,5 @@
 require 'active_model'
+require 'capybara'
 
 require_relative './concerns/omniture'
 require_relative './concerns/assets'
@@ -15,6 +16,7 @@ class HealthCentralPage
   include HealthCentralAssets 
   include HealthCentralAds 
   include HealthCentralHeader
+  extend Capybara::DSL
 
   SUB_CATEGORIES = ["Acid Reflux",
                     "ADHD",
@@ -69,28 +71,9 @@ class HealthCentralPage
     title.scan(/^[^\-]*-[\s+\w+]+/).length == 1
   end
 
-  def self.ads_on_page(args)
-    expected_number_of_ads  = args[:expected_number_of_ads]
-    ads_per_page            = args[:ads_per_page] || 3
-    all_ads                 = args[:all_ads]
-
-    unless !ads_per_page.nil? 
-      raise AdsPerPageIsNil
-    end
-    unless !all_ads.nil?
-      raise AllAdsIsNil
-    end
-    unless !expected_number_of_ads.nil?
-      raise ExpectedNumberOfAdsIsNil
-    end
-
-    
-    @ads_on_page_view.map { |ad| HealthCentralAds::Ads.new(ad) }
-  end
-
   def self.get_all_ads
     begin
-      execute_script "window.stop();"
+      page.execute_script "window.stop();"
     rescue Timeout::Error, Net::ReadTimeout
     end
     sleep 0.25
@@ -98,7 +81,6 @@ class HealthCentralPage
     traffic_calls = get_network_traffic
     ad_calls      = traffic_calls.map do |entry|
       unless entry.empty?
-        entry = entry.first
         if self.dfp_ad_request(entry.first) && (entry.last == 200)
           entry.first
         end
@@ -121,19 +103,19 @@ class HealthCentralPage
     end
   end
 
-  def check_for_modal(css)
-    begin
-      modal_close = driver.find_element(:css, css)
-    rescue Selenium::WebDriver::Error::NoSuchElementError
+  def self.get_network_traffic
+    network_traffic = []
+    page.driver.network_traffic.each do |request|
+      request.response_parts.uniq(&:url).each do |response|
+        network_traffic << ["#{response.url}", response.status]
+      end
     end
-    if modal_close
-      modal_close.click
-    end
+    network_traffic
   end
 
   def omniture(args)
-    open_omniture_debugger
-    omniture_text = get_omniture_from_debugger
+    HealthCentralPage.open_omniture_debugger
+    omniture_text = HealthCentralPage.get_omniture_from_debugger
     begin
       omniture = HealthCentralOmniture::Omniture.new(omniture_text: omniture_text, fixture: @fixture, url: args[:url])
     rescue HealthCentralOmniture::OmnitureIsBlank
@@ -141,9 +123,42 @@ class HealthCentralPage
     end
   end
 
+  def self.open_omniture_debugger
+    execute_script "javascript:void(window.open(\"\",\"dp_debugger\",\"width=600,height=600,location=0,menubar=0,status=1,toolbar=0,resizable=1,scrollbars=1\").document.write(\"<script language='JavaScript' id=dbg src='https://www.adobetag.com/d1/digitalpulsedebugger/live/DPD.js'></\"+\"script>\"))"
+    sleep 1
+  end
+
+  def self.get_omniture_from_debugger
+    second_window   = page.driver.browser.window_handles.last
+    @omniture_lines = []
+
+    page.within_window second_window do
+      wait_for { all('table.debugtable').last.visible? }
+      begin
+        uncheck "auto_refresh"
+      rescue Capybara::Ambiguous
+        all("input[name='auto_refresh']").first.click
+      end
+      omniture_node   = find('td#request_list_cell').all('table.debugtable').last
+      @omniture_lines = omniture_node.all('tr').map do |line|
+        line.text
+      end
+
+      if @omniture_lines.empty?
+        sleep 1
+        wait_for { all('table.debugtable').last.visible? }
+        omniture_node   = find('td#request_list_cell').all('table.debugtable').last
+        @omniture_lines = omniture_node.all('tr').map do |line|
+          line.text
+        end
+      end
+    end
+
+    @omniture_lines
+  end
+
   def assets(args)
-    network_traffic = get_network_traffic
-    HealthCentralAssets::Assets.new(:network_traffic => network_traffic, :base_url => args[:base_url], :host => args[:host])
+    HealthCentralAssets::Assets.new(:base_url => args[:base_url], :host => args[:host], :driver => args[:driver])
   end
 
   def seo(args)
