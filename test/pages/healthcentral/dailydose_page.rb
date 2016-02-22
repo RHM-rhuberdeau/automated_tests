@@ -15,8 +15,8 @@ module DailyDose
     end
 
     def omniture
-      open_omniture_debugger
-      omniture_string = get_omniture_from_debugger
+      HealthCentralPage.open_omniture_debugger
+      omniture_string = HealthCentralPage.get_omniture_from_debugger
       begin
         omniture = Omniture.new(omniture_string: omniture_string, fixture: @fixture)
       rescue Omniture::OmnitureIsBlank
