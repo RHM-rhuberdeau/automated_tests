@@ -21,6 +21,7 @@ module Phases
 
   class Functionality
     include ::ActiveModel::Validations
+    include ::Capybara::DSL
 
     validate :phase_navigation
     validate :current_phase_highlighted
@@ -38,10 +39,10 @@ module Phases
     end
 
     def phase_navigation
-      wait_for          { @driver.find_element(:css, ".js-TrackingInternal--pha ul").displayed? }
+      wait_for          { find(:css, ".js-TrackingInternal--pha ul").visible? }
       phase_nav_menu  = find ".js-TrackingInternal--pha ul"
-      phase_nav_items = @driver.find_elements(:css, ".js-TrackingInternal--pha ul li")
-      phase_nav_text  = phase_nav_items.compact.collect { |x| x.text } if phase_nav_items
+      phase_nav_items = all(:css, ".js-TrackingInternal--pha ul li")
+      phase_nav_text  = phase_nav_items.to_a.compact.collect { |x| x.text } if phase_nav_items
 
       unless phase_nav_menu
         self.errors.add(:phase_navigation, "Phase Navigation menu did not appear on the page")
@@ -63,7 +64,7 @@ module Phases
     end 
 
     def social_controls
-      wait_for { @driver.find_element(:css, "div.Page-main-content div.SocialButtons--Share ul.SocialButtons-list a.js-Social--Follow-actionable-Facebook").displayed? }
+      wait_for { find(:css, "div.Page-main-content div.SocialButtons--Share ul.SocialButtons-list a.js-Social--Follow-actionable-Facebook").visible? }
       facebook      = find "div.Page-main-content div.SocialButtons--Share ul.SocialButtons-list a.js-Social--Follow-actionable-Facebook"
       twitter       = find "div.Page-main-content div.SocialButtons--Share ul.SocialButtons-list a.js-Social--Follow-actionable-Twitter"
       pinterest     = find "div.Page-main-content div.SocialButtons--Share ul.SocialButtons-list a.js-Social--Follow-actionable-Pinterest"
@@ -98,9 +99,9 @@ module Phases
     def we_recommend
       we_recommend          = find ".CollectionListWeRecommend"
       we_recommend_header   = find "h4.CollectionListBoxes-titleSub"
-      we_recommend_modules  = @driver.find_elements(:css, ".CollectionListWeRecommend ul.CollectionListBoxes-list li")
-      we_recommend_links    = @driver.find_elements(:css, "a.CollectionListBoxes-box")
-      we_recommend_titles   = @driver.find_elements(:css, ".CollectionListBoxes-box-info-title")
+      we_recommend_modules  = all(:css, ".CollectionListWeRecommend ul.CollectionListBoxes-list li")
+      we_recommend_links    = all(:css, "a.CollectionListBoxes-box")
+      we_recommend_titles   = all(:css, ".CollectionListBoxes-box-info-title")
       we_recommend_titles   = we_recommend_titles.select { |x| x.text.length > 0 }
 
       unless we_recommend
@@ -124,12 +125,12 @@ module Phases
     end
 
     def latest_posts
-      latest_posts        = @driver.find_elements(:css, ".Editor-picks-container div.Editor-picks-item.u-pullLeft")
+      latest_posts        = all(:css, ".Editor-picks-container div.Editor-picks-item.u-pullLeft")
       latest_posts_header = find "h4.Block-title" 
       header_text         = latest_posts_header.text if latest_posts_header
-      latest_posts_images = @driver.find_elements(:css, ".Editor-picks-image.u-pullLeft img")
-      alt_images          = @driver.find_elements(:css, "img.Editor-picks-slide-visual-image")
-      latest_posts_titles = @driver.find_elements(:css, ".Editor-picks-title-container.js-Editor-picks-title-container")
+      latest_posts_images = all(:css, ".Editor-picks-image.u-pullLeft img")
+      alt_images          = all(:css, "img.Editor-picks-slide-visual-image")
+      latest_posts_titles = all(:css, ".Editor-picks-title-container.js-Editor-picks-title-container")
       latest_posts_titles = latest_posts_titles.select { |x| x.text.length > 0 }
 
       unless latest_posts.length >= 8
@@ -155,8 +156,13 @@ module Phases
       pagination       = find "div.CollectionListBoxes-button"
       pagination_label = find "div.Custom-paginator-info"
       pagination_next  = find "span.Custom-paginator-controls-next-button-label"
-      pagination_prev  = find ".Custom-paginator-controls-prev-icon.icon-left-open-big"
       page_total       = find ".Custom-paginator-label-pageTotal"
+      begin
+        pagination_prev  = find ".Custom-paginator-controls-prev-icon.icon-left-open-big"
+      rescue Capybara::ElementNotFound
+        pagination_prev  = nil 
+      end
+
       if page_total
         number_of_pages = page_total.text.to_i
       end
@@ -183,9 +189,13 @@ module Phases
 
         pagination       = find "div.CollectionListBoxes-button"
         pagination_label = find "div.Custom-paginator-info"
-        pagination_next  = find ".Custom-paginator-controls-next-button"
         pagination_prev  = find ".Custom-paginator-controls-prev-icon.icon-left-open-big"
         page_total       = find ".Custom-paginator-label-pageTotal"
+        begin 
+          pagination_next  = find ".Custom-paginator-controls-next-button"
+        rescue Capybara::ElementNotFound
+          pagination_next  = nil
+        end
         if page_total
           number_of_pages = page_total.text.to_i
         end
@@ -206,9 +216,9 @@ module Phases
     end
 
     def dig_deeper
-      wait_for { @driver.find_element(:css, ".TopicListInset").displayed? }
-      dig_deepr_listings = @driver.find_elements(:css, "ul.TopicListInset-topiclist li")
-      dig_deeper_links   = @driver.find_elements(:css, "ul.TopicListInset-topiclist li a")
+      wait_for { find(:css, ".TopicListInset").visible? }
+      dig_deepr_listings = all(:css, "ul.TopicListInset-topiclist li")
+      dig_deeper_links   = all(:css, "ul.TopicListInset-topiclist li a")
 
       dig_deepr_listings.each do |listing|
         unless listing.text.length > 0
