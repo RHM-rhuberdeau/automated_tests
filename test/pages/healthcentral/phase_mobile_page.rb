@@ -2,6 +2,8 @@ require_relative './phase_page'
 
 module Phases
   class MobilePhasePage < Phases::PhasePage
+    include Capybara::DSL
+
     def initialize(args)
       @driver           = args[:driver]
       @proxy            = args[:proxy]
@@ -41,7 +43,7 @@ module Phases
     end
 
     def current_phase_highlighted
-      highlighted       = find ".PhaseTitle"
+      highlighted       = page.find ".PhaseTitle"
       highlighted_phase = highlighted.text if highlighted
       unless highlighted
         self.errors.add(:current_phase_highlighted, "None of the phases in the Phase Navigation menu were highlighted")
@@ -52,7 +54,7 @@ module Phases
     end 
 
     def social_controls
-      wait_for { @driver.find_element(:css, "div.SocialButtons--Share.is-horizontal ul.SocialButtons-list li.SocialButtons-listItem-facebook a.js-Social--Follow-actionable-Facebook").displayed? }
+      wait_for { find(:css, "div.SocialButtons--Share.is-horizontal ul.SocialButtons-list li.SocialButtons-listItem-facebook a.js-Social--Follow-actionable-Facebook").visible? }
       facebook      = find "div.SocialButtons--Share.is-horizontal ul.SocialButtons-list a.js-Social--Follow-actionable-Facebook" 
       twitter       = find "div.SocialButtons--Share.is-horizontal ul.SocialButtons-list a.js-Social--Follow-actionable-Twitter"
       pinterest     = find "div.SocialButtons--Share.is-horizontal ul.SocialButtons-list a.js-Social--Follow-actionable-Pinterest"
@@ -73,10 +75,10 @@ module Phases
     end
 
     def latest_posts
-      latest_posts        = @driver.find_elements(:css, ".Editor-picks-container div.Editor-picks-item.u-pullLeft")
+      latest_posts        = all(:css, ".Editor-picks-container div.Editor-picks-item.u-pullLeft")
       latest_posts_header = find "h4.Block-title" 
       header_text         = latest_posts_header.text if latest_posts_header
-      latest_posts_titles = @driver.find_elements(:css, ".Editor-picks-title-container.js-Editor-picks-title-container")
+      latest_posts_titles = all(:css, ".Editor-picks-title-container.js-Editor-picks-title-container")
       latest_posts_titles = latest_posts_titles.select { |x| x.text.length > 0 }
 
       unless latest_posts.length >= 8
