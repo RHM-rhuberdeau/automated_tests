@@ -2,10 +2,13 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/dailydose_page'
 
 class DailyDoseSugaryDrinks < MiniTest::Test
+  include Capybara::DSL
+
   context "Sugary drinks dailydose" do 
 
     setup do 
       capybara_with_phantomjs
+      @driver           = Capybara.current_session
       io                = File.open('test/fixtures/healthcentral/daily_dose.yml')
       fixture           = YAML::load_documents(io)
       topic_fixture     = OpenStruct.new(fixture[0]['watson'])
@@ -62,7 +65,7 @@ class DailyDoseSugaryDrinks < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets(:base_url => @url)
+        assets = @page.assets(:base_url => @url, :driver => @driver)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end

@@ -2,10 +2,12 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/dailydose_page'
 
 class DailyDoseHomePage < MiniTest::Test
-  context "daily dose homepage" do 
+  include Capybara::DSL
 
+  context "daily dose homepage" do 
     setup do 
       capybara_with_phantomjs
+      @driver           = Capybara.current_session
       io                = File.open('test/fixtures/healthcentral/daily_dose.yml')
       fixture           = YAML::load_documents(io)
       topic_fixture     = OpenStruct.new(fixture[0]['home'])
@@ -25,14 +27,6 @@ class DailyDoseHomePage < MiniTest::Test
         headers           = all(:css, "h2")
         header_text       = headers.collect(&:text).compact
         infite_content    = all(:css, ".js-fake-infinite-content") || []
-        anchor_links      = all(:css, "a").select { |x| x[:rel] == "canonical" }.compact
-        link_tags         = all('link[rel="canonical"]', :visible => false)
-        all_links         = anchor_links.to_a + link_tags.to_a
-        all_hrefs         = all_links.collect { |l| l[:href]}.compact
-
-        all_hrefs.each do |link|
-          assert_equal(true, @url.include?(link), "#{link} did not include #{@url}")
-        end
 
         if infite_content
           infite_content  = infite_content.select {|x| x.visible?}
@@ -50,7 +44,6 @@ class DailyDoseHomePage < MiniTest::Test
         assert_equal(1, infite_content.length, "no infinite content on the page")
         assert_equal(true, infite_content.length < new_content.length, "page failed to lazy load additional content")
         assert_equal(true, new_content.length > 0, "no new content was lazy loaded")
-        puts "article_links: #{article_links.inspect}"
       end
     end
 
@@ -58,7 +51,7 @@ class DailyDoseHomePage < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets(:base_url => @url)
+        assets = @page.assets(:base_url => @url, :driver => @driver)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
