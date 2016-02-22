@@ -2,10 +2,13 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/encyclopedia_page'
 
 class HcArticlePage < MiniTest::Test
+  include Capybara::DSL
+
   context "HC Encyclopedia article, Autologous Blood Donation" do 
     setup do 
       capybara_with_phantomjs
-      io = File.open('test/fixtures/healthcentral/encyclopedia.yml')
+      @driver         = Capybara.current_session
+      io              = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['hc_article'])
       head_navigation = HealthCentralHeader::EncyclopediaDesktop.new(:driver => @driver)
@@ -41,7 +44,7 @@ class HcArticlePage < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets(:base_url => @url)
+        assets = @page.assets(:base_url => @url, :driver => @driver)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end

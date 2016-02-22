@@ -2,9 +2,12 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/encyclopedia_page'
 
 class AdamSubcategoryIndex < MiniTest::Test
+  include Capybara::DSL
+
   context "The adam subcategory index page" do 
     setup do 
       capybara_with_phantomjs
+      @driver         = Capybara.current_session
       io              = File.open('test/fixtures/healthcentral/encyclopedia.yml')
       fixture         = YAML::load_documents(io)
       @fixture        = OpenStruct.new(fixture[0]['adam_subcategory_index'])
@@ -37,7 +40,7 @@ class AdamSubcategoryIndex < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets(:base_url => @url)
+        assets = @page.assets(:base_url => @url, :driver => @driver)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
