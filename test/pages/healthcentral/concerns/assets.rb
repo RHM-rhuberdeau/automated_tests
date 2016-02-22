@@ -10,19 +10,30 @@ module HealthCentralAssets
 
     validate :assets_using_correct_host
     validate :no_broken_images
-    validate :not_using_old_pipeline
+    # validate :not_using_old_pipeline
 
     def initialize(args)
       @base_url         = args[:base_url]
       @host             = args[:host] || ASSET_HOST
-      @network_traffic  = args[:network_traffic]
-      @network_traffic  = @network_traffic.compact
+      @session          = args[:driver]
+      network_traffic   = self.get_network_traffic
+      @network_traffic  = network_traffic.compact
       #Lets make sure the page has stopped loading
       #This way we don't have to worry about additional assets loading during the test
       begin
         execute_script "window.stop();"
       rescue Timeout::Error, Net::ReadTimeout
       end
+    end
+
+    def get_network_traffic
+      network_traffic = []
+      @session.driver.network_traffic.each do |request|
+        request.response_parts.uniq(&:url).each do |response|
+          network_traffic << ["#{response.url}", response.status]
+        end
+      end
+      network_traffic
     end
 
     def wrong_asset_hosts
@@ -49,19 +60,16 @@ module HealthCentralAssets
       @unloaded_assets  = []
       
       @network_traffic.each do |entry|
-        unless entry.empty?
-          entry = entry.first
-          if ( entry.first.index(@host) == 0 && entry.last == 200 )
-            @good_assets << entry.first
+        if ( entry.first.index(@host) == 0 && entry.last == 200 )
+          @good_assets << entry.first
+        end
+        if ( entry.first.index(@host) == 0 && entry.last != 200 )
+          unless entry.first == @base_url || is_known_problem(entry.first)
+            @unloaded_assets << entry.first
           end
-          if ( entry.first.index(@host) == 0 && entry.last != 200 )
-            unless entry.first == @base_url || is_known_problem(entry.first)
-              @unloaded_assets << entry.first
-            end
-          end
-          if has_wrong_host(entry.first) == true
-            @bad_assets << entry.first unless is_known_problem(entry.first)
-          end
+        end
+        if has_wrong_host(entry.first) == true
+          @bad_assets << entry.first unless is_known_problem(entry.first)
         end
       end
 
@@ -82,7 +90,6 @@ module HealthCentralAssets
       all_calls   = []
       @network_traffic.map do |entry|
         unless entry.empty?
-          entry = entry.first
           if entry.first.include?("healthcentral") && entry.first.include?("/assets_pipeline/")
             bad_calls << entry.first
           end
