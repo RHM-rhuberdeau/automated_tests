@@ -2,11 +2,12 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/redesign_entry_page'
 
 class ClinicalTrials < MiniTest::Test
-  context "living with ra" do 
-    include Capybara::DSL
+  include Capybara::DSL
 
+  context "living with ra" do 
     setup do 
       capybara_with_phantomjs
+      @driver           = Capybara.current_session
       io                = File.open('test/fixtures/healthcentral/clinical_trials.yml')
       trial_fixture     = YAML::load_documents(io)
       @trial_fixture    = OpenStruct.new(trial_fixture[0]['clinical_trials'])
@@ -22,8 +23,7 @@ class ClinicalTrials < MiniTest::Test
     ################### ASSETS #######################################
     context "assets safe" do 
       should "have valid assets" do 
-        network_traffic = get_network_traffic
-        assets = @page.assets(:base_url => @url, :network_traffic => network_traffic)
+        assets = @page.assets(:base_url => @url, :driver => @driver)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
