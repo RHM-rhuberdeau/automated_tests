@@ -2,11 +2,13 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/phase_page'
 
 class IbdIntroductionDesktop < MiniTest::Test
+  include Capybara::DSL
+  
   context "ibd introduction" do 
     setup do 
-      fire_fox_with_secure_proxy
-      @proxy.new_har
-      io = File.open('test/fixtures/healthcentral/phases.yml')
+      capybara_with_phantomjs
+      @driver           = Capybara.current_session
+      io                = File.open('test/fixtures/healthcentral/phases.yml')
       fixture           = YAML::load_documents(io)
       phase_fixture     = OpenStruct.new(fixture[0]['ibd_introduction'])
       head_navigation   = HealthCentralHeader::RedesignHeader.new(:logo => "#{ASSET_HOST}/sites/all/themes/healthcentral/images/logo_lbln.png", 
@@ -16,7 +18,9 @@ class IbdIntroductionDesktop < MiniTest::Test
       footer            = HealthCentralFooter::RedesignFooter.new(:driver => @driver)
       @page             = Phases::PhasePage.new(:driver => @driver,:proxy => @proxy,:fixture => phase_fixture, :head_navigation => head_navigation, :footer => footer, :collection => false)
       @url              = "#{HC_BASE_URL}/ibd/d/introduction" + $_cache_buster
+      preload_page @url
       visit @url
+      wait_for { find("span.Custom-paginator-controls-next-button").visible? }
     end
 
     ##################################################################
@@ -33,7 +37,7 @@ class IbdIntroductionDesktop < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets(:base_url => @url)
+        assets = @page.assets(:base_url => @url, :driver => @driver)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -60,17 +64,17 @@ class IbdIntroductionDesktop < MiniTest::Test
         thcn_content_type = "phase"
         thcn_super_cat    = "Body & Mind"
         thcn_category     = "Digestive Health"
-        ads               = Phases::PhasePage::AdsTestCases.new(:driver => @driver,
-                                                                 :proxy => @proxy, 
-                                                                 :url => @url,
-                                                                 :ad_site => ad_site,
-                                                                 :ad_categories => ad_categories,
-                                                                 :exclusion_cat => exclusion_cat,
-                                                                 :sponsor_kw  => sponsor_kw,
-                                                                 :thcn_content_type => thcn_content_type,
-                                                                 :thcn_super_cat => thcn_super_cat,
-                                                                 :thcn_category => thcn_category,
-                                                                 :ugc => "n") 
+        ads               = HealthCentralAds::AdsTestCases.new(:driver => @driver,
+                                                               :proxy => @proxy, 
+                                                               :url => @url,
+                                                               :ad_site => ad_site,
+                                                               :ad_categories => ad_categories,
+                                                               :exclusion_cat => exclusion_cat,
+                                                               :sponsor_kw  => sponsor_kw,
+                                                               :thcn_content_type => thcn_content_type,
+                                                               :thcn_super_cat => thcn_super_cat,
+                                                               :thcn_category => thcn_category,
+                                                               :ugc => "n") 
         ads.validate
 
         omniture = @page.omniture(:url => @url)
@@ -92,6 +96,6 @@ class IbdIntroductionDesktop < MiniTest::Test
   end
 
   def teardown  
-    cleanup_driver_and_proxy
+    Capybara.reset_sessions!
   end 
 end
