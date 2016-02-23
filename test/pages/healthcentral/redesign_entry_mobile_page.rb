@@ -38,6 +38,7 @@ module RedesignEntry
 
   class FunctionalityTestCases
     include ::ActiveModel::Validations
+    include Capybara::DSL
 
     validate :relative_header_links
     validate :relative_right_rail_links
