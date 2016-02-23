@@ -2,9 +2,12 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/redesign_entry_mobile_page'
 
 class DecreasedSmellAndTasteMobilePageTest < MiniTest::Test
+  include Capybara::DSL
+  
   context "a health pro member entry" do 
     setup do 
       capybara_with_phantomjs_mobile
+      @driver           = Capybara.current_session
       io                = File.open('test/fixtures/healthcentral/entries.yml')
       entry_fixture     = YAML::load_documents(io)
       @entry_fixture    = OpenStruct.new(entry_fixture[0]['173667_mobile'])
@@ -33,7 +36,7 @@ class DecreasedSmellAndTasteMobilePageTest < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets(:base_url => @url)
+        assets = @page.assets(:base_url => @url, :driver => @driver)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end

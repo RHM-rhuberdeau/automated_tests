@@ -2,9 +2,12 @@ require_relative '../../../minitest_helper'
 require_relative '../../../pages/healthcentral/redesign_entry_page'
 
 class Hypothyroidism < MiniTest::Test
+  include Capybara::DSL
+  
   context "a custom program" do 
     setup do 
       capybara_with_phantomjs
+      @driver           = Capybara.current_session
       io                = File.open('test/fixtures/healthcentral/entries.yml')
       entry_fixture     = YAML::load_documents(io)
       @entry_fixture    = OpenStruct.new(entry_fixture[0]['hypothyroidism'])
@@ -30,7 +33,7 @@ class Hypothyroidism < MiniTest::Test
     ################### ASSETS #######################################
     context "assets" do 
       should "have valid assets" do 
-        assets = @page.assets(:base_url => @url)
+        assets = @page.assets(:base_url => @url, :driver => @driver)
         assets.validate
         assert_equal(true, assets.errors.empty?, "#{assets.errors.messages}")
       end
@@ -85,6 +88,6 @@ class Hypothyroidism < MiniTest::Test
   end
 
   def teardown  
-    cleanup_capybara
+    Capybara.reset_sessions!
   end 
 end
