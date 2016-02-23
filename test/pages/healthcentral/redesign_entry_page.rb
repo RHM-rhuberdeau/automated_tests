@@ -23,10 +23,9 @@ module RedesignEntry
 
     def analytics_file
       has_file = false
-      network_traffic = get_network_traffic
+      network_traffic = HealthCentralPage.get_network_traffic
       network_traffic.each do |entry|
         unless entry.empty?
-          entry = entry.first
           if (entry.first.include?('namespace.js')) && (entry.last == 200)
             has_file = true
           end
@@ -38,6 +37,7 @@ module RedesignEntry
 
   class FunctionalityTestCases
     include ::ActiveModel::Validations
+    include Capybara::DSL
 
     validate :relative_header_links
     validate :relative_right_rail_links
